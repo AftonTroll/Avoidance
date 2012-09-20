@@ -1,20 +1,34 @@
 package se.chalmers.avoidance;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
+import org.andengine.engine.options.EngineOptions;
+import org.andengine.entity.scene.Scene;
+import org.andengine.ui.activity.BaseGameActivity;
 
-public class MainActivity extends Activity {
+public class MainActivity extends BaseGameActivity {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
+	final int mCameraWidth = 800;  
+    final int mCameraHeight = 480;
+    public Scene mScene;
+	public EngineOptions onCreateEngineOptions() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void onCreateResources(OnCreateResourcesCallback arg0)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	public void onCreateScene(OnCreateSceneCallback arg0) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	public void onPopulateScene(Scene arg0, OnPopulateSceneCallback arg1)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
-    }
+           
+          
+           
 }
