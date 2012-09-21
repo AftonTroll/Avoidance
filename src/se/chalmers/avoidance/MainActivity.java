@@ -10,6 +10,10 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import se.chalmers.avoidance.states.GameState;
+import se.chalmers.avoidance.states.State;
+import se.chalmers.avoidance.states.StateManager;
+
 import com.artemis.World;
 
 public class MainActivity extends BaseGameActivity {
@@ -20,6 +24,7 @@ public class MainActivity extends BaseGameActivity {
     private Camera camera;
     private Scene splashScene;
     private Scene gameScene;
+    private StateManager stateManager;
    
 
 	public EngineOptions onCreateEngineOptions() {
@@ -54,6 +59,14 @@ public class MainActivity extends BaseGameActivity {
                 mEngine.setScene(gameScene);
             }
 		}));
+		
+		mEngine.registerUpdateHandler(new TimerHandler(3f, new ITimerCallback() 
+		{
+            public void onTimePassed(final TimerHandler pTimerHandler) 
+            {
+//                stateManager.update();
+            }
+		}));
 		  
 		onPopulateSceneCallback.onPopulateSceneFinished();
 
@@ -65,8 +78,14 @@ public class MainActivity extends BaseGameActivity {
 	}
 	
 	private void initializeGame() {
+		stateManager = new StateManager();
 		gameScene = new Scene();
 		gameScene.setBackground(new Background(1f, 0f, 0f));
+		
+//		GameState gameState = new GameState();
+//		stateManager.addState(gameState);
+//		stateManager.setState(State.Game);
+		
 	}
 	
 	public void derp() {
