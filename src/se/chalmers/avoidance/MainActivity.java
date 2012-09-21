@@ -1,6 +1,7 @@
 package se.chalmers.avoidance;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -10,8 +11,6 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.ui.activity.BaseGameActivity;
 
-import se.chalmers.avoidance.states.GameState;
-import se.chalmers.avoidance.states.State;
 import se.chalmers.avoidance.states.StateManager;
 
 import com.artemis.World;
@@ -60,13 +59,15 @@ public class MainActivity extends BaseGameActivity {
             }
 		}));
 		
-		mEngine.registerUpdateHandler(new TimerHandler(3f, new ITimerCallback() 
-		{
-            public void onTimePassed(final TimerHandler pTimerHandler) 
-            {
-//                stateManager.update();
-            }
-		}));
+		mEngine.registerUpdateHandler(new IUpdateHandler(){
+			public void onUpdate(float tpf) {
+				//stateManager.update(tpf);
+			}
+
+			public void reset() {
+
+			}
+		});
 		  
 		onPopulateSceneCallback.onPopulateSceneFinished();
 
