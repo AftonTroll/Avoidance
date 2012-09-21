@@ -11,9 +11,10 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import se.chalmers.avoidance.states.GameState;
+import se.chalmers.avoidance.states.StateID;
 import se.chalmers.avoidance.states.StateManager;
-
-import com.artemis.World;
+import android.hardware.SensorManager;
 
 public class MainActivity extends BaseGameActivity {
 
@@ -22,7 +23,6 @@ public class MainActivity extends BaseGameActivity {
    
     private Camera camera;
     private Scene splashScene;
-    private Scene gameScene;
     private StateManager stateManager;
    
 
@@ -45,33 +45,22 @@ public class MainActivity extends BaseGameActivity {
 	}
 	public void onPopulateScene(Scene scene, OnPopulateSceneCallback onPopulateSceneCallback)
 			throws Exception {
-
-		mEngine.registerUpdateHandler(new TimerHandler(3f, new ITimerCallback() 
-		{
-            public void onTimePassed(final TimerHandler pTimerHandler) 
-            {
-                mEngine.unregisterUpdateHandler(pTimerHandler);
-                loadResources();
-                initializeGame();         
-                splashScene.detachSelf();
-//                stateManager.setState(States.gameState)
-                mEngine.setScene(gameScene);
-            }
-		}));
 		
+        loadResources();
+        initializeGame();         
+        splashScene.detachSelf();
+		stateManager.setState(StateID.Game);
 		mEngine.registerUpdateHandler(new IUpdateHandler(){
 			public void onUpdate(float tpf) {
-				//stateManager.update(tpf);
+				stateManager.update(tpf);
 			}
-
+	
 			public void reset() {
-
+	
 			}
 		});
-		  
-		onPopulateSceneCallback.onPopulateSceneFinished();
-
 		
+		onPopulateSceneCallback.onPopulateSceneFinished();
 	}
 	
 	private void loadResources() {
@@ -79,35 +68,14 @@ public class MainActivity extends BaseGameActivity {
 	}
 	
 	private void initializeGame() {
-		stateManager = new StateManager();
-		gameScene = new Scene();
-		gameScene.setBackground(new Background(1f, 0f, 0f));
-		
-//		GameState gameState = new GameState();
-//		stateManager.addState(gameState);
-//		stateManager.setState(State.Game);
+		stateManager = new StateManager(mEngine);
+		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE));
+		stateManager.addState(StateID.Game, gameState);
 		
 	}
-	
-	public void derp() {
-		World world = new World();
-
-//		world.setSystem(new MovementSystem());
-//		world.setSystem(new RotationSystem());
-//		world.setSystem(new RenderingSystem());
-		
-		world.initialize();
-		
-		while(true) {
-//		    world.setDelta(MyGameTimer.getDelta());
-			world.process();
-		}
-	}
-	
-
 
     private void initSplashScene() {
 	    splashScene = new Scene();
-	    splashScene.setBackground(new Background(0.3f, 0.3f, 0.3f));
+	    splashScene.setBackground(new Background(0.0f, 0.0f, 0.0f));
     }      
 }

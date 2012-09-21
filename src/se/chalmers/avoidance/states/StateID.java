@@ -1,6 +1,6 @@
 package se.chalmers.avoidance.states;
 
-public enum State {
+public enum StateID {
 	Menu,
 	Game
 }
