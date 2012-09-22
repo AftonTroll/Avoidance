@@ -1,5 +1,7 @@
 package se.chalmers.avoidance.components;
 
+import se.chalmers.avoidance.util.Utils;
+
 import com.artemis.Component;
 
 /**
@@ -25,7 +27,7 @@ public class Transform extends Component {
 	 * (3 * pi) / 2		=>	down
 	 * 
 	 */
-	private double rotation;
+	private float rotation;
 	
 	
 	
@@ -34,7 +36,7 @@ public class Transform extends Component {
 	 * and default rotation 0 (right). 
 	 */
 	public Transform() {
-		this(0f, 0f, 0);
+		this(0f, 0f, 0f);
 	}
 	
 	/**
@@ -55,7 +57,7 @@ public class Transform extends Component {
 	 * @param y The y-coordinate.
 	 * @param rotation The {@link #rotation rotation}.
 	 */
-	public Transform(float x, float y, double rotation) {
+	public Transform(float x, float y, float rotation) {
 		setPosition(x, y);
 		setRotation(rotation);
 	}
@@ -68,7 +70,7 @@ public class Transform extends Component {
 		return y;
 	}
 	
-	public double getRotation() {
+	public float getRotation() {
 		return rotation;
 	}
 	
@@ -93,22 +95,12 @@ public class Transform extends Component {
 		this.y += y;
 	}
 	
-	public void setRotation(double rotation) {
-		this.rotation = rotation;
-		simplifyRotation();
+	public void setRotation(float rotation) {
+		this.rotation = Utils.simplifyAngle(rotation);
 	}
 	
 	public void addRotation(float rotation) {
-		this.rotation += rotation;
-		simplifyRotation();
-	}
-	
-	/**
-	 *  Converts the rotation so its' value is in the interval
-	 *  0  <=  rotation  <  (2 * PI)
-	 */
-	private void simplifyRotation() {
-		this.rotation = this.rotation % (2 * Math.PI);
+		this.rotation = Utils.simplifyAngle(this.rotation + rotation);
 	}
 	
 }
