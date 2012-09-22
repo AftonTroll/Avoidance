@@ -1,12 +1,14 @@
 package se.chalmers.avoidance.components;
 
+import com.artemis.Component;
+
 /**
  * Component containing information about the size.
  * 
  * @author Florian Minges
  *
  */
-public class Size {
+public class Size extends Component {
 	private float width;
 	private float height;
 	
