@@ -1,5 +1,8 @@
 package se.chalmers.avoidance.systems;
 
+import se.chalmers.avoidance.components.Transform;
+import se.chalmers.avoidance.components.Velocity;
+
 import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
@@ -12,8 +15,8 @@ import com.artemis.utils.ImmutableBag;
  */
 public class CollisionSystem extends EntitySystem{
 
-	public CollisionSystem(Aspect aspect) {
-		super(aspect);
+	public CollisionSystem() {
+		super(Aspect.getAspectForAll(Transform.class, Velocity.class));
 		// TODO Auto-generated constructor stub
 	}
 
