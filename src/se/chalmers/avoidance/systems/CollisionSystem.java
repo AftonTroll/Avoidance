@@ -24,9 +24,9 @@ public class CollisionSystem extends EntitySystem{
 	}
 
 	@Override
-	protected void processEntities(ImmutableBag<Entity> arg0) {
-		// TODO Auto-generated method stub
+	protected void processEntities(ImmutableBag<Entity> entities) {
 		
+		//Check collision between player and wall
 	}
 	/**
 	 * Checks if two entities is colliding with each other 
