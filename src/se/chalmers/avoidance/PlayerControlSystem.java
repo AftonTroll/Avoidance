@@ -11,11 +11,22 @@ import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 
+/**
+ * System that handles the input of the user and updates the player
+ * 
+ * @author Filip Brynfors
+ *
+ */
 public class PlayerControlSystem extends EntityProcessingSystem {
 	private SensorManager sensorManager;
 	private float lastAccelerometerX = 0;
 	private float lastAccelerometerY = 0;
 	
+	/**
+	 * Constructs a PlayerControlSystem that listens to the accelerometer
+	 * from the given sensor manager
+	 * @param sensorManager the android sensor manager
+	 */
 	public PlayerControlSystem(SensorManager sensorManager) {
 		super(Aspect.getAspectForAll(Transform.class, Velocity.class));
 		this.sensorManager = sensorManager;
@@ -38,6 +49,8 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 	}
 	
 	
+	// A listener that listens to the events from the accelerometer
+	// and stores the last values from the events.
 	private class AccelerometerListener implements SensorEventListener {
 
 		public void onAccuracyChanged(Sensor sensor, int accuracy) {
