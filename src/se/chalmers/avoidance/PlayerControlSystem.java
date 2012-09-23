@@ -37,8 +37,10 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 	
 	@Override
 	protected void initialize() {
-		Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-		sensorManager.registerListener(new AccelerometerListener(), accelerometer,SensorManager.SENSOR_DELAY_GAME);
+		if(sensorManager != null){
+			Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+			sensorManager.registerListener(new AccelerometerListener(), accelerometer,SensorManager.SENSOR_DELAY_GAME);
+		}
 	}
 
 	@Override
@@ -51,6 +53,11 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 		
 	}
 	
+	public void setSensorValues(float x, float y){
+		lastAccelerometerX = x;
+		lastAccelerometerY = y;
+	}
+	
 	
 	// A listener that listens to the events from the accelerometer
 	// and stores the last values from the events.
@@ -61,8 +68,7 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 		}
 
 		public void onSensorChanged(SensorEvent event) {
-			lastAccelerometerX = event.values[0];
-			lastAccelerometerY = event.values[1];
+			setSensorValues(event.values[0], event.values[1]);
 		}
 		
 	}
