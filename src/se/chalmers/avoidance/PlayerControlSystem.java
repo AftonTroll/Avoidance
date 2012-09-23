@@ -21,15 +21,18 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 	private SensorManager sensorManager;
 	private float lastAccelerometerX = 0;
 	private float lastAccelerometerY = 0;
+	private int playerID;
 	
 	/**
 	 * Constructs a PlayerControlSystem that listens to the accelerometer
-	 * from the given sensor manager
+	 * from the given sensor manager and moves the entity with the given ID
 	 * @param sensorManager the android sensor manager
+	 * @param playerID the ID of the player entity
 	 */
-	public PlayerControlSystem(SensorManager sensorManager) {
+	public PlayerControlSystem(SensorManager sensorManager, int playerID) {
 		super(Aspect.getAspectForAll(Transform.class, Velocity.class));
 		this.sensorManager = sensorManager;
+		this.playerID = playerID;
 	}
 	
 	@Override
