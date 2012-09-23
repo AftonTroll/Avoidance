@@ -5,6 +5,7 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.shader.ShaderProgram;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 
+import se.chalmers.avoidance.components.Size;
 import se.chalmers.avoidance.components.Transform;
 import se.chalmers.avoidance.components.Velocity;
 
@@ -44,8 +45,23 @@ public class CollisionSystem extends EntitySystem{
 	 * @return True if colliding false if not colliding
 	 */
 	public boolean collisionExists(Entity e1, Entity e2){
-				
-		return false;
+		
+		float e1X = e1.getComponent(Transform.class).getX();
+		float e1Y = e1.getComponent(Transform.class).getY();
+		float e1Width = e1.getComponent(Size.class).getWidth();
+		float e1Height = e1.getComponent(Size.class).getHeight();
+		
+		CollisionObject collisionObject1 =  new CollisionObject(e1X, e1Y, e1Width, e1Height) ;
+		
+		float e2X = e2.getComponent(Transform.class).getX();
+		float e2Y = e2.getComponent(Transform.class).getY();
+		float e2Width = e2.getComponent(Size.class).getWidth();
+		float e2Height = e2.getComponent(Size.class).getHeight();
+		
+		CollisionObject collisionObject2 =  new CollisionObject(e2X, e2Y, e2Width, e2Height) ;
+		
+		return collisionObject1.collidesWith(collisionObject2);
+		
 	}
 	
 	
