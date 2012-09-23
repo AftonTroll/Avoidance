@@ -64,23 +64,24 @@ public class CollisionSystem extends EntitySystem{
 		
 	}
 	
-	
+	/**
+	 * An object used to check for collision with Andengine's collision detection
+	 * 
+	 * @author Jakob
+	 *
+	 */
 	private class CollisionObject extends RectangularShape{
 
 		public CollisionObject(float pX, float pY, float pWidth, float pHeight) {
 			super(pX, pY, pWidth, pHeight, null);
-			// TODO Auto-generated constructor stub
 		}
 
 		public IVertexBufferObject getVertexBufferObject() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
-		protected void onUpdateVertices() {
-			// TODO Auto-generated method stub
-			
+		protected void onUpdateVertices() {			
 		}
 		
 	}
