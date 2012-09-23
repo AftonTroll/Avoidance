@@ -104,6 +104,37 @@ public class Velocity extends Component {
 	public void addAngle(float angle) {
 		setAngle(this.angle + angle);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(angle);
+		result = prime * result + Float.floatToIntBits(speed);
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Velocity other = (Velocity) obj;
+		if (Float.floatToIntBits(angle) != Float.floatToIntBits(other.angle))
+			return false;
+		if (Float.floatToIntBits(speed) != Float.floatToIntBits(other.speed))
+			return false;
+		return true;
+	}
 	
 	
 }
