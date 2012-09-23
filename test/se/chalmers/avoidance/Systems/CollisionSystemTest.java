@@ -1,15 +1,18 @@
 package se.chalmers.avoidance.systems;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import se.chalmers.avoidance.components.Size;
 import se.chalmers.avoidance.components.Transform;
+import se.chalmers.avoidance.components.Velocity;
 
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.managers.GroupManager;
+import com.artemis.managers.TagManager;
 
 
 public class CollisionSystemTest {
@@ -22,11 +25,19 @@ public class CollisionSystemTest {
 	@Before
 	public void setUp(){
 		World world = new World();
+		TagManager tm = new TagManager();
+		GroupManager gm = new GroupManager();
+		world.setManager(tm);
+		world.setManager(gm);
+		
 		e1 = world.createEntity();
-		e1.addComponent(new Transform(0,3));	
-		e1.addComponent(new Size(10, 10));
+		tm.register("Player", e1);
+		e1.addComponent(new Transform(0,3));
+		e1.addComponent(new Velocity());
+		e1.addComponent(new Size(1, 1));
 		
 		e2 = world.createEntity();
+		gm.add(e2, "Walls");
 		e2.addComponent(new Transform(0,4));	
 		e2.addComponent(new Size(10, 10));
 		
@@ -38,8 +49,8 @@ public class CollisionSystemTest {
 		e4.addComponent(new Transform(40,30));	
 		e4.addComponent(new Size(10, 10));
 		
-		cs = new CollisionSystem();
-		
+		cs = new CollisionSystem(world);
+		cs.initialize();
 		
 	}
 	
@@ -47,8 +58,13 @@ public class CollisionSystemTest {
 	public void testCollsionExists(){
 		assertTrue(cs.collisionExists(e1, e2));	
 		assertTrue(!cs.collisionExists(e3, e4));
-		assertTrue(cs.collisionExists(e1, e3));
 		
+	}
+	
+	@Test
+	public void testProcessEntities(){
+		cs.processEntities(null);
+		assertTrue(e1.getComponent(Velocity.class).getAngle()==(float)Math.PI);
 	}
 
 }
