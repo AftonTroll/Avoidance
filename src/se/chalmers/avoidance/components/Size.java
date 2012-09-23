@@ -69,7 +69,7 @@ public class Size extends Component {
 	 * @param width the width 
 	 */
 	public void setWidth(float width) {
-		this.width = width;
+		this.width = width >= 0 ? width : 0;
 	}
 	
 	
@@ -79,7 +79,7 @@ public class Size extends Component {
 	 * @param height the height 
 	 */
 	public void setHeight(float height) {
-		this.height = height;
+		this.height = height >= 0 ? height : 0;
 	}
 	
 	/**
@@ -89,7 +89,7 @@ public class Size extends Component {
 	 * @param width the amount to add to the width
 	 */
 	public void addWidth(float width) {
-		this.width += width;
+		setWidth(this.width + width);
 	}
 	
 	/**
@@ -99,7 +99,41 @@ public class Size extends Component {
 	 * @param height the amount to add to the height
 	 */
 	public void addHeight(float height) {
-		this.height += height;
+		setHeight(this.height + height);
+		
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		//Eclipse auto-generated
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(height);
+		result = prime * result + Float.floatToIntBits(width);
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		//Eclipse auto-generated
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Size other = (Size) obj;
+		if (Float.floatToIntBits(height) != Float.floatToIntBits(other.height))
+			return false;
+		if (Float.floatToIntBits(width) != Float.floatToIntBits(other.width))
+			return false;
+		return true;
 	}
 
 }
