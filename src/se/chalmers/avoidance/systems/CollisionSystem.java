@@ -1,5 +1,10 @@
 package se.chalmers.avoidance.systems;
 
+import org.andengine.entity.shape.RectangularShape;
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.shader.ShaderProgram;
+import org.andengine.opengl.vbo.IVertexBufferObject;
+
 import se.chalmers.avoidance.components.Transform;
 import se.chalmers.avoidance.components.Velocity;
 
@@ -39,8 +44,29 @@ public class CollisionSystem extends EntitySystem{
 	 * @return True if colliding false if not colliding
 	 */
 	public boolean collisionExists(Entity e1, Entity e2){
-		
+				
 		return false;
+	}
+	
+	
+	private class CollisionObject extends RectangularShape{
+
+		public CollisionObject(float pX, float pY, float pWidth, float pHeight) {
+			super(pX, pY, pWidth, pHeight, null);
+			// TODO Auto-generated constructor stub
+		}
+
+		public IVertexBufferObject getVertexBufferObject() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected void onUpdateVertices() {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 
 }

@@ -1,19 +1,18 @@
-package se.chalmers.avoidance.systems.test;
+package se.chalmers.avoidance.systems;
 
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import se.chalmers.avoidance.components.Size;
 import se.chalmers.avoidance.components.Transform;
-import se.chalmers.avoidance.systems.CollisionSystem;
 
 import com.artemis.Entity;
 import com.artemis.World;
 
+
 public class CollisionSystemTest {
-	
-	
 	private Entity e1;
 	private Entity e2; 
 	private CollisionSystem cs;
@@ -36,7 +35,8 @@ public class CollisionSystemTest {
 	
 	@Test
 	public void testCollsionExists(){
-		assert(cs.collisionExists(e1, e2));
+		assertTrue(cs.collisionExists(e1, e2));	
+		
 	}
 
 }
