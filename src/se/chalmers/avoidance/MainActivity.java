@@ -84,7 +84,7 @@ public class MainActivity extends BaseGameActivity {
 	
 	private void initializeGame() {
 		stateManager = new StateManager(mEngine);
-		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), regions);
+		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE));
 		stateManager.addState(StateID.Game, gameState);
 		
 	}
