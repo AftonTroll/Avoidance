@@ -52,51 +52,50 @@ public class SizeTest {
 		assertTrue(mSize.getWidth() == w2);
 		assertTrue(mSize.getHeight() == h2);
 	}
-
+	
 	@Test
-	public void testWidthHeightSetterAndGetter() {
-		assertTrue(mSize.getWidth() == w1);
-		assertTrue(mSize.getHeight() == h1);
-		
-		//try width-setter
+	public void testWidthSetterAndGetter() {
+		// positive value
 		mSize.setWidth(w2);
 		assertTrue(mSize.getWidth() == w2);
 		if (h1 != w2)
-			assertTrue(mSize.getHeight() != w2);
+			assertTrue(mSize.getHeight() == h1);
 		
-		//try height-setter
+		// negative value
+		mSize.setWidth(-1);
+		assertTrue(mSize.getWidth() == 0); 
+		assertTrue(mSize.getHeight() == h1);
+		
+		// zero value
+		mSize.setWidth(0);
+		assertTrue(mSize.getWidth() == 0); 
+		assertTrue(mSize.getHeight() == h1);
+		
+	}
+
+	@Test
+	public void testWidthHeightSetterAndGetter() {
+		// positive value
 		mSize.setHeight(h2);
 		assertTrue(mSize.getHeight() == h2);
-		if (w2 != h2)
-			assertTrue(mSize.getWidth() != h2);
+		if (w1 != h2)
+			assertTrue(mSize.getWidth() == w1);
 		
-		//check that no references are stored (primitive type float -> no problem)
-		w2 = (w2 * 2) + 1;
-		h2 = (h2 * 2) + 1;
-		assertTrue(mSize.getWidth() != w2);
-		assertTrue(mSize.getHeight() != h2);
-		
-		//check special states
-		float special = -1;
-		mSize.setWidth(special);
-		assertTrue(mSize.getWidth() == 0); 
-		mSize.setHeight(special);
+		// negative value
+		mSize.setHeight(-1);
 		assertTrue(mSize.getHeight() == 0);
+		assertTrue(mSize.getWidth() == w1);
 		
-		special = 0;
-		mSize.setWidth(special);
-		assertTrue(mSize.getWidth() == special); 
-		mSize.setHeight(special);
-		assertTrue(mSize.getHeight() == special);
-		
+		//zero value
+		mSize.setHeight(0);
+		assertTrue(mSize.getHeight() == 0);
+		assertTrue(mSize.getWidth() == w1);
 		
 	}
 
 	@Test
 	public void testAddWidth() {
-		assertTrue(mSize.getWidth() == w1); //precondition
-		assertTrue(mSize.getHeight() == h1); //precondition
-		
+		// add positive
 		mSize.addWidth(w2);
 		assertTrue(mSize.getWidth() == (w1 + w2));
 		assertTrue(mSize.getHeight() == h1); //height unchanged
@@ -121,9 +120,7 @@ public class SizeTest {
 
 	@Test
 	public void testAddHeight() {
-		assertTrue(mSize.getWidth() == w1); //precondition
-		assertTrue(mSize.getHeight() == h1); //precondition
-		
+		// add positive
 		mSize.addHeight(h2);
 		assertTrue(mSize.getHeight() == (h1 + h2));
 		assertTrue(mSize.getWidth() == w1); //height unchanged
