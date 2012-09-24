@@ -1,7 +1,5 @@
 package se.chalmers.avoidance.systems;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,6 +7,7 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import se.chalmers.avoidance.components.Spatial;
 import se.chalmers.avoidance.components.SpatialForm;
 import se.chalmers.avoidance.components.Transform;
 
@@ -24,12 +23,11 @@ public class RenderSystem extends EntitySystem{
     @Mapper
     ComponentMapper<Transform> tm;
     @Mapper
-    ComponentMapper<SpatialForm> sm;
+    ComponentMapper<Spatial> sm;
 
 	private List<Entity> entities;
 	private HashMap<String, TextureRegion> regions;
 	private VertexBufferObjectManager vbom;
-	private Bag<TextureRegion> regionsByEntity;
 
 
 	
@@ -58,29 +56,21 @@ public class RenderSystem extends EntitySystem{
 	}
 	
 	protected void process(Entity e) {
-		SpatialForm sprite = sm.get(e);
-		if(tm.has(e)) {
-            Transform tf = tm.getSafe(e);
-            sprite.setPosition(tf.getX(), tf.getY());
-		}
-	}
-	
-	private void createSprite(Entity e) {
-		SpatialForm spatial = sm.get(e);
-		Transform tf = tm.get(e);
-		spatial.setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(spatial.getName()), vbom));
+		Spatial spatial = sm.get(e);
+        Transform tf = tm.get(e);
+        spatial.getSprite().setPosition(tf.getX(), tf.getY());
 	}
 	
     @Override
     protected void inserted(Entity e) {
-    	createSprite(e);
-    	regionsByEntity.set(e.getId(), regions.get(spatial.getName()));
+    	Spatial spatial = sm.get(e);
+		Transform tf = tm.get(e);
+		spatial.setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(spatial.getName()), vbom));
         entities.add(e);
     }
 
     @Override
     protected void removed(Entity e) {
-    	regionsByEntity.set(e.getId(), null);
         entities.remove(e);
     }
 }
