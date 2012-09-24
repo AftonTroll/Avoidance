@@ -3,6 +3,7 @@ package se.chalmers.avoidance.systems;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 import org.andengine.entity.sprite.Sprite;
@@ -10,6 +11,8 @@ import org.andengine.opengl.texture.Texture;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.bitmap.AssetBitmapTexture;
+import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import se.chalmers.avoidance.components.SpatialForm;
 import se.chalmers.avoidance.components.Transform;
@@ -30,14 +33,15 @@ public class RenderSystem extends EntitySystem{
     ComponentMapper<SpatialForm> sm;
 
 	private List<Entity> sortedEntities;
-	private TextureManager textureManager;
-	private AssetManager assetManager;
+	private HashMap<String, TextureRegion> regions;
+	private VertexBufferObjectManager vbom;
 
 	
 	@SuppressWarnings("unchecked")
-	public RenderSystem(TextureManager textureManager, AssetManager assetManager) {
+	public RenderSystem(HashMap<String, TextureRegion> regions, VertexBufferObjectManager vbom) {
 		super(Aspect.getAspectForAll(Transform.class, SpatialForm.class));
-		this.textureManager = textureManager;
+		this.regions = regions;
+		this.vbom = vbom;
 	}
 
 	@Override
@@ -61,12 +65,7 @@ public class RenderSystem extends EntitySystem{
 		
 	}
 	
-	private Texture createTexture(Entity e) {
-		try {
-			Texture texture = new AssetBitmapTexture(textureManager, assetManager, sm.get(e).getForm());
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+	private Sprite createSprite() {
 		return null;
 	}
 	
