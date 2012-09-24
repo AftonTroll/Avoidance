@@ -121,7 +121,7 @@ public class Transform extends Component {
 	 * @param x the distance to move along the x-axis
 	 */
 	public void translateX(float x) {
-		this.x += x;
+		setX(this.x + x);
 	}
 	
 	/**
@@ -130,7 +130,7 @@ public class Transform extends Component {
 	 * @param y the distance to move along the y-axis
 	 */
 	public void translateY(float y) {
-		this.y += y;
+		setY(this.y + y);
 	}
 	
 	/**
@@ -148,7 +148,41 @@ public class Transform extends Component {
 	 * @param direction the degree to rotate in radians
 	 */
 	public void translateDirection(float direction) {
-		this.direction = Utils.simplifyAngle(this.direction + direction);
+		setDirection(this.direction + direction);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(direction);
+		result = prime * result + Float.floatToIntBits(x);
+		result = prime * result + Float.floatToIntBits(y);
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Transform other = (Transform) obj;
+		if (Float.floatToIntBits(direction) != Float.floatToIntBits(other.direction))
+			return false;
+		if (Float.floatToIntBits(x) != Float.floatToIntBits(other.x))
+			return false;
+		if (Float.floatToIntBits(y) != Float.floatToIntBits(other.y))
+			return false;
+		return true;
 	}
 	
 }
