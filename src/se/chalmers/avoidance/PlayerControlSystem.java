@@ -48,20 +48,22 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 		if (entity.getId() == playerID) {
 			//Update the Velocity
 			Velocity playerVelocity = velocityMapper.get(entity);
-			Velocity newVelocity = new Velocity();
+			float incVelX = 0;
+			float incVelY = 0;
 			
 			if (Math.abs(lastAccelerometerX) > 1) {
-				Velocity incVelX = new Velocity(lastAccelerometerX);
-				newVelocity = combineVelocities(playerVelocity, incVelX);
+				incVelX = lastAccelerometerX;
 			}
 			
 			if (Math.abs(lastAccelerometerY) > 1) {
-				Velocity incVelY = new Velocity(lastAccelerometerY, (float) (Math.PI/2));
-				newVelocity = combineVelocities(newVelocity, incVelY);
+				incVelY = lastAccelerometerY;
 			}
 			
-			playerVelocity.setAngle(newVelocity.getAngle());
-			playerVelocity.setSpeed(newVelocity.getSpeed());
+			float newVelX = getHorizontalSpeed(playerVelocity) + incVelX;
+			float newVelY = getVerticalSpeed(playerVelocity) + incVelY;
+			
+			playerVelocity.setAngle((float) Math.atan2(newVelY, newVelX));
+			playerVelocity.setSpeed((float) Math.sqrt(newVelX*newVelX+newVelY*newVelY));
 			
 			//Update the position
 			Transform playerTransform = transformMapper.get(entity);
@@ -80,24 +82,6 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 		lastAccelerometerY = y;
 	}
 	
-	
-
-	
-	private Velocity combineVelocities(Velocity v1, Velocity v2) {
-		Velocity sumVelocity = new Velocity();
-		
-		float newVelX = getHorizontalSpeed(v1) + getHorizontalSpeed(v2);
-		float newVelY = getVerticalSpeed(v1) + getVerticalSpeed(v2);
-		
-		//if atleast one of the velocites isn't 0
-		//then calculate the angle of the velocity
-		if (newVelX != 0 || newVelY != 0){
-			sumVelocity.setAngle((float) Math.atan2(newVelY, newVelX));
-		}
-		sumVelocity.setSpeed((float) Math.sqrt(newVelX*newVelX+newVelY*newVelY));
-		
-		return sumVelocity;
-	}
 	
 	//Calculates the speed of the horizontal part of the velocity
 	private float getHorizontalSpeed(Velocity vel) {
