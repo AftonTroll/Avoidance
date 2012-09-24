@@ -1,23 +1,14 @@
 package se.chalmers.avoidance.systems;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.Texture;
-import org.andengine.opengl.texture.TextureManager;
-import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.bitmap.AssetBitmapTexture;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import se.chalmers.avoidance.components.SpatialForm;
 import se.chalmers.avoidance.components.Transform;
-
-import android.content.res.AssetManager;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
