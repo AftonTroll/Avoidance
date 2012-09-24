@@ -6,7 +6,11 @@ import org.andengine.entity.scene.background.Background;
 import com.artemis.World;
 
 import android.hardware.SensorManager;
-
+/**
+ * The game state.
+ * 
+ * @author Markus Ekström
+ */
 public class GameState implements IState{
 
 	private Scene scene;
@@ -26,11 +30,20 @@ public class GameState implements IState{
 
 	}
 	
+	/**
+	 * Updates the state.
+	 * Invoked by the StateManager, do not call manually.
+	 * @param tpf Time since last frame.
+	 */
 	public void update(float tpf) {
 		world.setDelta(tpf);
 		world.process();
 	}
 
+	/**
+	 * Returns the scene connected to the state.
+	 * @return The state's scene.
+	 */
 	public Scene getScene() {
 		return scene;
 	}
