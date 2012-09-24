@@ -1,7 +1,7 @@
 package se.chalmers.avoidance.systems;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
@@ -16,24 +16,32 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.annotations.Mapper;
-import com.artemis.utils.Bag;
 import com.artemis.utils.ImmutableBag;
-
-public class RenderSystem extends EntitySystem{
+/**
+ * A system controlling the rendering of sprites.
+ * 
+ * @author Markus Ekström
+ */
+public class SpatialRenderSystem extends EntitySystem{
     @Mapper
     ComponentMapper<Transform> tm;
     @Mapper
     ComponentMapper<Spatial> sm;
 
 	private List<Entity> entities;
-	private HashMap<String, TextureRegion> regions;
+	private Map<String, TextureRegion> regions;
 	private VertexBufferObjectManager vbom;
 
-
-	
+	/**
+	 * Constructs a <code>SpatialRenderSystem</code>. 
+	 * Uses an aspect containing <code>Transform</code> and <code>Spatial</code> to match against entities.
+	 * 
+	 * @param regions A map containing <code>TextureRegion</code>s.
+	 * @param vbom A <code>VertexBufferObjectManager</code>.
+	 */
 	@SuppressWarnings("unchecked")
-	public RenderSystem(HashMap<String, TextureRegion> regions, VertexBufferObjectManager vbom) {
-		super(Aspect.getAspectForAll(Transform.class, SpatialForm.class));
+	public SpatialRenderSystem(Map<String, TextureRegion> regions, VertexBufferObjectManager vbom) {
+		super(Aspect.getAspectForAll(Transform.class, Spatial.class));
 		this.regions = regions;
 		this.vbom = vbom;
 	}
@@ -55,6 +63,10 @@ public class RenderSystem extends EntitySystem{
         }
 	}
 	
+	/**
+	 * Process an entity.
+	 * @param e The entity to be processed.
+	 */
 	protected void process(Entity e) {
 		Spatial spatial = sm.get(e);
         Transform tf = tm.get(e);
