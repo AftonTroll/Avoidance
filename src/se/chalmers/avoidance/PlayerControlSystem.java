@@ -2,6 +2,7 @@ package se.chalmers.avoidance;
 
 import se.chalmers.avoidance.components.Transform;
 import se.chalmers.avoidance.components.Velocity;
+import se.chalmers.avoidance.util.Utils;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -59,16 +60,16 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 				incVelY = lastAccelerometerY;
 			}
 			
-			float newVelX = getHorizontalSpeed(playerVelocity) + incVelX;
-			float newVelY = getVerticalSpeed(playerVelocity) + incVelY;
+			float newVelX = Utils.getHorizontalSpeed(playerVelocity) + incVelX;
+			float newVelY = Utils.getVerticalSpeed(playerVelocity) + incVelY;
 			
 			playerVelocity.setAngle((float) Math.atan2(newVelY, newVelX));
 			playerVelocity.setSpeed((float) Math.sqrt(newVelX*newVelX+newVelY*newVelY));
 			
 			//Update the position
 			Transform playerTransform = transformMapper.get(entity);
-			playerTransform.setX(playerTransform.getX() + world.delta*getHorizontalSpeed(playerVelocity));
-			playerTransform.setY(playerTransform.getY() + world.delta*getVerticalSpeed(playerVelocity));
+			playerTransform.setX(playerTransform.getX() + world.delta*Utils.getHorizontalSpeed(playerVelocity));
+			playerTransform.setY(playerTransform.getY() + world.delta*Utils.getVerticalSpeed(playerVelocity));
 		}
 	}
 	
@@ -80,16 +81,5 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 	public void setSensorValues(float x, float y){
 		lastAccelerometerX = x;
 		lastAccelerometerY = y;
-	}
-	
-	
-	//Calculates the speed of the horizontal part of the velocity
-	private float getHorizontalSpeed(Velocity vel) {
-		return (float) (vel.getSpeed() * Math.cos(vel.getAngle()));
-	}
-	
-	//Calculates the speed of the vertical part of the velocity
-	private float getVerticalSpeed(Velocity vel) {
-		return (float) (vel.getSpeed() * Math.sin(vel.getAngle()));
 	}
 }
