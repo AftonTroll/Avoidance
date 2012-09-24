@@ -1,5 +1,7 @@
 package se.chalmers.avoidance.systems;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,6 +17,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.annotations.Mapper;
+import com.artemis.utils.Bag;
 import com.artemis.utils.ImmutableBag;
 
 public class RenderSystem extends EntitySystem{
@@ -23,9 +26,11 @@ public class RenderSystem extends EntitySystem{
     @Mapper
     ComponentMapper<SpatialForm> sm;
 
-	private List<Entity> sortedEntities;
+	private List<Entity> entities;
 	private HashMap<String, TextureRegion> regions;
 	private VertexBufferObjectManager vbom;
+	private Bag<TextureRegion> regionsByEntity;
+
 
 	
 	@SuppressWarnings("unchecked")
@@ -47,38 +52,35 @@ public class RenderSystem extends EntitySystem{
 
 	@Override
 	protected void processEntities(ImmutableBag<Entity> arg0) {
-        for(int i = 0; sortedEntities.size() > i; i++) {
-            process(sortedEntities.get(i));
+        for(int i = 0; entities.size() > i; i++) {
+            process(entities.get(i));
         }
 	}
 	
 	protected void process(Entity e) {
-		
+		SpatialForm sprite = sm.get(e);
+		if(tm.has(e)) {
+            Transform tf = tm.getSafe(e);
+            sprite.setPosition(tf.getX(), tf.getY());
+		}
 	}
 	
-	private Sprite createSprite() {
-		return null;
+	private void createSprite(Entity e) {
+		SpatialForm spatial = sm.get(e);
+		Transform tf = tm.get(e);
+		spatial.setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(spatial.getName()), vbom));
 	}
 	
     @Override
     protected void inserted(Entity e) {
-        sortedEntities.add(e);
-        
-//        Collections.sort(sortedEntities, new Comparator<Entity>() {
-//        	@Override
-////            public int compare(Entity e1, Entity e2) {
-////                    Sprite s1 = sm.get(e1);
-////                    Sprite s2 = sm.get(e2);
-////                    return s1.layer.compareTo(s2.layer);
-//            }
-//        });
-//
+    	createSprite(e);
+    	regionsByEntity.set(e.getId(), regions.get(spatial.getName()));
+        entities.add(e);
     }
 
     @Override
     protected void removed(Entity e) {
-            sortedEntities.remove(e);
+    	regionsByEntity.set(e.getId(), null);
+        entities.remove(e);
     }
-
-
 }
