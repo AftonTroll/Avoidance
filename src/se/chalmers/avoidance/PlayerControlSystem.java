@@ -2,11 +2,6 @@ package se.chalmers.avoidance;
 
 import se.chalmers.avoidance.components.Transform;
 import se.chalmers.avoidance.components.Velocity;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.util.FloatMath;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -20,7 +15,6 @@ import com.artemis.systems.EntityProcessingSystem;
  *
  */
 public class PlayerControlSystem extends EntityProcessingSystem {
-	private SensorManager sensorManager;
 	private float lastAccelerometerX = 0;
 	private float lastAccelerometerY = 0;
 	private int playerID;
@@ -30,12 +24,10 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 	/**
 	 * Constructs a PlayerControlSystem that listens to the accelerometer
 	 * from the given sensor manager and moves the entity with the given ID
-	 * @param sensorManager the android sensor manager
 	 * @param playerID the ID of the player entity
 	 */
-	public PlayerControlSystem(SensorManager sensorManager, int playerID) {
+	public PlayerControlSystem(int playerID) {
 		super(Aspect.getAspectForAll(Transform.class, Velocity.class));
-		this.sensorManager = sensorManager;
 		this.playerID = playerID;
 	}
 	
@@ -43,11 +35,6 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 	protected void initialize() {
 		transformMapper = world.getMapper(Transform.class);
 		velocityMapper = world.getMapper(Velocity.class);
-		
-		if(sensorManager != null){
-			Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-			sensorManager.registerListener(new AccelerometerListener(), accelerometer,SensorManager.SENSOR_DELAY_GAME);
-		}
 	}
 
 	@Override
@@ -94,17 +81,7 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 	}
 	
 	
-	// A listener that listens to the events from the accelerometer
-	// and stores the last values from the events.
-	private class AccelerometerListener implements SensorEventListener {
-		public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
-		}
-
-		public void onSensorChanged(SensorEvent event) {
-			setSensorValues(event.values[0], event.values[1]);
-		}
-	}
 	
 	private Velocity combineVelocities(Velocity v1, Velocity v2) {
 		Velocity sumVelocity = new Velocity();
@@ -124,11 +101,11 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 	
 	//Calculates the speed of the horizontal part of the velocity
 	private float getHorizontalSpeed(Velocity vel) {
-		return (float) (vel.getSpeed() * FloatMath.cos(vel.getAngle()));
+		return (float) (vel.getSpeed() * Math.cos(vel.getAngle()));
 	}
 	
 	//Calculates the speed of the vertical part of the velocity
 	private float getVerticalSpeed(Velocity vel) {
-		return (float) (vel.getSpeed() * FloatMath.sin(vel.getAngle()));
+		return (float) (vel.getSpeed() * Math.sin(vel.getAngle()));
 	}
 }
