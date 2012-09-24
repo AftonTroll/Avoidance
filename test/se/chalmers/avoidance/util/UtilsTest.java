@@ -20,9 +20,8 @@
 
 package se.chalmers.avoidance.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -58,18 +57,6 @@ public class UtilsTest {
 		assertTrue(Utils.reverseAngle(f4) == (float) Math.PI + f4);
 		assertTrue(Utils.reverseAngle(f5) == f5 + (float) Math.PI);
 		assertTrue(Utils.reverseAngle(f6) == (float) Math.PI + f6);
-	}
-	
-	/**
-	 * Returns true if the two arguments are closer than 1 / 100'000
-	 * to each other.
-	 * 
-	 * @param f1 a float
-	 * @param f2 another float
-	 * @return <code>true</code> if the two arguments are close enough.
-	 */
-	private static boolean equals(float f1, float f2) {
-		return Math.abs(f1 - f2) < (1f / 100000);
 	}
 
 }
