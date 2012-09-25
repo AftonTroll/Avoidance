@@ -49,19 +49,16 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 		if (entity.getId() == playerID) {
 			//Update the Velocity
 			Velocity playerVelocity = velocityMapper.get(entity);
-			float incVelX = 0;
-			float incVelY = 0;
+			float newVelX = Utils.getHorizontalSpeed(playerVelocity);
+			float newVelY = Utils.getVerticalSpeed(playerVelocity);
 			
 			if (Math.abs(lastAccelerometerX) > 1) {
-				incVelX = lastAccelerometerX;
+				newVelX += lastAccelerometerX;
 			}
 			
 			if (Math.abs(lastAccelerometerY) > 1) {
-				incVelY = lastAccelerometerY;
+				newVelY += lastAccelerometerY;
 			}
-			
-			float newVelX = Utils.getHorizontalSpeed(playerVelocity) + incVelX;
-			float newVelY = Utils.getVerticalSpeed(playerVelocity) + incVelY;
 			
 			playerVelocity.setAngle((float) Math.atan2(newVelY, newVelX));
 			playerVelocity.setSpeed((float) Math.sqrt(newVelX*newVelX+newVelY*newVelY));
