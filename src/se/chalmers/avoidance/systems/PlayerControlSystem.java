@@ -1,4 +1,4 @@
-package se.chalmers.avoidance;
+package se.chalmers.avoidance.systems;
 
 import se.chalmers.avoidance.components.Transform;
 import se.chalmers.avoidance.components.Velocity;
