@@ -45,19 +45,19 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 
 	@Override
 	protected void process(Entity entity) {
-		//TODO: Afton. Calculate the velocity and position in respect to the tpf
 		if (entity.getId() == playerID) {
 			//Update the Velocity
+			//https://bitbucket.org/piemaster/artemoids/src/5c3a11ff2bdd/src/net/piemaster/artemoids/systems/PlayerShipControlSystem.java
 			Velocity playerVelocity = velocityMapper.get(entity);
 			float newVelX = Utils.getHorizontalSpeed(playerVelocity);
 			float newVelY = Utils.getVerticalSpeed(playerVelocity);
 			
 			if (Math.abs(lastAccelerometerX) > 1) {
-				newVelX += lastAccelerometerX;
+				newVelX += world.delta * lastAccelerometerX;
 			}
 			
 			if (Math.abs(lastAccelerometerY) > 1) {
-				newVelY += lastAccelerometerY;
+				newVelY += world.delta * lastAccelerometerY;
 			}
 			
 			playerVelocity.setAngle((float) Math.atan2(newVelY, newVelX));
