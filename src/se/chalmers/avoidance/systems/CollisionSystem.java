@@ -26,13 +26,18 @@ public class CollisionSystem extends EntitySystem{
 	private ComponentMapper<Transform> transformMapper;
     private ComponentMapper<Velocity> velocityMapper;
 	
+    /**
+     * Constructs a new CollisionSystem 
+     * 
+     * @param world the world object of the game
+     */
 	public CollisionSystem(World world) {
 		super(Aspect.getAspectForAll(Transform.class, Size.class));
 		this.world = world;
 	}
 	
 	@Override
-	public void initialize(){
+	protected void initialize(){
 		transformMapper = world.getMapper(Transform.class);
 		velocityMapper = world.getMapper(Velocity.class);
 
@@ -43,7 +48,12 @@ public class CollisionSystem extends EntitySystem{
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
+	/**
+	 * Processes entities and checks for collisions between them
+	 * 
+	 * @param ImmutableBag<Entity> the entities this system contains.
+	 */
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
 		
@@ -61,12 +71,12 @@ public class CollisionSystem extends EntitySystem{
 	}
 	
 	
-	private float calculateAngle(float angle, Entity wall){
-		
+	private float calculateAngle(float angle, Entity wall){		
 		
 		float width = wall.getComponent(Size.class).getWidth();
 		float height = wall.getComponent(Size.class).getHeight();
 		
+		//Check if wall is placed horizontally or vertically
 		if(width>height){
 			angle = flipVertical(angle);
 		}else{
@@ -119,11 +129,19 @@ public class CollisionSystem extends EntitySystem{
 	/**
 	 * An object used to check for collision with Andengine's collision detection
 	 * 
-	 * @author Jakob
+	 * @author Jakob Svensson
 	 *
 	 */
 	private class CollisionObject extends RectangularShape{
 		
+		/**
+		 * Constructs a new collisionObject object
+		 * 
+		 * @param pX the x position of the object
+		 * @param pY the y position of the object
+		 * @param pWidth the width of the object
+		 * @param pHeight the height of the object
+		 */
 		public CollisionObject(float pX, float pY, float pWidth, float pHeight) {
 			super(pX, pY, pWidth, pHeight, null);
 		}
