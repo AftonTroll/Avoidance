@@ -1,5 +1,8 @@
 package se.chalmers.avoidance.systems;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import se.chalmers.avoidance.components.Transform;
 import se.chalmers.avoidance.components.Velocity;
 import se.chalmers.avoidance.util.Utils;
@@ -15,7 +18,7 @@ import com.artemis.systems.EntityProcessingSystem;
  * @author Filip Brynfors
  *
  */
-public class PlayerControlSystem extends EntityProcessingSystem {
+public class PlayerControlSystem extends EntityProcessingSystem implements PropertyChangeListener {
 	private float lastAccelerometerX = 0;
 	private float lastAccelerometerY = 0;
 	private int playerID;
@@ -78,5 +81,16 @@ public class PlayerControlSystem extends EntityProcessingSystem {
 	public void setSensorValues(float x, float y){
 		lastAccelerometerX = x;
 		lastAccelerometerY = y;
+	}
+
+	public void propertyChange(PropertyChangeEvent event) {
+		if(event!=null && event.getNewValue() != null){
+			if("AccelerometerX".equals(event.getPropertyName())){
+				lastAccelerometerX = (Float) event.getNewValue();
+			}
+			if("AccelerometerY".equals(event.getPropertyName())){
+				lastAccelerometerY = (Float) event.getNewValue();
+			}
+		}
 	}
 }
