@@ -58,15 +58,40 @@ public class CollisionSystem extends EntitySystem{
 		for (int i=0;i<walls.size();i++){
 			if(collisionExists(player, walls.get(i))){
 				Velocity velocity = velocityMapper.get(player);
-				velocity.setAngle(velocity.getAngle()+(float)Math.PI);
-				System.out.println("here");
-				System.out.println(velocity.getAngle());
-				System.out.println(player.getComponent(Velocity.class).getAngle());
+				velocity.setAngle(calculateAngle(velocity.getAngle(), walls.get(i)));
+				
 			}
 		}
 		
 	}
 	
+	
+	private float calculateAngle(float angle, Entity wall){
+		
+		
+		float width = wall.getComponent(Size.class).getWidth();
+		float height = wall.getComponent(Size.class).getHeight();
+		
+		if(width>height){
+			angle = flipVertical(angle);
+		}else{
+			angle = flipHorizontal(angle);
+		}
+		return angle;
+	}
+	
+	private float flipVertical(float angle){ 
+		  angle*=-1; 
+		  return angle;
+	}
+	
+	private float flipHorizontal(float angle){
+		  //Translate and then flip vertical
+		  angle += Math.PI/4;
+		  angle = flipVertical(angle);
+		  angle -= Math.PI/4;
+		  return angle;
+	}
 	
 		
 	/**

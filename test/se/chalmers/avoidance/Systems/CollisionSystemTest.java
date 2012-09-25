@@ -33,13 +33,13 @@ public class CollisionSystemTest {
 		e1 = world.createEntity();
 		tm.register("Player", e1);
 		e1.addComponent(new Transform(0,3));
-		e1.addComponent(new Velocity());
+		e1.addComponent(new Velocity(1,(float)(Math.PI/4)));
 		e1.addComponent(new Size(1, 1));
 		
 		e2 = world.createEntity();
 		gm.add(e2, "Walls");
 		e2.addComponent(new Transform(0,4));	
-		e2.addComponent(new Size(10, 10));
+		e2.addComponent(new Size(10, 9));
 		
 		e3 = world.createEntity();
 		e3.addComponent(new Transform(3,3));	
@@ -64,7 +64,9 @@ public class CollisionSystemTest {
 	@Test
 	public void testProcessEntities(){
 		cs.processEntities(null);
-		assertTrue(e1.getComponent(Velocity.class).getAngle()==(float)Math.PI);
+		System.out.println(e1.getComponent(Velocity.class).getAngle());
+		System.out.println(2*Math.PI-Math.PI/4);
+		assertTrue(e1.getComponent(Velocity.class).getAngle()==(float)(2*Math.PI-Math.PI/4));
 	}
 
 }
