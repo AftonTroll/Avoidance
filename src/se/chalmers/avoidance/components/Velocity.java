@@ -1,3 +1,23 @@
+/* 
+ * Copyright (c) 2012 Florian Minges
+ * 
+ * This file is part of Avoidance.
+ * 
+ * Avoidance is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Avoidance is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Avoidance.  If not, see <http://www.gnu.org/licenses/>. 
+ *  
+ */
+
 package se.chalmers.avoidance.components;
 
 import se.chalmers.avoidance.util.Utils;
@@ -70,6 +90,10 @@ public class Velocity extends Component {
 	 */
 	public void setSpeed(float speed) {
 		this.speed = speed;
+		if (this.speed < 0) {
+			this.speed = Math.abs(this.speed);
+			setAngle(Utils.reverseAngle(this.angle));
+		}
 	}
 	
 	/**
@@ -88,7 +112,7 @@ public class Velocity extends Component {
 	 * @param speed the speed to add
 	 */
 	public void addSpeed(float speed) {
-		this.speed += speed;
+		setSpeed(this.speed + speed);
 	}
 	
 	/**
@@ -98,7 +122,38 @@ public class Velocity extends Component {
 	 * @param angle the angle to add
 	 */
 	public void addAngle(float angle) {
-		this.angle = Utils.simplifyAngle(this.angle + angle);
+		setAngle(this.angle + angle);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(angle);
+		result = prime * result + Float.floatToIntBits(speed);
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Velocity other = (Velocity) obj;
+		if (Float.floatToIntBits(angle) != Float.floatToIntBits(other.angle))
+			return false;
+		if (Float.floatToIntBits(speed) != Float.floatToIntBits(other.speed))
+			return false;
+		return true;
 	}
 	
 	
