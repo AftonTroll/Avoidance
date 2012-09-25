@@ -78,7 +78,6 @@ public class VelocityTest {
 		Velocity velocity = new Velocity(s2, a2);
 		assertTrue(velocity != null);
 		assertTrue(velocity.getSpeed() == s2);
-		System.out.println(a2 + "\nangle " + velocity.getAngle());
 		assertTrue(Math.abs((velocity.getAngle() - a2) % (float) (2 * Math.PI)) < (a2 / 100000));
 	}
 
