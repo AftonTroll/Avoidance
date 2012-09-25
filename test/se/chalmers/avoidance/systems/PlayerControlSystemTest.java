@@ -7,16 +7,17 @@ import org.junit.Test;
 
 import se.chalmers.avoidance.components.Transform;
 import se.chalmers.avoidance.components.Velocity;
-import se.chalmers.avoidance.systems.PlayerControlSystem;
 
 import com.artemis.Entity;
 import com.artemis.World;
 
 public class PlayerControlSystemTest {
 
+	private final float TOLERANCE = 0.0001f;
 	private Entity player;
 	private PlayerControlSystem pcs;
 	private World world;
+	
 	
 	@Before
 	public void setUp() {
@@ -28,7 +29,7 @@ public class PlayerControlSystemTest {
 		
 		pcs = new PlayerControlSystem(player.getId());
 		world.setSystem(pcs);
-		world.initialize();
+		pcs.initialize();
 	}
 
 	@Test
@@ -37,24 +38,28 @@ public class PlayerControlSystemTest {
 		Transform transform = player.getComponent(Transform.class);
 		
 		pcs.setSensorValues(-5, 0);
-		world.process();
+		pcs.process(player);
 		
 		
-		assertTrue(Math.abs(velocity.getSpeed()-5) <= 0.001);
-		assertTrue(Math.abs(velocity.getAngle()-Math.PI) <= 0.001);
-		assertTrue(Math.abs(transform.getX()+5) <= 0.001);
-		assertTrue(Math.abs(transform.getY()-0) <= 0.001);
+		assertTrue(Math.abs(velocity.getSpeed()-5) <= TOLERANCE);
+		assertTrue(Math.abs(velocity.getAngle()-Math.PI) <= TOLERANCE);
+		assertTrue(Math.abs(transform.getX()+5) <= TOLERANCE);
+		assertTrue(Math.abs(transform.getY()-0) <= TOLERANCE);
 		
 		
 		pcs.setSensorValues(5, 3);
-		world.process();
+		pcs.process(player);
 		
-		assertTrue(Math.abs(velocity.getSpeed()-3) <= 0.001);
-		assertTrue(Math.abs(velocity.getAngle()-Math.PI/2) <= 0.001);
-		assertTrue(Math.abs(transform.getX()+5) <= 0.001);
-		assertTrue(Math.abs(transform.getY()-3) <= 0.001);
+		assertTrue(Math.abs(velocity.getSpeed()-3) <= TOLERANCE);
+		assertTrue(Math.abs(velocity.getAngle()-Math.PI/2) <= TOLERANCE);
+		assertTrue(Math.abs(transform.getX()+5) <= TOLERANCE);
+		assertTrue(Math.abs(transform.getY()-3) <= TOLERANCE);
 		
+		world.setDelta(0.5f);
+		pcs.setSensorValues(0, -6);
+		pcs.process(player);
 		
+		//Check new position
 	}
 }
 
