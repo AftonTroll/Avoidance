@@ -52,8 +52,10 @@ public class PlayerControlSystem extends EntityProcessingSystem implements Prope
 			//Update the Velocity
 			//https://bitbucket.org/piemaster/artemoids/src/5c3a11ff2bdd/src/net/piemaster/artemoids/systems/PlayerShipControlSystem.java
 			Velocity playerVelocity = velocityMapper.get(entity);
-			float newVelX = Utils.getHorizontalSpeed(playerVelocity);
-			float newVelY = Utils.getVerticalSpeed(playerVelocity);
+			float startVelX = Utils.getHorizontalSpeed(playerVelocity);
+			float startVelY = Utils.getVerticalSpeed(playerVelocity);
+			float newVelX = startVelX;
+			float newVelY = startVelY;
 			
 			if (Math.abs(lastAccelerometerX) > 1) {
 				newVelX += world.delta * lastAccelerometerX;
@@ -68,8 +70,11 @@ public class PlayerControlSystem extends EntityProcessingSystem implements Prope
 			
 			//Update the position
 			Transform playerTransform = transformMapper.get(entity);
-			playerTransform.setX(playerTransform.getX() + world.delta*Utils.getHorizontalSpeed(playerVelocity));
-			playerTransform.setY(playerTransform.getY() + world.delta*Utils.getVerticalSpeed(playerVelocity));
+
+			float dx = world.delta*(startVelX + Utils.getHorizontalSpeed(playerVelocity))/2;
+			float dy = world.delta*(startVelY + Utils.getVerticalSpeed(playerVelocity))/2;
+			playerTransform.setX(playerTransform.getX() + dx);
+			playerTransform.setY(playerTransform.getY() + dy);
 		}
 	}
 	
