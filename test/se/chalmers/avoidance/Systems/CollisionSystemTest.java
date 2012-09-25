@@ -20,6 +20,7 @@ public class CollisionSystemTest {
 	private Entity e2; 
 	private Entity e3;
 	private Entity e4; 
+	private Entity e5; 
 	private CollisionSystem cs;
 	
 	@Before
@@ -49,6 +50,11 @@ public class CollisionSystemTest {
 		e4.addComponent(new Transform(40,30));	
 		e4.addComponent(new Size(10, 10));
 		
+		e5 = world.createEntity();
+		gm.add(e5, "Walls");
+		e5.addComponent(new Transform(20,4));	
+		e5.addComponent(new Size(9, 10));
+		
 		cs = new CollisionSystem(world);
 		cs.initialize();
 		
@@ -64,9 +70,11 @@ public class CollisionSystemTest {
 	@Test
 	public void testProcessEntities(){
 		cs.processEntities(null);
-		System.out.println(e1.getComponent(Velocity.class).getAngle());
-		System.out.println(2*Math.PI-Math.PI/4);
-		assertTrue(e1.getComponent(Velocity.class).getAngle()==(float)(2*Math.PI-Math.PI/4));
+		assertTrue((e1.getComponent(Velocity.class).getAngle()-(float)(2*Math.PI-Math.PI/4)<0.01));
+		e1.removeComponent(Transform.class);
+		e1.addComponent(new Transform(20,3));
+		cs.processEntities(null);
+		assertTrue((e1.getComponent(Velocity.class).getAngle()-(float)(Math.PI+Math.PI/4)<0.01));
 	}
 
 }

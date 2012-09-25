@@ -52,8 +52,6 @@ public class CollisionSystem extends EntitySystem{
 		
 		ImmutableBag<Entity> walls = world.getManager(GroupManager.class).getEntities("Walls");
 		Entity player = world.getManager(TagManager.class).getEntity("Player");
-		System.out.println(walls.get(0));
-		System.out.println(player);
 		
 		for (int i=0;i<walls.size();i++){
 			if(collisionExists(player, walls.get(i))){
@@ -87,9 +85,9 @@ public class CollisionSystem extends EntitySystem{
 	
 	private float flipHorizontal(float angle){
 		  //Translate and then flip vertical
-		  angle += Math.PI/4;
+		  angle += Math.PI/2;
 		  angle = flipVertical(angle);
-		  angle -= Math.PI/4;
+		  angle -= Math.PI/2;
 		  return angle;
 	}
 	
