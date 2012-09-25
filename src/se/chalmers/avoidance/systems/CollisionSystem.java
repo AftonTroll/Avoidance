@@ -8,13 +8,10 @@ import se.chalmers.avoidance.components.Transform;
 import se.chalmers.avoidance.components.Velocity;
 
 import com.artemis.Aspect;
-import com.artemis.Component;
 import com.artemis.ComponentMapper;
-import com.artemis.ComponentType;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.World;
-import com.artemis.annotations.Mapper;
 import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
 import com.artemis.utils.ImmutableBag;
