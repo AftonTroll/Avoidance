@@ -11,7 +11,6 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
-import com.artemis.World;
 import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
 import com.artemis.utils.ImmutableBag;
@@ -78,27 +77,28 @@ public class CollisionSystem extends EntitySystem{
 		
 		float width = wall.getComponent(Size.class).getWidth();
 		float height = wall.getComponent(Size.class).getHeight();
+		float newAngle = angle;
 		
 		//Check if wall is placed horizontally or vertically
 		if(width>height){
-			angle = flipVertical(angle);
+			newAngle = flipVertical(angle);
 		}else{
-			angle = flipHorizontal(angle);
+			newAngle = flipHorizontal(angle);
 		}
-		return angle;
+		return newAngle;
 	}
 	
 	private float flipVertical(float angle){ 
-		  angle*=-1; 
-		  return angle;
+		  float newAngle=angle*-1; 
+		  return newAngle;
 	}
 	
 	private float flipHorizontal(float angle){
 		  //Translate and then flip vertical
-		  angle += Math.PI/2;
-		  angle = flipVertical(angle);
-		  angle -= Math.PI/2;
-		  return angle;
+		float newAngle = angle + (float) Math.PI/2;
+		  newAngle = flipVertical(newAngle);
+		  newAngle -= Math.PI/2;
+		  return newAngle;
 	}
 	
 		
