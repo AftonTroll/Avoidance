@@ -43,8 +43,7 @@ public class CollisionSystem extends EntitySystem{
 	
 	@Override
 	protected boolean checkProcessing() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 	/**
