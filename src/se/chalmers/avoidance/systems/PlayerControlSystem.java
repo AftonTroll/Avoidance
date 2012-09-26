@@ -64,32 +64,34 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
 		Entity entity = tagManager.getEntity("PLAYER");
-		//Update the Velocity
-		//https://bitbucket.org/piemaster/artemoids/src/5c3a11ff2bdd/src/net/piemaster/artemoids/systems/PlayerShipControlSystem.java
-		Velocity playerVelocity = velocityMapper.get(entity);
-		float startVelX = Utils.getHorizontalSpeed(playerVelocity);
-		float startVelY = Utils.getVerticalSpeed(playerVelocity);
-		float newVelX = startVelX;
-		float newVelY = startVelY;
-		
-		if (Math.abs(lastAccelerationX) > 1) {
-			newVelX += world.delta * lastAccelerationX;
+		if (entity != null) {
+			//Update the Velocity
+			//https://bitbucket.org/piemaster/artemoids/src/5c3a11ff2bdd/src/net/piemaster/artemoids/systems/PlayerShipControlSystem.java
+			Velocity playerVelocity = velocityMapper.get(entity);
+			float startVelX = Utils.getHorizontalSpeed(playerVelocity);
+			float startVelY = Utils.getVerticalSpeed(playerVelocity);
+			float newVelX = startVelX;
+			float newVelY = startVelY;
+			
+			if (Math.abs(lastAccelerationX) > 1) {
+				newVelX += world.delta * lastAccelerationX;
+			}
+			
+			if (Math.abs(lastAccelerationY) > 1) {
+				newVelY += world.delta * lastAccelerationY;
+			}
+			
+			playerVelocity.setAngle((float) Math.atan2(newVelY, newVelX));
+			playerVelocity.setSpeed((float) Math.sqrt(newVelX*newVelX+newVelY*newVelY));
+			
+			//Update the position
+			Transform playerTransform = transformMapper.get(entity);
+	
+			float dx = world.delta*(startVelX + Utils.getHorizontalSpeed(playerVelocity))/2;
+			float dy = world.delta*(startVelY + Utils.getVerticalSpeed(playerVelocity))/2;
+			playerTransform.setX(playerTransform.getX() + dx);
+			playerTransform.setY(playerTransform.getY() + dy);
 		}
-		
-		if (Math.abs(lastAccelerationY) > 1) {
-			newVelY += world.delta * lastAccelerationY;
-		}
-		
-		playerVelocity.setAngle((float) Math.atan2(newVelY, newVelX));
-		playerVelocity.setSpeed((float) Math.sqrt(newVelX*newVelX+newVelY*newVelY));
-		
-		//Update the position
-		Transform playerTransform = transformMapper.get(entity);
-
-		float dx = world.delta*(startVelX + Utils.getHorizontalSpeed(playerVelocity))/2;
-		float dy = world.delta*(startVelY + Utils.getVerticalSpeed(playerVelocity))/2;
-		playerTransform.setX(playerTransform.getX() + dx);
-		playerTransform.setY(playerTransform.getY() + dy);
 	}
 	
 	/**
