@@ -64,7 +64,7 @@ public class CollisionSystemTest {
 	public void testCollsionExists(){
 		assertTrue(cs.collisionExists(e1, e2));	
 		assertTrue(!cs.collisionExists(e3, e4));
-		
+		assertTrue(!cs.collisionExists(e1, e5));
 	}
 	
 	@Test
