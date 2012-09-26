@@ -11,13 +11,15 @@ import se.chalmers.avoidance.util.Utils;
 
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.managers.TagManager;
 
 public class PlayerControlSystemTest {
 
 	private final float TOLERANCE = 0.0001f;
 	private Entity player;
-	private PlayerControlSystem pcs;
-	private World world;
+	private PlayerControlSystem pcs = new PlayerControlSystem();
+	private World world = new World();
+	private TagManager tagManager = new TagManager();
 	private float[] accelerationX = {-5, 5};
 	private float[] accelerationY = {0, 3};
 	private float[] expectedSpeed = {5, 3};
@@ -28,14 +30,15 @@ public class PlayerControlSystemTest {
 	
 	@Before
 	public void setUp() {
-		world = new World();
-		world.setDelta(1);
+		tagManager = new TagManager();
+		world.setManager(tagManager);
+		world.setSystem(pcs);
+		
 		player = world.createEntity();
 		player.addComponent(new Transform());
 		player.addComponent(new Velocity());
+		tagManager.register("PLAYER", player);
 		
-		pcs = new PlayerControlSystem(player.getId());
-		world.setSystem(pcs);
 		pcs.initialize();
 	}
 
@@ -44,9 +47,11 @@ public class PlayerControlSystemTest {
 		Velocity velocity = player.getComponent(Velocity.class);
 		Transform transform = player.getComponent(Transform.class);
 		
+		world.setDelta(1);
 		for(int i = 0; i<accelerationX.length; i++){
+			
 			pcs.setSensorValues(accelerationX[i], accelerationY[i]);
-			pcs.process(player);
+			pcs.processEntities(null);
 			
 			
 			assertTrue(Math.abs(velocity.getSpeed()-expectedSpeed[i]) <= TOLERANCE);
@@ -66,8 +71,8 @@ public class PlayerControlSystemTest {
 		
 		for(int i = 0; i<accelerationX.length; i++){
 			pcs.setSensorValues(accelerationX[i], accelerationY[i]);
-			pcs.process(player);
-			pcs.process(player);
+			pcs.processEntities(null);
+			pcs.processEntities(null);
 			
 			assertTrue(Math.abs(velocity.getSpeed()-expectedSpeed[i]) <= TOLERANCE);
 			assertTrue(Math.abs(Utils.simplifyAngle(velocity.getAngle())-expectedAngle[i]) <= TOLERANCE);
