@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2012 Florian Minges
+ * Copyright (c) 2012 Florian Minges, Filip Brynfors
  * 
  * This file is part of Avoidance.
  * 
@@ -24,7 +24,7 @@ import se.chalmers.avoidance.components.Velocity;
 
 /**
  * Contains a set of static helper-methods.
- * @author Florian Minges
+ * @author Florian Minges, Filip Brynfors
  *
  */
 public class Utils {
