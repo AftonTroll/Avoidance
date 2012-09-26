@@ -30,9 +30,8 @@ public class CollisionSystem extends EntitySystem{
      * 
      * @param world the world object of the game
      */
-	public CollisionSystem(World world) {
+	public CollisionSystem() {
 		super(Aspect.getAspectForAll(Transform.class, Size.class));
-		this.world = world;
 	}
 	
 	/**

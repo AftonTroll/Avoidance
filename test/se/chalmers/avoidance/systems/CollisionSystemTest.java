@@ -55,7 +55,8 @@ public class CollisionSystemTest {
 		e5.addComponent(new Transform(20,4));	
 		e5.addComponent(new Size(9, 10));
 		
-		cs = new CollisionSystem(world);
+		cs = new CollisionSystem();
+		world.setSystem(cs);
 		cs.initialize();
 		
 	}
