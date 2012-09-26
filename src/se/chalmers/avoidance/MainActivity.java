@@ -2,8 +2,6 @@ package se.chalmers.avoidance;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
-import org.andengine.engine.handler.timer.ITimerCallback;
-import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
@@ -25,7 +23,6 @@ public class MainActivity extends BaseGameActivity {
     private Camera camera;
     private Scene splashScene;
     private StateManager stateManager;
-   
 
 	public EngineOptions onCreateEngineOptions() {
 		camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
@@ -48,9 +45,9 @@ public class MainActivity extends BaseGameActivity {
 			throws Exception {
 		
         loadResources();
-        initializeGame();         
+        initializeGame();
         splashScene.detachSelf();
-		stateManager.setState(StateID.Game);
+		stateManager.setState(StateID.Menu);
 		mEngine.registerUpdateHandler(new IUpdateHandler(){
 			public void onUpdate(float tpf) {
 				stateManager.update(tpf);
@@ -71,7 +68,7 @@ public class MainActivity extends BaseGameActivity {
 	private void initializeGame() {
 		stateManager = new StateManager(mEngine);
 		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE));
-		MenuState menuState = new MenuState();
+		MenuState menuState = new MenuState(this);
 		stateManager.addState(StateID.Game, gameState);
 		stateManager.addState(StateID.Menu, menuState);
 		
@@ -79,6 +76,6 @@ public class MainActivity extends BaseGameActivity {
 
     private void initSplashScene() {
 	    splashScene = new Scene();
-	    splashScene.setBackground(new Background(0.0f, 0.0f, 0.0f));
+	    splashScene.setBackground(new Background(0.0f, 0.0f, 1.0f));
     }      
 }
