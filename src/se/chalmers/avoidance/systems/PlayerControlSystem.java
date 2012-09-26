@@ -15,14 +15,15 @@ import com.artemis.managers.TagManager;
 import com.artemis.utils.ImmutableBag;
 
 /**
- * System that handles the input of the user and updates the player
+ * System that handles the input of the user
+ * and updates the players velocity and position
  * 
  * @author Filip Brynfors
  *
  */
 public class PlayerControlSystem extends EntitySystem implements PropertyChangeListener {
-	private float lastAccelerometerX = 0;
-	private float lastAccelerometerY = 0;
+	private float lastAccelerationX = 0;
+	private float lastAccelerationY = 0;
 	private ComponentMapper<Transform> transformMapper;
 	private ComponentMapper<Velocity> velocityMapper;
 	private TagManager tagManager;
@@ -36,6 +37,9 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 		super(Aspect.getAspectForAll(Transform.class, Velocity.class));
 	}
 	
+	/**
+	 * This method is called when the system is initialized
+	 */
 	@Override
 	protected void initialize() {
 		transformMapper = world.getMapper(Transform.class);
@@ -43,11 +47,20 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 		tagManager = world.getManager(TagManager.class);
 	}
 
+	/**
+	 * Determines if the system should be processed or not
+	 * 
+	 * @return true if system should be processed, false otherwise
+	 */
 	@Override
 	protected boolean checkProcessing() {
 		return true;
 	}
 
+	/**
+	 * This method is called when the entities are to be updated.
+	 * Updates the velocity and position of the player
+	 */
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
 		Entity entity = tagManager.getEntity("PLAYER");
@@ -59,12 +72,12 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 		float newVelX = startVelX;
 		float newVelY = startVelY;
 		
-		if (Math.abs(lastAccelerometerX) > 1) {
-			newVelX += world.delta * lastAccelerometerX;
+		if (Math.abs(lastAccelerationX) > 1) {
+			newVelX += world.delta * lastAccelerationX;
 		}
 		
-		if (Math.abs(lastAccelerometerY) > 1) {
-			newVelY += world.delta * lastAccelerometerY;
+		if (Math.abs(lastAccelerationY) > 1) {
+			newVelY += world.delta * lastAccelerationY;
 		}
 		
 		playerVelocity.setAngle((float) Math.atan2(newVelY, newVelX));
@@ -85,17 +98,20 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	 * @param y the y value of the sensor
 	 */
 	public void setSensorValues(float x, float y){
-		lastAccelerometerX = x;
-		lastAccelerometerY = y;
+		lastAccelerationX = x;
+		lastAccelerationY = y;
 	}
 
+	/**
+	 * Sets the values of the acceleration
+	 */
 	public void propertyChange(PropertyChangeEvent event) {
 		if(event!=null && event.getNewValue() != null){
 			if("AccelerometerX".equals(event.getPropertyName())){
-				lastAccelerometerX = (Float) event.getNewValue();
+				lastAccelerationX = (Float) event.getNewValue();
 			}
 			if("AccelerometerY".equals(event.getPropertyName())){
-				lastAccelerometerY = (Float) event.getNewValue();
+				lastAccelerationY = (Float) event.getNewValue();
 			}
 		}
 	}
