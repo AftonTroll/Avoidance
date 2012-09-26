@@ -23,7 +23,6 @@ import com.artemis.utils.ImmutableBag;
  */
 public class CollisionSystem extends EntitySystem{
 	
-	private ComponentMapper<Transform> transformMapper;
     private ComponentMapper<Velocity> velocityMapper;
 	
     /**
@@ -38,7 +37,6 @@ public class CollisionSystem extends EntitySystem{
 	
 	@Override
 	protected void initialize(){
-		transformMapper = world.getMapper(Transform.class);
 		velocityMapper = world.getMapper(Velocity.class);
 
 	}
