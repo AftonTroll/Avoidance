@@ -35,12 +35,19 @@ public class CollisionSystem extends EntitySystem{
 		this.world = world;
 	}
 	
+	/**
+	 * This method is called when the system is initialized
+	 */
 	@Override
 	protected void initialize(){
 		velocityMapper = world.getMapper(Velocity.class);
-
 	}
 	
+	/**
+	 * Determines if the system should be processed or not
+	 * 
+	 * @return true if system should be processed, false if not	
+	 */
 	@Override
 	protected boolean checkProcessing() {
 		return true;
