@@ -31,7 +31,6 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	/**
 	 * Constructs a PlayerControlSystem that listens to the accelerometer
 	 * from the given sensor manager and moves the entity with the given ID
-	 * @param playerID the ID of the player entity
 	 */
 	public PlayerControlSystem() {
 		super(Aspect.getAspectForAll(Transform.class, Velocity.class));
@@ -60,6 +59,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	/**
 	 * This method is called when the entities are to be updated.
 	 * Updates the velocity and position of the player
+	 * @param entities the bag of entities with the wanted components
 	 */
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
