@@ -18,7 +18,7 @@
 *
 */
 
-package se.chalmers.avoidance;
+package input;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

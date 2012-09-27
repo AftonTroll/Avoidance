@@ -18,7 +18,7 @@
  *  
  */
 
-package se.chalmers.avoidance.components;
+package se.chalmers.avoidance.core.components;
 
 import static org.junit.Assert.*;
 
@@ -26,6 +26,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.util.Utils;
 
 public class VelocityTest {

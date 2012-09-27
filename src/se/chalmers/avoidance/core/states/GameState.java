@@ -1,4 +1,6 @@
-package se.chalmers.avoidance.states;
+package se.chalmers.avoidance.core.states;
+
+import input.AccelerometerListener;
 
 import java.util.HashMap;
 
@@ -7,10 +9,9 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import se.chalmers.avoidance.AccelerometerListener;
-import se.chalmers.avoidance.EntityFactory;
-import se.chalmers.avoidance.systems.PlayerControlSystem;
-import se.chalmers.avoidance.systems.SpatialRenderSystem;
+import se.chalmers.avoidance.core.EntityFactory;
+import se.chalmers.avoidance.core.systems.PlayerControlSystem;
+import se.chalmers.avoidance.core.systems.SpatialRenderSystem;
 import android.hardware.SensorManager;
 
 import com.artemis.World;

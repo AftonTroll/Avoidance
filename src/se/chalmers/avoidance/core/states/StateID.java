@@ -1,4 +1,4 @@
-package se.chalmers.avoidance.states;
+package se.chalmers.avoidance.core.states;
 
 /**
  * An enum containing the states of the game.

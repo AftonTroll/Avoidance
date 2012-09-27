@@ -1,4 +1,4 @@
-package se.chalmers.avoidance.systems;
+package se.chalmers.avoidance.core.systems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import se.chalmers.avoidance.components.Spatial;
-import se.chalmers.avoidance.components.Transform;
+import se.chalmers.avoidance.core.components.Spatial;
+import se.chalmers.avoidance.core.components.Transform;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;

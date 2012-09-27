@@ -15,9 +15,9 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
-import se.chalmers.avoidance.states.GameState;
-import se.chalmers.avoidance.states.StateID;
-import se.chalmers.avoidance.states.StateManager;
+import se.chalmers.avoidance.core.states.GameState;
+import se.chalmers.avoidance.core.states.StateID;
+import se.chalmers.avoidance.core.states.StateManager;
 import android.hardware.SensorManager;
 
 public class MainActivity extends BaseGameActivity {

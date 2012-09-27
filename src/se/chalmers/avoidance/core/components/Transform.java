@@ -18,7 +18,7 @@
  *  
  */
 
-package se.chalmers.avoidance.components;
+package se.chalmers.avoidance.core.components;
 
 import se.chalmers.avoidance.util.Utils;
 

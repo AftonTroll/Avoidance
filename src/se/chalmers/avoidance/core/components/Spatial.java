@@ -1,4 +1,4 @@
-package se.chalmers.avoidance.components;
+package se.chalmers.avoidance.core.components;
 
 import org.andengine.entity.sprite.Sprite;
 

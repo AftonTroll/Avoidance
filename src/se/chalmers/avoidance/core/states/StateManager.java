@@ -1,4 +1,4 @@
-package se.chalmers.avoidance.states;
+package se.chalmers.avoidance.core.states;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
