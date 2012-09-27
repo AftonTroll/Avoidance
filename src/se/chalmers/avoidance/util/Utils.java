@@ -42,8 +42,10 @@ public class Utils {
 	}
 	
 	/**
-	 * Calculates the speed of the horizontal part of the given velocity
-	 * @param vel the total velocity
+	 * Calculates the speed of the horizontal part of the velocity with
+	 * the given angle and speed
+	 * @param speed the speed of the velocity
+	 * @param angle the angle of the velocity
 	 * @return the horizontal part of the velocity
 	 */
 	public static float getHorizontalSpeed(float speed, float angle) {
@@ -51,8 +53,10 @@ public class Utils {
 	}
 	
 	/**
-	 * Calculates the speed of the vertical part of the given velocity
-	 * @param vel the total velocity
+	 * Calculates the speed of the vertical part of the velocity with
+	 * the given angle and speed
+	 * @param speed the speed of the velocity
+	 * @param angle the angle of the velocity
 	 * @return the vertical part of the velocity
 	 */
 	public static float getVerticalSpeed(float speed, float angle) {
