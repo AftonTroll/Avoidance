@@ -45,14 +45,21 @@ public class MenuState implements IState, IOnMenuItemClickListener {
     	Engine engine = this.baseGameActivity.getEngine();
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
            
-    	this.bitmapTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+    	this.bitmapTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 256, 256, 
+    			TextureOptions.BILINEAR_PREMULTIPLYALPHA);
     	engine.getTextureManager().loadTexture(this.bitmapTextureAtlas);
 
-    	this.menuTexture = new BitmapTextureAtlas(engine.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-    	this.menuStartTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.menuTexture, this.baseGameActivity, "menu_start.png", 0, 0);
-    	this.menuHighscoreTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.menuTexture, this.baseGameActivity, "menu_highscore.png", 0, 64);
-    	this.menuHelpTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.menuTexture, this.baseGameActivity, "menu_help.png", 0, 128);
-    	this.menuQuitTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.menuTexture, this.baseGameActivity, "menu_quit.png", 0, 192);
+    	// create textures
+    	this.menuTexture = new BitmapTextureAtlas(engine.getTextureManager(), 256, 256, 
+    			TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+    	this.menuStartTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			this.menuTexture, this.baseGameActivity, "menu_start.png", 0, 0);
+    	this.menuHighscoreTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			this.menuTexture, this.baseGameActivity, "menu_highscore.png", 0, 64);
+    	this.menuHelpTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			this.menuTexture, this.baseGameActivity, "menu_help.png", 0, 128);
+    	this.menuQuitTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			this.menuTexture, this.baseGameActivity, "menu_quit.png", 0, 192);
     	engine.getTextureManager().loadTexture(this.menuTexture);
     }
 	
@@ -60,9 +67,11 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 		menuScene = new MenuScene();
 		menuScene.setBackground(new Background(0f, 0f, 0f));
 		
+		//center the scene
 		this.menuScene.setX(this.CAMERA_WIDTH / 2 - 100);
 		this.menuScene.setY(this.CAMERA_HEIGHT / 2 - 150);
 
+		//create menu items
 		final SpriteMenuItem startMenuItem = new SpriteMenuItem(MENU_START,
 				this.menuStartTextureRegion, this.baseGameActivity.getVertexBufferObjectManager());
 		startMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
@@ -71,7 +80,8 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 		startMenuItem.setPosition(0, 0);
 
 		final SpriteMenuItem highscoreMenuItem = new SpriteMenuItem(MENU_HIGHSCORES,
-				this.menuHighscoreTextureRegion, this.baseGameActivity.getVertexBufferObjectManager());
+				this.menuHighscoreTextureRegion, 
+				this.baseGameActivity.getVertexBufferObjectManager());
 		highscoreMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
 				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(highscoreMenuItem);
@@ -97,8 +107,6 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 		this.menuScene.setOnMenuItemClickListener(this);
 		this.menuScene.setCamera(this.baseGameActivity.getEngine().getCamera());
 
-		// Create and set systems here
-
 	}
 	
 	public void update(float tpf) {
@@ -111,24 +119,25 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 	
 
 	//TODO Move this code to the stateManager
-    public boolean onMenuItemClicked(final MenuScene pMenuScene, final IMenuItem pMenuItem, final float pMenuItemLocalX, final float pMenuItemLocalY) {
-            switch(pMenuItem.getID()) {
-                    case MENU_START:
-                    	
-                    	return true;
-                    case MENU_HIGHSCORES:
-                    	
-                    	return true;
-                    case MENU_HELP:
-                            
-                    	return true;
-                    case MENU_QUIT:
-                    	/* End Activity. */
-                        this.baseGameActivity.finish();
-                        return true;
-                    default:
-                        return false;
-            }
+    public boolean onMenuItemClicked(final MenuScene pMenuScene, final IMenuItem pMenuItem, 
+    		final float pMenuItemLocalX, final float pMenuItemLocalY) {
+		switch (pMenuItem.getID()) {
+		case MENU_START:
+
+			return true;
+		case MENU_HIGHSCORES:
+
+			return true;
+		case MENU_HELP:
+
+			return true;
+		case MENU_QUIT:
+			/* End Activity. */
+			this.baseGameActivity.finish();
+			return true;
+		default:
+			return false;
+		}
     }
 
 
