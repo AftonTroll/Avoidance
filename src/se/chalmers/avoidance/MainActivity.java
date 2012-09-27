@@ -48,6 +48,9 @@ public class MainActivity extends BaseGameActivity {
 //        Create TextureRegions like this for every image:
 //        regions.put("file_name.png", BitmapTextureAtlasTextureRegionFactory
 //               .createFromAsset( bitmapTextureAtlas, this, "file_name.png", x_position, y_position));
+        
+        regions.put("file_name.png", BitmapTextureAtlasTextureRegionFactory
+		.createFromAsset( bitmapTextureAtlas, this, "ball.png", 0, 0));
        
         bitmapTextureAtlas.load();
 		onCreateResourcesCallback.onCreateResourcesFinished();
