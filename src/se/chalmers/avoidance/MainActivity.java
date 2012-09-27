@@ -17,6 +17,7 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import se.chalmers.avoidance.states.GameState;
+import se.chalmers.avoidance.states.MenuState;
 import se.chalmers.avoidance.states.StateID;
 import se.chalmers.avoidance.states.StateManager;
 import android.hardware.SensorManager;
@@ -29,8 +30,6 @@ public class MainActivity extends BaseGameActivity {
     private Camera camera;
     private Scene splashScene;
     private StateManager stateManager;
-    private HashMap<String, TextureRegion> regions;
-   
 
 	public EngineOptions onCreateEngineOptions() {
 		camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
@@ -62,9 +61,9 @@ public class MainActivity extends BaseGameActivity {
 			throws Exception {
 		
         loadResources();
-        initializeGame();         
+        initializeGame();
         splashScene.detachSelf();
-		stateManager.setState(StateID.Game);
+		stateManager.setState(StateID.Menu);
 		mEngine.registerUpdateHandler(new IUpdateHandler(){
 			public void onUpdate(float tpf) {
 				stateManager.update(tpf);
@@ -85,12 +84,14 @@ public class MainActivity extends BaseGameActivity {
 	private void initializeGame() {
 		stateManager = new StateManager(mEngine);
 		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE));
+		MenuState menuState = new MenuState(this);
 		stateManager.addState(StateID.Game, gameState);
+		stateManager.addState(StateID.Menu, menuState);
 		
 	}
 
     private void initSplashScene() {
 	    splashScene = new Scene();
-	    splashScene.setBackground(new Background(0.0f, 0.0f, 0.0f));
+	    splashScene.setBackground(new Background(0.0f, 0.0f, 1.0f));
     }      
 }
