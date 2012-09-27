@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2012 Florian Minges
+ * Copyright (c) 2012 Florian Minges, Filip Brynfors
  * 
  * This file is part of Avoidance.
  * 

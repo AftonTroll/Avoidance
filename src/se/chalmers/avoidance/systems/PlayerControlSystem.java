@@ -1,3 +1,28 @@
+/*
+* Copyright (c) 2012 Filip Brynfors
+* 
+* Parts if this file are derived from an example, written by Oliver Lade, which
+* can be found under the following link:
+* https://bitbucket.org/piemaster/artemoids/src/5c3a11ff2bdd/src/net/piemaster/artemoids/
+* 		systems/PlayerShipControlSystem.java
+*
+* This file is part of Avoidance.
+*
+* Avoidance is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* Avoidance is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with Avoidance. If not, see <http://www.gnu.org/licenses/>.
+*
+*/
+
 package se.chalmers.avoidance.systems;
 
 import java.beans.PropertyChangeEvent;
@@ -66,7 +91,8 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 		Entity entity = tagManager.getEntity("PLAYER");
 		if (entity != null) {
 			//Update the Velocity
-			//https://bitbucket.org/piemaster/artemoids/src/5c3a11ff2bdd/src/net/piemaster/artemoids/systems/PlayerShipControlSystem.java
+			//Based on https://bitbucket.org/piemaster/artemoids/src/5c3a11ff2bdd/src/net/piemaster/artemoids/
+			//  systems/PlayerShipControlSystem.java
 			Velocity playerVel = velocityMapper.get(entity);
 			float startVelX = Utils.getHorizontalSpeed(playerVel.getSpeed(), playerVel.getAngle());
 			float startVelY = Utils.getVerticalSpeed(playerVel.getSpeed(), playerVel.getAngle());
