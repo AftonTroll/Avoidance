@@ -1,3 +1,23 @@
+/* 
+ * Copyright (c) 2012 Markus Ekström
+ * 
+ * This file is part of Avoidance.
+ * 
+ * Avoidance is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Avoidance is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Avoidance.  If not, see <http://www.gnu.org/licenses/>. 
+ *  
+ */
+
 package se.chalmers.avoidance;
 
 import java.util.HashMap;
@@ -20,6 +40,13 @@ import se.chalmers.avoidance.core.states.StateID;
 import se.chalmers.avoidance.core.states.StateManager;
 import android.hardware.SensorManager;
 
+/**
+ * The starting point of the application.
+ * 
+ * Loads resources and starts the game loop.
+ * 
+ * @author Markus Ekström
+ */
 public class MainActivity extends BaseGameActivity {
 
     private final int CAMERA_WIDTH = 720;
@@ -30,7 +57,9 @@ public class MainActivity extends BaseGameActivity {
     private StateManager stateManager;
     private HashMap<String, TextureRegion> regions;
    
-
+    /**
+     * Sets the engine options (camera, screen rotation, ...) 
+     */
 	public EngineOptions onCreateEngineOptions() {
 		camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, 
@@ -38,6 +67,10 @@ public class MainActivity extends BaseGameActivity {
         return engineOptions;
 
 	}
+	
+	/**
+	 * Loads resource files.
+	 */
 	public void onCreateResources(OnCreateResourcesCallback onCreateResourcesCallback)
 			throws Exception {
 		regions = new HashMap<String, TextureRegion>();
@@ -58,15 +91,21 @@ public class MainActivity extends BaseGameActivity {
 		onCreateResourcesCallback.onCreateResourcesFinished();
 	}
 	
+	/**
+	 * Creates and shows the splash screen.
+	 */
 	public void onCreateScene(OnCreateSceneCallback onCreateSceneCallback) throws Exception {
 		initSplashScene();
 		onCreateSceneCallback.onCreateSceneFinished(this.splashScene);
 		
 	}
+	
+	/**
+	 * Starts the game.
+	 */
 	public void onPopulateScene(Scene scene, OnPopulateSceneCallback onPopulateSceneCallback)
 			throws Exception {
 		
-        loadResources();
         initializeGame();         
         splashScene.detachSelf();
 		stateManager.setState(StateID.Game);
@@ -83,10 +122,9 @@ public class MainActivity extends BaseGameActivity {
 		onPopulateSceneCallback.onPopulateSceneFinished();
 	}
 	
-	private void loadResources() {
-		
-	}
-	
+	/**
+	 * Initializes the states
+	 */
 	private void initializeGame() {
 		stateManager = new StateManager(mEngine);
 		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
@@ -94,6 +132,9 @@ public class MainActivity extends BaseGameActivity {
 		stateManager.addState(StateID.Game, gameState);
 	}
 
+	/**
+	 * Initializes the splash screen.
+	 */
     private void initSplashScene() {
 	    splashScene = new Scene();
 	    splashScene.setBackground(new Background(0.0f, 0.0f, 0.0f));
