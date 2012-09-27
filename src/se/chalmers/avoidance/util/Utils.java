@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2012 Florian Minges
+ * Copyright (c) 2012 Florian Minges, Filip Brynfors
  * 
  * This file is part of Avoidance.
  * 
@@ -20,9 +20,10 @@
 
 package se.chalmers.avoidance.util;
 
+
 /**
  * Contains a set of static helper-methods.
- * @author Florian Minges
+ * @author Florian Minges, Filip Brynfors
  *
  */
 public class Utils {
@@ -39,6 +40,28 @@ public class Utils {
 		return simplifiedAngle < 0 ? (simplifiedAngle + (float)(2 * Math.PI)) : 
 														simplifiedAngle; //make angle positive
 		//TODO Change to a better name?
+	}
+	
+	/**
+	 * Calculates the speed of the horizontal part of the velocity with
+	 * the given angle and speed
+	 * @param speed the speed of the velocity
+	 * @param angle the angle of the velocity
+	 * @return the horizontal part of the velocity
+	 */
+	public static float getHorizontalSpeed(float speed, float angle) {
+		return (float) (speed * Math.cos(angle));
+	}
+	
+	/**
+	 * Calculates the speed of the vertical part of the velocity with
+	 * the given angle and speed
+	 * @param speed the speed of the velocity
+	 * @param angle the angle of the velocity
+	 * @return the vertical part of the velocity
+	 */
+	public static float getVerticalSpeed(float speed, float angle) {
+		return (float) (speed * Math.sin(angle));
 	}
 	
 	/**
