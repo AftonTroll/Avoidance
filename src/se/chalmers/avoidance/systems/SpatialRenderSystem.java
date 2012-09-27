@@ -1,8 +1,10 @@
 package se.chalmers.avoidance.systems;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
@@ -30,6 +32,7 @@ public class SpatialRenderSystem extends EntitySystem{
 	private List<Entity> entities;
 	private Map<String, TextureRegion> regions;
 	private VertexBufferObjectManager vbom;
+	private Scene scene;
 
 	/**
 	 * Constructs a <code>SpatialRenderSystem</code>. 
@@ -39,10 +42,12 @@ public class SpatialRenderSystem extends EntitySystem{
 	 * @param vbom A <code>VertexBufferObjectManager</code>.
 	 */
 	@SuppressWarnings("unchecked")
-	public SpatialRenderSystem(Map<String, TextureRegion> regions, VertexBufferObjectManager vbom) {
+	public SpatialRenderSystem(Map<String, TextureRegion> regions, VertexBufferObjectManager vbom, Scene scene) {
 		super(Aspect.getAspectForAll(Transform.class, Spatial.class));
 		this.regions = regions;
 		this.vbom = vbom;
+		this.scene = scene;
+		entities = new ArrayList<Entity>();
 	}
 
 	@Override
@@ -77,6 +82,7 @@ public class SpatialRenderSystem extends EntitySystem{
     	Spatial spatial = sm.get(e);
 		Transform tf = tm.get(e);
 		spatial.setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(spatial.getName()), vbom));
+		scene.attachChild(spatial.getSprite());
         entities.add(e);
     }
 

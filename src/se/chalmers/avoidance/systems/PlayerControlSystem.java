@@ -88,6 +88,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	 */
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
+		
 		Entity entity = tagManager.getEntity("PLAYER");
 		if (entity != null) {
 			//Update the Velocity

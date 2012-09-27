@@ -40,6 +40,8 @@ public class MainActivity extends BaseGameActivity {
 	}
 	public void onCreateResources(OnCreateResourcesCallback onCreateResourcesCallback)
 			throws Exception {
+		regions = new HashMap<String, TextureRegion>();
+		
         // Set the asset path of the images
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
         BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(
@@ -49,7 +51,7 @@ public class MainActivity extends BaseGameActivity {
 //        regions.put("file_name.png", BitmapTextureAtlasTextureRegionFactory
 //               .createFromAsset( bitmapTextureAtlas, this, "file_name.png", x_position, y_position));
         
-        regions.put("file_name.png", BitmapTextureAtlasTextureRegionFactory
+        regions.put("ball.png", BitmapTextureAtlasTextureRegionFactory
 		.createFromAsset( bitmapTextureAtlas, this, "ball.png", 0, 0));
        
         bitmapTextureAtlas.load();

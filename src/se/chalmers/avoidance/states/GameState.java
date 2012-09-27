@@ -7,12 +7,15 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import se.chalmers.avoidance.systems.CollisionSystem;
+import se.chalmers.avoidance.AccelerometerListener;
+import se.chalmers.avoidance.EntityFactory;
+import se.chalmers.avoidance.systems.PlayerControlSystem;
 import se.chalmers.avoidance.systems.SpatialRenderSystem;
+import android.hardware.SensorManager;
 
 import com.artemis.World;
-
-import android.hardware.SensorManager;
+import com.artemis.managers.GroupManager;
+import com.artemis.managers.TagManager;
 /**
  * The game state.
  * 
@@ -32,14 +35,26 @@ public class GameState implements IState{
 		scene.setBackground(new Background(1f, 0f, 0f));
 		world = new World();
 		
+		world.setManager(new GroupManager());
+		world.setManager(new TagManager());
+		
+		
 		
 		//Create and set systems here
-		world.setSystem(new SpatialRenderSystem(regions, vbom));
-		world.setSystem(new CollisionSystem());
-		
+		world.setSystem(new SpatialRenderSystem(regions, vbom, scene));
+		//world.setSystem(new CollisionSystem());
+		world.setSystem(new PlayerControlSystem());
 		
 		//Initialize world.
 		world.initialize();
+		
+		//Add listeners
+		AccelerometerListener aL = new AccelerometerListener(sensorManager);
+		aL.addPropertyChangeListener(world.getSystem(PlayerControlSystem.class));
+		aL.startListening();
+		
+		//Initialize entities
+		world.addEntity(EntityFactory.createPlayer(world));
 	}
 	
 	/**
