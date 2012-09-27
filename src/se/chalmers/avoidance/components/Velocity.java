@@ -63,8 +63,9 @@ public class Velocity extends Component {
 	 * @param angle the angle
 	 */
 	public Velocity(float speed, float angle) {
-		setSpeed(speed);
+		super();
 		setAngle(angle);
+		setSpeed(speed);
 	}
 	
 	/**
@@ -88,7 +89,7 @@ public class Velocity extends Component {
 	 * 
 	 * @param speed the speed
 	 */
-	public void setSpeed(float speed) {
+	public final void setSpeed(float speed) {
 		this.speed = speed;
 		if (this.speed < 0) {
 			this.speed = Math.abs(this.speed);
@@ -101,7 +102,7 @@ public class Velocity extends Component {
 	 * 
 	 * @param angle the angle
 	 */
-	public void setAngle(float angle) {
+	public final void setAngle(float angle) {
 		this.angle = Utils.simplifyAngle(angle);
 	}
 	

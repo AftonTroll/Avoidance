@@ -1,14 +1,19 @@
 package se.chalmers.avoidance;
 
+import java.util.HashMap;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
-import org.andengine.engine.handler.timer.ITimerCallback;
-import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.opengl.texture.Texture;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import se.chalmers.avoidance.states.GameState;
@@ -24,6 +29,7 @@ public class MainActivity extends BaseGameActivity {
     private Camera camera;
     private Scene splashScene;
     private StateManager stateManager;
+    private HashMap<String, TextureRegion> regions;
    
 
 	public EngineOptions onCreateEngineOptions() {
@@ -34,7 +40,16 @@ public class MainActivity extends BaseGameActivity {
 	}
 	public void onCreateResources(OnCreateResourcesCallback onCreateResourcesCallback)
 			throws Exception {
-		
+        // Set the asset path of the images
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+        BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(
+                getTextureManager(), 720, 480,
+                TextureOptions.BILINEAR);
+//        Create TextureRegions like this for every image:
+//        regions.put("file_name.png", BitmapTextureAtlasTextureRegionFactory
+//               .createFromAsset( bitmapTextureAtlas, this, "file_name.png", x_position, y_position));
+       
+        bitmapTextureAtlas.load();
 		onCreateResourcesCallback.onCreateResourcesFinished();
 	}
 	
