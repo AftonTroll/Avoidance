@@ -7,6 +7,7 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import se.chalmers.avoidance.systems.CollisionSystem;
 import se.chalmers.avoidance.systems.SpatialRenderSystem;
 
 import com.artemis.World;
@@ -34,6 +35,7 @@ public class GameState implements IState{
 		
 		//Create and set systems here
 		world.setSystem(new SpatialRenderSystem(regions, vbom));
+		world.setSystem(new CollisionSystem());
 		
 		
 		
