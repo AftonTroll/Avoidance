@@ -71,20 +71,20 @@ public class UtilsTest {
 	
 	@Test
 	public void testGetHorizontalSpeed(){
-		assertTrue(Math.abs(Utils.getHorizontalSpeed(v1) - 5) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getHorizontalSpeed(v2)) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getHorizontalSpeed(v3)) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getHorizontalSpeed(v4) + 15) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getHorizontalSpeed(v5) - 2) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getHorizontalSpeed(v1.getSpeed(), v1.getAngle()) - 5) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getHorizontalSpeed(v2.getSpeed(), v2.getAngle())) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getHorizontalSpeed(v3.getSpeed(), v3.getAngle())) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getHorizontalSpeed(v4.getSpeed(), v4.getAngle()) + 15) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getHorizontalSpeed(v5.getSpeed(), v5.getAngle()) - 2) <= TOLERANCE);
 	}
 	
 	@Test
 	public void testGetVerticalSpeed(){
-		assertTrue(Math.abs(Utils.getVerticalSpeed(v1)) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getVerticalSpeed(v2)) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getVerticalSpeed(v3) - 10) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getVerticalSpeed(v4)) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getVerticalSpeed(v5) -2 ) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getVerticalSpeed(v1.getSpeed(), v1.getAngle())) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getVerticalSpeed(v2.getSpeed(), v2.getAngle())) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getVerticalSpeed(v3.getSpeed(), v3.getAngle()) - 10) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getVerticalSpeed(v4.getSpeed(), v4.getAngle())) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getVerticalSpeed(v5.getSpeed(), v5.getAngle()) -2 ) <= TOLERANCE);
 	}
 
 }

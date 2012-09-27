@@ -47,8 +47,8 @@ public class Utils {
 	 * @param vel the total velocity
 	 * @return the horizontal part of the velocity
 	 */
-	public static float getHorizontalSpeed(Velocity vel) {
-		return (float) (vel.getSpeed() * Math.cos(vel.getAngle()));
+	public static float getHorizontalSpeed(float speed, float angle) {
+		return (float) (speed * Math.cos(angle));
 	}
 	
 	/**
@@ -56,8 +56,8 @@ public class Utils {
 	 * @param vel the total velocity
 	 * @return the vertical part of the velocity
 	 */
-	public static float getVerticalSpeed(Velocity vel) {
-		return (float) (vel.getSpeed() * Math.sin(vel.getAngle()));
+	public static float getVerticalSpeed(float speed, float angle) {
+		return (float) (speed * Math.sin(angle));
 	}
 	
 	/**

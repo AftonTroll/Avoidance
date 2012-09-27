@@ -67,9 +67,9 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 		if (entity != null) {
 			//Update the Velocity
 			//https://bitbucket.org/piemaster/artemoids/src/5c3a11ff2bdd/src/net/piemaster/artemoids/systems/PlayerShipControlSystem.java
-			Velocity playerVelocity = velocityMapper.get(entity);
-			float startVelX = Utils.getHorizontalSpeed(playerVelocity);
-			float startVelY = Utils.getVerticalSpeed(playerVelocity);
+			Velocity playerVel = velocityMapper.get(entity);
+			float startVelX = Utils.getHorizontalSpeed(playerVel.getSpeed(), playerVel.getAngle());
+			float startVelY = Utils.getVerticalSpeed(playerVel.getSpeed(), playerVel.getAngle());
 			float newVelX = startVelX;
 			float newVelY = startVelY;
 			
@@ -81,14 +81,15 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 				newVelY += world.delta * lastAccelerationY;
 			}
 			
-			playerVelocity.setAngle((float) Math.atan2(newVelY, newVelX));
-			playerVelocity.setSpeed((float) Math.sqrt(newVelX*newVelX+newVelY*newVelY));
+			playerVel.setAngle((float) Math.atan2(newVelY, newVelX));
+			playerVel.setSpeed((float) Math.sqrt(newVelX*newVelX+newVelY*newVelY));
 			
 			//Update the position
 			Transform playerTransform = transformMapper.get(entity);
-	
-			float dx = world.delta*(startVelX + Utils.getHorizontalSpeed(playerVelocity))/2;
-			float dy = world.delta*(startVelY + Utils.getVerticalSpeed(playerVelocity))/2;
+			float speed = playerVel.getSpeed();
+			float angle = playerVel.getAngle();
+			float dx = world.delta * (startVelX + Utils.getHorizontalSpeed(speed, angle))/2;
+			float dy = world.delta * (startVelY + Utils.getVerticalSpeed(speed, angle))/2;
 			playerTransform.setX(playerTransform.getX() + dx);
 			playerTransform.setY(playerTransform.getY() + dy);
 		}
