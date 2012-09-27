@@ -45,7 +45,7 @@ public class MainActivity extends BaseGameActivity {
         // Set the asset path of the images
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
         BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(
-                getTextureManager(), 720, 480,
+                getTextureManager(), 1400, 480,
                 TextureOptions.BILINEAR);
 //        Create TextureRegions like this for every image:
 //        regions.put("file_name.png", BitmapTextureAtlasTextureRegionFactory
@@ -53,7 +53,10 @@ public class MainActivity extends BaseGameActivity {
         
         regions.put("ball.png", BitmapTextureAtlasTextureRegionFactory
 		.createFromAsset( bitmapTextureAtlas, this, "ball.png", 0, 0));
-       
+        
+        regions.put("wall_horisontal.png",  BitmapTextureAtlasTextureRegionFactory
+		.createFromAsset( bitmapTextureAtlas, this, "wall_horisontal.png", 1, 0));
+        
         bitmapTextureAtlas.load();
 		onCreateResourcesCallback.onCreateResourcesFinished();
 	}

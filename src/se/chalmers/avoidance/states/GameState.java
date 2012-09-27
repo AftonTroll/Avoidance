@@ -11,6 +11,7 @@ import se.chalmers.avoidance.AccelerometerListener;
 import se.chalmers.avoidance.EntityFactory;
 import se.chalmers.avoidance.systems.PlayerControlSystem;
 import se.chalmers.avoidance.systems.SpatialRenderSystem;
+import se.chalmers.avoidance.systems.CollisionSystem;
 import android.hardware.SensorManager;
 
 import com.artemis.World;
@@ -42,7 +43,7 @@ public class GameState implements IState{
 		
 		//Create and set systems here
 		world.setSystem(new SpatialRenderSystem(regions, vbom, scene));
-		//world.setSystem(new CollisionSystem());
+		world.setSystem(new CollisionSystem());
 		world.setSystem(new PlayerControlSystem());
 		
 		//Initialize world.
@@ -55,6 +56,7 @@ public class GameState implements IState{
 		
 		//Initialize entities
 		world.addEntity(EntityFactory.createPlayer(world));
+		world.addEntity(EntityFactory.createWall(world));
 	}
 	
 	/**
