@@ -2,6 +2,8 @@ package se.chalmers.avoidance.systems;
 
 import static org.junit.Assert.assertTrue;
 
+import java.beans.PropertyChangeEvent;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,7 +51,8 @@ public class PlayerControlSystemTest {
 		world.setDelta(1);
 		for(int i = 0; i<accelerationX.length; i++){
 			
-			pcs.setSensorValues(accelerationX[i], accelerationY[i]);
+			pcs.propertyChange(new PropertyChangeEvent(this, "AccelerometerX",null,accelerationX[i]));
+			pcs.propertyChange(new PropertyChangeEvent(this, "AccelerometerY",null,accelerationY[i]));
 			pcs.processEntities(null);
 			
 			
@@ -69,7 +72,8 @@ public class PlayerControlSystemTest {
 		world.setDelta(0.5f);
 		
 		for(int i = 0; i<accelerationX.length; i++){
-			pcs.setSensorValues(accelerationX[i], accelerationY[i]);
+			pcs.propertyChange(new PropertyChangeEvent(this, "AccelerometerX",null,accelerationX[i]));
+			pcs.propertyChange(new PropertyChangeEvent(this, "AccelerometerY",null,accelerationY[i]));
 			pcs.processEntities(null);
 			pcs.processEntities(null);
 			

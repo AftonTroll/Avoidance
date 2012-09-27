@@ -94,19 +94,10 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 			playerTransform.setY(playerTransform.getY() + dy);
 		}
 	}
-	
-	/**
-	 * Manually sets the values of the sensor
-	 * @param x the x value of the sensor
-	 * @param y the y value of the sensor
-	 */
-	public void setSensorValues(float x, float y){
-		lastAccelerationX = x;
-		lastAccelerationY = y;
-	}
 
 	/**
 	 * Sets the values of the acceleration
+	 * @param event the propertyChangeEvent containing the values of the accelerometer
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
 		if(event!=null && event.getNewValue() != null){
