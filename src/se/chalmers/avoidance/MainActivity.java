@@ -84,9 +84,8 @@ public class MainActivity extends BaseGameActivity {
 	
 	private void initializeGame() {
 		stateManager = new StateManager(mEngine);
-		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE));
+		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), regions, this.getVertexBufferObjectManager());
 		stateManager.addState(StateID.Game, gameState);
-		
 	}
 
     private void initSplashScene() {
