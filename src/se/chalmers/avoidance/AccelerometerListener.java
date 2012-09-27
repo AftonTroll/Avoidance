@@ -16,7 +16,7 @@ import android.hardware.SensorManager;
  *
  */
 public class AccelerometerListener implements SensorEventListener {
-	private PropertyChangeSupport pcs;
+	private final PropertyChangeSupport pcs;
 	private SensorManager manager;
 	private Sensor accelerometer;
 	
@@ -61,10 +61,16 @@ public class AccelerometerListener implements SensorEventListener {
 		manager.unregisterListener(this);
 	}
 
+	/**
+	 * Used when the accuracy is changed
+	 */
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		
 	}
 
+	/**
+	 * Used when the value of the sensor is changed
+	 */
 	public void onSensorChanged(SensorEvent event) {
 		pcs.firePropertyChange("AccelerometerX", null, event.values[0]);
 		pcs.firePropertyChange("AccelerometerY", null, event.values[1]);
