@@ -1,6 +1,10 @@
 package se.chalmers.avoidance.states;
 
+import java.beans.PropertyChangeListener;
+
+import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
+import org.andengine.ui.activity.BaseGameActivity;
 /**
  * An interface for states.
  * 
@@ -20,4 +24,13 @@ public interface IState {
 	 */
 	public Scene getScene();
 	
+	public void onLoadResources(BaseGameActivity activity);
+	
+	/**
+	 * Initialization of components that require textures to be loaded.
+	 * @param engine the andengine engine
+	 */
+	public void initializeState(Engine engine);
+	public void addPropertyChangeListener(PropertyChangeListener pcl);
+	public void removePropertyChangeListener(PropertyChangeListener pcl);
 }
