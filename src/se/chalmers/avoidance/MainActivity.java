@@ -9,7 +9,6 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.opengl.texture.Texture;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -34,7 +33,8 @@ public class MainActivity extends BaseGameActivity {
 
 	public EngineOptions onCreateEngineOptions() {
 		camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-        EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), camera);
+        EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, 
+        		new FillResolutionPolicy(), camera);
         return engineOptions;
 
 	}
@@ -84,7 +84,8 @@ public class MainActivity extends BaseGameActivity {
 	
 	private void initializeGame() {
 		stateManager = new StateManager(mEngine);
-		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), regions, this.getVertexBufferObjectManager());
+		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
+				regions, this.getVertexBufferObjectManager());
 		stateManager.addState(StateID.Game, gameState);
 	}
 
