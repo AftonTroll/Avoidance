@@ -1,3 +1,28 @@
+/* 
+ * Copyright (c) 2012 Florian Minges
+ * 
+ * Parts of this file are derived from a menu example, written by Nicholas Gramlich, which
+ * is released under the GNU Lesser GPL. It can be found under the following link:
+ * http://code.google.com/p/andengineexamples/source/browse/src/org/anddev/andengine/
+ * 		examples/MenuExample.java
+ * 
+ * This file is part of Avoidance.
+ * 
+ * Avoidance is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Avoidance is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Avoidance.  If not, see <http://www.gnu.org/licenses/>. 
+ *  
+ */
+
 package se.chalmers.avoidance.states;
 
 import org.andengine.engine.Engine;
@@ -15,6 +40,11 @@ import org.andengine.ui.activity.BaseGameActivity;
 
 import android.opengl.GLES20;
 
+/**
+ * Class containing information and data about the menu state.
+ * @author Florian
+ *
+ */
 public class MenuState implements IState, IOnMenuItemClickListener {
 
 	private static final int CAMERA_WIDTH = 720;
@@ -35,12 +65,16 @@ public class MenuState implements IState, IOnMenuItemClickListener {
     protected TextureRegion menuHelpTextureRegion;
     protected TextureRegion menuQuitTextureRegion;
 	
+    
 	public MenuState(BaseGameActivity activity) {
 		this.baseGameActivity = activity;
 		onLoadResources();
 		initialize();
 	}
 	
+	/**
+	 * Loads the required resources.
+	 */
     public void onLoadResources() {
     	Engine engine = this.baseGameActivity.getEngine();
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
@@ -63,6 +97,9 @@ public class MenuState implements IState, IOnMenuItemClickListener {
     	engine.getTextureManager().loadTexture(this.menuTexture);
     }
 	
+    /**
+     * Initializes the menu scene.
+     */
 	private void initialize() {
 		menuScene = new MenuScene();
 		menuScene.setBackground(new Background(0f, 0f, 0f));
@@ -113,6 +150,10 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 		
 	}
 
+	/**
+	 * Returns the menu scene, or null if it is not instantiated yet.
+	 * @return the menu scene
+	 */
 	public Scene getScene() {
 		return menuScene;
 	}
