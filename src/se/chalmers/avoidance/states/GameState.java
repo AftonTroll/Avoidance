@@ -38,7 +38,6 @@ public class GameState implements IState{
 		world.setSystem(new CollisionSystem());
 		
 		
-		
 		//Initialize world.
 		world.initialize();
 	}
