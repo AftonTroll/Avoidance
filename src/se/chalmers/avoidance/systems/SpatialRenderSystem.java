@@ -8,7 +8,6 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import se.chalmers.avoidance.components.Spatial;
-import se.chalmers.avoidance.components.SpatialForm;
 import se.chalmers.avoidance.components.Transform;
 
 import com.artemis.Aspect;
