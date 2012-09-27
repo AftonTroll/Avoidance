@@ -20,6 +20,7 @@ import org.andengine.ui.activity.BaseGameActivity;
 
 import se.chalmers.avoidance.states.GameState;
 import se.chalmers.avoidance.states.MenuState;
+import se.chalmers.avoidance.states.SplashState;
 import se.chalmers.avoidance.states.StateID;
 import se.chalmers.avoidance.states.StateManager;
 import android.hardware.SensorManager;
@@ -91,8 +92,10 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 		stateManager.addPropertyChangeListener(this);
 		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE));
 		MenuState menuState = new MenuState();
+		SplashState splashState = new SplashState();
 		stateManager.addState(StateID.Game, gameState);
 		stateManager.addState(StateID.Menu, menuState);
+		stateManager.addState(StateID.Splash, splashState);
 		
 	}
 

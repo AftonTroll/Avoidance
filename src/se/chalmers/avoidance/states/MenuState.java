@@ -172,7 +172,7 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 			pcs.firePropertyChange("CHANGE_STATE", StateID.Menu, StateID.Highscore);
 			return true;
 		case MENU_HELP:
-			pcs.firePropertyChange("CHANGE_STATE", StateID.Menu, StateID.Help);
+			pcs.firePropertyChange("CHANGE_STATE", StateID.Menu, StateID.Splash);
 			return true;
 		case MENU_QUIT:
 			/* End Activity. */

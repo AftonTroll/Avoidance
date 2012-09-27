@@ -9,5 +9,6 @@ public enum StateID {
 	Menu,
 	Game,
 	Help,
-	Highscore
+	Highscore,
+	Splash
 }
