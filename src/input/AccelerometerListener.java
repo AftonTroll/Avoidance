@@ -92,8 +92,8 @@ public class AccelerometerListener implements SensorEventListener {
 	 * Used when the value of the sensor is changed
 	 */
 	public void onSensorChanged(SensorEvent event) {
-		pcs.firePropertyChange("AccelerometerX", null, event.values[0]);
-		pcs.firePropertyChange("AccelerometerY", null, event.values[1]);
+		pcs.firePropertyChange("AccelerometerX", null, event.values[1]);
+		pcs.firePropertyChange("AccelerometerY", null, event.values[0]);
 	}
 	
 	
