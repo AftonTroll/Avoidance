@@ -35,8 +35,9 @@ public class Utils {
 	 * @return The simplified angle.
 	 */
 	public static float simplifyAngle(float angle) {
-		angle = angle % (float)(2 * Math.PI);
-		return angle < 0 ? (angle + (float)(2 * Math.PI)) : angle; //make angle positive
+		float simplifiedAngle = angle % (float)(2 * Math.PI);
+		return simplifiedAngle < 0 ? (simplifiedAngle + (float)(2 * Math.PI)) : 
+														simplifiedAngle; //make angle positive
 		//TODO Change to a better name?
 	}
 	
@@ -50,8 +51,8 @@ public class Utils {
 	 * @return the reversed angle.
 	 */
 	public static float reverseAngle(float angle) {
-		float reverse = (angle < (float) Math.PI) ? 1f : -1f;
-		return angle + (float)Math.PI * reverse;
+		float rotation = (angle < (float) Math.PI) ? 1f : -1f;
+		return angle + (float)Math.PI * rotation;
 	}
 
 }

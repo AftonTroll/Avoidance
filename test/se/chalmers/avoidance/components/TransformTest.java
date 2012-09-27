@@ -135,8 +135,6 @@ public class TransformTest {
 		mTransform.setDirection(-2);
 		assertTrue(mTransform.getX() == x1);
 		assertTrue(mTransform.getY() == y1);
-		System.out.println(Math.abs((mTransform.getDirection() - Utils.simplifyAngle(-2))));
-		System.out.println(2f / 10000f);
 		assertTrue(Math.abs((mTransform.getDirection() - Utils.simplifyAngle(-2))) < (2f / 10000f));
 	}
 
