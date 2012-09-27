@@ -20,7 +20,6 @@
 
 package se.chalmers.avoidance.util;
 
-import se.chalmers.avoidance.components.Velocity;
 
 /**
  * Contains a set of static helper-methods.
