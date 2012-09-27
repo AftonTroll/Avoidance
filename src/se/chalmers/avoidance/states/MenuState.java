@@ -25,6 +25,9 @@
 
 package se.chalmers.avoidance.states;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -55,7 +58,7 @@ public class MenuState implements IState, IOnMenuItemClickListener {
     protected static final int MENU_HELP = MENU_START + 2;
     protected static final int MENU_QUIT = MENU_START + 3;
 
-    private BaseGameActivity baseGameActivity;
+    private PropertyChangeSupport pcs;
 	private MenuScene menuScene;
 	
 	private BitmapTextureAtlas bitmapTextureAtlas;
@@ -66,17 +69,17 @@ public class MenuState implements IState, IOnMenuItemClickListener {
     protected TextureRegion menuQuitTextureRegion;
 	
     
-	public MenuState(BaseGameActivity activity) {
-		this.baseGameActivity = activity;
-		onLoadResources();
-		initialize();
+	public MenuState() {
+		this.pcs = new PropertyChangeSupport(this);
+//		onLoadResources();
+//		initialize();
 	}
 	
 	/**
 	 * Loads the required resources.
 	 */
-    public void onLoadResources() {
-    	Engine engine = this.baseGameActivity.getEngine();
+    public void onLoadResources(BaseGameActivity baseGameActivity) {
+    	Engine engine = baseGameActivity.getEngine();
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
            
     	this.bitmapTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 256, 256, 
@@ -87,38 +90,37 @@ public class MenuState implements IState, IOnMenuItemClickListener {
     	this.menuTexture = new BitmapTextureAtlas(engine.getTextureManager(), 256, 256, 
     			TextureOptions.BILINEAR_PREMULTIPLYALPHA);
     	this.menuStartTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-    			this.menuTexture, this.baseGameActivity, "menu_start.png", 0, 0);
+    			this.menuTexture, baseGameActivity, "menu_start.png", 0, 0);
     	this.menuHighscoreTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-    			this.menuTexture, this.baseGameActivity, "menu_highscore.png", 0, 64);
+    			this.menuTexture, baseGameActivity, "menu_highscore.png", 0, 64);
     	this.menuHelpTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-    			this.menuTexture, this.baseGameActivity, "menu_help.png", 0, 128);
+    			this.menuTexture, baseGameActivity, "menu_help.png", 0, 128);
     	this.menuQuitTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-    			this.menuTexture, this.baseGameActivity, "menu_quit.png", 0, 192);
+    			this.menuTexture, baseGameActivity, "menu_quit.png", 0, 192);
     	engine.getTextureManager().loadTexture(this.menuTexture);
     }
 	
     /**
      * Initializes the menu scene.
      */
-	private void initialize() {
+	public void initializeState(Engine engine) {
 		menuScene = new MenuScene();
 		menuScene.setBackground(new Background(0f, 0f, 0f));
 		
 		//center the scene
-		this.menuScene.setX(this.CAMERA_WIDTH / 2 - 100);
-		this.menuScene.setY(this.CAMERA_HEIGHT / 2 - 150);
+		this.menuScene.setX(CAMERA_WIDTH / 2 - 100);
+		this.menuScene.setY(CAMERA_HEIGHT / 2 - 150);
 
 		//create menu items
 		final SpriteMenuItem startMenuItem = new SpriteMenuItem(MENU_START,
-				this.menuStartTextureRegion, this.baseGameActivity.getVertexBufferObjectManager());
+				this.menuStartTextureRegion, engine.getVertexBufferObjectManager());
 		startMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
 				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(startMenuItem);
 		startMenuItem.setPosition(0, 0);
 
 		final SpriteMenuItem highscoreMenuItem = new SpriteMenuItem(MENU_HIGHSCORES,
-				this.menuHighscoreTextureRegion, 
-				this.baseGameActivity.getVertexBufferObjectManager());
+				this.menuHighscoreTextureRegion, engine.getVertexBufferObjectManager());
 		highscoreMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
 				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(highscoreMenuItem);
@@ -126,14 +128,14 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 
 		
 		final SpriteMenuItem helpMenuItem = new SpriteMenuItem(MENU_HELP,
-				this.menuHelpTextureRegion, this.baseGameActivity.getVertexBufferObjectManager());
+				this.menuHelpTextureRegion, engine.getVertexBufferObjectManager());
 		helpMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
 				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(helpMenuItem);
 		helpMenuItem.setPosition(0, 150);
 
 		final SpriteMenuItem quitMenuItem = new SpriteMenuItem(MENU_QUIT,
-				this.menuQuitTextureRegion, this.baseGameActivity.getVertexBufferObjectManager());
+				this.menuQuitTextureRegion, engine.getVertexBufferObjectManager());
 		quitMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
 				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(quitMenuItem);
@@ -142,7 +144,7 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 //		 this.menuScene.buildAnimations(); <- does not work
 		this.menuScene.setBackgroundEnabled(true);
 		this.menuScene.setOnMenuItemClickListener(this);
-		this.menuScene.setCamera(this.baseGameActivity.getEngine().getCamera());
+		this.menuScene.setCamera(engine.getCamera());
 
 	}
 	
@@ -164,22 +166,31 @@ public class MenuState implements IState, IOnMenuItemClickListener {
     		final float pMenuItemLocalX, final float pMenuItemLocalY) {
 		switch (pMenuItem.getID()) {
 		case MENU_START:
-
+			pcs.firePropertyChange("CHANGE_STATE", StateID.Menu, StateID.Game);
 			return true;
 		case MENU_HIGHSCORES:
-
+			pcs.firePropertyChange("CHANGE_STATE", StateID.Menu, StateID.Highscore);
 			return true;
 		case MENU_HELP:
-
+			pcs.firePropertyChange("CHANGE_STATE", StateID.Menu, StateID.Help);
 			return true;
 		case MENU_QUIT:
 			/* End Activity. */
-			this.baseGameActivity.finish();
+//			baseGameActivity.finish();
+			pcs.firePropertyChange("SYSTEM.EXIT", null, true);
 			return true;
 		default:
 			return false;
 		}
     }
+    
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+    	pcs.addPropertyChangeListener(pcl);
+    }
+
+	public void removePropertyChangeListener(PropertyChangeListener pcl) {
+		pcs.removePropertyChangeListener(pcl);
+	}
 
 
 }

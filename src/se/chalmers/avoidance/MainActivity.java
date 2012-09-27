@@ -1,6 +1,7 @@
 package se.chalmers.avoidance;
 
-import java.util.HashMap;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
@@ -9,11 +10,12 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.opengl.texture.Texture;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.util.GLState;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import se.chalmers.avoidance.states.GameState;
@@ -22,7 +24,7 @@ import se.chalmers.avoidance.states.StateID;
 import se.chalmers.avoidance.states.StateManager;
 import android.hardware.SensorManager;
 
-public class MainActivity extends BaseGameActivity {
+public class MainActivity extends BaseGameActivity implements PropertyChangeListener {
 
     private final int CAMERA_WIDTH = 720;
     private final int CAMERA_HEIGHT = 480;
@@ -30,6 +32,8 @@ public class MainActivity extends BaseGameActivity {
     private Camera camera;
     private Scene splashScene;
     private StateManager stateManager;
+    private BitmapTextureAtlas splashAtlas;
+    private TextureRegion splashImage;
 
 	public EngineOptions onCreateEngineOptions() {
 		camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
@@ -41,14 +45,13 @@ public class MainActivity extends BaseGameActivity {
 			throws Exception {
         // Set the asset path of the images
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-        BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(
-                getTextureManager(), 720, 480,
-                TextureOptions.BILINEAR);
-//        Create TextureRegions like this for every image:
-//        regions.put("file_name.png", BitmapTextureAtlasTextureRegionFactory
-//               .createFromAsset( bitmapTextureAtlas, this, "file_name.png", x_position, y_position));
-       
-        bitmapTextureAtlas.load();
+        this.splashAtlas = new BitmapTextureAtlas(
+                getTextureManager(), 512, 256,
+                TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        this.splashImage = BitmapTextureAtlasTextureRegionFactory.createFromAsset( 
+        		this.splashAtlas, this, "splash.png", 0, 0);
+        this.splashAtlas.load();
+        mEngine.getTextureManager().loadTexture(splashAtlas);
 		onCreateResourcesCallback.onCreateResourcesFinished();
 	}
 	
@@ -59,9 +62,11 @@ public class MainActivity extends BaseGameActivity {
 	}
 	public void onPopulateScene(Scene scene, OnPopulateSceneCallback onPopulateSceneCallback)
 			throws Exception {
-		
-        loadResources();
-        initializeGame();
+
+		createStates();
+		stateManager.loadResources(this);
+		stateManager.initializeStates(mEngine);
+        
         splashScene.detachSelf();
 		stateManager.setState(StateID.Menu);
 		mEngine.registerUpdateHandler(new IUpdateHandler(){
@@ -77,14 +82,14 @@ public class MainActivity extends BaseGameActivity {
 		onPopulateSceneCallback.onPopulateSceneFinished();
 	}
 	
-	private void loadResources() {
-		
-	}
-	
-	private void initializeGame() {
+	/**
+	 * Creates the state manager and the first reference-points to the states.
+	 */
+	private void createStates() {
 		stateManager = new StateManager(mEngine);
+		stateManager.addPropertyChangeListener(this);
 		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE));
-		MenuState menuState = new MenuState(this);
+		MenuState menuState = new MenuState();
 		stateManager.addState(StateID.Game, gameState);
 		stateManager.addState(StateID.Menu, menuState);
 		
@@ -93,5 +98,16 @@ public class MainActivity extends BaseGameActivity {
     private void initSplashScene() {
 	    splashScene = new Scene();
 	    splashScene.setBackground(new Background(0.0f, 0.0f, 1.0f));
-    }      
+		Sprite sprite = new Sprite(0, 0, splashImage, mEngine.getVertexBufferObjectManager());
+	    splashScene.attachChild(sprite);
+    }
+	public void propertyChange(PropertyChangeEvent event) {
+		if(event != null && event.getNewValue() != null) {
+			if ("SYSTEM.EXIT".equals(event.getPropertyName())) {
+				this.finish();
+			}
+			
+		}
+		
+	}      
 }

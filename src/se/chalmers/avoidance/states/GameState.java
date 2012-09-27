@@ -1,11 +1,16 @@
 package se.chalmers.avoidance.states;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
+import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-
-import com.artemis.World;
+import org.andengine.ui.activity.BaseGameActivity;
 
 import android.hardware.SensorManager;
+
+import com.artemis.World;
 /**
  * The game state.
  * 
@@ -13,10 +18,12 @@ import android.hardware.SensorManager;
  */
 public class GameState implements IState{
 
+	private PropertyChangeSupport pcs;
 	private Scene scene;
 	private World world;
 	
 	public GameState(SensorManager sensorManager) {
+		this.pcs = new PropertyChangeSupport(this);
 		initialize(sensorManager);
 	}
 	
@@ -28,6 +35,14 @@ public class GameState implements IState{
 		
 		//Create and set systems here
 
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public void initializeState(Engine engine) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	/**
@@ -47,4 +62,22 @@ public class GameState implements IState{
 	public Scene getScene() {
 		return scene;
 	}
+
+	/**
+	 * Load all resources.
+	 */
+	public void onLoadResources(BaseGameActivity activity) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void addPropertyChangeListener(PropertyChangeListener pcl) {
+		pcs.addPropertyChangeListener(pcl);
+	}
+
+	public void removePropertyChangeListener(PropertyChangeListener pcl) {
+		pcs.removePropertyChangeListener(pcl);
+		
+	}
+
 }
