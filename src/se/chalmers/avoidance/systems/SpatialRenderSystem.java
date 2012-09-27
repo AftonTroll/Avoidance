@@ -1,6 +1,10 @@
 /* 
  * Copyright (c) 2012 Markus Ekström
  * 
+ * This file is based on an example acquired from http://gamadu.com/artemis/demos.html (Spaceship Warrior), which
+ * can be found under the following link:
+ * http://code.google.com/p/spaceship-warrior/source/browse/src/com/gamadu/spaceshipwarrior/systems/SpriteRenderSystem.java
+ * 
  * This file is part of Avoidance.
  * 
  * Avoidance is free software: you can redistribute it and/or modify
