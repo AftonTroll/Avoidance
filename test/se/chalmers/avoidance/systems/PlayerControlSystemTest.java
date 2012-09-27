@@ -15,22 +15,21 @@ import com.artemis.managers.TagManager;
 
 public class PlayerControlSystemTest {
 
-	private final float TOLERANCE = 0.0001f;
+	private static final float TOLERANCE = 0.0001f;
 	private Entity player;
-	private PlayerControlSystem pcs = new PlayerControlSystem();
-	private World world = new World();
-	private TagManager tagManager = new TagManager();
-	private float[] accelerationX = {-5, 5};
-	private float[] accelerationY = {0, 3};
-	private float[] expectedSpeed = {5, 3};
-	private float[] expectedAngle = {(float) Math.PI, (float) Math.PI/2};
-	private float[] expectedX = {-2.5f, -5};
-	private float[] expectedY = {0, 1.5f};
+	private final PlayerControlSystem pcs = new PlayerControlSystem();
+	private final World world = new World();
+	private final TagManager tagManager = new TagManager();
+	private final float[] accelerationX = {-5, 5};
+	private final float[] accelerationY = {0, 3};
+	private final float[] expectedSpeed = {5, 3};
+	private final float[] expectedAngle = {(float) Math.PI, (float) Math.PI/2};
+	private final float[] expectedX = {-2.5f, -5};
+	private final float[] expectedY = {0, 1.5f};
 	
 	
 	@Before
 	public void setUp() {
-		tagManager = new TagManager();
 		world.setManager(tagManager);
 		world.setSystem(pcs);
 		
