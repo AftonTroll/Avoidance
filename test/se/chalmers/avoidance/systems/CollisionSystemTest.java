@@ -52,13 +52,13 @@ public class CollisionSystemTest {
 		world.setManager(gm);
 		
 		e1 = world.createEntity();
-		tm.register("Player", e1);
+		tm.register("PLAYER", e1);
 		e1.addComponent(new Transform(0,3));
 		e1.addComponent(new Velocity(1,(float)(Math.PI/4)));
 		e1.addComponent(new Size(1, 1));
 		
 		e2 = world.createEntity();
-		gm.add(e2, "Walls");
+		gm.add(e2, "WALLS");
 		e2.addComponent(new Transform(0,4));	
 		e2.addComponent(new Size(10, 9));
 		
@@ -71,7 +71,7 @@ public class CollisionSystemTest {
 		e4.addComponent(new Size(10, 10));
 		
 		e5 = world.createEntity();
-		gm.add(e5, "Walls");
+		gm.add(e5, "WALLS");
 		e5.addComponent(new Transform(20,4));	
 		e5.addComponent(new Size(9, 10));
 		

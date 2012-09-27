@@ -79,8 +79,8 @@ public class CollisionSystem extends EntitySystem{
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
 		
-		ImmutableBag<Entity> walls = world.getManager(GroupManager.class).getEntities("Walls");
-		Entity player = world.getManager(TagManager.class).getEntity("Player");
+		ImmutableBag<Entity> walls = world.getManager(GroupManager.class).getEntities("WALLS");
+		Entity player = world.getManager(TagManager.class).getEntity("PLAYER");
 		
 		for (int i=0;i<walls.size();i++){
 			if(collisionExists(player, walls.get(i))){
