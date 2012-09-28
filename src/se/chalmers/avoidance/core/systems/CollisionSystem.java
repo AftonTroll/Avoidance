@@ -141,6 +141,14 @@ public class CollisionSystem extends EntitySystem{
 				playerY=wallY-playerHeight;
 				playerTransform.setY(playerY);
 			}
+		}else{
+			if(playerX<wallX+width&&wallX==0){
+				playerX=wallX+width;
+				playerTransform.setX(playerX);
+			}else if(playerX<wallX){
+				playerX=wallX-playerWidth;
+				playerTransform.setX(playerX);
+			}
 		}
 	}
 	
