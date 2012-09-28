@@ -16,21 +16,25 @@ public class EntityFactory {
 		Entity player = world.createEntity();
 		world.getManager(TagManager.class).register("PLAYER", player);
 		
-		player.addComponent(new Transform(50,300));
+		player.addComponent(new Transform(50,100));
 		player.addComponent(new Velocity());
-		player.addComponent(new Size());
+		player.addComponent(new Size(32,32));
 		player.addComponent(new Spatial("ball.png"));
 		
 		return player;
 	}
 	
-	public static Entity createWall(World world){
+	public static Entity createWall(World world, float width, float height, float xPos, float yPos){
 		Entity wall = world.createEntity();
 		world.getManager(GroupManager.class).add(wall, "WALLS");
 		
-		wall.addComponent(new Transform());
-		wall.addComponent(new Size());
-		wall.addComponent(new Spatial("wall_horisontal.png"));
+		wall.addComponent(new Transform(xPos, yPos));
+		wall.addComponent(new Size(width,height));
+		if(width>height){
+			wall.addComponent(new Spatial("wall_horisontal.png"));
+		}else{
+			wall.addComponent(new Spatial("wall_vertical.png"));
+		}
 		
 		return wall;
 	}
