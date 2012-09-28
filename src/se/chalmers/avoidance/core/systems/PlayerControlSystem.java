@@ -23,13 +23,13 @@
 *
 */
 
-package se.chalmers.avoidance.systems;
+package se.chalmers.avoidance.core.systems;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import se.chalmers.avoidance.components.Transform;
-import se.chalmers.avoidance.components.Velocity;
+import se.chalmers.avoidance.core.components.Transform;
+import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.util.Utils;
 
 import com.artemis.Aspect;

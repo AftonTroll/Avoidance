@@ -1,4 +1,28 @@
-package se.chalmers.avoidance.systems;
+/* 
+ * Copyright (c) 2012 Markus Ekström
+ * 
+ * This file is based on an example acquired from http://gamadu.com/artemis/demos.html (Spaceship Warrior), which
+ * can be found under the following link:
+ * http://code.google.com/p/spaceship-warrior/source/browse/src/com/gamadu/spaceshipwarrior/systems/SpriteRenderSystem.java
+ * 
+ * This file is part of Avoidance.
+ * 
+ * Avoidance is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Avoidance is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Avoidance.  If not, see <http://www.gnu.org/licenses/>. 
+ *  
+ */
+
+package se.chalmers.avoidance.core.systems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +33,8 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import se.chalmers.avoidance.components.Spatial;
-import se.chalmers.avoidance.components.Transform;
+import se.chalmers.avoidance.core.components.Spatial;
+import se.chalmers.avoidance.core.components.Transform;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;

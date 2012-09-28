@@ -18,14 +18,14 @@
  *  
  */
 
-package se.chalmers.avoidance.systems;
+package se.chalmers.avoidance.core.systems;
 
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 
-import se.chalmers.avoidance.components.Size;
-import se.chalmers.avoidance.components.Transform;
-import se.chalmers.avoidance.components.Velocity;
+import se.chalmers.avoidance.core.components.Size;
+import se.chalmers.avoidance.core.components.Transform;
+import se.chalmers.avoidance.core.components.Velocity;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;

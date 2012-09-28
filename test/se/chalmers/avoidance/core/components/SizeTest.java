@@ -18,13 +18,15 @@
  *  
  */
 
-package se.chalmers.avoidance.components;
+package se.chalmers.avoidance.core.components;
 
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import se.chalmers.avoidance.core.components.Size;
 
 public class SizeTest {
 
