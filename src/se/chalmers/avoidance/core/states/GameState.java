@@ -20,7 +20,6 @@
 
 package se.chalmers.avoidance.core.states;
 
-import input.AccelerometerListener;
 
 import java.util.HashMap;
 
@@ -33,6 +32,7 @@ import se.chalmers.avoidance.EntityFactory;
 import se.chalmers.avoidance.core.systems.CollisionSystem;
 import se.chalmers.avoidance.core.systems.PlayerControlSystem;
 import se.chalmers.avoidance.core.systems.SpatialRenderSystem;
+import se.chalmers.avoidance.input.AccelerometerListener;
 import android.hardware.SensorManager;
 
 import com.artemis.World;
