@@ -31,7 +31,6 @@ import java.beans.PropertyChangeListener;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.util.Utils;
-import android.util.Log;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
