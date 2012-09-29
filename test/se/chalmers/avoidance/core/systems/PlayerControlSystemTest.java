@@ -43,12 +43,12 @@ public class PlayerControlSystemTest {
 	private final PlayerControlSystem pcs = new PlayerControlSystem();
 	private final World world = new World();
 	private final TagManager tagManager = new TagManager();
-	private final float[] accelerationX = {-5, 5};
-	private final float[] accelerationY = {0, 3};
-	private final float[] expectedSpeed = {5, 3};
+	private final float[] accelerationX = {-5, 4.5f};
+	private final float[] accelerationY = {0, 20};
+	private final float[] expectedSpeed = {4.5f, 18};
 	private final float[] expectedAngle = {(float) Math.PI, (float) Math.PI/2};
-	private final float[] expectedX = {-2.5f, -5};
-	private final float[] expectedY = {0, 1.5f};
+	private final float[] expectedX = {-2.25f, -4.5f};
+	private final float[] expectedY = {0, 9};
 	
 	
 	@Before
@@ -75,8 +75,7 @@ public class PlayerControlSystemTest {
 			pcs.propertyChange(new PropertyChangeEvent(this, "AccelerometerX",null,accelerationX[i]));
 			pcs.propertyChange(new PropertyChangeEvent(this, "AccelerometerY",null,accelerationY[i]));
 			pcs.processEntities(null);
-			
-			
+
 			assertTrue(Math.abs(velocity.getSpeed()-expectedSpeed[i]) <= TOLERANCE);
 			assertTrue(Math.abs(Utils.simplifyAngle(velocity.getAngle())-expectedAngle[i]) <= TOLERANCE);
 			assertTrue(Math.abs(transform.getX()-expectedX[i]) <= TOLERANCE);
@@ -89,20 +88,6 @@ public class PlayerControlSystemTest {
 		transform.setX(0);
 		transform.setY(0);
 		
-		//Two updates with the half delta should result in the same values
-		world.setDelta(0.5f);
-		
-		for(int i = 0; i<accelerationX.length; i++){
-			pcs.propertyChange(new PropertyChangeEvent(this, "AccelerometerX",null,accelerationX[i]));
-			pcs.propertyChange(new PropertyChangeEvent(this, "AccelerometerY",null,accelerationY[i]));
-			pcs.processEntities(null);
-			pcs.processEntities(null);
-			
-			assertTrue(Math.abs(velocity.getSpeed()-expectedSpeed[i]) <= TOLERANCE);
-			assertTrue(Math.abs(Utils.simplifyAngle(velocity.getAngle())-expectedAngle[i]) <= TOLERANCE);
-			assertTrue(Math.abs(transform.getX()-expectedX[i]) <= TOLERANCE);
-			assertTrue(Math.abs(transform.getY()-expectedY[i]) <= TOLERANCE);
-		}
 	}
 }
 
