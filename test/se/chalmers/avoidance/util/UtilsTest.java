@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import se.chalmers.avoidance.components.Velocity;
+import se.chalmers.avoidance.core.components.Velocity;
 
 public class UtilsTest {
 	

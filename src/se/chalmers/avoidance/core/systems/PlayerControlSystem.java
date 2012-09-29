@@ -23,13 +23,13 @@
 *
 */
 
-package se.chalmers.avoidance.systems;
+package se.chalmers.avoidance.core.systems;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import se.chalmers.avoidance.components.Transform;
-import se.chalmers.avoidance.components.Velocity;
+import se.chalmers.avoidance.core.components.Transform;
+import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.util.Utils;
 
 import com.artemis.Aspect;
@@ -88,6 +88,8 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	 */
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
+		float friction = 0.9f;
+		
 		Entity entity = tagManager.getEntity("PLAYER");
 		if (entity != null) {
 			//Update the Velocity
@@ -99,16 +101,15 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 			float newVelX = startVelX;
 			float newVelY = startVelY;
 			
-			if (Math.abs(lastAccelerationX) > 1) {
-				newVelX += world.delta * lastAccelerationX;
-			}
+			newVelX += world.delta * lastAccelerationX;
+			newVelY += world.delta * lastAccelerationY;	
+			float newSpeed = (float) Math.sqrt(newVelX*newVelX+newVelY*newVelY);
 			
-			if (Math.abs(lastAccelerationY) > 1) {
-				newVelY += world.delta * lastAccelerationY;
-			}
+			//Apply friction
+			newSpeed *= Math.pow(friction, world.delta);
 			
 			playerVel.setAngle((float) Math.atan2(newVelY, newVelX));
-			playerVel.setSpeed((float) Math.sqrt(newVelX*newVelX+newVelY*newVelY));
+			playerVel.setSpeed(newSpeed);
 			
 			//Update the position
 			Transform playerTransform = transformMapper.get(entity);

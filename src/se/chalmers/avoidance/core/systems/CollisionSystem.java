@@ -18,14 +18,14 @@
  *  
  */
 
-package se.chalmers.avoidance.systems;
+package se.chalmers.avoidance.core.systems;
 
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 
-import se.chalmers.avoidance.components.Size;
-import se.chalmers.avoidance.components.Transform;
-import se.chalmers.avoidance.components.Velocity;
+import se.chalmers.avoidance.core.components.Size;
+import se.chalmers.avoidance.core.components.Transform;
+import se.chalmers.avoidance.core.components.Velocity;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -43,6 +43,7 @@ import com.artemis.utils.ImmutableBag;
 public class CollisionSystem extends EntitySystem{
 	
     private ComponentMapper<Velocity> velocityMapper;
+    private ComponentMapper<Transform> transformMapper;
 	
     /**
      * Constructs a new CollisionSystem 
@@ -59,6 +60,7 @@ public class CollisionSystem extends EntitySystem{
 	@Override
 	protected void initialize(){
 		velocityMapper = world.getMapper(Velocity.class);
+		transformMapper = world.getMapper(Transform.class);
 	}
 	
 	/**
@@ -81,12 +83,11 @@ public class CollisionSystem extends EntitySystem{
 		
 		ImmutableBag<Entity> walls = world.getManager(GroupManager.class).getEntities("WALLS");
 		Entity player = world.getManager(TagManager.class).getEntity("PLAYER");
-		
 		for (int i=0;i<walls.size();i++){
 			if(collisionExists(player, walls.get(i))){
 				Velocity velocity = velocityMapper.get(player);
 				velocity.setAngle(calculateAngle(velocity.getAngle(), walls.get(i)));
-				
+				correctPosition(walls.get(i), player);
 			}
 		}
 		
@@ -119,6 +120,36 @@ public class CollisionSystem extends EntitySystem{
 		  newAngle = flipVertical(newAngle);
 		  newAngle -= Math.PI/2;
 		  return newAngle;
+	}
+	
+	private void correctPosition(Entity wall, Entity player){
+		float width = wall.getComponent(Size.class).getWidth();
+		float height = wall.getComponent(Size.class).getHeight();
+		float wallX = wall.getComponent(Transform.class).getX();
+		float wallY = wall.getComponent(Transform.class).getY();
+		Transform playerTransform = transformMapper.get(player);
+		float playerX = playerTransform.getX();
+		float playerY = playerTransform.getY();
+		float playerWidth = player.getComponent(Size.class).getWidth();
+		float playerHeight = player.getComponent(Size.class).getHeight();
+		
+		if(width>height){
+			if(playerY<wallY+height&&wallY==0){
+				playerY=wallY+height;
+				playerTransform.setY(playerY);
+			}else if(playerY<wallY){
+				playerY=wallY-playerHeight;
+				playerTransform.setY(playerY);
+			}
+		}else{
+			if(playerX<wallX+width&&wallX==0){
+				playerX=wallX+width;
+				playerTransform.setX(playerX);
+			}else if(playerX<wallX){
+				playerX=wallX-playerWidth;
+				playerTransform.setX(playerX);
+			}
+		}
 	}
 	
 		

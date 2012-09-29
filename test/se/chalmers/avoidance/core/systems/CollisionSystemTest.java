@@ -18,16 +18,17 @@
  *  
  */
 
-package se.chalmers.avoidance.systems;
+package se.chalmers.avoidance.core.systems;
 
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import se.chalmers.avoidance.components.Size;
-import se.chalmers.avoidance.components.Transform;
-import se.chalmers.avoidance.components.Velocity;
+import se.chalmers.avoidance.core.components.Size;
+import se.chalmers.avoidance.core.components.Transform;
+import se.chalmers.avoidance.core.components.Velocity;
+import se.chalmers.avoidance.core.systems.CollisionSystem;
 
 import com.artemis.Entity;
 import com.artemis.World;

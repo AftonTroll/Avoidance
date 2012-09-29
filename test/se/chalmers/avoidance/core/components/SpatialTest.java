@@ -1,4 +1,4 @@
-package se.chalmers.avoidance.components;
+package se.chalmers.avoidance.core.components;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,8 @@ import org.andengine.entity.sprite.Sprite;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import se.chalmers.avoidance.core.components.Spatial;
 
 public class SpatialTest {
 	private static String name;
