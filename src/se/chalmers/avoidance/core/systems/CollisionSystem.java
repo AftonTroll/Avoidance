@@ -130,20 +130,7 @@ public class CollisionSystem extends EntitySystem{
 			}
 			
 		}else{
-			//Corner or almost corner collision
-			if(playerTransform.getX()>wallX){
-				if(playerTransform.getY()>wallY){
-					//Collision near lower right corner					
-				}else{
-					//Collision near upper right corner
-				}
-			}else{
-				if(playerTransform.getY()>wallY){
-					//Collision near lower left corner
-				}else{
-					//Collision near upper left corner
-				}
-			}
+			//Corner or almost corner collision			
 			newAngle = Utils.reverseAngle(angle);
 		}
 		playerVelocity.setAngle(newAngle);
