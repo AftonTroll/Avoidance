@@ -81,6 +81,7 @@ public class GameState implements IState{
 		world.addEntity(EntityFactory.createWall(world,1200,20,0,455));
 		world.addEntity(EntityFactory.createWall(world,20,800,0,0));
 		world.addEntity(EntityFactory.createWall(world,20,800,700,0));
+		world.addEntity(EntityFactory.createWall(world,50,25,200,300));
 	}
 	
 	/**
