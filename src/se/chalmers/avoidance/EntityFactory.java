@@ -38,4 +38,15 @@ public class EntityFactory {
 		
 		return wall;
 	}
+	
+	public static Entity createObstacle(World world, float width, float height, float xPos, float yPos){
+		Entity obstacle = world.createEntity();
+		world.getManager(GroupManager.class).add(obstacle, "WALLS");
+		
+		obstacle.addComponent(new Transform(xPos, yPos));
+		obstacle.addComponent(new Size(width,height));
+		obstacle.addComponent(new Spatial("obstacle.png"));
+		
+		return obstacle;
+	}
 }

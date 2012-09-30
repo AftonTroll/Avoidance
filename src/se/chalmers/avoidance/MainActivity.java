@@ -93,6 +93,9 @@ public class MainActivity extends BaseGameActivity {
         regions.put("wall_vertical.png",  BitmapTextureAtlasTextureRegionFactory
         		.createFromAsset( bitmapTextureAtlas, this, "wall_vertical.png", 34,64));
         
+        regions.put("obstacle.png",  BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, "obstacle.png", 64,64));
+        
         bitmapTextureAtlas.load();
 		onCreateResourcesCallback.onCreateResourcesFinished();
 	}
