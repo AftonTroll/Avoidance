@@ -26,6 +26,7 @@ import org.andengine.opengl.vbo.IVertexBufferObject;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
+import se.chalmers.avoidance.util.Utils;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -118,7 +119,7 @@ public class CollisionSystem extends EntitySystem{
 				playerTransform.setY(wallY-playerSize.getHeight());
 			}
 			
-		}else{
+		}else if(playerTransform.getY()+playerSize.getHeight()/2>wallY&&playerTransform.getY()+playerSize.getHeight()/2<wallY+wallHeight){
 			newAngle = flipHorizontal(angle);
 			if(angle>Math.PI/2&&angle<(Math.PI*3)/2){
 				//Collision on right side of wall
@@ -128,6 +129,22 @@ public class CollisionSystem extends EntitySystem{
 				playerTransform.setX(wallX-playerSize.getWidth());
 			}
 			
+		}else{
+			//Corner or almost corner collision
+			if(playerTransform.getX()>wallX){
+				if(playerTransform.getY()>wallY){
+					//Collision near lower right corner					
+				}else{
+					//Collision near upper right corner
+				}
+			}else{
+				if(playerTransform.getY()>wallY){
+					//Collision near lower left corner
+				}else{
+					//Collision near upper left corner
+				}
+			}
+			newAngle = Utils.reverseAngle(angle);
 		}
 		playerVelocity.setAngle(newAngle);
 	}
