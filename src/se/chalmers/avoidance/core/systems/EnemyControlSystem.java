@@ -42,6 +42,27 @@ public class EnemyControlSystem extends EntitySystem{
 
 	@Override
 	protected void processEntities(ImmutableBag<Entity> bag) {
+		Entity player = tagManager.getEntity("PLAYER");
+		if (player != null) {
+			Transform playerTransform = transformMapper.get(player);
+			Size playerSize = sizeMapper.get(player);
+			float playerCenterX = playerTransform.getX() + playerSize.getWidth()/2;
+			float playerCenterY = playerTransform.getY() + playerSize.getHeight()/2;
+			
+			ImmutableBag<Entity> enemyBag = groupManager.getEntities("ENEMIES");
+			for (int i = 0; i<enemyBag.size(); i++) {
+				Entity enemy = enemyBag.get(i);
+				Transform enemyTransform = transformMapper.get(enemy);
+				Size enemySize = sizeMapper.get(enemy);
+				Velocity enemyVelocity = velocityMapper.get(enemy);
+				float enemyCenterX = enemyTransform.getX() + enemySize.getWidth()/2;
+				float enemyCenterY = enemyTransform.getY() + enemySize.getHeight()/2;
 
-	}	
+				float dx = enemyCenterX-playerCenterX;
+				float dy = enemyCenterY-playerCenterY;
+				float accelerationAngle = (float) Math.atan2(dy, dx);
+				
+			}
+		}
+	}
 }
