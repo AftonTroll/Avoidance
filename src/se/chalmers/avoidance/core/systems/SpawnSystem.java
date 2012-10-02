@@ -1,13 +1,21 @@
 package se.chalmers.avoidance.core.systems;
 
+
+import se.chalmers.avoidance.core.components.Time;
+
 import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 
 public class SpawnSystem extends EntityProcessingSystem{
 
-	public SpawnSystem(Aspect aspect) {
-		super(aspect);
+	public SpawnSystem() {
+		super(Aspect.getAspectForAll(Time.class));
+		
+	}
+	
+	@Override
+	protected void initialize() {
 		
 	}
 
