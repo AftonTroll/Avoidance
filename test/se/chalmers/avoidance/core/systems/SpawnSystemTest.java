@@ -13,12 +13,12 @@ import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
 
 public class SpawnSystemTest {
-	private SpawnSystem ss;
-	private World world;
-	private Entity e;
+	private static SpawnSystem ss;
+	private static World world;
+	private static Entity e;
 	
 	@BeforeClass
-	public void setUpBeforeClass() {
+	public static void setUpBeforeClass() {
 		world = new World();
 		world.setManager(new TagManager());
 		world.setManager(new GroupManager());
