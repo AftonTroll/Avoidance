@@ -8,6 +8,7 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
+import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.ui.activity.BaseGameActivity;
@@ -16,7 +17,14 @@ import se.chalmers.avoidance.states.GameState;
 import se.chalmers.avoidance.states.MenuState;
 import se.chalmers.avoidance.states.StateID;
 import se.chalmers.avoidance.states.StateManager;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.hardware.SensorManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.EditText;
 
 public class MainActivity extends BaseGameActivity implements PropertyChangeListener {
 
@@ -86,8 +94,54 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event != null && event.getNewValue() != null) {
 			if ("SYSTEM.EXIT".equals(event.getPropertyName())) {
-				this.finish();
+				createOverlay();
+				MainActivity.this.runOnUiThread(new Runnable() {
+				    public void run() {
+				        showDialog(1);
+				    }
+				});
+
+//				this.finish();
 			}
 		}
 	} 
+
+	private void createOverlay() {
+		Rectangle rect = new Rectangle(0, 0, 720, 480,
+				this.getVertexBufferObjectManager());
+		rect.setColor(0.1f, 0.1f, 0.1f, 0.8f);
+		mEngine.getScene().attachChild(rect);
+	}
+
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case 1:
+			LayoutInflater layoutInflater = LayoutInflater.from(this);
+			View submitTextView = layoutInflater.inflate(R.layout.submit, null);
+			final EditText nameText = (EditText) submitTextView
+					.findViewById(R.id.nameField);
+			nameText.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					nameText.setHint(null);
+				}
+			});
+
+			return new AlertDialog.Builder(MainActivity.this)
+					.setTitle("GameOver")
+					.setMessage("Score: " + "7'345")
+					.setView(submitTextView)
+					.setPositiveButton("Submit",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									mEngine.getScene().getLastChild().detachSelf();
+								}
+							}).create();
+
+		default:
+			break;
+		}
+		return null;
+	}
 }
