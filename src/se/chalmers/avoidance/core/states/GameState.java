@@ -74,13 +74,6 @@ public class GameState implements IState{
 		AccelerometerListener aL = new AccelerometerListener(sensorManager);
 		aL.addPropertyChangeListener(world.getSystem(PlayerControlSystem.class));
 		aL.startListening();
-		
-		//Initialize entities
-		world.addEntity(EntityFactory.createPlayer(world));
-		world.addEntity(EntityFactory.createWall(world,1200,25,0,0));
-		world.addEntity(EntityFactory.createWall(world,1200,20,0,455));
-		world.addEntity(EntityFactory.createWall(world,20,800,0,0));
-		world.addEntity(EntityFactory.createWall(world,20,800,700,0));
 	}
 	
 	/**
