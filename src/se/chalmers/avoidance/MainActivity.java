@@ -1,5 +1,8 @@
 package se.chalmers.avoidance;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -15,7 +18,7 @@ import se.chalmers.avoidance.states.StateID;
 import se.chalmers.avoidance.states.StateManager;
 import android.hardware.SensorManager;
 
-public class MainActivity extends BaseGameActivity {
+public class MainActivity extends BaseGameActivity implements PropertyChangeListener {
 
     private final int CAMERA_WIDTH = 720;
     private final int CAMERA_HEIGHT = 480;
@@ -72,10 +75,19 @@ public class MainActivity extends BaseGameActivity {
 		stateManager.addState(StateID.Game, gameState);
 		stateManager.addState(StateID.Menu, menuState);
 		
+		stateManager.addPropertyChangeListener(this);
 	}
 
     private void initSplashScene() {
 	    splashScene = new Scene();
 	    splashScene.setBackground(new Background(0.0f, 0.0f, 1.0f));
     }      
+
+	public void propertyChange(PropertyChangeEvent event) {
+		if (event != null && event.getNewValue() != null) {
+			if ("SYSTEM.EXIT".equals(event.getPropertyName())) {
+				this.finish();
+			}
+		}
+	} 
 }

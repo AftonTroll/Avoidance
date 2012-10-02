@@ -25,6 +25,9 @@
 
 package se.chalmers.avoidance.states;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -56,6 +59,7 @@ public class MenuState implements IState, IOnMenuItemClickListener {
     protected static final int MENU_QUIT = MENU_START + 3;
 
     private BaseGameActivity baseGameActivity;
+    private PropertyChangeSupport pcs;
 	private MenuScene menuScene;
 	
 	private BitmapTextureAtlas bitmapTextureAtlas;
@@ -159,27 +163,47 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 	}
 	
 
-	//TODO Move this code to the stateManager
-    public boolean onMenuItemClicked(final MenuScene pMenuScene, final IMenuItem pMenuItem, 
-    		final float pMenuItemLocalX, final float pMenuItemLocalY) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean onMenuItemClicked(final MenuScene pMenuScene,
+			final IMenuItem pMenuItem, final float pMenuItemLocalX,
+			final float pMenuItemLocalY) {
+		//TODO Use constants instead of hard-coded strings
 		switch (pMenuItem.getID()) {
 		case MENU_START:
-
+			pcs.firePropertyChange("CHANGE_STATE", StateID.Menu, StateID.Game);
 			return true;
 		case MENU_HIGHSCORES:
-
+			pcs.firePropertyChange("CHANGE_STATE", StateID.Menu, StateID.Highscore);
 			return true;
 		case MENU_HELP:
-
+			pcs.firePropertyChange("CHANGE_STATE", StateID.Menu, StateID.Help);
 			return true;
 		case MENU_QUIT:
 			/* End Activity. */
-			this.baseGameActivity.finish();
+			pcs.firePropertyChange("SYSTEM.EXIT", null, true);
 			return true;
 		default:
 			return false;
 		}
-    }
+	}
+
+	/**
+	 * Adds a listener to this state.
+	 * @param pcl the listener to add
+	 */
+	public void addPropertyChangeListener(PropertyChangeListener pcl) {
+		pcs.addPropertyChangeListener(pcl);
+	}
+
+	/**
+	 * Removes a listener from this state.
+	 * @param pcl the listener to remove
+	 */
+	public void removePropertyChangeListener(PropertyChangeListener pcl) {
+		pcs.removePropertyChangeListener(pcl);
+	}
 
 
 }
