@@ -72,6 +72,7 @@ public class MenuState implements IState, IOnMenuItemClickListener {
     
 	public MenuState(BaseGameActivity activity) {
 		this.baseGameActivity = activity;
+		pcs = new PropertyChangeSupport(this);
 		onLoadResources();
 		initialize();
 	}
