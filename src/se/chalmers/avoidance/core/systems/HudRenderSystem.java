@@ -35,6 +35,7 @@ public class HudRenderSystem extends EntityProcessingSystem{
 		timeMapper = world.getMapper(Time.class);
 		this.score = new Text(30, 30, this.font, "Score :", "Score: XXXXX".length(), vbom);
 		scene.attachChild(score);
+		score.setZIndex(100);
 	}
 	
 	@Override
