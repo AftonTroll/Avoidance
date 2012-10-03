@@ -29,6 +29,8 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -38,6 +40,7 @@ import org.andengine.ui.activity.BaseGameActivity;
 import se.chalmers.avoidance.core.states.GameState;
 import se.chalmers.avoidance.core.states.StateID;
 import se.chalmers.avoidance.core.states.StateManager;
+import android.graphics.Typeface;
 import android.hardware.SensorManager;
 
 /**
@@ -56,6 +59,7 @@ public class MainActivity extends BaseGameActivity {
     private Scene splashScene;
     private StateManager stateManager;
     private HashMap<String, TextureRegion> regions;
+    private Font scoreFont;
    
     /**
      * Sets the engine options (camera, screen rotation, ...) 
@@ -74,7 +78,9 @@ public class MainActivity extends BaseGameActivity {
 	public void onCreateResources(OnCreateResourcesCallback onCreateResourcesCallback)
 			throws Exception {
 		regions = new HashMap<String, TextureRegion>();
-		
+		scoreFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
+				TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 48);
+				
         // Set the asset path of the images
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
         BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(
@@ -97,6 +103,7 @@ public class MainActivity extends BaseGameActivity {
         		.createFromAsset( bitmapTextureAtlas, this, "obstacle.png", 64,64));
         
         bitmapTextureAtlas.load();
+        scoreFont.load();
 		onCreateResourcesCallback.onCreateResourcesFinished();
 	}
 	
@@ -137,7 +144,7 @@ public class MainActivity extends BaseGameActivity {
 	private void initializeGame() {
 		stateManager = new StateManager(mEngine);
 		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
-				regions, this.getVertexBufferObjectManager());
+				regions, this.getVertexBufferObjectManager(),scoreFont);
 		stateManager.addState(StateID.Game, gameState);
 	}
 
