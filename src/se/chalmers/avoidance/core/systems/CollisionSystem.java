@@ -26,6 +26,7 @@ import org.andengine.opengl.vbo.IVertexBufferObject;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
+import se.chalmers.avoidance.util.Utils;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -44,6 +45,7 @@ public class CollisionSystem extends EntitySystem{
 	
     private ComponentMapper<Velocity> velocityMapper;
     private ComponentMapper<Transform> transformMapper;
+    private ComponentMapper<Size> sizeMapper;
 	
     /**
      * Constructs a new CollisionSystem 
@@ -61,6 +63,7 @@ public class CollisionSystem extends EntitySystem{
 	protected void initialize(){
 		velocityMapper = world.getMapper(Velocity.class);
 		transformMapper = world.getMapper(Transform.class);
+		sizeMapper = world.getMapper(Size.class);
 	}
 	
 	/**
@@ -85,28 +88,52 @@ public class CollisionSystem extends EntitySystem{
 		Entity player = world.getManager(TagManager.class).getEntity("PLAYER");
 		for (int i=0;i<walls.size();i++){
 			if(collisionExists(player, walls.get(i))){
-				Velocity velocity = velocityMapper.get(player);
-				velocity.setAngle(calculateAngle(velocity.getAngle(), walls.get(i)));
-				correctPosition(walls.get(i), player);
+				handleWallCollision(player, walls.get(i));
 			}
 		}
-		
 	}
 	
 	
-	private float calculateAngle(float angle, Entity wall){		
+	private void handleWallCollision(Entity player, Entity wall){		
+		Size wallSize = sizeMapper.get(wall);
+		Transform wallTransform = transformMapper.get(wall);
+		Velocity playerVelocity = velocityMapper.get(player);
+		Size playerSize = sizeMapper.get(player);
+		Transform playerTransform = transformMapper.get(player);
 		
-		float width = wall.getComponent(Size.class).getWidth();
-		float height = wall.getComponent(Size.class).getHeight();
+		float wallWidth = wallSize.getWidth();
+		float wallHeight = wallSize.getHeight();
+		float wallX = wallTransform.getX(); 
+		float wallY = wallTransform.getY();		
+		float angle = playerVelocity.getAngle();
 		float newAngle = angle;
 		
-		//Check if wall is placed horizontally or vertically
-		if(width>height){
+		//Check if player collides with horizontal side or vertical side
+		if(playerTransform.getX()+playerSize.getWidth()/2>wallX&&playerTransform.getX()+playerSize.getWidth()/2<wallX+wallWidth){
 			newAngle = flipVertical(angle);
-		}else{
+			if(angle>Math.PI){
+				//Collision on lower side of the wall
+				playerTransform.setY(wallY+wallHeight);
+			}else{
+				//Collision on upper side of the wall
+				playerTransform.setY(wallY-playerSize.getHeight());
+			}
+			
+		}else if(playerTransform.getY()+playerSize.getHeight()/2>wallY&&playerTransform.getY()+playerSize.getHeight()/2<wallY+wallHeight){
 			newAngle = flipHorizontal(angle);
+			if(angle>Math.PI/2&&angle<(Math.PI*3)/2){
+				//Collision on right side of wall
+				playerTransform.setX(wallX+wallWidth);
+			}else{
+				//Collision on left side of wall
+				playerTransform.setX(wallX-playerSize.getWidth());
+			}
+			
+		}else{
+			//Corner or almost corner collision			
+			newAngle = Utils.reverseAngle(angle);
 		}
-		return newAngle;
+		playerVelocity.setAngle(newAngle);
 	}
 	
 	private float flipVertical(float angle){ 
@@ -122,37 +149,6 @@ public class CollisionSystem extends EntitySystem{
 		  return newAngle;
 	}
 	
-	private void correctPosition(Entity wall, Entity player){
-		float width = wall.getComponent(Size.class).getWidth();
-		float height = wall.getComponent(Size.class).getHeight();
-		float wallX = wall.getComponent(Transform.class).getX();
-		float wallY = wall.getComponent(Transform.class).getY();
-		Transform playerTransform = transformMapper.get(player);
-		float playerX = playerTransform.getX();
-		float playerY = playerTransform.getY();
-		float playerWidth = player.getComponent(Size.class).getWidth();
-		float playerHeight = player.getComponent(Size.class).getHeight();
-		
-		if(width>height){
-			if(playerY<wallY+height&&wallY==0){
-				playerY=wallY+height;
-				playerTransform.setY(playerY);
-			}else if(playerY<wallY){
-				playerY=wallY-playerHeight;
-				playerTransform.setY(playerY);
-			}
-		}else{
-			if(playerX<wallX+width&&wallX==0){
-				playerX=wallX+width;
-				playerTransform.setX(playerX);
-			}else if(playerX<wallX){
-				playerX=wallX-playerWidth;
-				playerTransform.setX(playerX);
-			}
-		}
-	}
-	
-		
 	/**
 	 * Checks if two entities is colliding with each other 
 	 * 
@@ -162,17 +158,22 @@ public class CollisionSystem extends EntitySystem{
 	 */
 	public boolean collisionExists(Entity e1, Entity e2){
 		
-		float e1X = e1.getComponent(Transform.class).getX();
-		float e1Y = e1.getComponent(Transform.class).getY();
-		float e1Width = e1.getComponent(Size.class).getWidth();
-		float e1Height = e1.getComponent(Size.class).getHeight();
+		Size e1Size = sizeMapper.get(e1);
+		Transform e1Transform = transformMapper.get(e1);
+		Size e2Size = sizeMapper.get(e2);
+		Transform e2Transform = transformMapper.get(e2);
+		
+		float e1X = e1Transform.getX();
+		float e1Y = e1Transform.getY();
+		float e1Width = e1Size.getWidth();
+		float e1Height = e1Size.getHeight();
 		
 		CollisionObject collisionObject1 =  new CollisionObject(e1X, e1Y, e1Width, e1Height) ;
 		
-		float e2X = e2.getComponent(Transform.class).getX();
-		float e2Y = e2.getComponent(Transform.class).getY();
-		float e2Width = e2.getComponent(Size.class).getWidth();
-		float e2Height = e2.getComponent(Size.class).getHeight();
+		float e2X = e2Transform.getX();
+		float e2Y = e2Transform.getY();
+		float e2Width = e2Size.getWidth();
+		float e2Height = e2Size.getHeight();
 		
 		CollisionObject collisionObject2 =  new CollisionObject(e2X, e2Y, e2Width, e2Height) ;
 		

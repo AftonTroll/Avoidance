@@ -28,7 +28,7 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import se.chalmers.avoidance.EntityFactory;
+import se.chalmers.avoidance.core.EntityFactory;
 import se.chalmers.avoidance.core.systems.CollisionSystem;
 import se.chalmers.avoidance.core.systems.PlayerControlSystem;
 import se.chalmers.avoidance.core.systems.SpatialRenderSystem;
@@ -81,6 +81,7 @@ public class GameState implements IState{
 		world.addEntity(EntityFactory.createWall(world,1200,20,0,455));
 		world.addEntity(EntityFactory.createWall(world,20,800,0,0));
 		world.addEntity(EntityFactory.createWall(world,20,800,700,0));
+		world.addEntity(EntityFactory.createObstacle(world,50,50,200,200));
 	}
 	
 	/**
