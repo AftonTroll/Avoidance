@@ -18,7 +18,7 @@
  *  
  */
 
-package se.chalmers.avoidance.components;
+package se.chalmers.avoidance.core.components;
 
 import se.chalmers.avoidance.util.Utils;
 
@@ -78,6 +78,7 @@ public class Transform extends Component {
 	 * @param direction the {@link #direction direction} 
 	 */
 	public Transform(float x, float y, float direction) {
+		super();
 		setPosition(x, y);
 		setDirection(direction);
 	}
@@ -112,7 +113,7 @@ public class Transform extends Component {
 	 * @param x the x-coordinate
 	 * @param y the y-coordinate
 	 */
-	public void setPosition(float x, float y) {
+	public final void setPosition(float x, float y) {
 		setX(x);
 		setY(y);
 	}
@@ -122,7 +123,7 @@ public class Transform extends Component {
 	 * 
 	 * @param x the x-coordinate
 	 */
-	public void setX(float x) {
+	public final void setX(float x) {
 		this.x = x;
 	}
 	
@@ -131,7 +132,7 @@ public class Transform extends Component {
 	 * 
 	 * @param y the y-coordinate
 	 */
-	public void setY(float y) {
+	public final void setY(float y) {
 		this.y = y;
 	}
 	
@@ -158,7 +159,7 @@ public class Transform extends Component {
 	 * 
 	 * @param direction the direction
 	 */
-	public void setDirection(float direction) {
+	public final void setDirection(float direction) {
 		this.direction = Utils.simplifyAngle(direction);
 	}
 	

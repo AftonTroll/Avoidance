@@ -23,7 +23,7 @@
  *  
  */
 
-package se.chalmers.avoidance.states;
+package se.chalmers.avoidance.core.states;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -41,6 +41,8 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import se.chalmers.avoidance.util.ScreenResolution;
+
 import android.opengl.GLES20;
 
 /**
@@ -49,9 +51,6 @@ import android.opengl.GLES20;
  *
  */
 public class MenuState implements IState, IOnMenuItemClickListener {
-
-	private static final int CAMERA_WIDTH = 720;
-    private static final int CAMERA_HEIGHT = 480;
 
     protected static final int MENU_START = 0;
     protected static final int MENU_HIGHSCORES = MENU_START + 1;
@@ -110,8 +109,8 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 		menuScene.setBackground(new Background(0f, 0f, 0f));
 		
 		//center the scene
-		this.menuScene.setX(this.CAMERA_WIDTH / 2 - 100);
-		this.menuScene.setY(this.CAMERA_HEIGHT / 2 - 150);
+		this.menuScene.setX(ScreenResolution.getWidthResolution() / 2 - 100);
+		this.menuScene.setY(ScreenResolution.getHeightResolution() / 2 - 150);
 
 		//create menu items
 		final SpriteMenuItem startMenuItem = new SpriteMenuItem(MENU_START,
