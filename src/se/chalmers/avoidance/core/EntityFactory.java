@@ -70,4 +70,14 @@ public class EntityFactory {
 		
 		return wall;
 	}
+	
+	public static Entity createEnemy(World world, float xPos, float yPos) {
+		Entity enemy = world.createEntity();
+		world.getManager(GroupManager.class).add(enemy, "ENEMIES");
+		
+		enemy.addComponent(new Transform(xPos, yPos));
+		enemy.addComponent(new Velocity());
+		enemy.addComponent(new Size(32,32));
+		return enemy;
+	}
 }
