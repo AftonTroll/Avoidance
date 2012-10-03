@@ -38,6 +38,7 @@ import org.andengine.ui.activity.BaseGameActivity;
 import se.chalmers.avoidance.core.states.GameState;
 import se.chalmers.avoidance.core.states.StateID;
 import se.chalmers.avoidance.core.states.StateManager;
+import se.chalmers.avoidance.util.ScreenResolution;
 import android.hardware.SensorManager;
 
 /**
@@ -49,9 +50,6 @@ import android.hardware.SensorManager;
  */
 public class MainActivity extends BaseGameActivity {
 
-    private final int CAMERA_WIDTH = 720;
-    private final int CAMERA_HEIGHT = 480;
-   
     private Camera camera;
     private Scene splashScene;
     private StateManager stateManager;
@@ -61,7 +59,9 @@ public class MainActivity extends BaseGameActivity {
      * Sets the engine options (camera, screen rotation, ...) 
      */
 	public EngineOptions onCreateEngineOptions() {
-		camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+		ScreenResolution.fetchFromActivity(this);
+		camera = new Camera(0, 0, ScreenResolution.getWidthResolution(), 
+				ScreenResolution.getHeightResolution());
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, 
         		new FillResolutionPolicy(), camera);
         return engineOptions;
