@@ -37,6 +37,7 @@ public class SpawnSystem extends EntityProcessingSystem{
 		world.addEntity(EntityFactory.createWall(world,1200,20,0,455));
 		world.addEntity(EntityFactory.createWall(world,20,800,0,0));
 		world.addEntity(EntityFactory.createWall(world,20,800,700,0));
+		world.addEntity(EntityFactory.createObstacle(world,50,50,200,200));
 	}
 
 	@Override
