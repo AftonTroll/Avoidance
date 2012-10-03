@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends BaseGameActivity implements PropertyChangeListener {
 
@@ -34,6 +35,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
     private Camera camera;
     private Scene splashScene;
     private StateManager stateManager;
+    private Dialog gameOverDialog;
 
 	public EngineOptions onCreateEngineOptions() {
 		camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
@@ -117,8 +119,10 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case 1:
+			if (this.gameOverDialog != null)
+				removeDialog(1);
 			LayoutInflater layoutInflater = LayoutInflater.from(this);
-			View submitTextView = layoutInflater.inflate(R.layout.submit, null);
+			View submitTextView = layoutInflater.inflate(R.layout.submit_dialog, null);
 			final EditText nameText = (EditText) submitTextView
 					.findViewById(R.id.nameField);
 			nameText.setOnClickListener(new OnClickListener() {
@@ -126,10 +130,11 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 					nameText.setHint(null);
 				}
 			});
-
-			return new AlertDialog.Builder(MainActivity.this)
+			
+			final TextView text = (TextView) submitTextView.findViewById(R.id.text);
+			text.append("7'356"); //append score here
+			return setGameOverDialog(new AlertDialog.Builder(MainActivity.this)
 					.setTitle("GameOver")
-					.setMessage("Score: " + "7'345")
 					.setView(submitTextView)
 					.setPositiveButton("Submit",
 							new DialogInterface.OnClickListener() {
@@ -137,11 +142,17 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 										int whichButton) {
 									mEngine.getScene().getLastChild().detachSelf();
 								}
-							}).create();
+							})
+							.create());
 
 		default:
 			break;
 		}
 		return null;
+	}
+	
+	private Dialog setGameOverDialog(Dialog dialog) {
+		this.gameOverDialog = dialog;
+		return dialog;
 	}
 }
