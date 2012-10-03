@@ -28,7 +28,7 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import se.chalmers.avoidance.EntityFactory;
+import se.chalmers.avoidance.core.EntityFactory;
 import se.chalmers.avoidance.core.systems.CollisionSystem;
 import se.chalmers.avoidance.core.systems.PlayerControlSystem;
 import se.chalmers.avoidance.core.systems.SpatialRenderSystem;
