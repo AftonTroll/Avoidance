@@ -12,6 +12,12 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 
+/**
+ * System for handling rendering of the heads-up display * 
+ * 
+ * @author Jakob Svensson
+ *
+ */
 public class HudRenderSystem extends EntityProcessingSystem{
 	
 	private Font font;
@@ -20,6 +26,13 @@ public class HudRenderSystem extends EntityProcessingSystem{
 	private VertexBufferObjectManager vbom;
 	private ComponentMapper<Time> timeMapper;
 	
+	/**
+	 * Construct a new HudRenderSystem
+	 * 
+	 * @param scene The scene of the game
+	 * @param vbom A VertexBufferObjectManager
+	 * @param font The font of the score text
+	 */
 	public HudRenderSystem(Scene scene, VertexBufferObjectManager vbom, Font font) {
 		super(Aspect.getAspectForAll(Time.class));
 		this.font = font;	
@@ -38,11 +51,21 @@ public class HudRenderSystem extends EntityProcessingSystem{
 		score.setZIndex(100);
 	}
 	
+	/**
+	 * Determines if the system should be processed or not
+	 * 
+	 * @return true if system should be processed, false if not	
+	 */
 	@Override
 	protected boolean checkProcessing() {
 		return true;
 	}
-
+	
+	/**
+	 * Processes entities
+	 * 
+	 * @param entity the entity to be processed
+	 */
 	@Override
 	protected void process(Entity entity) {
 		Time time = timeMapper.get(entity);
