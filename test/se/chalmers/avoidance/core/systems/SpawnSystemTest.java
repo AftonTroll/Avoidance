@@ -22,6 +22,7 @@ public class SpawnSystemTest {
 		world = new World();
 		world.setManager(new TagManager());
 		world.setManager(new GroupManager());
+		world.setSystem(new CollisionSystem());
 		
 		ss = new SpawnSystem();
 		world.setSystem(ss);
@@ -41,10 +42,9 @@ public class SpawnSystemTest {
 
 	@Test
 	public void testProcessEntity() {
-		Time t = e.getComponent(Time.class);
-		t.updateTime(5);
-		
+		Time t = e.getComponent(Time.class);		
 		for(int i = 1; i<=50; i++){
+			t.updateTime(5);
 			ss.process(e);
 			assertTrue(world.getManager(GroupManager.class).getEntities("ENEMIES").size() == i);
 		}
