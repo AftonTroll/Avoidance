@@ -79,7 +79,7 @@ public class MainActivity extends BaseGameActivity {
 			throws Exception {
 		regions = new HashMap<String, TextureRegion>();
 		scoreFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
-				TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 48);
+				TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 20);
 				
         // Set the asset path of the images
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
