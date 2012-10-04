@@ -26,7 +26,7 @@ public class SpawnSystemTest {
 		
 		ss = new SpawnSystem();
 		world.setSystem(ss);
-		ss.initialize();
+		world.initialize();
 		
 		Time t = new Time();
 		e = world.createEntity();
@@ -37,7 +37,7 @@ public class SpawnSystemTest {
 	@Test
 	public void testInitialize() {
 		assertTrue(world.getManager(TagManager.class).getEntity("PLAYER") != null);
-		assertTrue(world.getManager(GroupManager.class).getEntities("WALLS").size() == 4);
+		assertTrue(world.getManager(GroupManager.class).getEntities("WALLS").size() == 5);
 	}
 
 	@Test
