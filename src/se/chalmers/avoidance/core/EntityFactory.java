@@ -51,7 +51,7 @@ public class EntityFactory {
 		
 		player.addComponent(new Transform(200,100));
 		player.addComponent(new Velocity());
-		player.addComponent(new Size(32,32));
+		player.addComponent(new Size(64,64));
 		player.addComponent(new Spatial("ball.png"));
 		
 		return player;
