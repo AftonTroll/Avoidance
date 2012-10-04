@@ -20,6 +20,8 @@
 
 package se.chalmers.avoidance;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 
 import org.andengine.engine.camera.Camera;
@@ -29,6 +31,8 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -36,8 +40,11 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import se.chalmers.avoidance.core.states.GameState;
+import se.chalmers.avoidance.core.states.MenuState;
 import se.chalmers.avoidance.core.states.StateID;
 import se.chalmers.avoidance.core.states.StateManager;
+import se.chalmers.avoidance.util.ScreenResolution;
+import android.graphics.Typeface;
 import android.hardware.SensorManager;
 
 /**
@@ -47,21 +54,22 @@ import android.hardware.SensorManager;
  * 
  * @author Markus Ekström
  */
-public class MainActivity extends BaseGameActivity {
+public class MainActivity extends BaseGameActivity implements PropertyChangeListener {
 
-    private final int CAMERA_WIDTH = 720;
-    private final int CAMERA_HEIGHT = 480;
-   
     private Camera camera;
     private Scene splashScene;
     private StateManager stateManager;
+
     private HashMap<String, TextureRegion> regions;
+    private Font scoreFont;
    
     /**
      * Sets the engine options (camera, screen rotation, ...) 
      */
 	public EngineOptions onCreateEngineOptions() {
-		camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+		ScreenResolution.fetchFromActivity(this);
+		camera = new Camera(0, 0, ScreenResolution.getWidthResolution(), 
+				ScreenResolution.getHeightResolution());
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, 
         		new FillResolutionPolicy(), camera);
         return engineOptions;
@@ -74,7 +82,9 @@ public class MainActivity extends BaseGameActivity {
 	public void onCreateResources(OnCreateResourcesCallback onCreateResourcesCallback)
 			throws Exception {
 		regions = new HashMap<String, TextureRegion>();
-		
+		scoreFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
+				TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 20);
+				
         // Set the asset path of the images
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
         BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(
@@ -88,18 +98,19 @@ public class MainActivity extends BaseGameActivity {
 		.createFromAsset( bitmapTextureAtlas, this, "ball.png", 0, 0));
         
         regions.put("wall_horisontal.png",  BitmapTextureAtlasTextureRegionFactory
-		.createFromAsset( bitmapTextureAtlas, this, "wall_horisontal.png", 0, 34));
+		.createFromAsset( bitmapTextureAtlas, this, "wall_horisontal.png", 0, 68));
         
         regions.put("wall_vertical.png",  BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "wall_vertical.png", 34,64));
+        		.createFromAsset( bitmapTextureAtlas, this, "wall_vertical.png", 34,98));
         
         regions.put("obstacle.png",  BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "obstacle.png", 64,64));
+        		.createFromAsset( bitmapTextureAtlas, this, "obstacle.png", 64,98));
 
         regions.put("enemy.png",  BitmapTextureAtlasTextureRegionFactory
         		.createFromAsset( bitmapTextureAtlas, this, "enemy.png", 64,120));
         
         bitmapTextureAtlas.load();
+        scoreFont.load();
 		onCreateResourcesCallback.onCreateResourcesFinished();
 	}
 	
@@ -120,7 +131,7 @@ public class MainActivity extends BaseGameActivity {
 		
         initializeGame();         
         splashScene.detachSelf();
-		stateManager.setState(StateID.Game);
+		stateManager.setState(StateID.Menu);
 		mEngine.registerUpdateHandler(new IUpdateHandler(){
 			public void onUpdate(float tpf) {
 				stateManager.update(tpf);
@@ -139,9 +150,14 @@ public class MainActivity extends BaseGameActivity {
 	 */
 	private void initializeGame() {
 		stateManager = new StateManager(mEngine);
+
 		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
-				regions, this.getVertexBufferObjectManager());
+				regions, this.getVertexBufferObjectManager(),scoreFont);
+		MenuState menuState = new MenuState(this);
 		stateManager.addState(StateID.Game, gameState);
+		stateManager.addState(StateID.Menu, menuState);
+		
+		stateManager.addPropertyChangeListener(this);
 	}
 
 	/**
@@ -149,6 +165,14 @@ public class MainActivity extends BaseGameActivity {
 	 */
     private void initSplashScene() {
 	    splashScene = new Scene();
-	    splashScene.setBackground(new Background(0.0f, 0.0f, 0.0f));
+	    splashScene.setBackground(new Background(0.0f, 0.0f, 1.0f));
     }      
+
+	public void propertyChange(PropertyChangeEvent event) {
+		if (event != null && event.getNewValue() != null) {
+			if ("SYSTEM.EXIT".equals(event.getPropertyName())) {
+				this.finish();
+			}
+		}
+	} 
 }

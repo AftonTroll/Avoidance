@@ -17,10 +17,12 @@
  * along with Avoidance.  If not, see <http://www.gnu.org/licenses/>. 
  *  
  */
+
 package se.chalmers.avoidance.core.states;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,12 +31,13 @@ import org.andengine.engine.Engine;
 /**
  * A manager for the game's states.
  * 
- * @author Markus Ekström
+ * @author Markus Ekström, modified by Florian Minges
  */
-public class StateManager implements PropertyChangeListener{
+public class StateManager implements PropertyChangeListener {
 	private Engine engine;
 	private Map<StateID, IState> stateMap = new HashMap<StateID, IState>();
 	private IState currentState;
+	private PropertyChangeSupport pcs;
 
 	/**
 	 * Constructs a <code>StateManager</code> using the <code>Engine</code>
@@ -43,32 +46,38 @@ public class StateManager implements PropertyChangeListener{
 	 */
 	public StateManager(Engine engine) {
 		this.engine = engine;
+		pcs = new PropertyChangeSupport(this);
 	}
 	
 	/**
-	 * Adds a state.
-	 * @param stateID The desired ID of the new state.
-	 * @param state The new state.
-	 */
+	* Adds a state.
+	* @param stateID The desired ID of the new state.
+	* @param state The new state.
+	*/
 	public void addState(StateID stateID, IState state) {
-		stateMap.put(stateID, state);
+		if (stateMap.put(stateID, state) == null)
+			state.addPropertyChangeListener(this);
 	}
-	
+
 	/**
-	 * Removes a state specified by the ID.
-	 * @param stateID The ID of the state to be removed.
-	 */
+	* Removes a state specified by the ID.
+	* @param stateID The ID of the state to be removed.
+	*/
 	public void removeState(StateID stateID) {
-		stateMap.remove(stateID);
+		IState state = stateMap.remove(stateID);
+		if (state != null)
+			state.removePropertyChangeListener(this);
 	}
-	
+
 	/**
-	 * Sets the current state to the passed state.
-	 * @param stateID The ID of the state to be set to current.
-	 */
+	* Sets the current state to the passed state.
+	* @param stateID The ID of the state to be set to current.
+	*/
 	public void setState(StateID stateID) {
-		currentState = stateMap.get(stateID);
-		engine.setScene(currentState.getScene());
+		if (stateMap.get(stateID) != null) {
+			currentState = stateMap.get(stateID);
+			engine.setScene(currentState.getScene());
+		}
 	}
 	
 	/**
@@ -82,7 +91,30 @@ public class StateManager implements PropertyChangeListener{
 	/**
 	 * Reacts if there is to be a state change.
 	 */
-	public void propertyChange(PropertyChangeEvent pce) {
-		
+	public void propertyChange(PropertyChangeEvent event) {
+		if (event != null && event.getNewValue() != null) {
+			if ("SYSTEM.EXIT".equals(event.getPropertyName())) {
+				pcs.firePropertyChange(event);
+			} else if ("CHANGE_STATE".equals(event.getPropertyName())) {
+				setState((StateID) event.getNewValue());
+			}
+		}
 	}
+	
+	/**
+	 * Adds a listener to this state manager.
+	 * @param pcl the listener to add
+	 */
+	public void addPropertyChangeListener(PropertyChangeListener pcl) {
+		pcs.addPropertyChangeListener(pcl);
+	}
+
+	/**
+	 * Removes a listener from this state manager.
+	 * @param pcl the listener to remove
+	 */
+	public void removePropertyChangeListener(PropertyChangeListener pcl) {
+		pcs.removePropertyChangeListener(pcl);
+	}
+	
 }

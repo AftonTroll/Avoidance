@@ -22,6 +22,7 @@ package se.chalmers.avoidance.core;
 
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Spatial;
+import se.chalmers.avoidance.core.components.Time;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
 
@@ -48,9 +49,9 @@ public class EntityFactory {
 		Entity player = world.createEntity();
 		world.getManager(TagManager.class).register("PLAYER", player);
 		
-		player.addComponent(new Transform(50,100));
+		player.addComponent(new Transform(200,100));
 		player.addComponent(new Velocity());
-		player.addComponent(new Size(32,32));
+		player.addComponent(new Size(64,64));
 		player.addComponent(new Spatial("ball.png"));
 		
 		return player;
@@ -92,4 +93,12 @@ public class EntityFactory {
 		
 		return obstacle;
 	}
+	public static Entity createScore(World world){
+		Entity score = world.createEntity();
+		
+		score.addComponent(new Time());
+		
+		return score;
+	}
+	
 }

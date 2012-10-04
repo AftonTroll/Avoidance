@@ -29,7 +29,6 @@ import org.junit.Test;
 
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
-import se.chalmers.avoidance.core.systems.PlayerControlSystem;
 import se.chalmers.avoidance.util.Utils;
 
 import com.artemis.Entity;

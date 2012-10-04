@@ -5,6 +5,7 @@ import se.chalmers.avoidance.core.EntityFactory;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Time;
 import se.chalmers.avoidance.core.components.Transform;
+import se.chalmers.avoidance.util.ScreenResolution;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -32,12 +33,19 @@ public class SpawnSystem extends EntityProcessingSystem{
 		sizeMapper = world.getMapper(Size.class);
 		tagManager = world.getManager(TagManager.class);
 		groupManager = world.getManager(GroupManager.class);
+		float wallThickness = 20f;
 		world.addEntity(EntityFactory.createPlayer(world));
-		world.addEntity(EntityFactory.createWall(world,1200,25,0,0));
-		world.addEntity(EntityFactory.createWall(world,1200,20,0,455));
-		world.addEntity(EntityFactory.createWall(world,20,800,0,0));
-		world.addEntity(EntityFactory.createWall(world,20,800,700,0));
-		world.addEntity(EntityFactory.createObstacle(world,50,50,200,200));
+		world.addEntity(EntityFactory.createWall(world, ScreenResolution.getWidthResolution(), 
+				wallThickness, 0, 0));
+		world.addEntity(EntityFactory.createWall(world, ScreenResolution.getWidthResolution(), 
+				wallThickness, 0, ScreenResolution.getHeightResolution() - wallThickness));
+		world.addEntity(EntityFactory.createWall(world, wallThickness, 
+				ScreenResolution.getHeightResolution(), 0, 0));
+		world.addEntity(EntityFactory.createWall(world, wallThickness, 
+				ScreenResolution.getHeightResolution(), 
+				ScreenResolution.getWidthResolution() - wallThickness, 0));
+		world.addEntity(EntityFactory.createObstacle(world, 50, 50, 200, 200));
+		world.addEntity(EntityFactory.createScore(world));
 	}
 
 	@Override

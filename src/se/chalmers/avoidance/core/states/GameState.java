@@ -21,39 +21,48 @@
 package se.chalmers.avoidance.core.states;
 
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import se.chalmers.avoidance.core.EntityFactory;
 import se.chalmers.avoidance.core.systems.CollisionSystem;
 import se.chalmers.avoidance.core.systems.EnemyControlSystem;
+import se.chalmers.avoidance.core.systems.HudRenderSystem;
 import se.chalmers.avoidance.core.systems.PlayerControlSystem;
 import se.chalmers.avoidance.core.systems.SpatialRenderSystem;
 import se.chalmers.avoidance.core.systems.SpawnSystem;
 import se.chalmers.avoidance.input.AccelerometerListener;
+import se.chalmers.avoidance.util.ScreenResolution;
 import android.hardware.SensorManager;
 
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
+
 /**
  * The game state.
  * 
  * @author Markus Ekström
  */
-public class GameState implements IState{
+public class GameState implements IState {
 
 	private Scene scene;
 	private World world;
+	private PropertyChangeSupport pcs;
 	
-	public GameState(SensorManager sensorManager, HashMap<String, TextureRegion> regions, VertexBufferObjectManager vbom) {
-		initialize(sensorManager, regions, vbom);
+	public GameState(SensorManager sensorManager, HashMap<String, TextureRegion> regions, VertexBufferObjectManager vbom, Font scoreFont) {
+		initialize(sensorManager, regions, vbom, scoreFont);
+		pcs = new PropertyChangeSupport(this);
 	}
 	
-	private void initialize(SensorManager sensorManager, HashMap<String, TextureRegion> regions, VertexBufferObjectManager vbom) {
+	private void initialize(SensorManager sensorManager, HashMap<String, TextureRegion> regions, VertexBufferObjectManager vbom, Font scoreFont ) {
 		scene = new Scene();
 		scene.setBackground(new Background(1f, 0f, 0f));
 		world = new World();
@@ -69,6 +78,7 @@ public class GameState implements IState{
 		world.setSystem(new PlayerControlSystem());
 		world.setSystem(new EnemyControlSystem());
 		world.setSystem(new SpawnSystem());
+		world.setSystem(new HudRenderSystem(scene, vbom, scoreFont));
 		
 		//Initialize world.
 		world.initialize();
@@ -95,5 +105,21 @@ public class GameState implements IState{
 	 */
 	public Scene getScene() {
 		return scene;
+	}
+	
+	/**
+	 * Adds a listener to this state.
+	 * @param pcl the listener to add
+	 */
+	public void addPropertyChangeListener(PropertyChangeListener pcl) {
+		pcs.addPropertyChangeListener(pcl);
+	}
+
+	/**
+	 * Removes a listener from this state.
+	 * @param pcl the listener to remove
+	 */
+	public void removePropertyChangeListener(PropertyChangeListener pcl) {
+		pcs.removePropertyChangeListener(pcl);
 	}
 }
