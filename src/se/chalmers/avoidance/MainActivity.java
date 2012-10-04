@@ -166,6 +166,9 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	    splashScene.setBackground(new Background(0.0f, 0.0f, 1.0f));
     }      
 
+    /**
+     * Handles events and takes the according action.
+     */
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event != null && event.getNewValue() != null) {
 			if (EventMessageConstants.QUIT_GAME.equals(event.getPropertyName())) {
