@@ -41,6 +41,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import se.chalmers.avoidance.constants.EventMessageConstants;
 import se.chalmers.avoidance.util.ScreenResolution;
 
 import android.opengl.GLES20;
@@ -172,17 +173,18 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 		//TODO Use constants instead of hard-coded strings
 		switch (pMenuItem.getID()) {
 		case MENU_START:
-			pcs.firePropertyChange("CHANGE_STATE", StateID.Menu, StateID.Game);
+			pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Menu, StateID.Game);
 			return true;
 		case MENU_HIGHSCORES:
-			pcs.firePropertyChange("CHANGE_STATE", StateID.Menu, StateID.Highscore);
+			pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Menu, 
+					StateID.Highscore);
 			return true;
 		case MENU_HELP:
-			pcs.firePropertyChange("CHANGE_STATE", StateID.Menu, StateID.Help);
+			pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Menu, StateID.Help);
 			return true;
 		case MENU_QUIT:
 			/* End Activity. */
-			pcs.firePropertyChange("SYSTEM.EXIT", null, true);
+			pcs.firePropertyChange(EventMessageConstants.QUIT_GAME, null, true);
 			return true;
 		default:
 			return false;
