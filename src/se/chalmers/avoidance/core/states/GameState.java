@@ -29,8 +29,10 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import se.chalmers.avoidance.core.systems.CollisionSystem;
+import se.chalmers.avoidance.core.systems.EnemyControlSystem;
 import se.chalmers.avoidance.core.systems.PlayerControlSystem;
 import se.chalmers.avoidance.core.systems.SpatialRenderSystem;
+import se.chalmers.avoidance.core.systems.SpawnSystem;
 import se.chalmers.avoidance.input.AccelerometerListener;
 import android.hardware.SensorManager;
 
@@ -65,6 +67,8 @@ public class GameState implements IState{
 		world.setSystem(new SpatialRenderSystem(regions, vbom, scene));
 		world.setSystem(new CollisionSystem());
 		world.setSystem(new PlayerControlSystem());
+		world.setSystem(new EnemyControlSystem());
+		world.setSystem(new SpawnSystem());
 		
 		//Initialize world.
 		world.initialize();

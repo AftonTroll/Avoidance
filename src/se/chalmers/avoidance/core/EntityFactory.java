@@ -78,6 +78,7 @@ public class EntityFactory {
 		enemy.addComponent(new Transform(xPos, yPos));
 		enemy.addComponent(new Velocity());
 		enemy.addComponent(new Size(32,32));
+		enemy.addComponent(new Spatial("enemy.png"));
 		return enemy;
 	}
 
