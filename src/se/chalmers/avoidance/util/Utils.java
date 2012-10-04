@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2012 Florian Minges
+ * Copyright (c) 2012 Florian Minges, Filip Brynfors
  * 
  * This file is part of Avoidance.
  * 
@@ -20,9 +20,10 @@
 
 package se.chalmers.avoidance.util;
 
+
 /**
  * Contains a set of static helper-methods.
- * @author Florian Minges
+ * @author Florian Minges, Filip Brynfors
  *
  */
 public class Utils {
@@ -35,9 +36,32 @@ public class Utils {
 	 * @return The simplified angle.
 	 */
 	public static float simplifyAngle(float angle) {
-		angle = angle % (float)(2 * Math.PI);
-		return angle < 0 ? (angle + (float)(2 * Math.PI)) : angle; //make angle positive
+		float simplifiedAngle = angle % (float)(2 * Math.PI);
+		return simplifiedAngle < 0 ? (simplifiedAngle + (float)(2 * Math.PI)) : 
+														simplifiedAngle; //make angle positive
 		//TODO Change to a better name?
+	}
+	
+	/**
+	 * Calculates the speed of the horizontal part of the velocity with
+	 * the given angle and speed
+	 * @param speed the speed of the velocity
+	 * @param angle the angle of the velocity
+	 * @return the horizontal part of the velocity
+	 */
+	public static float getHorizontalSpeed(float speed, float angle) {
+		return (float) (speed * Math.cos(angle));
+	}
+	
+	/**
+	 * Calculates the speed of the vertical part of the velocity with
+	 * the given angle and speed
+	 * @param speed the speed of the velocity
+	 * @param angle the angle of the velocity
+	 * @return the vertical part of the velocity
+	 */
+	public static float getVerticalSpeed(float speed, float angle) {
+		return (float) (speed * Math.sin(angle));
 	}
 	
 	/**
@@ -50,8 +74,8 @@ public class Utils {
 	 * @return the reversed angle.
 	 */
 	public static float reverseAngle(float angle) {
-		float reverse = (angle < (float) Math.PI) ? 1f : -1f;
-		return angle + (float)Math.PI * reverse;
+		float rotation = (angle < (float) Math.PI) ? 1f : -1f;
+		return angle + (float)Math.PI * rotation;
 	}
 
 }

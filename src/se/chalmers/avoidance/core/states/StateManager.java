@@ -1,4 +1,24 @@
-package se.chalmers.avoidance.states;
+/* 
+ * Copyright (c) 2012 Markus Ekström
+ * 
+ * This file is part of Avoidance.
+ * 
+ * Avoidance is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Avoidance is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Avoidance.  If not, see <http://www.gnu.org/licenses/>. 
+ *  
+ */
+
+package se.chalmers.avoidance.core.states;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -8,17 +28,27 @@ import java.util.Map;
 
 import org.andengine.engine.Engine;
 
+/**
+ * A manager for the game's states.
+ * 
+ * @author Markus Ekström, modified by Florian Minges
+ */
 public class StateManager implements PropertyChangeListener {
 	private Engine engine;
 	private Map<StateID, IState> stateMap = new HashMap<StateID, IState>();
 	private IState currentState;
 	private PropertyChangeSupport pcs;
 
+	/**
+	 * Constructs a <code>StateManager</code> using the <code>Engine</code>
+	 * provided.
+	 * @param engine The engine from AndEngine.
+	 */
 	public StateManager(Engine engine) {
 		this.engine = engine;
-		this.pcs = new PropertyChangeSupport(this);
+		pcs = new PropertyChangeSupport(this);
 	}
-
+	
 	/**
 	* Adds a state.
 	* @param stateID The desired ID of the new state.
@@ -49,13 +79,15 @@ public class StateManager implements PropertyChangeListener {
 			engine.setScene(currentState.getScene());
 		}
 	}
-
-
 	
+	/**
+	 * Updates the current state.
+	 * @param tpf Time since last frame.
+	 */
 	public void update(float tpf) {
 		currentState.update(tpf);
 	}
-
+	
 	/**
 	 * Reacts if there is to be a state change.
 	 */
@@ -84,4 +116,5 @@ public class StateManager implements PropertyChangeListener {
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.removePropertyChangeListener(pcl);
 	}
+	
 }

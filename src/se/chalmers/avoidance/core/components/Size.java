@@ -18,7 +18,7 @@
  *  
  */
 
-package se.chalmers.avoidance.components;
+package se.chalmers.avoidance.core.components;
 
 import com.artemis.Component;
 
@@ -53,6 +53,7 @@ public class Size extends Component {
 	 * @param height the height 
 	 */
 	public Size(float width, float height) {
+		super();
 		setSize(width, height);
 	}
 	
@@ -78,7 +79,7 @@ public class Size extends Component {
 	 * @param width the width 
 	 * @param height the height 
 	 */
-	public void setSize(float width, float height) {
+	public final void setSize(float width, float height) {
 		setWidth(width);
 		setHeight(height);
 	}
@@ -88,7 +89,7 @@ public class Size extends Component {
 	 * 
 	 * @param width the width 
 	 */
-	public void setWidth(float width) {
+	public final void setWidth(float width) {
 		this.width = width >= 0 ? width : 0;
 	}
 	
@@ -98,7 +99,7 @@ public class Size extends Component {
 	 * 
 	 * @param height the height 
 	 */
-	public void setHeight(float height) {
+	public final void setHeight(float height) {
 		this.height = height >= 0 ? height : 0;
 	}
 	

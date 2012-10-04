@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2012 Florian Minges
+ * Copyright (c) 2012 Florian Minges, Filip Brynfors
  * 
  * This file is part of Avoidance.
  * 
@@ -25,9 +25,13 @@ import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import se.chalmers.avoidance.core.components.Velocity;
+
 public class UtilsTest {
 	
 	private static float f1, f2, f3, f4, f5, f6;
+	private static Velocity v1, v2, v3, v4, v5;
+	private final float TOLERANCE = 0.0001f;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -37,6 +41,12 @@ public class UtilsTest {
 		f4 = -2f;
 		f5 = -(float)Math.PI;
 		f6 = -7f;
+		
+		v1 = new Velocity(5, 0);
+		v2 = new Velocity(0, 0);
+		v3 = new Velocity(10, (float) (Math.PI/2));
+		v4 = new Velocity(15, (float) (-Math.PI));
+		v5 = new Velocity((float) Math.sqrt(8), (float) (Math.PI/4));
 	}
 
 	@Test
@@ -57,6 +67,24 @@ public class UtilsTest {
 		assertTrue(Utils.reverseAngle(f4) == (float) Math.PI + f4);
 		assertTrue(Utils.reverseAngle(f5) == f5 + (float) Math.PI);
 		assertTrue(Utils.reverseAngle(f6) == (float) Math.PI + f6);
+	}
+	
+	@Test
+	public void testGetHorizontalSpeed(){
+		assertTrue(Math.abs(Utils.getHorizontalSpeed(v1.getSpeed(), v1.getAngle()) - 5) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getHorizontalSpeed(v2.getSpeed(), v2.getAngle())) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getHorizontalSpeed(v3.getSpeed(), v3.getAngle())) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getHorizontalSpeed(v4.getSpeed(), v4.getAngle()) + 15) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getHorizontalSpeed(v5.getSpeed(), v5.getAngle()) - 2) <= TOLERANCE);
+	}
+	
+	@Test
+	public void testGetVerticalSpeed(){
+		assertTrue(Math.abs(Utils.getVerticalSpeed(v1.getSpeed(), v1.getAngle())) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getVerticalSpeed(v2.getSpeed(), v2.getAngle())) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getVerticalSpeed(v3.getSpeed(), v3.getAngle()) - 10) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getVerticalSpeed(v4.getSpeed(), v4.getAngle())) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getVerticalSpeed(v5.getSpeed(), v5.getAngle()) -2 ) <= TOLERANCE);
 	}
 
 }
