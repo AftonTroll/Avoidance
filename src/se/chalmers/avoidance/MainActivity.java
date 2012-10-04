@@ -20,6 +20,8 @@
 
 package se.chalmers.avoidance;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 
 import org.andengine.engine.camera.Camera;
@@ -38,8 +40,10 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import se.chalmers.avoidance.core.states.GameState;
+import se.chalmers.avoidance.core.states.MenuState;
 import se.chalmers.avoidance.core.states.StateID;
 import se.chalmers.avoidance.core.states.StateManager;
+import se.chalmers.avoidance.util.ScreenResolution;
 import android.graphics.Typeface;
 import android.hardware.SensorManager;
 
@@ -50,14 +54,12 @@ import android.hardware.SensorManager;
  * 
  * @author Markus Ekström
  */
-public class MainActivity extends BaseGameActivity {
+public class MainActivity extends BaseGameActivity implements PropertyChangeListener {
 
-    private final int CAMERA_WIDTH = 720;
-    private final int CAMERA_HEIGHT = 480;
-   
     private Camera camera;
     private Scene splashScene;
     private StateManager stateManager;
+
     private HashMap<String, TextureRegion> regions;
     private Font scoreFont;
    
@@ -65,7 +67,9 @@ public class MainActivity extends BaseGameActivity {
      * Sets the engine options (camera, screen rotation, ...) 
      */
 	public EngineOptions onCreateEngineOptions() {
-		camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+		ScreenResolution.fetchFromActivity(this);
+		camera = new Camera(0, 0, ScreenResolution.getWidthResolution(), 
+				ScreenResolution.getHeightResolution());
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, 
         		new FillResolutionPolicy(), camera);
         return engineOptions;
@@ -124,7 +128,7 @@ public class MainActivity extends BaseGameActivity {
 		
         initializeGame();         
         splashScene.detachSelf();
-		stateManager.setState(StateID.Game);
+		stateManager.setState(StateID.Menu);
 		mEngine.registerUpdateHandler(new IUpdateHandler(){
 			public void onUpdate(float tpf) {
 				stateManager.update(tpf);
@@ -143,9 +147,14 @@ public class MainActivity extends BaseGameActivity {
 	 */
 	private void initializeGame() {
 		stateManager = new StateManager(mEngine);
+
 		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
 				regions, this.getVertexBufferObjectManager(),scoreFont);
+		MenuState menuState = new MenuState(this);
 		stateManager.addState(StateID.Game, gameState);
+		stateManager.addState(StateID.Menu, menuState);
+		
+		stateManager.addPropertyChangeListener(this);
 	}
 
 	/**
@@ -153,6 +162,14 @@ public class MainActivity extends BaseGameActivity {
 	 */
     private void initSplashScene() {
 	    splashScene = new Scene();
-	    splashScene.setBackground(new Background(0.0f, 0.0f, 0.0f));
+	    splashScene.setBackground(new Background(0.0f, 0.0f, 1.0f));
     }      
+
+	public void propertyChange(PropertyChangeEvent event) {
+		if (event != null && event.getNewValue() != null) {
+			if ("SYSTEM.EXIT".equals(event.getPropertyName())) {
+				this.finish();
+			}
+		}
+	} 
 }

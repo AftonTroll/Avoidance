@@ -17,6 +17,7 @@
  * along with Avoidance.  If not, see <http://www.gnu.org/licenses/>. 
  *  
  */
+
 package se.chalmers.avoidance.core.states;
 
 /**
@@ -26,5 +27,7 @@ package se.chalmers.avoidance.core.states;
  */
 public enum StateID {
 	Menu,
-	Game
+	Game,
+	Help,
+	Highscore
 }

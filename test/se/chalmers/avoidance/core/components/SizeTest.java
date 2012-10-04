@@ -26,8 +26,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import se.chalmers.avoidance.core.components.Size;
-
 public class SizeTest {
 
 	private static float w1;
