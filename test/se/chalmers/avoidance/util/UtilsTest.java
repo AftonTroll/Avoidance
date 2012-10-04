@@ -51,22 +51,22 @@ public class UtilsTest {
 
 	@Test
 	public void testSimplifyAngle() {
-		assertTrue(Utils.simplifyAngle(f1) == f1);
-		assertTrue(Utils.simplifyAngle(f2) == f2);
-		assertTrue(Utils.simplifyAngle(f3) == (f3 - (float)(2 * Math.PI)));
-		assertTrue(Utils.simplifyAngle(f4) == ((float)(2 * Math.PI)) + f4);
-		assertTrue(Utils.simplifyAngle(f5) == (float) Math.PI);
-		assertTrue(Utils.simplifyAngle(f6) == ((float)(4 * Math.PI)) + f6);
+		assertTrue(Utils.simplifyAngle(f1) - f1  <= TOLERANCE);
+		assertTrue(Utils.simplifyAngle(f2) - f2  <= TOLERANCE);
+		assertTrue(Utils.simplifyAngle(f3) - (f3 - (float)(2 * Math.PI)) <= TOLERANCE);
+		assertTrue(Utils.simplifyAngle(f4) - ((float)(2 * Math.PI) + f4) <= TOLERANCE);
+		assertTrue(Utils.simplifyAngle(f5) - ((float) Math.PI) <= TOLERANCE);
+		assertTrue(Utils.simplifyAngle(f6) - (((float)(4 * Math.PI)) + f6) <= TOLERANCE);
 	}
 
 	@Test
 	public void testReverseAngle() {
-		assertTrue(Utils.reverseAngle(f1) == (float) Math.PI);
-		assertTrue(Utils.reverseAngle(f2) == (float) Math.PI + f2);
-		assertTrue(Utils.reverseAngle(f3) == f3 - (float) Math.PI);
-		assertTrue(Utils.reverseAngle(f4) == (float) Math.PI + f4);
-		assertTrue(Utils.reverseAngle(f5) == f5 + (float) Math.PI);
-		assertTrue(Utils.reverseAngle(f6) == (float) Math.PI + f6);
+		assertTrue(Utils.reverseAngle(f1) - (float) Math.PI <= TOLERANCE);
+		assertTrue(Utils.reverseAngle(f2) - ((float) Math.PI + f2) <= TOLERANCE);
+		assertTrue(Utils.reverseAngle(f3) - (f3 - (float) Math.PI) <= TOLERANCE);
+		assertTrue(Utils.reverseAngle(f4) - ((float) Math.PI + f4) <= TOLERANCE);
+		assertTrue(Utils.reverseAngle(f5) - (f5 + (float) Math.PI) <= TOLERANCE);
+		assertTrue(Utils.reverseAngle(f6) - ((float) Math.PI + f6) <= TOLERANCE);
 	}
 	
 	@Test
