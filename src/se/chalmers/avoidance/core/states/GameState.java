@@ -37,6 +37,7 @@ import se.chalmers.avoidance.core.systems.HudRenderSystem;
 import se.chalmers.avoidance.core.systems.PlayerControlSystem;
 import se.chalmers.avoidance.core.systems.SpatialRenderSystem;
 import se.chalmers.avoidance.input.AccelerometerListener;
+import se.chalmers.avoidance.util.ScreenResolution;
 import android.hardware.SensorManager;
 
 import com.artemis.World;
@@ -84,12 +85,18 @@ public class GameState implements IState {
 		aL.startListening();
 		
 		//Initialize entities
+		float wallThickness = 20f;
 		world.addEntity(EntityFactory.createPlayer(world));
-		world.addEntity(EntityFactory.createWall(world,1200,20,0,0));
-		world.addEntity(EntityFactory.createWall(world,1200,20,0,780));
-		world.addEntity(EntityFactory.createWall(world,20,800,0,0));
-		world.addEntity(EntityFactory.createWall(world,20,800,1180,0));
-		world.addEntity(EntityFactory.createObstacle(world,50,50,200,200));
+		world.addEntity(EntityFactory.createWall(world, ScreenResolution.getWidthResolution(), 
+				wallThickness, 0, 0));
+		world.addEntity(EntityFactory.createWall(world, ScreenResolution.getWidthResolution(), 
+				wallThickness, 0, ScreenResolution.getHeightResolution() - wallThickness));
+		world.addEntity(EntityFactory.createWall(world, wallThickness, 
+				ScreenResolution.getHeightResolution(), 0, 0));
+		world.addEntity(EntityFactory.createWall(world, wallThickness, 
+				ScreenResolution.getHeightResolution(), 
+				ScreenResolution.getWidthResolution() - wallThickness, 0));
+		world.addEntity(EntityFactory.createObstacle(world, 50, 50, 200, 200));
 		world.addEntity(EntityFactory.createScore(world));
 	}
 	
