@@ -20,13 +20,13 @@
 
 package se.chalmers.avoidance.core.components;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class SizeTest {
+public class SizeTest extends FloatTest {
 
 	private static float w1;
 	private static float h1;
@@ -54,42 +54,42 @@ public class SizeTest {
 	public void testSize() {
 		Size size = new Size();
 		assertTrue(size != null);
-		assertTrue(size.getWidth() == 1);
-		assertTrue(size.getHeight() == 1);
+		assertFloatEquals(size.getWidth() - 1);
+		assertFloatEquals(size.getHeight() - 1);
 	}
 
 	@Test
 	public void testSizeFloatFloat() {
 		Size size = new Size(w1, h1);
 		assertTrue(size != null);
-		assertTrue(size.getWidth() == w1);
-		assertTrue(size.getHeight() == h1);
+		assertFloatEquals(size.getWidth() - w1);
+		assertFloatEquals(size.getHeight() - h1);
 	}
 
 	@Test
 	public void testSetSize() {
 		mSize.setSize(w2, h2);
-		assertTrue(mSize.getWidth() == w2);
-		assertTrue(mSize.getHeight() == h2);
+		assertFloatEquals(mSize.getWidth() - w2);
+		assertFloatEquals(mSize.getHeight() - h2);
 	}
 	
 	@Test
 	public void testWidthSetterAndGetter() {
 		// positive value
 		mSize.setWidth(w2);
-		assertTrue(mSize.getWidth() == w2);
-		if (h1 != w2)
-			assertTrue(mSize.getHeight() == h1);
+		assertFloatEquals(mSize.getWidth() - w2);
+		if (h1 - w2 >= TOLERANCE)
+			assertFloatEquals(mSize.getHeight() - h1);
 		
 		// negative value
 		mSize.setWidth(-1);
-		assertTrue(mSize.getWidth() == 0); 
-		assertTrue(mSize.getHeight() == h1);
+		assertFloatEquals(mSize.getWidth()); 
+		assertFloatEquals(mSize.getHeight() - h1);
 		
 		// zero value
 		mSize.setWidth(0);
-		assertTrue(mSize.getWidth() == 0); 
-		assertTrue(mSize.getHeight() == h1);
+		assertFloatEquals(mSize.getWidth()); 
+		assertFloatEquals(mSize.getHeight() - h1);
 		
 	}
 
@@ -97,19 +97,19 @@ public class SizeTest {
 	public void testWidthHeightSetterAndGetter() {
 		// positive value
 		mSize.setHeight(h2);
-		assertTrue(mSize.getHeight() == h2);
-		if (w1 != h2)
-			assertTrue(mSize.getWidth() == w1);
+		assertFloatEquals(mSize.getHeight() - h2);
+		if (w1 - h2 >= TOLERANCE)
+			assertFloatEquals(mSize.getWidth() - w1);
 		
 		// negative value
 		mSize.setHeight(-1);
-		assertTrue(mSize.getHeight() == 0);
-		assertTrue(mSize.getWidth() == w1);
+		assertFloatEquals(mSize.getHeight());
+		assertFloatEquals(mSize.getWidth() - w1);
 		
 		//zero value
 		mSize.setHeight(0);
-		assertTrue(mSize.getHeight() == 0);
-		assertTrue(mSize.getWidth() == w1);
+		assertFloatEquals(mSize.getHeight());
+		assertFloatEquals(mSize.getWidth() - w1);
 		
 	}
 
@@ -117,50 +117,50 @@ public class SizeTest {
 	public void testAddWidth() {
 		// add positive
 		mSize.addWidth(w2);
-		assertTrue(mSize.getWidth() == (w1 + w2));
-		assertTrue(mSize.getHeight() == h1); //height unchanged
+		assertFloatEquals(mSize.getWidth() - (w1 + w2));
+		assertFloatEquals(mSize.getHeight() - h1); //height unchanged
 		
 		//-> add negative
 		float special = -1; 
 		float width = mSize.getWidth() + special;
 		mSize.addWidth(special);
-		assertTrue(mSize.getWidth() == width); //still positive width
-		assertTrue(mSize.getHeight() == h1);
+		assertFloatEquals(mSize.getWidth() - width); //still positive width
+		assertFloatEquals(mSize.getHeight() - h1);
 		
 		//-> goes towards 0
 		mSize.addWidth(-mSize.getWidth());
-		assertTrue(mSize.getWidth() == 0);
-		assertTrue(mSize.getHeight() == h1);
+		assertFloatEquals(mSize.getWidth());
+		assertFloatEquals(mSize.getHeight() - h1);
 		
 		//-> goes below 0
 		mSize.addWidth(special);
-		assertTrue(mSize.getWidth() == 0); 
-		assertTrue(mSize.getHeight() == h1);
+		assertFloatEquals(mSize.getWidth()); 
+		assertFloatEquals(mSize.getHeight() - h1);
 	}
 
 	@Test
 	public void testAddHeight() {
 		// add positive
 		mSize.addHeight(h2);
-		assertTrue(mSize.getHeight() == (h1 + h2));
-		assertTrue(mSize.getWidth() == w1); //height unchanged
+		assertFloatEquals(mSize.getHeight() - (h1 + h2));
+		assertFloatEquals(mSize.getWidth() - w1); //height unchanged
 		
 		//-> add negative
 		float special = -1; 
 		float height = mSize.getHeight() + special;
 		mSize.addHeight(special);
-		assertTrue(mSize.getHeight() == height); //still positive width
-		assertTrue(mSize.getWidth() == w1);
+		assertFloatEquals(mSize.getHeight() - height); //still positive width
+		assertFloatEquals(mSize.getWidth() - w1);
 		
 		//-> goes towards 0
 		mSize.addHeight(-mSize.getHeight());
-		assertTrue(mSize.getHeight() == 0);
-		assertTrue(mSize.getWidth() == w1);
+		assertFloatEquals(mSize.getHeight());
+		assertFloatEquals(mSize.getWidth() - w1);
 		
 		//-> goes below 0
 		mSize.addHeight(special);
-		assertTrue(mSize.getHeight() == 0); 
-		assertTrue(mSize.getWidth() == w1);
+		assertFloatEquals(mSize.getHeight()); 
+		assertFloatEquals(mSize.getWidth() - w1);
 	}
 
 	@Test
