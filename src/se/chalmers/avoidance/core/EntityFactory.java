@@ -57,6 +57,16 @@ public class EntityFactory {
 		return player;
 	}
 	
+	/**
+	 * Creates a wall in the WALLS group
+	 * 
+	 * @param world The world
+	 * @param width the width of the wall
+	 * @param height the height of the wall
+	 * @param xPos the horizontal position of the wall
+	 * @param yPos the vertical position of the wall 
+	 * @return the new wall entity
+	 */
 	public static Entity createWall(World world, float width, float height, float xPos, float yPos){
 		Entity wall = world.createEntity();
 		world.getManager(GroupManager.class).add(wall, "WALLS");
@@ -72,6 +82,14 @@ public class EntityFactory {
 		return wall;
 	}
 	
+	/**
+	 * Creates an enemy in the ENEMY group
+	 * 
+	 * @param world The World
+	 * @param xPos the horizontal position of the enemy
+	 * @param yPos the vertical position of the enemy
+	 * @return the new enemy entity
+	 */
 	public static Entity createEnemy(World world, float xPos, float yPos) {
 		Entity enemy = world.createEntity();
 		world.getManager(GroupManager.class).add(enemy, "ENEMIES");
@@ -83,6 +101,16 @@ public class EntityFactory {
 		return enemy;
 	}
 
+	/**
+	 * Creates a new Obstacle in the WALLS group
+	 * 
+	 * @param world The world
+	 * @param width the width of the obstacle
+	 * @param height the height of the obstacle
+	 * @param xPos the horizontal position of the obstacle
+	 * @param yPos the vertical position of the obstacle
+	 * @return the new obstacle entity
+	 */
 	public static Entity createObstacle(World world, float width, float height, float xPos, float yPos){
 		Entity obstacle = world.createEntity();
 		world.getManager(GroupManager.class).add(obstacle, "WALLS");
@@ -93,6 +121,12 @@ public class EntityFactory {
 		
 		return obstacle;
 	}
+	
+	/**
+	 * Creates a new score entity
+	 * @param world The world
+	 * @return the new score entity
+	 */
 	public static Entity createScore(World world){
 		Entity score = world.createEntity();
 		

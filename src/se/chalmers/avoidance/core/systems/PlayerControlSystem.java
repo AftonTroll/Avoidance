@@ -55,8 +55,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	private TagManager tagManager;
 	
 	/**
-	 * Constructs a PlayerControlSystem that listens to the accelerometer
-	 * from the given sensor manager and moves the entity with the given ID
+	 * Constructs a new PlayerControlSystem.
 	 */
 	public PlayerControlSystem() {
 		super(Aspect.getAspectForAll(Transform.class, Velocity.class));
@@ -83,7 +82,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	}
 
 	/**
-	 * This method is called when the entities are to be updated.
+	 * This method is called when the player is to be updated.
 	 * Updates the velocity and position of the player
 	 * @param entities the bag of entities with the wanted components
 	 */

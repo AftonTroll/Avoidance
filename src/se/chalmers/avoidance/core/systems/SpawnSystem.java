@@ -1,3 +1,23 @@
+/*
+* Copyright (c) 2012 Filip Brynfors
+*
+* This file is part of Avoidance.
+*
+* Avoidance is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* Avoidance is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with Avoidance. If not, see <http://www.gnu.org/licenses/>.
+*
+*/
+
 package se.chalmers.avoidance.core.systems;
 
 
@@ -15,6 +35,14 @@ import com.artemis.managers.TagManager;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.ImmutableBag;
 
+/**
+ * A system that creates the initial entities
+ * and then continues to create one more enemy
+ * every 5 seconds
+ * 
+ * @author Filip Brynfors
+ *
+ */
 public class SpawnSystem extends EntityProcessingSystem{
 	private ComponentMapper<Transform> transformMapper;
 	private ComponentMapper<Size> sizeMapper;
@@ -23,10 +51,17 @@ public class SpawnSystem extends EntityProcessingSystem{
 	private final int SPAWNINTERVAL = 5;
 	private int lastSpawn = 0;
 	
+	/**
+	 * Constructs a new SpawnSystem
+	 */
 	public SpawnSystem() {
 		super(Aspect.getAspectForAll(Time.class));
 	}
 	
+	/**
+	 * This method is called when the system is initialized
+	 * Creates all the initial entities
+	 */
 	@Override
 	protected void initialize() {
 		transformMapper = world.getMapper(Transform.class);
@@ -34,6 +69,7 @@ public class SpawnSystem extends EntityProcessingSystem{
 		tagManager = world.getManager(TagManager.class);
 		groupManager = world.getManager(GroupManager.class);
 		float wallThickness = 20f;
+		//Create all the entities that should be on the map when the game starts
 		world.addEntity(EntityFactory.createPlayer(world));
 		world.addEntity(EntityFactory.createWall(world, ScreenResolution.getWidthResolution(), 
 				wallThickness, 0, 0));
@@ -48,6 +84,11 @@ public class SpawnSystem extends EntityProcessingSystem{
 		world.addEntity(EntityFactory.createScore(world));
 	}
 
+	/**
+	 * This method is called when the spawning is to be updated.
+	 * Spawns a new enemy every 5 seconds
+	 * @param entities the bag of entities with the wanted components
+	 */
 	@Override
 	protected void process(Entity entity) {
 		float currentTime = entity.getComponent(Time.class).getTime();
