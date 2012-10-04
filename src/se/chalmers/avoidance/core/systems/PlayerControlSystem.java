@@ -47,6 +47,7 @@ import com.artemis.utils.ImmutableBag;
  *
  */
 public class PlayerControlSystem extends EntitySystem implements PropertyChangeListener {
+	private final float ACCELERATION_MODIFIER = 20;
 	private float lastAccelerationX = 0;
 	private float lastAccelerationY = 0;
 	private ComponentMapper<Transform> transformMapper;
@@ -101,8 +102,8 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 			float newVelX = startVelX;
 			float newVelY = startVelY;
 			
-			newVelX += world.delta * lastAccelerationX;
-			newVelY += world.delta * lastAccelerationY;	
+			newVelX += world.delta * lastAccelerationX*ACCELERATION_MODIFIER;
+			newVelY += world.delta * lastAccelerationY*ACCELERATION_MODIFIER;	
 			float newSpeed = (float) Math.sqrt(newVelX*newVelX+newVelY*newVelY);
 			
 			//Apply friction
