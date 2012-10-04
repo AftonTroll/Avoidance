@@ -31,19 +31,21 @@ import java.beans.PropertyChangeSupport;
 import org.andengine.engine.Engine;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import se.chalmers.avoidance.constants.EventMessageConstants;
 import se.chalmers.avoidance.util.ScreenResolution;
-
 import android.opengl.GLES20;
 
 /**
@@ -68,6 +70,7 @@ public class MenuState implements IState, IOnMenuItemClickListener {
     protected TextureRegion menuHighscoreTextureRegion;
     protected TextureRegion menuHelpTextureRegion;
     protected TextureRegion menuQuitTextureRegion;
+    protected TextureRegion backgroundRegion;
 	
     
 	public MenuState(BaseGameActivity activity) {
@@ -84,8 +87,10 @@ public class MenuState implements IState, IOnMenuItemClickListener {
     	Engine engine = this.baseGameActivity.getEngine();
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
            
-    	this.bitmapTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 256, 256, 
+    	this.bitmapTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 1024, 1024, 
     			TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+    	this.backgroundRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			this.bitmapTextureAtlas, this.baseGameActivity, "background.jpg", 0, 0);
     	engine.getTextureManager().loadTexture(this.bitmapTextureAtlas);
 
     	// create textures
@@ -113,17 +118,18 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 		this.menuScene.setX(ScreenResolution.getWidthResolution() / 2 - 100);
 		this.menuScene.setY(ScreenResolution.getHeightResolution() / 2 - 150);
 
+		VertexBufferObjectManager vbom = this.baseGameActivity.getVertexBufferObjectManager();
+		
 		//create menu items
 		final SpriteMenuItem startMenuItem = new SpriteMenuItem(MENU_START,
-				this.menuStartTextureRegion, this.baseGameActivity.getVertexBufferObjectManager());
+				this.menuStartTextureRegion, vbom);
 		startMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
 				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(startMenuItem);
 		startMenuItem.setPosition(0, 0);
 
 		final SpriteMenuItem highscoreMenuItem = new SpriteMenuItem(MENU_HIGHSCORES,
-				this.menuHighscoreTextureRegion, 
-				this.baseGameActivity.getVertexBufferObjectManager());
+				this.menuHighscoreTextureRegion, vbom);
 		highscoreMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
 				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(highscoreMenuItem);
@@ -131,19 +137,21 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 
 		
 		final SpriteMenuItem helpMenuItem = new SpriteMenuItem(MENU_HELP,
-				this.menuHelpTextureRegion, this.baseGameActivity.getVertexBufferObjectManager());
+				this.menuHelpTextureRegion, vbom);
 		helpMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
 				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(helpMenuItem);
 		helpMenuItem.setPosition(0, 150);
 
 		final SpriteMenuItem quitMenuItem = new SpriteMenuItem(MENU_QUIT,
-				this.menuQuitTextureRegion, this.baseGameActivity.getVertexBufferObjectManager());
+				this.menuQuitTextureRegion, vbom);
 		quitMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
 				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(quitMenuItem);
 		quitMenuItem.setPosition(0, 225);
-
+		
+		final Sprite backgroundSprite = new Sprite(0, 0, 1024, 768, this.backgroundRegion, vbom);
+		this.menuScene.setBackground(new SpriteBackground(backgroundSprite));
 //		 this.menuScene.buildAnimations(); <- does not work
 		this.menuScene.setBackgroundEnabled(true);
 		this.menuScene.setOnMenuItemClickListener(this);
