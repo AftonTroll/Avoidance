@@ -85,12 +85,25 @@ public class CollisionSystem extends EntitySystem{
 	protected void processEntities(ImmutableBag<Entity> entities) {
 		
 		ImmutableBag<Entity> walls = world.getManager(GroupManager.class).getEntities("WALLS");
+		ImmutableBag<Entity> enemies = world.getManager(GroupManager.class).getEntities("ENEMIES");
 		Entity player = world.getManager(TagManager.class).getEntity("PLAYER");
 		for (int i=0;i<walls.size();i++){
 			if(collisionExists(player, walls.get(i))){
 				handleWallCollision(player, walls.get(i));
 			}
+			for (int j=0;j<enemies.size();j++){
+				if(collisionExists(enemies.get(j), walls.get(i))){
+					handleWallCollision(enemies.get(j), walls.get(i));
+				}
+			}
 		}
+		
+		for (int j=0;j<enemies.size();j++){
+			if(collisionExists(player, enemies.get(j))){
+				//handeEnemyCollision();
+			}
+		}
+		
 	}
 	
 	
