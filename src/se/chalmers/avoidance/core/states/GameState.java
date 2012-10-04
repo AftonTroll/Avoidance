@@ -85,10 +85,10 @@ public class GameState implements IState {
 		
 		//Initialize entities
 		world.addEntity(EntityFactory.createPlayer(world));
-		world.addEntity(EntityFactory.createWall(world,1200,25,0,0));
-		world.addEntity(EntityFactory.createWall(world,1200,20,0,455));
+		world.addEntity(EntityFactory.createWall(world,1200,20,0,0));
+		world.addEntity(EntityFactory.createWall(world,1200,20,0,780));
 		world.addEntity(EntityFactory.createWall(world,20,800,0,0));
-		world.addEntity(EntityFactory.createWall(world,20,800,700,0));
+		world.addEntity(EntityFactory.createWall(world,20,800,1180,0));
 		world.addEntity(EntityFactory.createObstacle(world,50,50,200,200));
 		world.addEntity(EntityFactory.createScore(world));
 	}

@@ -49,7 +49,7 @@ public class EntityFactory {
 		Entity player = world.createEntity();
 		world.getManager(TagManager.class).register("PLAYER", player);
 		
-		player.addComponent(new Transform(50,100));
+		player.addComponent(new Transform(200,100));
 		player.addComponent(new Velocity());
 		player.addComponent(new Size(32,32));
 		player.addComponent(new Spatial("ball.png"));
