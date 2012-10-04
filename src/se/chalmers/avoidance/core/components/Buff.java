@@ -19,12 +19,14 @@
  */
 package se.chalmers.avoidance.core.components;
 
+import com.artemis.Component;
+
 /**
  * Component containing information about buffs.
  * 
  * @author Markus Ekström
  */
-public class Buff {
+public class Buff extends Component{
 	public static enum BuffType{Speed}
 	private int strength;
 	private BuffType type;
