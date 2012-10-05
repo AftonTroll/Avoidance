@@ -12,8 +12,8 @@ public class ScreenResolutionTest {
 	 */
 	@Test
 	public void testAllMethods() {
-		assertTrue(ScreenResolution.getWidthResolution() == 0);
-		assertTrue(ScreenResolution.getHeightResolution() == 0);
+		assertTrue(ScreenResolution.getWidthResolution() == 1280);
+		assertTrue(ScreenResolution.getHeightResolution() == 800);
 		
 		//TODO Can't test yet, since we need to use android-code. Move to testproject.
 //		Activity activity = new Activity();
