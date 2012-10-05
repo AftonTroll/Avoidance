@@ -108,8 +108,8 @@ public class SpawnSystem extends EntityProcessingSystem{
 		while(!validPosition){
 			//assume the position is valid until proven otherwise
 			validPosition = true;
-			enemyTransform.setX((float) (Math.random()*1200));
-			enemyTransform.setY((float) (Math.random()*800));
+			enemyTransform.setX((float) (Math.random()*ScreenResolution.getWidthResolution()));
+			enemyTransform.setY((float) (Math.random()*ScreenResolution.getHeightResolution()));
 			
 			//Check if the enemy is too close to the player
 			Entity player = tagManager.getEntity("PLAYER");
