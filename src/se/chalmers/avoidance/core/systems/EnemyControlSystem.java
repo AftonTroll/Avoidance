@@ -25,6 +25,7 @@
 
 package se.chalmers.avoidance.core.systems;
 
+import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
@@ -48,6 +49,7 @@ public class EnemyControlSystem extends EntitySystem{
 	private ComponentMapper<Transform> transformMapper;
 	private ComponentMapper<Velocity> velocityMapper;
 	private ComponentMapper<Size> sizeMapper;
+	private ComponentMapper<Friction> frictionMapper;
 	private TagManager tagManager;
 	private GroupManager groupManager;
 	
@@ -66,6 +68,7 @@ public class EnemyControlSystem extends EntitySystem{
 		transformMapper = world.getMapper(Transform.class);
 		velocityMapper = world.getMapper(Velocity.class);
 		sizeMapper = world.getMapper(Size.class);
+		frictionMapper = world.getMapper(Friction.class);
 		tagManager = world.getManager(TagManager.class);
 		groupManager = world.getManager(GroupManager.class);
 	}
@@ -87,7 +90,6 @@ public class EnemyControlSystem extends EntitySystem{
 	 */
 	@Override
 	protected void processEntities(ImmutableBag<Entity> bag) {
-		float friction = 0.9f;
 		
 		Entity player = tagManager.getEntity("PLAYER");
 		if (player != null) {
@@ -123,7 +125,7 @@ public class EnemyControlSystem extends EntitySystem{
 				float newSpeed = (float) Math.sqrt(newVelX*newVelX+newVelY*newVelY);
 				
 				//Apply friction
-				newSpeed *= Math.pow(friction, world.delta);
+				newSpeed *= Math.pow(frictionMapper.get(enemy).getFriction(), world.delta);
 				
 				vel.setAngle((float) Math.atan2(newVelY, newVelX));
 				vel.setSpeed(newSpeed);
