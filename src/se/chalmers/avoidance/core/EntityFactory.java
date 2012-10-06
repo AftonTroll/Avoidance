@@ -103,6 +103,18 @@ public class EntityFactory {
 		enemy.addComponent(new Spatial("enemy.png"));
 		return enemy;
 	}
+	
+	public static Entity createQuickEnemy(World world, float xPos, float yPos) {
+		Entity enemy = world.createEntity();
+		world.getManager(GroupManager.class).add(enemy, "ENEMIES");
+		
+		enemy.addComponent(new Transform(xPos, yPos));
+		enemy.addComponent(new Velocity());
+		enemy.addComponent(new Size(32,32));
+		enemy.addComponent(new Friction(0.2f));
+		enemy.addComponent(new Spatial("quickenemy.png"));
+		return enemy;
+	}
 
 	/**
 	 * Creates a new Obstacle in the WALLS group
