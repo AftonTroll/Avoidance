@@ -53,7 +53,7 @@ public class EntityFactory {
 		player.addComponent(new Transform(200,100));
 		player.addComponent(new Velocity());
 		player.addComponent(new Size(64,64));
-		player.addComponent(new Friction(0.9f));
+		player.addComponent(new Friction(0.7f));
 		player.addComponent(new Spatial("ball.png"));
 		
 		return player;
@@ -99,7 +99,7 @@ public class EntityFactory {
 		enemy.addComponent(new Transform(xPos, yPos));
 		enemy.addComponent(new Velocity());
 		enemy.addComponent(new Size(64,64));
-		enemy.addComponent(new Friction(0.9f));
+		enemy.addComponent(new Friction(0.7f));
 		enemy.addComponent(new Spatial("enemy.png"));
 		return enemy;
 	}
@@ -111,7 +111,7 @@ public class EntityFactory {
 		enemy.addComponent(new Transform(xPos, yPos));
 		enemy.addComponent(new Velocity());
 		enemy.addComponent(new Size(32,32));
-		enemy.addComponent(new Friction(0.2f));
+		enemy.addComponent(new Friction(0.9f));
 		enemy.addComponent(new Spatial("quickenemy.png"));
 		return enemy;
 	}
