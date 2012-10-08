@@ -20,6 +20,7 @@
 
 package se.chalmers.avoidance.core;
 
+import se.chalmers.avoidance.core.components.Score;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Spatial;
 import se.chalmers.avoidance.core.components.Time;
@@ -129,7 +130,7 @@ public class EntityFactory {
 	 */
 	public static Entity createScore(World world){
 		Entity score = world.createEntity();
-		
+		score.addComponent(new Score());
 		score.addComponent(new Time());
 		
 		return score;
