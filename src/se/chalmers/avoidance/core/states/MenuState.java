@@ -42,7 +42,6 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import se.chalmers.avoidance.util.ScreenResolution;
-
 import android.opengl.GLES20;
 
 /**
@@ -109,8 +108,8 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 		menuScene.setBackground(new Background(0f, 0f, 0f));
 		
 		//center the scene
-		this.menuScene.setX(ScreenResolution.getWidthResolution() / 2 - 100);
-		this.menuScene.setY(ScreenResolution.getHeightResolution() / 2 - 150);
+		float xPos = ScreenResolution.getWidthResolution() / 2 - 100;
+		float yPos = ScreenResolution.getHeightResolution() / 2 - 150;
 
 		//create menu items
 		final SpriteMenuItem startMenuItem = new SpriteMenuItem(MENU_START,
@@ -118,7 +117,7 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 		startMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
 				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(startMenuItem);
-		startMenuItem.setPosition(0, 0);
+		startMenuItem.setPosition(xPos, yPos);
 
 		final SpriteMenuItem highscoreMenuItem = new SpriteMenuItem(MENU_HIGHSCORES,
 				this.menuHighscoreTextureRegion, 
@@ -126,7 +125,7 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 		highscoreMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
 				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(highscoreMenuItem);
-		highscoreMenuItem.setPosition(0, 75);
+		highscoreMenuItem.setPosition(xPos, yPos + 75);
 
 		
 		final SpriteMenuItem helpMenuItem = new SpriteMenuItem(MENU_HELP,
@@ -134,14 +133,14 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 		helpMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
 				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(helpMenuItem);
-		helpMenuItem.setPosition(0, 150);
+		helpMenuItem.setPosition(xPos, yPos + 150);
 
 		final SpriteMenuItem quitMenuItem = new SpriteMenuItem(MENU_QUIT,
 				this.menuQuitTextureRegion, this.baseGameActivity.getVertexBufferObjectManager());
 		quitMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
 				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(quitMenuItem);
-		quitMenuItem.setPosition(0, 225);
+		quitMenuItem.setPosition(xPos, yPos + 225);
 
 //		 this.menuScene.buildAnimations(); <- does not work
 		this.menuScene.setBackgroundEnabled(true);

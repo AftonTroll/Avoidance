@@ -29,7 +29,6 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
-import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.opengl.font.Font;
@@ -45,17 +44,9 @@ import se.chalmers.avoidance.core.states.MenuState;
 import se.chalmers.avoidance.core.states.StateID;
 import se.chalmers.avoidance.core.states.StateManager;
 import se.chalmers.avoidance.util.ScreenResolution;
-
+import android.graphics.Color;
 import android.graphics.Typeface;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.hardware.SensorManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.EditText;
-import android.widget.TextView;
 
 /**
  * The starting point of the application.
@@ -69,10 +60,11 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
     private Camera camera;
     private Scene splashScene;
     private StateManager stateManager;
-    private Dialog gameOverDialog;
 
     private HashMap<String, TextureRegion> regions;
     private Font scoreFont;
+    private Font gameOverFont;
+    private BitmapTextureAtlas gameOverFontTexture;
    
     /**
      * Sets the engine options (camera, screen rotation, ...) 
@@ -93,9 +85,14 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	public void onCreateResources(OnCreateResourcesCallback onCreateResourcesCallback)
 			throws Exception {
 		regions = new HashMap<String, TextureRegion>();
+		
+		//create fonts
 		scoreFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
 				TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 20);
-				
+		gameOverFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
+				TextureOptions.BILINEAR, Typeface.create(Typeface.MONOSPACE, Typeface.BOLD_ITALIC), 
+				48, true, Color.WHITE);
+
         // Set the asset path of the images
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
         BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(
@@ -104,6 +101,9 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 //        Create TextureRegions like this for every image:
 //        regions.put("file_name.png", BitmapTextureAtlasTextureRegionFactory
 //               .createFromAsset( bitmapTextureAtlas, this, "file_name.png", x_position, y_position));
+        
+        regions.put("okButton.png", BitmapTextureAtlasTextureRegionFactory
+		.createFromAsset( bitmapTextureAtlas, this, "okButton.png", 1748, 824));
         
         regions.put("ball.png", BitmapTextureAtlasTextureRegionFactory
 		.createFromAsset( bitmapTextureAtlas, this, "ball.png", 0, 0));
@@ -119,6 +119,8 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
         
         bitmapTextureAtlas.load();
         scoreFont.load();
+        gameOverFont.load();
+        mEngine.getFontManager().loadFont(gameOverFont);
 		onCreateResourcesCallback.onCreateResourcesFinished();
 	}
 	
@@ -179,63 +181,9 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event != null && event.getNewValue() != null) {
 			if ("SYSTEM.EXIT".equals(event.getPropertyName())) {
-				createOverlay();
-				MainActivity.this.runOnUiThread(new Runnable() {
-				    public void run() {
-				        showDialog(1);
-				    }
-				});
-
-//				this.finish();
+				this.finish();
 			}
 		}
 	} 
 
-	private void createOverlay() {
-		Rectangle rect = new Rectangle(0, 0, 720, 480,
-				this.getVertexBufferObjectManager());
-		rect.setColor(0.1f, 0.1f, 0.1f, 0.8f);
-		mEngine.getScene().attachChild(rect);
-	}
-
-	@Override
-	protected Dialog onCreateDialog(int id) {
-		switch (id) {
-		case 1:
-			if (this.gameOverDialog != null)
-				removeDialog(1);
-			LayoutInflater layoutInflater = LayoutInflater.from(this);
-			View submitTextView = layoutInflater.inflate(R.layout.submit_dialog, null);
-			final EditText nameText = (EditText) submitTextView
-					.findViewById(R.id.nameField);
-			nameText.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					nameText.setHint(null);
-				}
-			});
-			
-			final TextView text = (TextView) submitTextView.findViewById(R.id.text);
-			text.append("7'356"); //append score here
-			return setGameOverDialog(new AlertDialog.Builder(MainActivity.this)
-					.setTitle("GameOver")
-					.setView(submitTextView)
-					.setPositiveButton("Submit",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int whichButton) {
-									mEngine.getScene().getLastChild().detachSelf();
-								}
-							})
-							.create());
-
-		default:
-			break;
-		}
-		return null;
-	}
-	
-	private Dialog setGameOverDialog(Dialog dialog) {
-		this.gameOverDialog = dialog;
-		return dialog;
-	}
 }
