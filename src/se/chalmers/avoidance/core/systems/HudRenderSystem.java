@@ -27,6 +27,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import se.chalmers.avoidance.core.components.Score;
 import se.chalmers.avoidance.core.components.Time;
+import se.chalmers.avoidance.util.ScreenResolution;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -43,6 +44,7 @@ public class HudRenderSystem extends EntityProcessingSystem{
 	
 	private Font font;
 	private Text scoreText;
+	private Text timeText;
 	private Scene scene;
 	private VertexBufferObjectManager vbom;
 	private ComponentMapper<Time> timeMapper;
@@ -69,8 +71,10 @@ public class HudRenderSystem extends EntityProcessingSystem{
 	protected void initialize(){
 		timeMapper = world.getMapper(Time.class);
 		scoreMapper = world.getMapper(Score.class);
-		this.scoreText = new Text(30, 30, this.font, "Score :", "Score: XXXXX".length(), vbom);
+		this.scoreText = new Text(ScreenResolution.getWidthResolution()*4/5, 30, this.font, "Score :", "Score: XXXXX".length(), vbom);
+		this.timeText = new Text(30, 30, this.font, "Time :", "Time: XXXXX".length(), vbom);
 		scene.attachChild(scoreText);
+		scene.attachChild(timeText);
 		scoreText.setZIndex(100);
 	}
 	
@@ -94,8 +98,8 @@ public class HudRenderSystem extends EntityProcessingSystem{
 		Time time = timeMapper.get(entity);
 		Score score = scoreMapper.get(entity);
 		time.updateTime(world.getDelta());
-		
-		scoreText.setText("Score :"+Math.round(time.getTime()*10)+score.getScore());
+		timeText.setText("Time: "+Math.round(time.getTime())/60+"m "+ Math.round(time.getTime())%60+"s");
+		scoreText.setText("Score :"+(Math.round(time.getTime())*10+score.getScore()));
 	}
 
 }
