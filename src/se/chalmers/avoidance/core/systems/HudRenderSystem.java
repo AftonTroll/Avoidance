@@ -71,11 +71,12 @@ public class HudRenderSystem extends EntityProcessingSystem{
 	protected void initialize(){
 		timeMapper = world.getMapper(Time.class);
 		scoreMapper = world.getMapper(Score.class);
-		this.scoreText = new Text(ScreenResolution.getWidthResolution()*4/5, 30, this.font, "Score :", "Score: XXXXX".length(), vbom);
-		this.timeText = new Text(30, 30, this.font, "Time :", "Time: XXXXX".length(), vbom);
+		scoreText = new Text(ScreenResolution.getWidthResolution()*4/5, 30, this.font, "Score :", "Score: XXXXX".length(), vbom);
+		timeText = new Text(30, 30, this.font, "Time :", "Time: XXXXX".length(), vbom);
 		scene.attachChild(scoreText);
 		scene.attachChild(timeText);
 		scoreText.setZIndex(100);
+		timeText.setZIndex(100);
 	}
 	
 	/**
