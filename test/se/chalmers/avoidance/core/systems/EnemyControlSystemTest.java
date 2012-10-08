@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
@@ -41,11 +42,13 @@ public class EnemyControlSystemTest {
 		e1.addComponent(new Transform());
 		e1.addComponent(new Velocity());
 		e1.addComponent(new Size(32,32));
+		e1.addComponent(new Friction(0.7f));
 		
 		e2 = world.createEntity();
 		e2.addComponent(new Transform());
 		e2.addComponent(new Velocity());
 		e2.addComponent(new Size(32,32));
+		e2.addComponent(new Friction(0.9f));
 		
 		groupManager.add(e1, "ENEMIES");
 		groupManager.add(e2, "ENEMIES");
@@ -74,7 +77,7 @@ public class EnemyControlSystemTest {
 		
 		assertTrue(e1.getComponent(Velocity.class).getSpeed() - 10 <= TOLERANCE);
 		assertTrue(e1.getComponent(Velocity.class).getAngle() - Math.PI <= TOLERANCE);
-		assertTrue(e1.getComponent(Transform.class).getX() - 5.5 <= TOLERANCE);
+		assertTrue(e1.getComponent(Transform.class).getX() - (10-5*0.7) <= TOLERANCE);
 		assertTrue(e1.getComponent(Transform.class).getY() <= TOLERANCE);
 		
 		assertTrue(e2.getComponent(Velocity.class).getSpeed() - 10 <= TOLERANCE);
