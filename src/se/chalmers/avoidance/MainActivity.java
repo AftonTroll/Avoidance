@@ -83,7 +83,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 			throws Exception {
 		regions = new HashMap<String, TextureRegion>();
 		scoreFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
-				TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 20);
+				TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 32);
 				
         // Set the asset path of the images
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
