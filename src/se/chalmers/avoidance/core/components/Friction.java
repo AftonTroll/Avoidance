@@ -32,7 +32,7 @@ public class Friction extends Component {
 	private final float friction;
 	
 	/**
-	 * Created a new friction component with the specified friction value
+	 * Creates a new friction component with the specified friction value
 	 * @param friction the friction
 	 */
 	public Friction(float friction) {

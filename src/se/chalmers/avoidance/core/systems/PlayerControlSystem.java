@@ -49,6 +49,7 @@ import com.artemis.utils.ImmutableBag;
  */
 public class PlayerControlSystem extends EntitySystem implements PropertyChangeListener {
 	private final float ACCELERATION_MODIFIER = 20;
+	private final float MAX_SPEED = 400;
 	private float lastAccelerationX = 0;
 	private float lastAccelerationY = 0;
 	private ComponentMapper<Transform> transformMapper;
@@ -109,6 +110,11 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 			
 			//Apply friction
 			newSpeed *= Math.pow(frictionMapper.get(entity).getFriction(), world.delta);
+			
+			//Adjust the speed so it's not higher than the max speed
+			if(newSpeed > MAX_SPEED){
+				newSpeed = MAX_SPEED;
+			}
 			
 			playerVel.setAngle((float) Math.atan2(newVelY, newVelX));
 			playerVel.setSpeed(newSpeed);
