@@ -104,6 +104,14 @@ public class EntityFactory {
 		return enemy;
 	}
 	
+	/**
+	 * Creates a quick enemy in the ENEMY group
+	 * 
+	 * @param world The World
+	 * @param xPos the horizontal position of the enemy
+	 * @param yPos the vertical position of the enemy
+	 * @return the new enemy entity
+	 */
 	public static Entity createQuickEnemy(World world, float xPos, float yPos) {
 		Entity enemy = world.createEntity();
 		world.getManager(GroupManager.class).add(enemy, "ENEMIES");
