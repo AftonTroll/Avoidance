@@ -46,6 +46,8 @@ public class CollisionSystem extends EntitySystem{
     private ComponentMapper<Velocity> velocityMapper;
     private ComponentMapper<Transform> transformMapper;
     private ComponentMapper<Size> sizeMapper;
+    private CollisionObject collisionObject1;
+    private CollisionObject collisionObject2;
 	
     /**
      * Constructs a new CollisionSystem 
@@ -54,6 +56,8 @@ public class CollisionSystem extends EntitySystem{
      */
 	public CollisionSystem() {
 		super(Aspect.getAspectForAll(Transform.class, Size.class));
+		collisionObject1 = new CollisionObject(0, 0, 0, 0);
+		collisionObject2 = new CollisionObject(0, 0, 0, 0);
 	}
 	
 	/**
@@ -85,12 +89,25 @@ public class CollisionSystem extends EntitySystem{
 	protected void processEntities(ImmutableBag<Entity> entities) {
 		
 		ImmutableBag<Entity> walls = world.getManager(GroupManager.class).getEntities("WALLS");
+		ImmutableBag<Entity> enemies = world.getManager(GroupManager.class).getEntities("ENEMIES");
 		Entity player = world.getManager(TagManager.class).getEntity("PLAYER");
 		for (int i=0;i<walls.size();i++){
 			if(collisionExists(player, walls.get(i))){
 				handleWallCollision(player, walls.get(i));
 			}
+			for (int j=0;j<enemies.size();j++){
+				if(collisionExists(enemies.get(j), walls.get(i))){
+					handleWallCollision(enemies.get(j), walls.get(i));
+				}
+			}
 		}
+		
+		for (int j=0;j<enemies.size();j++){
+			if(collisionExists(player, enemies.get(j))){
+				//handeEnemyCollision();
+			}
+		}
+		
 	}
 	
 	
@@ -168,14 +185,20 @@ public class CollisionSystem extends EntitySystem{
 		float e1Width = e1Size.getWidth();
 		float e1Height = e1Size.getHeight();
 		
-		CollisionObject collisionObject1 =  new CollisionObject(e1X, e1Y, e1Width, e1Height) ;
+		collisionObject1.setX(e1X);
+		collisionObject1.setY(e1Y);
+		collisionObject1.setWidth(e1Width);
+		collisionObject1.setHeight(e1Height);
 		
 		float e2X = e2Transform.getX();
 		float e2Y = e2Transform.getY();
 		float e2Width = e2Size.getWidth();
 		float e2Height = e2Size.getHeight();
 		
-		CollisionObject collisionObject2 =  new CollisionObject(e2X, e2Y, e2Width, e2Height) ;
+		collisionObject2.setX(e2X);
+		collisionObject2.setY(e2Y);
+		collisionObject2.setWidth(e2Width);
+		collisionObject2.setHeight(e2Height);
 		
 		return collisionObject1.collidesWith(collisionObject2);
 		

@@ -109,13 +109,16 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 		.createFromAsset( bitmapTextureAtlas, this, "ball.png", 0, 0));
         
         regions.put("wall_horisontal.png",  BitmapTextureAtlasTextureRegionFactory
-		.createFromAsset( bitmapTextureAtlas, this, "wall_horisontal.png", 0, 34));
+		.createFromAsset( bitmapTextureAtlas, this, "wall_horisontal.png", 0, 68));
         
         regions.put("wall_vertical.png",  BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "wall_vertical.png", 34,64));
+        		.createFromAsset( bitmapTextureAtlas, this, "wall_vertical.png", 34,98));
         
         regions.put("obstacle.png",  BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "obstacle.png", 64,64));
+        		.createFromAsset( bitmapTextureAtlas, this, "obstacle.png", 64,98));
+
+        regions.put("enemy.png",  BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, "enemy.png", 61,150));
         
         bitmapTextureAtlas.load();
         scoreFont.load();
