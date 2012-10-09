@@ -15,6 +15,14 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import se.chalmers.avoidance.constants.FontConstants;
 import se.chalmers.avoidance.util.ScreenResolution;
 
+/**
+ * A Game Over Scene for displaying the users score. <p>
+ * 
+ * If set as a child scene to any other scene, it will look like
+ * a layer which is put on top (transparent background).
+ * 
+ * @author Florian Minges
+ */
 public class GameOverScene extends Scene {
 	
 	private VertexBufferObjectManager vbom;
@@ -25,16 +33,35 @@ public class GameOverScene extends Scene {
 	private Sprite gameOverSprite;
 	private Sprite newHighscoreSprite;
 
+	/**
+	 * Constructs a new game over scene.
+	 * 
+	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
+	 * @param regions a <code>HashMap</code> containing loaded textures/regions
+	 * @param fonts a <code>HashMap</code> containing loaded fonts
+	 */
 	public GameOverScene(VertexBufferObjectManager vbom, HashMap<String, TextureRegion> regions, 
 			HashMap<String, Font> fonts) {
 		this.vbom = vbom;
 		initialize(regions, fonts);
 	}
 	
+	/**
+	 * Adds this <code>GameOverScene</code> as a child scene to 
+	 * the <code>scene</code> provided in the argument.
+	 * 
+	 * @param scene the scene which gets this <code>GameOverScene</code> as a child scene
+	 */
 	public void addTo(Scene scene) {
 		scene.setChildScene(this);
 	}
 	
+	/**
+	 * Initializes this <code>GameOverScene</code>.
+	 * 
+	 * @param regions a <code>HashMap</code> containing loaded textures/regions
+	 * @param fonts a <code>HashMap</code> containing loaded fonts
+	 */
 	public void initialize(HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts) {
 		createTransparentBackground();
 		createGameOverSprite(regions);
@@ -47,6 +74,9 @@ public class GameOverScene extends Scene {
 		attachChild(button);
 	}
 
+	/**
+	 * Creates and initializes the transparent background.
+	 */
 	private void createTransparentBackground() {
 		Rectangle rect = new Rectangle(0, 0, ScreenResolution.getWidthResolution(), 
 				ScreenResolution.getHeightResolution(), this.vbom);
@@ -54,6 +84,12 @@ public class GameOverScene extends Scene {
 		this.transparentBackground = rect;
 	}
 	
+	/**
+	 * Creates and initializes the text component that holds
+	 * information about the users score.
+	 * 
+	 * @param fonts a <code>HashMap</code> containing loaded fonts
+	 */
 	private void createText(HashMap<String, Font> fonts) {		
 		Text scoreText = new Text(0, 0, fonts.get(FontConstants.GAME_OVER_SCORE), 
 				"Score:", "Score: XXXXXXX".length(), vbom);
@@ -62,6 +98,11 @@ public class GameOverScene extends Scene {
 		this.scoreText = scoreText;
 	}
 	
+	/**
+	 * Creates and initializes the game over sprite.
+	 * 
+	 * @param regions a <code>HashMap</code> containing loaded textures/regions
+	 */
 	private void createGameOverSprite(HashMap<String, TextureRegion> regions) {
 		Sprite sprite = new Sprite(0, 0, regions.get("gameOver.png"), vbom);
 		
@@ -72,6 +113,11 @@ public class GameOverScene extends Scene {
 		this.gameOverSprite = sprite;
 	}
 	
+	/**
+	 * Creates and initializes the button.
+	 * 
+	 * @param regions a <code>HashMap</code> containing loaded textures/regions
+	 */
 	private void createButton(HashMap<String, TextureRegion> regions) {
 		ButtonSprite okButton = new ButtonSprite(0, 0, regions.get("okButton.png"), vbom);
 		
@@ -82,14 +128,35 @@ public class GameOverScene extends Scene {
 		this.button = okButton;
 	}
 	
+	/**
+	 * Returns the x-position of the <code>RectangularShape</code> provided
+	 * in the argument, in case it would be centered horizontally (along the
+	 * x-axis).
+	 * 
+	 * @param shape a shape
+	 * @return the x-position of the shape if centered on the x-axis
+	 */
 	private float getXPosHorizontalCentering(RectangularShape shape) {
 		return (ScreenResolution.getWidthResolution() - shape.getWidth()) / 2;
 	}
 	
+	/**
+	 * Returns the y-position of the <code>RectangularShape</code> provided
+	 * in the argument, in case it would be centered vertically (along the
+	 * y-axis).
+	 * 
+	 * @param shape a shape
+	 * @return the y-position of the shape if centered on the y-axis
+	 */
 	private float getYPosVerticalCentering(RectangularShape shape) {
 		return (ScreenResolution.getHeightResolution() - shape.getHeight()) / 2;
 	}
 	
+	/**
+	 * Sets the score to display, and positions it correctly.
+	 * 
+	 * @param score the users score
+	 */
 	public void setScore(int score) {
 		//do this on the ui update thread or not?
 		scoreText.setText("Score: " + score);
@@ -99,6 +166,13 @@ public class GameOverScene extends Scene {
 		scoreText.setPosition(xPos, yPos);
 	}
 	
+	/**
+	 * Sets the <code>ButtonSprite.OnClickListener</code> 
+	 * for this objects button. 
+	 * 
+	 * @param listener the <code>ButtonSprite.OnClickListener</code> 
+	 * for this objects button. 
+	 */
 	public void setButtonSpriteOnClickListener(ButtonSprite.OnClickListener listener) {
 		button.setOnClickListener(listener);
 		registerTouchArea(button);

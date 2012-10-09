@@ -1,5 +1,10 @@
 package se.chalmers.avoidance.constants;
 
+/**
+ * Container of constants for mapping fonts.
+ * 
+ * @author Florian Minges
+ */
 public final class FontConstants {
 	
 	public static final String HUD_SCORE = "hudScore";

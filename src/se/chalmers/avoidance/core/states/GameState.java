@@ -127,11 +127,24 @@ public class GameState implements IState {
 		pcs.removePropertyChangeListener(pcl);
 	}
 	
+	/**
+	 * Shows the game over scene.
+	 * 
+	 * @param score the players score
+	 */
 	public void gameOver(int score) {
 		this.gameOverScene.setScore(score);
 		this.gameOverScene.addTo(scene);
 	}
 	
+	
+	/**
+	 * Returns a <code>ButtonSprite.OnClickListener</code>, that removes this scenes
+	 * child scene, and that changes the applications state to the high score state.
+	 * Should be used for the game over scene.
+	 * 
+	 * @return a <code>ButtonSprite.OnClickListener</code> for the game over scene
+	 */
 	private ButtonSprite.OnClickListener getButtonSpriteOnClickListener() {
 		return new ButtonSprite.OnClickListener() {
 			public void onClick( ButtonSprite pButtonSprite, float pTouchAreaLocalX, float pTouchAreaLocalY) {
