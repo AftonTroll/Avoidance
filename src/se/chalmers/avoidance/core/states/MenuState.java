@@ -148,7 +148,7 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 		quitMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
 				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(quitMenuItem);
-		quitMenuItem.setPosition(0, 225);
+		quitMenuItem.setPosition(xPos, yPos + 225);
 		
 		final Sprite backgroundSprite = new Sprite(0, 0, 1024, 768, this.backgroundRegion, vbom);
 		this.menuScene.setBackground(new SpriteBackground(backgroundSprite));
