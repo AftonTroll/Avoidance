@@ -24,6 +24,7 @@ import org.andengine.entity.shape.RectangularShape;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 
 import se.chalmers.avoidance.core.components.Size;
+import se.chalmers.avoidance.core.components.Sound;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.util.Utils;
@@ -46,6 +47,7 @@ public class CollisionSystem extends EntitySystem{
     private ComponentMapper<Velocity> velocityMapper;
     private ComponentMapper<Transform> transformMapper;
     private ComponentMapper<Size> sizeMapper;
+    private ComponentMapper<Sound> soundMapper;
     private CollisionObject collisionObject1;
     private CollisionObject collisionObject2;
 	
@@ -68,6 +70,7 @@ public class CollisionSystem extends EntitySystem{
 		velocityMapper = world.getMapper(Velocity.class);
 		transformMapper = world.getMapper(Transform.class);
 		sizeMapper = world.getMapper(Size.class);
+		soundMapper = world.getMapper(Sound.class);
 	}
 	
 	/**
@@ -151,6 +154,8 @@ public class CollisionSystem extends EntitySystem{
 			newAngle = Utils.reverseAngle(angle);
 		}
 		playerVelocity.setAngle(newAngle);
+		
+		soundMapper.get(wall).setPlaying(true);
 	}
 	
 	private float flipVertical(float angle){ 

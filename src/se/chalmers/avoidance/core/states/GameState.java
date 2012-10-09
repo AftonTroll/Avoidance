@@ -31,15 +31,14 @@ import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import se.chalmers.avoidance.core.EntityFactory;
 import se.chalmers.avoidance.core.systems.CollisionSystem;
 import se.chalmers.avoidance.core.systems.EnemyControlSystem;
 import se.chalmers.avoidance.core.systems.HudRenderSystem;
 import se.chalmers.avoidance.core.systems.PlayerControlSystem;
+import se.chalmers.avoidance.core.systems.SoundSystem;
 import se.chalmers.avoidance.core.systems.SpatialRenderSystem;
 import se.chalmers.avoidance.core.systems.SpawnSystem;
 import se.chalmers.avoidance.input.AccelerometerListener;
-import se.chalmers.avoidance.util.ScreenResolution;
 import android.hardware.SensorManager;
 
 import com.artemis.World;
@@ -78,6 +77,7 @@ public class GameState implements IState {
 		world.setSystem(new PlayerControlSystem());
 		world.setSystem(new EnemyControlSystem());
 		world.setSystem(new SpawnSystem());
+		world.setSystem(new SoundSystem());
 		world.setSystem(new HudRenderSystem(scene, vbom, scoreFont));
 		
 		//Initialize world.
