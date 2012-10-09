@@ -17,7 +17,6 @@ import se.chalmers.avoidance.util.ScreenResolution;
 
 public class GameOverScene extends Scene {
 	
-	private Scene parentScene;
 	private VertexBufferObjectManager vbom;
 
 	private Rectangle transparentBackground;
@@ -34,18 +33,7 @@ public class GameOverScene extends Scene {
 	
 	public void addTo(Scene scene) {
 		scene.setChildScene(this);
-		this.parentScene = scene;
 	}
-	
-//	protected void gameOver() {
-//		MenuScene childScene = new MenuScene();
-//		childScene.setCamera(engine.getCamera());
-//		engine.getScene().setChildScene(childScene);
-//		
-//		childScene.attachChild(createTransparentBackground());
-//		int tempScore = 1337;
-//		showScore(childScene, tempScore);
-//	}
 	
 	public void initialize(HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts) {
 		createTransparentBackground();
