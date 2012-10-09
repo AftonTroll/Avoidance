@@ -48,6 +48,7 @@ public class EntityFactory {
 	public static Entity createPlayer(World world){
 		Entity player = world.createEntity();
 		world.getManager(TagManager.class).register("PLAYER", player);
+		world.getManager(GroupManager.class).add(player, "PLAYER");
 		
 		player.addComponent(new Transform(200,100));
 		player.addComponent(new Velocity());
