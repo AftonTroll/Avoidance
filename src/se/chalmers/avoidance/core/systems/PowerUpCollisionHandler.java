@@ -50,5 +50,6 @@ public class PowerUpCollisionHandler{
 		if(buff.getType() == BuffType.Speed) {
 			velocity.addSpeed(buff.getStrength());
 		}
+		powerup.deleteFromWorld();
 	}
 }
