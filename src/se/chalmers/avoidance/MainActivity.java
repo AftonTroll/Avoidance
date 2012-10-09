@@ -40,6 +40,7 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import se.chalmers.avoidance.constants.EventMessageConstants;
+import se.chalmers.avoidance.constants.FontConstants;
 import se.chalmers.avoidance.core.states.GameState;
 import se.chalmers.avoidance.core.states.MenuState;
 import se.chalmers.avoidance.core.states.StateID;
@@ -63,9 +64,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
     private StateManager stateManager;
 
     private HashMap<String, TextureRegion> regions;
-    private Font scoreFont;
-    private Font gameOverFont;
-    private BitmapTextureAtlas gameOverFontTexture;
+    private HashMap<String, Font> fonts;
    
     /**
      * Sets the engine options (camera, screen rotation, ...) 
@@ -86,13 +85,14 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	public void onCreateResources(OnCreateResourcesCallback onCreateResourcesCallback)
 			throws Exception {
 		regions = new HashMap<String, TextureRegion>();
+		fonts = new HashMap<String, Font>();
 		
 		//create fonts
-		scoreFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
-				TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 20);
-		gameOverFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
+		fonts.put(FontConstants.HUD_SCORE, FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
+				TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 20));
+		fonts.put(FontConstants.GAME_OVER_SCORE, FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
 				TextureOptions.BILINEAR, Typeface.create(Typeface.MONOSPACE, Typeface.BOLD_ITALIC), 
-				48, true, Color.WHITE);
+				72, true, Color.WHITE));
 
         // Set the asset path of the images
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
@@ -102,6 +102,9 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 //        Create TextureRegions like this for every image:
 //        regions.put("file_name.png", BitmapTextureAtlasTextureRegionFactory
 //               .createFromAsset( bitmapTextureAtlas, this, "file_name.png", x_position, y_position));
+        
+        regions.put("gameOver.png", BitmapTextureAtlasTextureRegionFactory
+		.createFromAsset( bitmapTextureAtlas, this, "gameOver.png", 1748-445, 824-237));
         
         regions.put("okButton.png", BitmapTextureAtlasTextureRegionFactory
 		.createFromAsset( bitmapTextureAtlas, this, "okButton.png", 1748, 824));
@@ -122,9 +125,10 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
         		.createFromAsset( bitmapTextureAtlas, this, "enemy.png", 61,150));
         
         bitmapTextureAtlas.load();
-        scoreFont.load();
-        gameOverFont.load();
-        mEngine.getFontManager().loadFont(gameOverFont);
+        for (Font font : fonts.values()) {
+        	font.load();
+        }
+        
 		onCreateResourcesCallback.onCreateResourcesFinished();
 	}
 	
@@ -166,7 +170,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 		stateManager = new StateManager(mEngine);
 
 		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
-				regions, this.getVertexBufferObjectManager(),scoreFont);
+				regions, fonts, this.getVertexBufferObjectManager());
 		MenuState menuState = new MenuState(this);
 		stateManager.addState(StateID.Game, gameState);
 		stateManager.addState(StateID.Menu, menuState);
