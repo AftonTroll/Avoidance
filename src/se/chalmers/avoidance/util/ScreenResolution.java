@@ -65,7 +65,8 @@ public abstract class ScreenResolution {
      * @return the screens width in pixels
      */
     public static int getWidthResolution() {
-    	return ScreenResolution.CAMERA_WIDTH;
+    	return 1280; //return fixed resolution for now
+//    	return ScreenResolution.CAMERA_WIDTH;
     }
     
     /**
@@ -73,6 +74,7 @@ public abstract class ScreenResolution {
      * @return the screens height in pixels.
      */
     public static int getHeightResolution() {
-    	return ScreenResolution.CAMERA_HEIGHT;
+    	return 800; //return fixed resolution for now
+//    	return ScreenResolution.CAMERA_HEIGHT;
     }
 }

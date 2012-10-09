@@ -47,6 +47,7 @@ import com.artemis.utils.ImmutableBag;
  *
  */
 public class PlayerControlSystem extends EntitySystem implements PropertyChangeListener {
+	private final float ACCELERATION_MODIFIER = 20;
 	private float lastAccelerationX = 0;
 	private float lastAccelerationY = 0;
 	private ComponentMapper<Transform> transformMapper;
@@ -54,8 +55,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	private TagManager tagManager;
 	
 	/**
-	 * Constructs a PlayerControlSystem that listens to the accelerometer
-	 * from the given sensor manager and moves the entity with the given ID
+	 * Constructs a new PlayerControlSystem.
 	 */
 	public PlayerControlSystem() {
 		super(Aspect.getAspectForAll(Transform.class, Velocity.class));
@@ -82,7 +82,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	}
 
 	/**
-	 * This method is called when the entities are to be updated.
+	 * This method is called when the player is to be updated.
 	 * Updates the velocity and position of the player
 	 * @param entities the bag of entities with the wanted components
 	 */
@@ -101,8 +101,8 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 			float newVelX = startVelX;
 			float newVelY = startVelY;
 			
-			newVelX += world.delta * lastAccelerationX;
-			newVelY += world.delta * lastAccelerationY;	
+			newVelX += world.delta * lastAccelerationX*ACCELERATION_MODIFIER;
+			newVelY += world.delta * lastAccelerationY*ACCELERATION_MODIFIER;	
 			float newSpeed = (float) Math.sqrt(newVelX*newVelX+newVelY*newVelY);
 			
 			//Apply friction

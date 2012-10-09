@@ -25,12 +25,11 @@ import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import se.chalmers.avoidance.core.components.Velocity;
-
 public class UtilsTest {
 	
 	private static float f1, f2, f3, f4, f5, f6;
-	private static Velocity v1, v2, v3, v4, v5;
+	private static float s1, s2, s3, s4, s5;
+	private static float a1, a2, a3, a4, a5;
 	private final float TOLERANCE = 0.0001f;
 
 	@BeforeClass
@@ -42,49 +41,54 @@ public class UtilsTest {
 		f5 = -(float)Math.PI;
 		f6 = -7f;
 		
-		v1 = new Velocity(5, 0);
-		v2 = new Velocity(0, 0);
-		v3 = new Velocity(10, (float) (Math.PI/2));
-		v4 = new Velocity(15, (float) (-Math.PI));
-		v5 = new Velocity((float) Math.sqrt(8), (float) (Math.PI/4));
+		s1 = 5f;
+		a1 = 0f;
+		s2 = 0f;
+		a2 = 0f;
+		s3 = 10f;
+		a3 = (float) Math.PI/2;
+		s4 = 15f;
+		a4 = (float) -Math.PI;
+		s5 = (float) Math.sqrt(8);
+		a5 = (float) (Math.PI/4);
 	}
 
 	@Test
 	public void testSimplifyAngle() {
-		assertTrue(Utils.simplifyAngle(f1) == f1);
-		assertTrue(Utils.simplifyAngle(f2) == f2);
-		assertTrue(Utils.simplifyAngle(f3) == (f3 - (float)(2 * Math.PI)));
-		assertTrue(Utils.simplifyAngle(f4) == ((float)(2 * Math.PI)) + f4);
-		assertTrue(Utils.simplifyAngle(f5) == (float) Math.PI);
-		assertTrue(Utils.simplifyAngle(f6) == ((float)(4 * Math.PI)) + f6);
+		assertTrue(Utils.simplifyAngle(f1) - f1  <= TOLERANCE);
+		assertTrue(Utils.simplifyAngle(f2) - f2  <= TOLERANCE);
+		assertTrue(Utils.simplifyAngle(f3) - (f3 - (float)(2 * Math.PI)) <= TOLERANCE);
+		assertTrue(Utils.simplifyAngle(f4) - ((float)(2 * Math.PI) + f4) <= TOLERANCE);
+		assertTrue(Utils.simplifyAngle(f5) - ((float) Math.PI) <= TOLERANCE);
+		assertTrue(Utils.simplifyAngle(f6) - (((float)(4 * Math.PI)) + f6) <= TOLERANCE);
 	}
 
 	@Test
 	public void testReverseAngle() {
-		assertTrue(Utils.reverseAngle(f1) == (float) Math.PI);
-		assertTrue(Utils.reverseAngle(f2) == (float) Math.PI + f2);
-		assertTrue(Utils.reverseAngle(f3) == f3 - (float) Math.PI);
-		assertTrue(Utils.reverseAngle(f4) == (float) Math.PI + f4);
-		assertTrue(Utils.reverseAngle(f5) == f5 + (float) Math.PI);
-		assertTrue(Utils.reverseAngle(f6) == (float) Math.PI + f6);
+		assertTrue(Utils.reverseAngle(f1) - (float) Math.PI <= TOLERANCE);
+		assertTrue(Utils.reverseAngle(f2) - ((float) Math.PI + f2) <= TOLERANCE);
+		assertTrue(Utils.reverseAngle(f3) - (f3 - (float) Math.PI) <= TOLERANCE);
+		assertTrue(Utils.reverseAngle(f4) - ((float) Math.PI + f4) <= TOLERANCE);
+		assertTrue(Utils.reverseAngle(f5) - (f5 + (float) Math.PI) <= TOLERANCE);
+		assertTrue(Utils.reverseAngle(f6) - ((float) Math.PI + f6) <= TOLERANCE);
 	}
 	
 	@Test
 	public void testGetHorizontalSpeed(){
-		assertTrue(Math.abs(Utils.getHorizontalSpeed(v1.getSpeed(), v1.getAngle()) - 5) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getHorizontalSpeed(v2.getSpeed(), v2.getAngle())) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getHorizontalSpeed(v3.getSpeed(), v3.getAngle())) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getHorizontalSpeed(v4.getSpeed(), v4.getAngle()) + 15) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getHorizontalSpeed(v5.getSpeed(), v5.getAngle()) - 2) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getHorizontalSpeed(s1, a1) - 5) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getHorizontalSpeed(s2, a2)) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getHorizontalSpeed(s3, a3)) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getHorizontalSpeed(s4, a4) + 15) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getHorizontalSpeed(s5, a5) - 2) <= TOLERANCE);
 	}
 	
 	@Test
 	public void testGetVerticalSpeed(){
-		assertTrue(Math.abs(Utils.getVerticalSpeed(v1.getSpeed(), v1.getAngle())) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getVerticalSpeed(v2.getSpeed(), v2.getAngle())) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getVerticalSpeed(v3.getSpeed(), v3.getAngle()) - 10) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getVerticalSpeed(v4.getSpeed(), v4.getAngle())) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getVerticalSpeed(v5.getSpeed(), v5.getAngle()) -2 ) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getVerticalSpeed(s1, a1)) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getVerticalSpeed(s2, a2)) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getVerticalSpeed(s3, a3) - 10) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getVerticalSpeed(s4, a4)) <= TOLERANCE);
+		assertTrue(Math.abs(Utils.getVerticalSpeed(s5, a5) -2 ) <= TOLERANCE);
 	}
 
 }

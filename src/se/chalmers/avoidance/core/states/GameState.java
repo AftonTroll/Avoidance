@@ -27,14 +27,19 @@ import java.util.HashMap;
 
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import se.chalmers.avoidance.core.EntityFactory;
 import se.chalmers.avoidance.core.systems.CollisionSystem;
+import se.chalmers.avoidance.core.systems.EnemyControlSystem;
+import se.chalmers.avoidance.core.systems.HudRenderSystem;
 import se.chalmers.avoidance.core.systems.PlayerControlSystem;
 import se.chalmers.avoidance.core.systems.SpatialRenderSystem;
+import se.chalmers.avoidance.core.systems.SpawnSystem;
 import se.chalmers.avoidance.input.AccelerometerListener;
+import se.chalmers.avoidance.util.ScreenResolution;
 import android.hardware.SensorManager;
 
 import com.artemis.World;
@@ -52,14 +57,12 @@ public class GameState implements IState {
 	private World world;
 	private PropertyChangeSupport pcs;
 	
-	public GameState(SensorManager sensorManager, HashMap<String, TextureRegion> regions, 
-			VertexBufferObjectManager vbom) {
-		initialize(sensorManager, regions, vbom);
+	public GameState(SensorManager sensorManager, HashMap<String, TextureRegion> regions, VertexBufferObjectManager vbom, Font scoreFont) {
+		initialize(sensorManager, regions, vbom, scoreFont);
 		pcs = new PropertyChangeSupport(this);
 	}
 	
-	private void initialize(SensorManager sensorManager, HashMap<String, TextureRegion> regions, 
-			VertexBufferObjectManager vbom) {
+	private void initialize(SensorManager sensorManager, HashMap<String, TextureRegion> regions, VertexBufferObjectManager vbom, Font scoreFont ) {
 		scene = new Scene();
 		scene.setBackground(new Background(1f, 0f, 0f));
 		world = new World();
@@ -73,6 +76,9 @@ public class GameState implements IState {
 		world.setSystem(new SpatialRenderSystem(regions, vbom, scene));
 		world.setSystem(new CollisionSystem());
 		world.setSystem(new PlayerControlSystem());
+		world.setSystem(new EnemyControlSystem());
+		world.setSystem(new SpawnSystem());
+		world.setSystem(new HudRenderSystem(scene, vbom, scoreFont));
 		
 		//Initialize world.
 		world.initialize();
@@ -81,14 +87,6 @@ public class GameState implements IState {
 		AccelerometerListener aL = new AccelerometerListener(sensorManager);
 		aL.addPropertyChangeListener(world.getSystem(PlayerControlSystem.class));
 		aL.startListening();
-		
-		//Initialize entities
-		world.addEntity(EntityFactory.createPlayer(world));
-		world.addEntity(EntityFactory.createWall(world,1200,25,0,0));
-		world.addEntity(EntityFactory.createWall(world,1200,20,0,455));
-		world.addEntity(EntityFactory.createWall(world,20,800,0,0));
-		world.addEntity(EntityFactory.createWall(world,20,800,700,0));
-		world.addEntity(EntityFactory.createObstacle(world,50,50,200,200));
 	}
 	
 	/**

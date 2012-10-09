@@ -107,6 +107,7 @@ public class SpatialRenderSystem extends EntitySystem{
 		Transform tf = tm.get(e);
 		spatial.setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(spatial.getName()), vbom));
 		scene.attachChild(spatial.getSprite());
+		scene.sortChildren();
         entities.add(e);
     }
 

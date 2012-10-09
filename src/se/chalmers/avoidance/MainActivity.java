@@ -31,6 +31,8 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -42,6 +44,7 @@ import se.chalmers.avoidance.core.states.MenuState;
 import se.chalmers.avoidance.core.states.StateID;
 import se.chalmers.avoidance.core.states.StateManager;
 import se.chalmers.avoidance.util.ScreenResolution;
+import android.graphics.Typeface;
 import android.hardware.SensorManager;
 
 /**
@@ -58,6 +61,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
     private StateManager stateManager;
 
     private HashMap<String, TextureRegion> regions;
+    private Font scoreFont;
    
     /**
      * Sets the engine options (camera, screen rotation, ...) 
@@ -78,7 +82,9 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	public void onCreateResources(OnCreateResourcesCallback onCreateResourcesCallback)
 			throws Exception {
 		regions = new HashMap<String, TextureRegion>();
-		
+		scoreFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
+				TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 20);
+				
         // Set the asset path of the images
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
         BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(
@@ -92,15 +98,19 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 		.createFromAsset( bitmapTextureAtlas, this, "ball.png", 0, 0));
         
         regions.put("wall_horisontal.png",  BitmapTextureAtlasTextureRegionFactory
-		.createFromAsset( bitmapTextureAtlas, this, "wall_horisontal.png", 0, 34));
+		.createFromAsset( bitmapTextureAtlas, this, "wall_horisontal.png", 0, 68));
         
         regions.put("wall_vertical.png",  BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "wall_vertical.png", 34,64));
+        		.createFromAsset( bitmapTextureAtlas, this, "wall_vertical.png", 34,98));
         
         regions.put("obstacle.png",  BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "obstacle.png", 64,64));
+        		.createFromAsset( bitmapTextureAtlas, this, "obstacle.png", 64,98));
+
+        regions.put("enemy.png",  BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, "enemy.png", 61,150));
         
         bitmapTextureAtlas.load();
+        scoreFont.load();
 		onCreateResourcesCallback.onCreateResourcesFinished();
 	}
 	
@@ -142,7 +152,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 		stateManager = new StateManager(mEngine);
 
 		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
-				regions, mEngine.getVertexBufferObjectManager());
+				regions, this.getVertexBufferObjectManager(),scoreFont);
 		MenuState menuState = new MenuState(this);
 		stateManager.addState(StateID.Game, gameState);
 		stateManager.addState(StateID.Menu, menuState);
