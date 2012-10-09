@@ -24,6 +24,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
+import org.andengine.audio.sound.Sound;
+import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -43,6 +47,7 @@ import se.chalmers.avoidance.core.states.GameState;
 import se.chalmers.avoidance.core.states.MenuState;
 import se.chalmers.avoidance.core.states.StateID;
 import se.chalmers.avoidance.core.states.StateManager;
+import se.chalmers.avoidance.util.AudioManager;
 import se.chalmers.avoidance.util.ScreenResolution;
 import android.graphics.Typeface;
 import android.hardware.SensorManager;
@@ -72,6 +77,8 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 				ScreenResolution.getHeightResolution());
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, 
         		new FillResolutionPolicy(), camera);
+        engineOptions.getAudioOptions().setNeedsMusic(true);
+        engineOptions.getAudioOptions().setNeedsSound(true);
         return engineOptions;
 
 	}
@@ -81,6 +88,22 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	 */
 	public void onCreateResources(OnCreateResourcesCallback onCreateResourcesCallback)
 			throws Exception {
+		//Load sound
+        MusicFactory.setAssetBasePath("audio/");
+        SoundFactory.setAssetBasePath("audio/");
+        Music music;
+        Sound sound;
+        
+        music = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "heroism.ogg");
+        music.setLooping(true);
+        AudioManager.addMusic("heroism.ogg", music);
+        
+        sound = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "bounce.ogg");
+        AudioManager.addSound("bounce.ogg", sound);
+        
+        AudioManager.playMusic("heroism.ogg");
+        
+        //Load textures
 		regions = new HashMap<String, TextureRegion>();
 		scoreFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
 				TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 20);
@@ -111,6 +134,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
         
         bitmapTextureAtlas.load();
         scoreFont.load();
+        
 		onCreateResourcesCallback.onCreateResourcesFinished();
 	}
 	
