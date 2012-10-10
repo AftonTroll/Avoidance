@@ -108,6 +108,8 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 
         regions.put("enemy.png",  BitmapTextureAtlasTextureRegionFactory
         		.createFromAsset( bitmapTextureAtlas, this, "enemy.png", 61,150));
+        regions.put("powerup.png",  BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, "powerup.png", 120,200));
         
         bitmapTextureAtlas.load();
         scoreFont.load();
