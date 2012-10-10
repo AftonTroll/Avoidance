@@ -25,6 +25,7 @@
 
 package se.chalmers.avoidance.core.systems;
 
+import se.chalmers.avoidance.core.components.Acceleration;
 import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
@@ -50,6 +51,7 @@ public class EnemyControlSystem extends EntitySystem{
 	private ComponentMapper<Velocity> velocityMapper;
 	private ComponentMapper<Size> sizeMapper;
 	private ComponentMapper<Friction> frictionMapper;
+	private ComponentMapper<Acceleration> accelerationMapper;
 	private TagManager tagManager;
 	private GroupManager groupManager;
 	
@@ -69,6 +71,7 @@ public class EnemyControlSystem extends EntitySystem{
 		velocityMapper = world.getMapper(Velocity.class);
 		sizeMapper = world.getMapper(Size.class);
 		frictionMapper = world.getMapper(Friction.class);
+		accelerationMapper = world.getMapper(Acceleration.class);
 		tagManager = world.getManager(TagManager.class);
 		groupManager = world.getManager(GroupManager.class);
 	}
@@ -108,8 +111,9 @@ public class EnemyControlSystem extends EntitySystem{
 
 				float accelerationAngle = (float) Math.atan2(playerCenterY-enemyCenterY, 
 						playerCenterX - enemyCenterX);
-				float accelX = Utils.getHorizontalSpeed(10, accelerationAngle);
-				float accelY = Utils.getVerticalSpeed(10, accelerationAngle);
+				float accelerationSpeed = accelerationMapper.get(enemy).getAcceleration();
+				float accelX = Utils.getHorizontalSpeed(accelerationSpeed, accelerationAngle);
+				float accelY = Utils.getVerticalSpeed(accelerationSpeed, accelerationAngle);
 				
 				//Update the Velocity
 				//Based on https://bitbucket.org/piemaster/artemoids/src/5c3a11ff2bdd/src/net/piemaster/artemoids/

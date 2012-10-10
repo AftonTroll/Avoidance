@@ -20,6 +20,7 @@
 
 package se.chalmers.avoidance.core;
 
+import se.chalmers.avoidance.core.components.Acceleration;
 import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Spatial;
@@ -100,6 +101,7 @@ public class EntityFactory {
 		enemy.addComponent(new Velocity());
 		enemy.addComponent(new Size(64,64));
 		enemy.addComponent(new Friction(0.7f));
+		enemy.addComponent(new Acceleration(10));
 		enemy.addComponent(new Spatial("enemy.png"));
 		return enemy;
 	}
@@ -120,6 +122,7 @@ public class EntityFactory {
 		enemy.addComponent(new Velocity());
 		enemy.addComponent(new Size(32,32));
 		enemy.addComponent(new Friction(0.9f));
+		enemy.addComponent(new Acceleration(10));
 		enemy.addComponent(new Spatial("quickenemy.png"));
 		return enemy;
 	}
