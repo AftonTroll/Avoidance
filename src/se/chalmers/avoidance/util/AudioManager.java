@@ -79,11 +79,9 @@ public class AudioManager {
 	 * @param name the name of the music
 	 */
 	public static void playMusic(String name){
-		Music newMusic = null;
-		if(musicMap.containsKey(name)){
-			newMusic = musicMap.get(name);
-		}
+		Music newMusic = musicMap.get(name);
 		
+		//Pause all musics that are playing
 		for(Music music: musicMap.values()){
 			if(music != newMusic){
 				if(music.isPlaying()){
@@ -92,7 +90,8 @@ public class AudioManager {
 			}
 		}
 		
-		if(musicMap.containsKey(name)){
+		//Reset and resume if the music has been played already, else just play it
+		if(newMusic != null){
 			if(newMusic.isPlaying()){
 				newMusic.seekTo(0);
 				newMusic.resume();
