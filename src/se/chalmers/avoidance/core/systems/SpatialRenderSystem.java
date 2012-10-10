@@ -113,6 +113,7 @@ public class SpatialRenderSystem extends EntitySystem{
 
     @Override
     protected void removed(Entity e) {
+    	e.getComponent(Spatial.class).getSprite().detachSelf();
         entities.remove(e);
     }
 }
