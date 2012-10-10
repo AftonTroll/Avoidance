@@ -29,6 +29,7 @@ public final class FontConstants {
 	
 	public static final String HUD_SCORE = "hudScore";
 	public static final String GAME_OVER_SCORE = "gameOverScore";
+	public static final String HIGH_SCORE = "highScore";
 	
 	private FontConstants() {}
 	
