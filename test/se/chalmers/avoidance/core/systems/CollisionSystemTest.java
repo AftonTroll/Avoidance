@@ -77,7 +77,7 @@ public class CollisionSystemTest {
 		
 		cs = new CollisionSystem();
 		world.setSystem(cs);
-		cs.initialize();
+		world.initialize();
 		
 	}
 	
