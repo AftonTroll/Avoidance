@@ -47,6 +47,7 @@ import com.artemis.utils.ImmutableBag;
  *
  */
 public class EnemyControlSystem extends EntitySystem{
+	private final float MAX_SPEED = 400;
 	private ComponentMapper<Transform> transformMapper;
 	private ComponentMapper<Velocity> velocityMapper;
 	private ComponentMapper<Size> sizeMapper;
@@ -130,6 +131,11 @@ public class EnemyControlSystem extends EntitySystem{
 				
 				//Apply friction
 				newSpeed *= Math.pow(frictionMapper.get(enemy).getFriction(), world.delta);
+				
+				//Adjust the speed so it's not higher than the max speed
+				if(newSpeed > MAX_SPEED){
+					newSpeed = MAX_SPEED;
+				}
 				
 				vel.setAngle((float) Math.atan2(newVelY, newVelX));
 				vel.setSpeed(newSpeed);
