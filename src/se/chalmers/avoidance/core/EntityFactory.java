@@ -20,6 +20,8 @@
 
 package se.chalmers.avoidance.core;
 
+import se.chalmers.avoidance.core.components.Buff;
+import se.chalmers.avoidance.core.components.Buff.BuffType;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Spatial;
 import se.chalmers.avoidance.core.components.Time;
@@ -134,6 +136,19 @@ public class EntityFactory {
 		score.addComponent(new Time());
 		
 		return score;
+	}
+	
+	public static Entity createPowerUp(World world, float xPos, float yPos, BuffType buffType, int buffStrength) {
+		Entity powerUp = world.createEntity();
+		world.getManager(GroupManager.class).add(powerUp, "POWERUPS");
+		
+		powerUp.addComponent(new Transform(xPos, yPos));
+		powerUp.addComponent(new Size(64, 64));
+		powerUp.addComponent(new Spatial("powerup.png"));
+		powerUp.addComponent(new Buff(buffType, buffStrength));
+		
+		return powerUp;
+		
 	}
 	
 }
