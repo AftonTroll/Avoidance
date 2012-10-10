@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class SoundTest {
-	private static Sound sound;
+	private Sound sound;
 	
 	@Before
 	public void setUp() throws Exception {
