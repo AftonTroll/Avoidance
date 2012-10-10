@@ -1,6 +1,10 @@
 /* 
  * Copyright (c) 2012 Jakob Svensson & Markus Ekström
  * 
+ * This file is based on an example acquired from http://gamadu.com/artemis/demos.html (Spaceship Warrior), which
+ * can be found under the following link:
+ * http://code.google.com/p/spaceship-warrior/source/browse/src/com/gamadu/spaceshipwarrior/systems/CollisionSystem.java
+ * 
  * This file is part of Avoidance.
  * 
  * Avoidance is free software: you can redistribute it and/or modify
@@ -23,6 +27,9 @@ package se.chalmers.avoidance.core.systems;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 
+import se.chalmers.avoidance.core.collisionhandlers.CollisionHandler;
+import se.chalmers.avoidance.core.collisionhandlers.PowerUpCollisionHandler;
+import se.chalmers.avoidance.core.collisionhandlers.WallCollisionHandler;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
@@ -69,7 +76,8 @@ public class CollisionSystem extends EntitySystem{
 	@Override
 	protected void initialize(){
         collisionPairs = new Bag<CollisionPair>();
-        collisionPairs.add(new CollisionPair("PLAYER", "WALLS", new WallCollisionHandler())); 
+        collisionPairs.add(new CollisionPair("PLAYER", "WALLS", new WallCollisionHandler(world))); 
+        collisionPairs.add(new CollisionPair("PLAYER", "POWERUPS", new PowerUpCollisionHandler(world)));
 	}
 	
 	
