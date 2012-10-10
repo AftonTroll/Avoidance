@@ -34,6 +34,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import se.chalmers.avoidance.constants.FontConstants;
 import se.chalmers.avoidance.util.ScreenResolution;
+import se.chalmers.avoidance.util.Utils;
 
 /**
  * A Game Over Scene for displaying the users score. <p>
@@ -126,8 +127,8 @@ public class GameOverScene extends Scene {
 	private void createGameOverSprite(HashMap<String, TextureRegion> regions) {
 		Sprite sprite = new Sprite(0, 0, regions.get("gameOver.png"), vbom);
 		
-		float xPos = getXPosHorizontalCentering(sprite);
-		float yPos = getYPosVerticalCentering(sprite) - 150;
+		float xPos = Utils.getXPosHorizontalCentering(sprite);
+		float yPos = Utils.getYPosVerticalCentering(sprite) - 150;
 		sprite.setPosition(xPos, yPos);
 		
 		this.gameOverSprite = sprite;
@@ -141,35 +142,11 @@ public class GameOverScene extends Scene {
 	private void createButton(HashMap<String, TextureRegion> regions) {
 		ButtonSprite okButton = new ButtonSprite(0, 0, regions.get("okButton.png"), vbom);
 		
-		float xPos = getXPosHorizontalCentering(okButton);
-		float yPos = getYPosVerticalCentering(okButton) + 200;
+		float xPos = Utils.getXPosHorizontalCentering(okButton);
+		float yPos = Utils.getYPosVerticalCentering(okButton) + 200;
 		okButton.setPosition(xPos, yPos);
 		
 		this.button = okButton;
-	}
-	
-	/**
-	 * Returns the x-position of the <code>RectangularShape</code> provided
-	 * in the argument, in case it would be centered horizontally (along the
-	 * x-axis).
-	 * 
-	 * @param shape a shape
-	 * @return the x-position of the shape if centered on the x-axis
-	 */
-	private float getXPosHorizontalCentering(RectangularShape shape) {
-		return (ScreenResolution.getWidthResolution() - shape.getWidth()) / 2;
-	}
-	
-	/**
-	 * Returns the y-position of the <code>RectangularShape</code> provided
-	 * in the argument, in case it would be centered vertically (along the
-	 * y-axis).
-	 * 
-	 * @param shape a shape
-	 * @return the y-position of the shape if centered on the y-axis
-	 */
-	private float getYPosVerticalCentering(RectangularShape shape) {
-		return (ScreenResolution.getHeightResolution() - shape.getHeight()) / 2;
 	}
 	
 	/**
@@ -181,8 +158,8 @@ public class GameOverScene extends Scene {
 		//do this on the ui update thread or not?
 		scoreText.setText("Score: " + score);
 		
-		float xPos = getXPosHorizontalCentering(scoreText);
-		float yPos = getYPosVerticalCentering(scoreText) + 50;
+		float xPos = Utils.getXPosHorizontalCentering(scoreText);
+		float yPos = Utils.getYPosVerticalCentering(scoreText) + 50;
 		scoreText.setPosition(xPos, yPos);
 	}
 	

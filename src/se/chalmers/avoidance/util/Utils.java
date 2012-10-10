@@ -20,6 +20,8 @@
 
 package se.chalmers.avoidance.util;
 
+import org.andengine.entity.shape.RectangularShape;
+
 
 /**
  * Contains a set of static helper-methods.
@@ -76,6 +78,30 @@ public class Utils {
 	public static float reverseAngle(float angle) {
 		float rotation = (angle < (float) Math.PI) ? 1f : -1f;
 		return angle + (float)Math.PI * rotation;
+	}
+	
+	/**
+	 * Returns the x-position of the <code>RectangularShape</code> provided
+	 * in the argument, in case it would be centered horizontally (along the
+	 * x-axis).
+	 * 
+	 * @param shape a shape
+	 * @return the x-position of the shape if centered on the x-axis
+	 */
+	public static float getXPosHorizontalCentering(RectangularShape shape) {
+		return (ScreenResolution.getWidthResolution() - shape.getWidth()) / 2;
+	}
+	
+	/**
+	 * Returns the y-position of the <code>RectangularShape</code> provided
+	 * in the argument, in case it would be centered vertically (along the
+	 * y-axis).
+	 * 
+	 * @param shape a shape
+	 * @return the y-position of the shape if centered on the y-axis
+	 */
+	public static float getYPosVerticalCentering(RectangularShape shape) {
+		return (ScreenResolution.getHeightResolution() - shape.getHeight()) / 2;
 	}
 
 }
