@@ -34,7 +34,7 @@ import android.content.Context;
 /**
  * Util class for saving and reading from a file.
  * 
- * @author Florian
+ * @author Florian Minges
  */
 public class FileUtils {
 	
@@ -44,6 +44,13 @@ public class FileUtils {
 	
 	private FileUtils() {}
 	
+	/**
+	 * Sets the context of this class.<p>
+	 * This means that reading from and writing to files are made to private files
+	 * associated with this Context's application package.
+	 * 
+	 * @param context the context
+	 */
 	public static void setContext(Context context) {
 		FileUtils.context = context;
 	}
