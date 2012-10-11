@@ -32,13 +32,16 @@ import java.util.List;
 import android.content.Context;
 
 /**
- * Util class for saving and reading from a file.
+ * Util class for saving and reading from a file.<p>
+ * 
+ * May contain some additional methods that are used
+ * for simplifying what we write/read from files in
+ * this application.
  * 
  * @author Florian Minges
  */
 public class FileUtils {
-	
-	//TODO Make completely static
+
 	private static Context context;
 	public static final String PATH = "highscore.txt";
 	
@@ -80,12 +83,12 @@ public class FileUtils {
 	}
 	
 	/**
-	 * Saves a list of <code>Strings</code> to a file
+	 * Saves a list of <code>Objects</code> to a file.
 	 * 
 	 * @param list the list to save
 	 * @param path the file path to store the list at
 	 */
-	public static void saveToFile(List<String> list, String path) {
+	public static void saveToFile(List<?> list, String path) {
 		// Put the output into a string
 		String output = createMultiLineString(list);
 		
@@ -101,93 +104,67 @@ public class FileUtils {
 		}
 	}
 	
-	/**
-	 * Returns a multi line string with a sorted list of integers (including rank).<p>
-	 * Sorts a list of integers that are stored as strings in a list. Adds a rank as
-	 * prefix and puts it all into a multi line string which is returned.
-	 * 
-	 * @param list a <code>List<String></code> containing Integers on string-format
-	 * @param maxLines the maximum number of lines
-	 * @return a sorted and ranked multi line string
-	 */
-	public static String sortList(List<String> list, int maxLines) {
-		List<Integer> numbers = getSortedIntegers(list, maxLines);
-		List<String> rankedList = getRankedList(numbers);
-		
-		String sortedList = createMultiLineString(rankedList);
-		return sortedList;
-	}
-	
+	//////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////
+//	Below comes some code that initially may seem unrelated to a FileUtils-
+//	class in general. But as it is used together in this software, I have 
+//	chosen to place these methods here as well.
+	//////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Returns a list of sorted integers, going from lowest to highest.<p>
+	 * Returns a list of sorted integers, going from highest to lowest.<p>
 	 * Treats the supplied <code>List</code> as integers on string-format.
 	 * Returns null if list contains other data than plain numbers on
 	 * string-format.
 	 * 
 	 * @param list a list of strings representing numbers
-	 * @param maxLines the maximum number of lines/elements to return
-	 * @return a list of sorted integers, going from lowest to highest
+	 * @return a list of sorted integers, going from highest to lowest
 	 */
-	private static List<Integer> getSortedIntegers(List<String> list, int maxLines) {
+	public static List<Integer> getSortedIntegers(List<String> list) {
 		List<Integer> returnList = new ArrayList<Integer>();
-		
-		for (String string : list) {
+
+		//convert to integers
+		for (int i = 0; i < list.size(); i++) {
 			try {
-				returnList.add(Integer.valueOf(string));
+				returnList.add(Integer.valueOf(list.get(i)));
 			} catch (NumberFormatException nfe) {
 				nfe.printStackTrace();
 				return null;
 			}
 		}
 		
+		//sort list highest to lowest
 		Collections.sort(returnList);
-		if (returnList.size() > maxLines) {
-			return returnList.subList(returnList.size() - 5, returnList.size());
-		}
-		return returnList;
-	}
-	
-	/**
-	 * Returns a list of strings, with a rank as prefix for the integers.
-	 * The last element in the supplied list will appear first in the
-	 * returned list.
-	 * 
-	 * @param list a sorted list of <code>Integers</code>
-	 * @return a list of strings with info about rank and value
-	 */
-	private static List<String> getRankedList(List<Integer> list) {
-		List<String> returnList = new ArrayList<String>();
-		int size = list.size();
-		for (int i = 1; i <= size; i++) {
-			String s = i + ")  " + list.get(size - i);
-			returnList.add(s);
-		}
+		Collections.reverse(returnList);
 		
 		return returnList;
 	}
+	
 	
 	/**
 	 * Creates a multi line string of the given list,
-	 * with a given maximum number of lines.
+	 * with a given maximum number of lines. <p>
+	 * Accepts any type of object.
 	 * 
-	 * @param list the list to put in a string
+	 * @param list the objects to put in a string
 	 * @param maxLines the maximum number of lines/strings to use
 	 * @return a multi line string of the given list
 	 */
-	public static String createMultiLineString(List<String> list, int maxLines) {
-		if (list == null)
-			return "";
-		StringBuilder output = new StringBuilder();
-		// limit the list size to maxLines
-		if (list.size() > maxLines) {
-			list = list.subList(list.size() - maxLines, list.size());
-		} 
+	public static String createMultiLineString(List<?> listOfObjects, int maxLines) {
 		
-		// create highscoreList
-		int lines = list.size();
+		if (listOfObjects == null)
+			return "";
+		
+		StringBuilder output = new StringBuilder();
+		
+		// limit the list size to maxLines
+		Utils.trimList(listOfObjects, maxLines);
+		
+		// create the multi line string
+		int lines = listOfObjects.size();
 		for (int i = 0; i < lines ; i++) {
-			output.append(list.get(i));
+			output.append(listOfObjects.get(i).toString());
 			if (i != lines - 1) {
 				output.append("\n");
 			}
@@ -197,12 +174,13 @@ public class FileUtils {
 	}
 
 	/**
-	 * Creates a multi line string of the given list.
+	 * Creates a multi line string of the given list. <p>
+	 * Accepts a <code>List</code> of any type.
 	 * 
-	 * @param list the list to put in a string
+	 * @param list the objects to put in a string
 	 * @return a multi line string of the given list
 	 */
-	public static String createMultiLineString(List<String> list) {
+	public static String createMultiLineString(List<?> list) {
 		if (list == null)
 			return "";
 		return createMultiLineString(list, list.size());

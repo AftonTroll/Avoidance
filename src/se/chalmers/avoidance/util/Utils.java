@@ -20,6 +20,8 @@
 
 package se.chalmers.avoidance.util;
 
+import java.util.List;
+
 
 
 /**
@@ -77,6 +79,22 @@ public class Utils {
 	public static float reverseAngle(float angle) {
 		float rotation = (angle < (float) Math.PI) ? 1f : -1f;
 		return angle + (float)Math.PI * rotation;
+	}
+
+	/**
+	 * Trims the list size of the supplied <code>List</code>
+	 * to contain a maximum of <code>maxElements</code> elements, 
+	 * as specified by the argument.
+	 * 
+	 * @param list the list to trim
+	 * @param maxElements the maximum number of allowed elements in the list
+	 */
+	public static void trimList(List<?> list, int maxElements) {
+		int size = list.size();
+		int diff = size - maxElements;
+		for (int i = 1; i <= diff; i++) {
+			list.remove(size - i);
+		}
 	}
 
 }
