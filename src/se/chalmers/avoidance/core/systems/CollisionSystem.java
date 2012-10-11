@@ -79,7 +79,7 @@ public class CollisionSystem extends EntitySystem{
         collisionPairs = new Bag<CollisionPair>();
         collisionPairs.add(new CollisionPair("MOVINGENTITIES", "WALLS", new WallCollisionHandler(world))); 
         collisionPairs.add(new CollisionPair("PLAYER", "POWERUPS", new PowerUpCollisionHandler(world)));
-        collisionPairs.add(new CollisionPair("ENEMIES", "PITOBSTACLES", new PitobstacleCollisionHandler(world)));
+        collisionPairs.add(new CollisionPair("MOVINGENTITIES", "PITOBSTACLES", new PitobstacleCollisionHandler(world)));
 	}
 	
 	
