@@ -52,6 +52,7 @@ public class SpawnSystem extends EntityProcessingSystem{
 	private final int SPAWNINTERVAL = 5;
 	private int lastSpawn = 0;
 	
+	
 	/**
 	 * Constructs a new SpawnSystem
 	 */
@@ -105,7 +106,12 @@ public class SpawnSystem extends EntityProcessingSystem{
 	
 	//Spawns an enemy at a free position
 	private void spawnEnemyAtFreePosition(){
-		Entity enemy = EntityFactory.createEnemy(world, 0, 0);
+		Entity enemy;
+		if((lastSpawn/SPAWNINTERVAL)%5 == 1){
+			enemy = EntityFactory.createQuickEnemy(world, 0, 0);
+		} else {
+			enemy = EntityFactory.createEnemy(world, 0, 0);
+		}
 		Transform enemyTransform = transformMapper.get(enemy);
 		
 		boolean validPosition = false;

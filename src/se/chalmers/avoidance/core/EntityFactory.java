@@ -20,8 +20,10 @@
 
 package se.chalmers.avoidance.core;
 
+import se.chalmers.avoidance.core.components.Acceleration;
 import se.chalmers.avoidance.core.components.Buff;
 import se.chalmers.avoidance.core.components.Buff.BuffType;
+import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Spatial;
 import se.chalmers.avoidance.core.components.Time;
@@ -56,6 +58,7 @@ public class EntityFactory {
 		player.addComponent(new Transform(200,100));
 		player.addComponent(new Velocity());
 		player.addComponent(new Size(64,64));
+		player.addComponent(new Friction(0.7f));
 		player.addComponent(new Spatial("ball.png"));
 		
 		return player;
@@ -102,7 +105,30 @@ public class EntityFactory {
 		enemy.addComponent(new Transform(xPos, yPos));
 		enemy.addComponent(new Velocity());
 		enemy.addComponent(new Size(64,64));
+		enemy.addComponent(new Friction(0.7f));
+		enemy.addComponent(new Acceleration(10));
 		enemy.addComponent(new Spatial("enemy.png"));
+		return enemy;
+	}
+	
+	/**
+	 * Creates a quick enemy in the ENEMY group
+	 * 
+	 * @param world The World
+	 * @param xPos the horizontal position of the enemy
+	 * @param yPos the vertical position of the enemy
+	 * @return the new enemy entity
+	 */
+	public static Entity createQuickEnemy(World world, float xPos, float yPos) {
+		Entity enemy = world.createEntity();
+		world.getManager(GroupManager.class).add(enemy, "ENEMIES");
+		
+		enemy.addComponent(new Transform(xPos, yPos));
+		enemy.addComponent(new Velocity());
+		enemy.addComponent(new Size(32,32));
+		enemy.addComponent(new Friction(0.9f));
+		enemy.addComponent(new Acceleration(10));
+		enemy.addComponent(new Spatial("quickenemy.png"));
 		return enemy;
 	}
 

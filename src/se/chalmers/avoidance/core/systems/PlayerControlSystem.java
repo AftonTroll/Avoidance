@@ -28,6 +28,7 @@ package se.chalmers.avoidance.core.systems;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.util.Utils;
@@ -48,10 +49,12 @@ import com.artemis.utils.ImmutableBag;
  */
 public class PlayerControlSystem extends EntitySystem implements PropertyChangeListener {
 	private final float ACCELERATION_MODIFIER = 20;
+	private final float MAX_SPEED = 400;
 	private float lastAccelerationX = 0;
 	private float lastAccelerationY = 0;
 	private ComponentMapper<Transform> transformMapper;
 	private ComponentMapper<Velocity> velocityMapper;
+	private ComponentMapper<Friction> frictionMapper;
 	private TagManager tagManager;
 	
 	/**
@@ -68,6 +71,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	protected void initialize() {
 		transformMapper = world.getMapper(Transform.class);
 		velocityMapper = world.getMapper(Velocity.class);
+		frictionMapper = world.getMapper(Friction.class);
 		tagManager = world.getManager(TagManager.class);
 	}
 
@@ -88,7 +92,6 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	 */
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
-		float friction = 0.9f;
 		
 		Entity entity = tagManager.getEntity("PLAYER");
 		if (entity != null) {
@@ -106,13 +109,19 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 			float newSpeed = (float) Math.sqrt(newVelX*newVelX+newVelY*newVelY);
 			
 			//Apply friction
-			newSpeed *= Math.pow(friction, world.delta);
+			newSpeed *= Math.pow(frictionMapper.get(entity).getFriction(), world.delta);
+			
+			//Adjust the speed so it's not higher than the max speed
+			if(newSpeed > MAX_SPEED){
+				newSpeed = MAX_SPEED;
+			}
 			
 			playerVel.setAngle((float) Math.atan2(newVelY, newVelX));
 			playerVel.setSpeed(newSpeed);
 			
 			//Update the position
 			Transform playerTransform = transformMapper.get(entity);
+			playerTransform.setDirection((float) Math.atan2(lastAccelerationY, lastAccelerationX));
 			float speed = playerVel.getSpeed();
 			float angle = playerVel.getAngle();
 			float dx = world.delta * (startVelX + Utils.getHorizontalSpeed(speed, angle))/2;
