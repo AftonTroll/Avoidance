@@ -28,16 +28,7 @@ import org.junit.Test;
 
 import se.chalmers.avoidance.util.Utils;
 
-public class VelocityTest {
-
-	/*
-	 * NOTE TO DEVELOPER Some of the methods in this class may seem to check the
-	 * angle in an overly complicated way. However, due to rounding errors, one
-	 * can't explicitly check for equal angles the "normal" way, and so one
-	 * needs to set a limit to this rounding error. In this case it is a
-	 * 100'000th of the float to check. This should provide more than enough
-	 * precision.
-	 */
+public class VelocityTest extends FloatTest {
 
 	private static float s1, s2;
 	private static float a1, a2;
@@ -61,63 +52,62 @@ public class VelocityTest {
 	public void testVelocity() {
 		Velocity velocity = new Velocity();
 		assertTrue(velocity != null);
-		assertTrue(velocity.getSpeed() == 0);
-		assertTrue(velocity.getAngle() == 0);
+		assertFloatEquals(velocity.getSpeed() , 0);
+		assertFloatEquals(velocity.getAngle() , 0);
 	}
 
 	@Test
 	public void testVelocityFloat() {
 		Velocity velocity = new Velocity(s2);
 		assertTrue(velocity != null);
-		assertTrue(velocity.getSpeed() == s2);
-		assertTrue(velocity.getAngle() == 0);
+		assertFloatEquals(velocity.getSpeed() , s2);
+		assertFloatEquals(velocity.getAngle() , 0);
 	}
 
 	@Test
 	public void testVelocityFloatFloat() {
 		Velocity velocity = new Velocity(s2, a2);
 		assertTrue(velocity != null);
-		assertTrue(velocity.getSpeed() == s2);
-		assertTrue(Math.abs((velocity.getAngle() - a2) % (float) (2 * Math.PI)) < (a2 / 100000));
+		assertFloatEquals(velocity.getSpeed() , s2);
+		assertFloatEquals((velocity.getAngle() - a2) % (float) (2 * Math.PI));
 	}
 
 	@Test
 	public void testSpeedGetterAndSetter() {
 		// positive speed
 		mVelocity.setSpeed(s2);
-		assertTrue(mVelocity.getSpeed() == s2);
+		assertFloatEquals(mVelocity.getSpeed() , s2);
 		if (a1 != s2)
-			assertTrue(mVelocity.getAngle() == a1);
+			assertFloatEquals(mVelocity.getAngle() , a1);
 		
 		// 0 speed
 		mVelocity.setSpeed(0);
-		assertTrue(mVelocity.getSpeed() == 0);
-		assertTrue(mVelocity.getAngle() == a1);
+		assertFloatEquals(mVelocity.getSpeed() , 0);
+		assertFloatEquals(mVelocity.getAngle() , a1);
 
 		// negative-speed
 		mVelocity.setSpeed(-1);
-		assertTrue(mVelocity.getSpeed() == Math.abs(-1));
-		assertTrue(mVelocity.getAngle() != a1);
-		assertTrue(mVelocity.getAngle() == a1 + (float)Math.PI);
+		assertFloatEquals(mVelocity.getSpeed() , Math.abs(-1));
+		assertFloatEquals(mVelocity.getAngle() , a1 + (float)Math.PI);
 	}
 
 	@Test
 	public void testAngleGetterAndSetter() {
 		// positive angle
 		mVelocity.setAngle(a2);
-		assertTrue(mVelocity.getAngle() == a2);
+		assertFloatEquals(mVelocity.getAngle() , a2);
 		if (s1 != a2)
-			assertTrue(mVelocity.getSpeed() == s1);
+			assertFloatEquals(mVelocity.getSpeed() , s1);
 
 		// 0 angle
 		mVelocity.setAngle(0);
-		assertTrue(mVelocity.getAngle() == 0);
-		assertTrue(mVelocity.getSpeed() == s1);
+		assertFloatEquals(mVelocity.getAngle() , 0);
+		assertFloatEquals(mVelocity.getSpeed() , s1);
 		
 		// negative angle
 		mVelocity.setAngle(-1);
-		assertTrue(mVelocity.getAngle() == -1 + (float) (2 * Math.PI));
-		assertTrue(mVelocity.getSpeed() == s1);
+		assertFloatEquals(mVelocity.getAngle() , -1 + (float) (2 * Math.PI));
+		assertFloatEquals(mVelocity.getSpeed() , s1);
 
 		
 	}
@@ -127,49 +117,49 @@ public class VelocityTest {
 
 		//-> add positive
 		mVelocity.addSpeed(s2);
-		assertTrue(mVelocity.getSpeed() == (s1 + s2));
-		assertTrue(mVelocity.getAngle() == a1); // angle unaffected
+		assertFloatEquals(mVelocity.getSpeed() , (s1 + s2));
+		assertFloatEquals(mVelocity.getAngle() , a1); // angle unaffected
 
 		// -> add negative
 		float special = -1;
 		float speed = mVelocity.getSpeed() + special;
 		mVelocity.addSpeed(special);
-		assertTrue(mVelocity.getSpeed() == speed); // still positive speed
-		assertTrue(mVelocity.getAngle() == a1);
+		assertFloatEquals(mVelocity.getSpeed() , speed); // still positive speed
+		assertFloatEquals(mVelocity.getAngle() , a1);
 
 		// -> goes towards 0
 		mVelocity.addSpeed(-mVelocity.getSpeed());
-		assertTrue(mVelocity.getSpeed() == 0);
-		assertTrue(mVelocity.getAngle() == a1);
+		assertFloatEquals(mVelocity.getSpeed() , 0);
+		assertFloatEquals(mVelocity.getAngle() , a1);
 
 		// -> goes below 0
 		mVelocity.addSpeed(special);
-		assertTrue(mVelocity.getSpeed() == Math.abs(special));
-		assertTrue(mVelocity.getAngle() == Utils.reverseAngle(a1));
+		assertFloatEquals(mVelocity.getSpeed() , Math.abs(special));
+		assertFloatEquals(mVelocity.getAngle() , Utils.reverseAngle(a1));
 
 	}
 
 	@Test
 	public void testAddAngle() {
-		assertTrue(mVelocity.getAngle() == a1);
+		assertFloatEquals(mVelocity.getAngle() , a1);
 
 		// 360 degree turn -> still the same angle
 		mVelocity.addAngle((float) (2 * Math.PI));
-		assertTrue(Math.abs(mVelocity.getAngle() - a1) < (a1 / 100000)); // due to rounding error
+		assertFloatEquals(mVelocity.getAngle() - a1); 
 		mVelocity.addAngle((float) (-2 * Math.PI));
-		assertTrue(Math.abs(mVelocity.getAngle() - a1) < (a1 / 100000));
+		assertFloatEquals(mVelocity.getAngle() - a1);
 
 		// add angle of 0 radian
 		mVelocity.addAngle(0);
-		assertTrue(Math.abs(mVelocity.getAngle() - a1) < (a1 / 100000));
+		assertFloatEquals(mVelocity.getAngle() - a1);
 
 		// add positive angle
 		mVelocity.addAngle(1);
-		assertTrue(Math.abs(mVelocity.getAngle() - a1 - 1) < ((a1 + 1) / 100000));
+		assertFloatEquals(mVelocity.getAngle() - a1 - 1);
 
 		// add negative angle
 		mVelocity.addAngle(-1);
-		assertTrue(Math.abs(mVelocity.getAngle() - a1) < (a1 / 100000));
+		assertFloatEquals(mVelocity.getAngle() - a1);
 
 	}
 

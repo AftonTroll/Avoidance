@@ -39,6 +39,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import se.chalmers.avoidance.constants.EventMessageConstants;
 import se.chalmers.avoidance.core.states.GameState;
 import se.chalmers.avoidance.core.states.MenuState;
 import se.chalmers.avoidance.core.states.StateID;
@@ -177,9 +178,12 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	    splashScene.setBackground(new Background(0.0f, 0.0f, 1.0f));
     }      
 
+    /**
+     * Handles events and takes the according action.
+     */
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event != null && event.getNewValue() != null) {
-			if ("SYSTEM.EXIT".equals(event.getPropertyName())) {
+			if (EventMessageConstants.QUIT_GAME.equals(event.getPropertyName())) {
 				this.finish();
 			}
 		}
