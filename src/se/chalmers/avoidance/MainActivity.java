@@ -46,6 +46,7 @@ import se.chalmers.avoidance.core.states.StateManager;
 import se.chalmers.avoidance.util.ScreenResolution;
 import android.graphics.Typeface;
 import android.hardware.SensorManager;
+import android.view.MotionEvent;
 
 /**
  * The starting point of the application.
@@ -62,6 +63,8 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 
     private HashMap<String, TextureRegion> regions;
     private Font scoreFont;
+    
+    private GameState gameState;
    
     /**
      * Sets the engine options (camera, screen rotation, ...) 
@@ -153,7 +156,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	private void initializeGame() {
 		stateManager = new StateManager(mEngine);
 
-		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
+		gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
 				regions, this.getVertexBufferObjectManager(),scoreFont);
 		MenuState menuState = new MenuState(this);
 		stateManager.addState(StateID.Game, gameState);
@@ -177,4 +180,12 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 			}
 		}
 	} 
+	
+	@Override
+    public boolean onTouchEvent(MotionEvent event) {
+		if(gameState != null) {
+			gameState.onTouchEvent(event);
+		}
+        return true;
+    }
 }
