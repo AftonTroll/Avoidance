@@ -49,7 +49,12 @@ public class WallCollisionHandler implements CollisionHandler{
 		sizeMapper = ComponentMapper.getFor(Size.class, world);
 		
 	}
-	
+	/**
+	 * Handles collision between moving entities and walls
+	 * 
+	 * @param movingEntity the moving entity
+	 * @param wall the wall
+	 */
 	public void handleCollision(Entity movingEntity, Entity wall){
 		Size wallSize = sizeMapper.get(wall);
 		Transform wallTransform = transformMapper.get(wall);
