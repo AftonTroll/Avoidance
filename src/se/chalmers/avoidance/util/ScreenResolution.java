@@ -38,48 +38,24 @@ import android.util.DisplayMetrics;
  *
  */
 public abstract class ScreenResolution {
-	private static boolean initialized;
-	private static int CAMERA_WIDTH;
-	private static int CAMERA_HEIGHT;
-	
-	public static void fetchFromActivity(Activity activity) {
-		if (!initialized)
-			initializeScreenResolution(activity);
-	}
-	
-	/**
-     * Initializes the screen resolution variables. <p>
-     * The size is adjusted based on the current rotation of the display.
-     * However, it may include system decor elements, and thus not represent
-     * the actual raw size of the display.
-     * @see DisplayMetrics
-     */
-    private static void initializeScreenResolution(Activity activity) {
-    	//DisplayMetrics is compatible with all android versions, Display is not
-    	DisplayMetrics metrics = activity.getBaseContext().getResources().getDisplayMetrics();
-    	CAMERA_WIDTH = metrics.widthPixels;
-    	CAMERA_HEIGHT = metrics.heightPixels;
-    	initialized = true;
-    }
     
     /**
-     * Returns the screens width in pixels.
-     * @return the screens width in pixels
+     * Returns the screens width.<p>
+     * 
+     * @return the screens width
      */
     public static int getWidthResolution() {
-    	return 1280; //return fixed resolution for now
-//    	return ScreenResolution.CAMERA_WIDTH;
+    	return 1280; 
     }
     
     /**
-     * Returns the screens height in pixels.
-     * @return the screens height in pixels.
+     * Returns the screens height.<p>
+     * 
+     * @return the screens height 
      */
     public static int getHeightResolution() {
-    	return 800; //return fixed resolution for now
-//    	return ScreenResolution.CAMERA_HEIGHT;
+    	return 800; 
     }
-    
 	
 	/**
 	 * Returns the x-position of the <code>RectangularShape</code> provided

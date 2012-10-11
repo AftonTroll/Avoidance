@@ -72,7 +72,6 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
      * Sets the engine options (camera, screen rotation, ...) 
      */
 	public EngineOptions onCreateEngineOptions() {
-		ScreenResolution.fetchFromActivity(this);
 		camera = new Camera(0, 0, ScreenResolution.getWidthResolution(), 
 				ScreenResolution.getHeightResolution());
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, 
