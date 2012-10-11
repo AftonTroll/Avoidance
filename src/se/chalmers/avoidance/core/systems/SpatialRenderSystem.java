@@ -99,7 +99,7 @@ public class SpatialRenderSystem extends EntitySystem{
 		Spatial spatial = sm.get(e);
         Transform tf = tm.get(e);
         spatial.getSprite().setPosition(tf.getX(), tf.getY());
-        spatial.getSprite().setRotation(tf.getDirection());
+        spatial.getSprite().setRotation((float) (Math.toDegrees(tf.getDirection())));
 	}
 	
     @Override
