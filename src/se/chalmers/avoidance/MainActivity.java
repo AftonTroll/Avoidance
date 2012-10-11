@@ -198,5 +198,25 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 				this.finish();
 			}
 		}
-	} 
+	}
+	
+	/**
+	 * Used when the activity is resumed
+	 * Resumes the Audio
+	 */
+	@Override
+	public void onResume(){
+		super.onResume();
+		AudioManager.resume();
+	}
+	
+	/**
+	 * Used when the activity is paused
+	 * Pauses the Audio
+	 */
+	@Override
+	public void onPause(){
+		super.onPause();
+		AudioManager.pause();
+	}
 }

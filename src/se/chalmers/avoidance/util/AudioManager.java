@@ -35,6 +35,7 @@ import org.andengine.audio.sound.Sound;
 public class AudioManager {
 	private static Map<String, Music> musicMap = new HashMap<String, Music>();
 	private static Map<String, Sound> soundMap = new HashMap<String, Sound>();
+	private static Music currentMusic;
 	
 	//Hidden constructor for the singleton pattern
 	private AudioManager(){
@@ -78,25 +79,20 @@ public class AudioManager {
 	 * Plays the music with the given name
 	 * @param name the name of the music
 	 */
-	public static void playMusic(String name){
-		Music newMusic = musicMap.get(name);
-		
-		//Pause all musics that are playing
-		for(Music music: musicMap.values()){
-			if(music != newMusic){
-				if(music.isPlaying()){
-					music.pause();
-				}
-			}
+	public static void playMusic(String name){		
+		//Pause the current music
+		if(currentMusic != null){
+			currentMusic.pause();
 		}
 		
+		currentMusic = musicMap.get(name);
 		//Reset and resume if the music has been played already, else just play it
-		if(newMusic != null){
-			if(newMusic.isPlaying()){
-				newMusic.seekTo(0);
-				newMusic.resume();
+		if(currentMusic != null){
+			if(currentMusic.isPlaying()){
+				currentMusic.seekTo(0);
+				currentMusic.resume();
 			} else {
-				newMusic.play();
+				currentMusic.play();
 			}
 		}
 	}
@@ -111,5 +107,16 @@ public class AudioManager {
 		}
 	}
 	
+	public static void pause(){
+		if(currentMusic != null){
+			currentMusic.pause();
+		}
+	}
+	
+	public static void resume(){
+		if(currentMusic != null){
+			currentMusic.resume();
+		}
+	}
 	
 }
