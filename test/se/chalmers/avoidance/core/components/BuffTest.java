@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2012 Florian Minges
+ * Copyright (c) 2012 Markus Ekström
  * 
  * This file is part of Avoidance.
  * 
@@ -17,31 +17,38 @@
  * along with Avoidance.  If not, see <http://www.gnu.org/licenses/>. 
  *  
  */
-
-package se.chalmers.avoidance.util;
+package se.chalmers.avoidance.core.components;
 
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class ScreenResolutionTest {
-	
-	/**
-	 * Tests 3 (all) methods of the ScreenResolution-class.
-	 * Why? Because they are linked to each other.
-	 */
-	@Test
-	public void testAllMethods() {
-		assertTrue(ScreenResolution.getWidthResolution() == 1280);
-		assertTrue(ScreenResolution.getHeightResolution() == 800);
-		
-		//TODO Can't test yet, since we need to use android-code. Move to testproject.
-//		Activity activity = new Activity();
-//		ScreenResolution.fetchFromActivity(activity);
-		
-//		assertTrue(ScreenResolution.getWidthResolution() == 0);
-//		assertTrue(ScreenResolution.getHeightResolution() == 0);
-		
-	}
+import se.chalmers.avoidance.core.components.Buff.BuffType;
 
+public class BuffTest {
+	private static BuffType type;
+	private static int strength;
+	
+	private Buff mBuff;
+	
+	@BeforeClass
+	public static void beforeClass() throws Exception {
+		type = Buff.BuffType.Speed;
+		strength = 2;
+	}
+	
+	@Before
+	public void setUp() throws Exception {
+		this.mBuff = new Buff(type, strength);
+	}
+	
+	@Test
+	public void testBuff() {
+		Buff buff = new Buff(type, strength);
+		assertTrue(buff != null);
+		assertTrue(buff.getStrength() == strength);
+		assertTrue(buff.getType() == type);
+	}
 }

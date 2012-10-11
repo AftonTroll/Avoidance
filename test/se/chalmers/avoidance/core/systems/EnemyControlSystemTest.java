@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import se.chalmers.avoidance.core.components.Acceleration;
+import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
@@ -41,11 +43,15 @@ public class EnemyControlSystemTest {
 		e1.addComponent(new Transform());
 		e1.addComponent(new Velocity());
 		e1.addComponent(new Size(32,32));
+		e1.addComponent(new Friction(0.7f));
+		e1.addComponent(new Acceleration(10));
 		
 		e2 = world.createEntity();
 		e2.addComponent(new Transform());
 		e2.addComponent(new Velocity());
 		e2.addComponent(new Size(32,32));
+		e2.addComponent(new Friction(0.9f));
+		e2.addComponent(new Acceleration(10));
 		
 		groupManager.add(e1, "ENEMIES");
 		groupManager.add(e2, "ENEMIES");
@@ -72,20 +78,16 @@ public class EnemyControlSystemTest {
 		world.setDelta(1);
 		ecs.processEntities(null);
 		
-		assertTrue(e1.getComponent(Velocity.class).getSpeed() - 10 <= TOLERANCE);
-		assertTrue(e1.getComponent(Velocity.class).getAngle() - Math.PI <= TOLERANCE);
-		assertTrue(e1.getComponent(Transform.class).getX() - 5.5 <= TOLERANCE);
-		assertTrue(e1.getComponent(Transform.class).getY() <= TOLERANCE);
+		assertTrue(Math.abs(e1.getComponent(Velocity.class).getSpeed() - 7) <= TOLERANCE);
+		assertTrue(Math.abs(e1.getComponent(Velocity.class).getAngle() - Math.PI) <= TOLERANCE);
+		assertTrue(Math.abs(e1.getComponent(Transform.class).getX() - (10-7/2f)) <= TOLERANCE);
+		assertTrue(Math.abs(e1.getComponent(Transform.class).getY()) <= TOLERANCE);
 		
-		assertTrue(e2.getComponent(Velocity.class).getSpeed() - 10 <= TOLERANCE);
-		assertTrue(e2.getComponent(Velocity.class).getAngle() - 5*Math.PI/4 <= TOLERANCE);
-		assertTrue(e2.getComponent(Transform.class).getX() -(25-4.5/Math.sqrt(2)) <= TOLERANCE);
-		assertTrue(e2.getComponent(Transform.class).getY() -(25-4.5/Math.sqrt(2)) <= TOLERANCE);
+		assertTrue(Math.abs(e2.getComponent(Velocity.class).getSpeed() - 9) <= TOLERANCE);
+		assertTrue(Math.abs(e2.getComponent(Velocity.class).getAngle() - 5*Math.PI/4) <= TOLERANCE);
+		assertTrue(Math.abs(e2.getComponent(Transform.class).getX() -(25-4.5/Math.sqrt(2))) 
+				<= TOLERANCE);
+		assertTrue(Math.abs(e2.getComponent(Transform.class).getY() -(25-4.5/Math.sqrt(2))) 
+				<= TOLERANCE);
 	}
-	
-	@Test
-	public void testProcessEntitiesWithWall() {
-		
-	}
-
 }
