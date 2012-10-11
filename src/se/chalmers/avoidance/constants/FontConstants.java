@@ -27,8 +27,19 @@ package se.chalmers.avoidance.constants;
  */
 public final class FontConstants {
 	
+	/**
+	 * Identifier for the font used for the score in the HUD.
+	 */
 	public static final String HUD_SCORE = "hudScore";
+	
+	/** 
+	 * Identifier for the font used in the game over scene. 
+	 */
 	public static final String GAME_OVER_SCORE = "gameOverScore";
+	
+	/** 
+	 * Identifier for the font used in the high score scene. 
+	 */
 	public static final String HIGH_SCORE = "highScore";
 	
 	private FontConstants() {}

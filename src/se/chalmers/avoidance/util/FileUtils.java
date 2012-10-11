@@ -43,6 +43,10 @@ import android.content.Context;
 public class FileUtils {
 
 	private static Context context;
+	
+	/**
+	 * A default file path for storing the high score.
+	 */
 	public static final String PATH = "highscore.txt";
 	
 	private FileUtils() {}

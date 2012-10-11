@@ -27,7 +27,14 @@ package se.chalmers.avoidance.constants;
  */
 public final class EventMessageConstants {
 	
+	/**
+	 * Identifier for the event used to quit the game.
+	 */
 	public static final String QUIT_GAME = "System.Exit";
+	
+	/**
+	 * Identifier for the event used to change state.
+	 */
 	public static final String CHANGE_STATE = "Change.State";
 	
 	private EventMessageConstants() {}
