@@ -24,31 +24,42 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-public class StatusTest {
-	private Jump status;
+public class JumpTest {
+	private Jump jump;
 	
 	@Before
 	public void setUp() throws Exception {
-		status = new Jump();
+		jump = new Jump();
 	}
 	
 	@Test
 	public void testStatus() {
-		assertTrue(status != null);
+		assertTrue(jump != null);
 	}
 
 	@Test
 	public void testInTheAir() {
-		assertTrue(!status.isInTheAir());
+		assertTrue(!jump.isInTheAir());
 		
-		status.setInTheAir(true);
-		assertTrue(status.isInTheAir());
-		assertTrue(status.getInTheAirDurationLeft() == 2);
-		status.subtractInTheAirDurationLeft(1);
-		assertTrue(status.getInTheAirDurationLeft() == 1);
-		status.subtractInTheAirDurationLeft(2);
-		assertTrue(status.getInTheAirDurationLeft() == 0);
-		status.setInTheAir(false);
-		assertTrue(!status.isInTheAir());
+		jump.setInTheAir(true);
+		assertTrue(jump.isInTheAir());
+		assertTrue(jump.getInTheAirDurationLeft() == 2);
+		jump.subtractInTheAirDurationLeft(1);
+		assertTrue(jump.getInTheAirDurationLeft() == 1);
+		jump.subtractInTheAirDurationLeft(2);
+		assertTrue(jump.getInTheAirDurationLeft() == 0);
+		jump.setInTheAir(false);
+		assertTrue(!jump.isInTheAir());
+	}
+	
+	@Test
+	public void testJump() {
+		jump.setJumpCooldownLeft(Jump.JUMP_COOLDOWN);
+		assertTrue(jump.getJumpCooldownLeft() == Jump.JUMP_COOLDOWN);
+		jump.subtractJumpCooldownLeft(1);
+		assertTrue(jump.getJumpCooldownLeft() == Math.max(0, (Jump.JUMP_COOLDOWN - 1)));
+		jump.subtractJumpCooldownLeft(1000);
+		assertTrue(jump.getJumpCooldownLeft() == 0);
+		
 	}
 }
