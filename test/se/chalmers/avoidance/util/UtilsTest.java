@@ -90,5 +90,5 @@ public class UtilsTest {
 		assertTrue(Math.abs(Utils.getVerticalSpeed(s4, a4)) <= TOLERANCE);
 		assertTrue(Math.abs(Utils.getVerticalSpeed(s5, a5) -2 ) <= TOLERANCE);
 	}
-
+	
 }
