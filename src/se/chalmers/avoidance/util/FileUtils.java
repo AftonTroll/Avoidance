@@ -90,7 +90,7 @@ public class FileUtils {
 	 */
 	public static void saveToFile(List<?> list, String path) {
 		// Put the output into a string
-		String output = createMultiLineString(list);
+		String output = list != null ? createMultiLineString(list) : "";
 		
 		try {
 			// Save the file
@@ -147,19 +147,24 @@ public class FileUtils {
 	 * with a given maximum number of lines. <p>
 	 * Accepts any type of object.
 	 * 
+	 * WARNING! The supplied list will be trimmed to the size
+	 * of the number of maxLines given in the argument. That is,
+	 * if you keep the reference to the list, beware that it might
+	 * have changed.
+	 * 
 	 * @param list the objects to put in a string
 	 * @param maxLines the maximum number of lines/strings to use
 	 * @return a multi line string of the given list
 	 */
 	public static String createMultiLineString(List<?> listOfObjects, int maxLines) {
 		
-		if (listOfObjects == null)
+		if (listOfObjects == null || listOfObjects.isEmpty())
 			return "";
 		
 		StringBuilder output = new StringBuilder();
 		
 		// limit the list size to maxLines
-		Utils.trimList(listOfObjects, maxLines);
+		Utils.trimList(listOfObjects, maxLines); //<- modifies the list-origin
 		
 		// create the multi line string
 		int lines = listOfObjects.size();
