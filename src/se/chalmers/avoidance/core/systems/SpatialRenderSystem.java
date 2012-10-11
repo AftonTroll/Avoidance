@@ -33,6 +33,7 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Spatial;
 import se.chalmers.avoidance.core.components.Transform;
 
@@ -41,6 +42,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.annotations.Mapper;
+import com.artemis.managers.TagManager;
 import com.artemis.utils.ImmutableBag;
 /**
  * A system controlling the rendering of sprites.
@@ -100,6 +102,19 @@ public class SpatialRenderSystem extends EntitySystem{
         Transform tf = tm.get(e);
         spatial.getSprite().setPosition(tf.getX(), tf.getY());
         spatial.getSprite().setRotation(tf.getDirection());
+        
+        if(e.getId() == world.getManager(TagManager.class).getEntity("PLAYER").getId()) {
+        	handleJumpScaling(e);
+        }
+	}
+	
+	private void handleJumpScaling(Entity player) {
+		if(player.getComponent(Jump.class).isInTheAir()) {
+			player.getComponent(Spatial.class).getSprite().setScale(2);
+		} else {
+			player.getComponent(Spatial.class).getSprite().setScale(1);
+		}
+		
 	}
 	
     @Override
