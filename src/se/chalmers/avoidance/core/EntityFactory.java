@@ -162,6 +162,7 @@ public class EntityFactory {
 	 */
 	public static Entity createScore(World world){
 		Entity score = world.createEntity();
+		world.getManager(TagManager.class).register("SCORE", score);
 		score.addComponent(new Score());
 		score.addComponent(new Time());
 		
