@@ -84,7 +84,10 @@ public class Utils {
 	/**
 	 * Trims the list size of the supplied <code>List</code>
 	 * to contain a maximum of <code>maxElements</code> elements, 
-	 * as specified by the argument.
+	 * as specified by the argument. <p>
+	 * 
+	 * If <code>maxElements</code> is larger than the lists size,
+	 * then the last elements in the list are removed.
 	 * 
 	 * @param list the list to trim
 	 * @param maxElements the maximum number of allowed elements in the list

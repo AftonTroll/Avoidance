@@ -20,6 +20,11 @@
 
 package se.chalmers.avoidance.util;
 
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -88,6 +93,38 @@ public class UtilsTest extends FloatTest {
 		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(s3, a3) - 10));
 		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(s4, a4)));
 		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(s5, a5) -2 ));
+	}
+	
+	@Test
+	public void testTrimList() {
+		List<Integer> list = new ArrayList<Integer>();
+		for (int i = 0; i < 30; i++) {
+			list.add(i);
+		}
+		
+		//decrease the lists size continously
+		Utils.trimList(list, 45);
+		assertTrue(list.size() == 30);
+		
+		Utils.trimList(list, 28);
+		assertTrue(list.size() == 28);
+		assertTrue(!list.contains(28));
+		
+		Utils.trimList(list, 17);
+		assertTrue(list.size() == 17);
+		assertTrue(list.contains(0));
+		assertTrue(!list.contains(17));
+		
+		Utils.trimList(list, 4);
+		assertTrue(list.size() == 4);
+		assertTrue(!list.contains(4));
+		assertTrue(list.contains(3));
+		
+		//can't increase the size, only decrease
+		Utils.trimList(list, 6);
+		assertTrue(list.size() == 4);
+		assertTrue(!list.contains(4));
+		assertTrue(list.contains(3));
 	}
 	
 }
