@@ -151,4 +151,26 @@ public class EntityFactory {
 		
 	}
 	
+	public static Entity createPitobstacle(World world, float xPos, float yPos){
+		Entity pitobstacle = world.createEntity();
+		world.getManager(GroupManager.class).add(pitobstacle, "PITOBSTACLES");
+		
+		pitobstacle.addComponent(new Transform(xPos, yPos));
+		pitobstacle.addComponent(new Size(64,64));
+		pitobstacle.addComponent(new Spatial("pitobstacle.png"));
+		
+		return pitobstacle;
+	}
+	
+	public static Entity createKillplayerbstacle(World world, float xPos, float yPos){
+		Entity killplayerobstacle = world.createEntity();
+		world.getManager(GroupManager.class).add(killplayerobstacle, "KILLPLAYEROBSTACLES");
+		
+		killplayerobstacle.addComponent(new Transform(xPos, yPos));
+		killplayerobstacle.addComponent(new Size(64,64));
+		killplayerobstacle.addComponent(new Spatial("killplayerobstacle.png"));
+		
+		return killplayerobstacle;
+	}
+	
 }
