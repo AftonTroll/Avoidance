@@ -121,6 +121,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 			
 			//Update the position
 			Transform playerTransform = transformMapper.get(entity);
+			playerTransform.setDirection((float) Math.atan2(lastAccelerationY, lastAccelerationX));
 			float speed = playerVel.getSpeed();
 			float angle = playerVel.getAngle();
 			float dx = world.delta * (startVelX + Utils.getHorizontalSpeed(speed, angle))/2;

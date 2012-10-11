@@ -142,6 +142,7 @@ public class EnemyControlSystem extends EntitySystem{
 				
 				//Update the position
 				Transform trans = transformMapper.get(enemy);
+				trans.setDirection(accelerationAngle);
 				float speed = vel.getSpeed();
 				float angle = vel.getAngle();
 				float dx = world.delta * (startVelX + Utils.getHorizontalSpeed(speed, angle))/2;
