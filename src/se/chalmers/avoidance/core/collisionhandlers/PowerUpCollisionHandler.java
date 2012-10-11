@@ -26,7 +26,6 @@ import se.chalmers.avoidance.core.components.Velocity;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.World;
-import com.artemis.managers.GroupManager;
 
 /**
  * Handles collisions between the player and a power-up.
@@ -52,15 +51,11 @@ public class PowerUpCollisionHandler implements CollisionHandler{
 	 * @param powerup The power-up whose buff shall be applied to the player.
 	 */
 	public void handleCollision(Entity player, Entity powerup) {
-		World world = player.getWorld();
-		GroupManager groupManager = world.getManager(GroupManager.class);
-		if (groupManager.getEntities("PLAYER").contains(player) && groupManager.getEntities("POWERUPS").contains(powerup) ) {
-			Velocity velocity = vm.get(player);
-			Buff buff = bm.get(powerup);
-			if(buff.getType() == BuffType.Speed) {
-				velocity.addSpeed(buff.getStrength());
-			}
-			powerup.deleteFromWorld();
+		Velocity velocity = vm.get(player);
+		Buff buff = bm.get(powerup);
+		if(buff.getType() == BuffType.Speed) {
+			velocity.addSpeed(buff.getStrength());
 		}
+		powerup.deleteFromWorld();
 	}
 }
