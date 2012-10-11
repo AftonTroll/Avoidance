@@ -20,6 +20,10 @@
 
 package se.chalmers.avoidance.core;
 
+import se.chalmers.avoidance.core.components.Acceleration;
+import se.chalmers.avoidance.core.components.Buff;
+import se.chalmers.avoidance.core.components.Buff.BuffType;
+import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Score;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Spatial;
@@ -49,10 +53,13 @@ public class EntityFactory {
 	public static Entity createPlayer(World world){
 		Entity player = world.createEntity();
 		world.getManager(TagManager.class).register("PLAYER", player);
+		world.getManager(GroupManager.class).add(player, "PLAYER");
+		world.getManager(GroupManager.class).add(player, "MOVINGENTITIES");
 		
 		player.addComponent(new Transform(200,100));
 		player.addComponent(new Velocity());
 		player.addComponent(new Size(64,64));
+		player.addComponent(new Friction(0.7f));
 		player.addComponent(new Spatial("ball.png"));
 		
 		return player;
@@ -94,11 +101,36 @@ public class EntityFactory {
 	public static Entity createEnemy(World world, float xPos, float yPos) {
 		Entity enemy = world.createEntity();
 		world.getManager(GroupManager.class).add(enemy, "ENEMIES");
+		world.getManager(GroupManager.class).add(enemy, "MOVINGENTITIES");
 		
 		enemy.addComponent(new Transform(xPos, yPos));
 		enemy.addComponent(new Velocity());
 		enemy.addComponent(new Size(64,64));
+		enemy.addComponent(new Friction(0.7f));
+		enemy.addComponent(new Acceleration(10));
 		enemy.addComponent(new Spatial("enemy.png"));
+		return enemy;
+	}
+	
+	/**
+	 * Creates a quick enemy in the ENEMY group
+	 * 
+	 * @param world The World
+	 * @param xPos the horizontal position of the enemy
+	 * @param yPos the vertical position of the enemy
+	 * @return the new enemy entity
+	 */
+	public static Entity createQuickEnemy(World world, float xPos, float yPos) {
+		Entity enemy = world.createEntity();
+		world.getManager(GroupManager.class).add(enemy, "ENEMIES");
+		world.getManager(GroupManager.class).add(enemy, "MOVINGENTITIES");
+		
+		enemy.addComponent(new Transform(xPos, yPos));
+		enemy.addComponent(new Velocity());
+		enemy.addComponent(new Size(32,32));
+		enemy.addComponent(new Friction(0.9f));
+		enemy.addComponent(new Acceleration(10));
+		enemy.addComponent(new Spatial("quickenemy.png"));
 		return enemy;
 	}
 
@@ -134,6 +166,41 @@ public class EntityFactory {
 		score.addComponent(new Time());
 		
 		return score;
+	}
+	
+	public static Entity createPowerUp(World world, float xPos, float yPos, BuffType buffType, int buffStrength) {
+		Entity powerUp = world.createEntity();
+		world.getManager(GroupManager.class).add(powerUp, "POWERUPS");
+		
+		powerUp.addComponent(new Transform(xPos, yPos));
+		powerUp.addComponent(new Size(64, 64));
+		powerUp.addComponent(new Spatial("powerup.png"));
+		powerUp.addComponent(new Buff(buffType, buffStrength));
+		
+		return powerUp;
+		
+	}
+	
+	public static Entity createPitobstacle(World world, float xPos, float yPos){
+		Entity pitobstacle = world.createEntity();
+		world.getManager(GroupManager.class).add(pitobstacle, "PITOBSTACLES");
+		
+		pitobstacle.addComponent(new Transform(xPos, yPos));
+		pitobstacle.addComponent(new Size(64,64));
+		pitobstacle.addComponent(new Spatial("pitobstacle.png"));
+		
+		return pitobstacle;
+	}
+	
+	public static Entity createKillplayerbstacle(World world, float xPos, float yPos){
+		Entity killplayerobstacle = world.createEntity();
+		world.getManager(GroupManager.class).add(killplayerobstacle, "KILLPLAYEROBSTACLES");
+		
+		killplayerobstacle.addComponent(new Transform(xPos, yPos));
+		killplayerobstacle.addComponent(new Size(64,64));
+		killplayerobstacle.addComponent(new Spatial("killplayerobstacle.png"));
+		
+		return killplayerobstacle;
 	}
 	
 }

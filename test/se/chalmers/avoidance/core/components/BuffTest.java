@@ -21,44 +21,34 @@ package se.chalmers.avoidance.core.components;
 
 import static org.junit.Assert.assertTrue;
 
-import org.andengine.entity.sprite.Sprite;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class SpatialTest {
-	private static String name;
-	private static Sprite sprite;
+import se.chalmers.avoidance.core.components.Buff.BuffType;
+
+public class BuffTest {
+	private static BuffType type;
+	private static int strength;
 	
-	private Spatial spatial;
+	private Buff mBuff;
 	
 	@BeforeClass
 	public static void beforeClass() throws Exception {
-		name = "test";
-		sprite = new Sprite(0, 0, 0, 0, null, null, null, null);
+		type = Buff.BuffType.Speed;
+		strength = 2;
 	}
 	
 	@Before
 	public void setUp() throws Exception {
-		spatial = new Spatial(name);
+		this.mBuff = new Buff(type, strength);
 	}
 	
 	@Test
-	public void testSpatial() {
-		assertTrue(spatial != null);
-	}
-
-	@Test
-	public void testNameSetterAndGetter() {
-		assertTrue(spatial.getName() == name);
-		
-		spatial.setName("testName");
-		assertTrue(spatial.getName() == "testName");
-	}
-	
-	@Test
-	public void testSpriteSetterGetter() {
-		spatial.setSprite(sprite);
-		assertTrue(spatial.getSprite() == sprite);
+	public void testBuff() {
+		Buff buff = new Buff(type, strength);
+		assertTrue(buff != null);
+		assertTrue(buff.getStrength() == strength);
+		assertTrue(buff.getType() == type);
 	}
 }

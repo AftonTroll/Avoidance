@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2012 Jakob Svensson
+ * Copyright (c) 2012 Markus Ekström
  * 
  * This file is part of Avoidance.
  * 
@@ -17,8 +17,7 @@
  * along with Avoidance.  If not, see <http://www.gnu.org/licenses/>. 
  *  
  */
-
-package se.chalmers.avoidance.core.systems;
+package se.chalmers.avoidance.core.collisionhandlers;
 
 import static org.junit.Assert.assertTrue;
 
@@ -28,14 +27,14 @@ import org.junit.Test;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
+import se.chalmers.avoidance.core.systems.CollisionSystem;
 
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
 
-
-public class CollisionSystemTest {
+public class WallCollisionHandlerTest {
 	private Entity e1;
 	private Entity e2; 
 	private Entity e3;
@@ -52,7 +51,7 @@ public class CollisionSystemTest {
 		world.setManager(gm);
 		
 		e1 = world.createEntity();
-		tm.register("PLAYER", e1);
+		gm.add(e1, "PLAYER");
 		e1.addComponent(new Transform(0,3));
 		e1.addComponent(new Velocity(1,(float)(Math.PI/4)));
 		e1.addComponent(new Size(1, 1));
@@ -82,20 +81,11 @@ public class CollisionSystemTest {
 	}
 	
 	@Test
-	public void testCollsionExists(){
+	public void testHandleCollision(){
 		assertTrue(cs.collisionExists(e1, e2));	
 		assertTrue(!cs.collisionExists(e3, e4));
 		assertTrue(!cs.collisionExists(e1, e5));
 	}
-	
-	@Test
-	public void testProcessEntities(){
-		cs.processEntities(null);
-		assertTrue((e1.getComponent(Velocity.class).getAngle()-(float)(2*Math.PI-Math.PI/4)<0.01));
-		e1.removeComponent(Transform.class);
-		e1.addComponent(new Transform(20,3));
-		cs.processEntities(null);
-		assertTrue((e1.getComponent(Velocity.class).getAngle()-(float)(Math.PI+Math.PI/4)<0.01));
-	}
 
 }
+

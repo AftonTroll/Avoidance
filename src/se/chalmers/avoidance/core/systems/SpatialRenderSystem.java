@@ -99,6 +99,7 @@ public class SpatialRenderSystem extends EntitySystem{
 		Spatial spatial = sm.get(e);
         Transform tf = tm.get(e);
         spatial.getSprite().setPosition(tf.getX(), tf.getY());
+        spatial.getSprite().setRotation(tf.getDirection());
 	}
 	
     @Override
@@ -113,6 +114,7 @@ public class SpatialRenderSystem extends EntitySystem{
 
     @Override
     protected void removed(Entity e) {
+    	e.getComponent(Spatial.class).getSprite().detachSelf();
         entities.remove(e);
     }
 }

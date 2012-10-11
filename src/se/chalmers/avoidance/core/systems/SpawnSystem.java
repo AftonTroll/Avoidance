@@ -25,6 +25,7 @@ import se.chalmers.avoidance.core.EntityFactory;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Time;
 import se.chalmers.avoidance.core.components.Transform;
+import se.chalmers.avoidance.core.components.Buff.BuffType;
 import se.chalmers.avoidance.util.ScreenResolution;
 
 import com.artemis.Aspect;
@@ -50,6 +51,7 @@ public class SpawnSystem extends EntityProcessingSystem{
 	private TagManager tagManager;
 	private final int SPAWNINTERVAL = 5;
 	private int lastSpawn = 0;
+	
 	
 	/**
 	 * Constructs a new SpawnSystem
@@ -82,6 +84,9 @@ public class SpawnSystem extends EntityProcessingSystem{
 				ScreenResolution.getWidthResolution() - wallThickness, 0));
 		world.addEntity(EntityFactory.createObstacle(world, 50, 50, 200, 200));
 		world.addEntity(EntityFactory.createScore(world));
+		world.addEntity(EntityFactory.createPowerUp(world, 300, 300, BuffType.Speed, 300));
+		world.addEntity(EntityFactory.createPitobstacle(world, 400, 600));
+		world.addEntity(EntityFactory.createKillplayerbstacle(world, 800, 600));
 	}
 
 	/**
@@ -101,7 +106,12 @@ public class SpawnSystem extends EntityProcessingSystem{
 	
 	//Spawns an enemy at a free position
 	private void spawnEnemyAtFreePosition(){
-		Entity enemy = EntityFactory.createEnemy(world, 0, 0);
+		Entity enemy;
+		if((lastSpawn/SPAWNINTERVAL)%5 == 1){
+			enemy = EntityFactory.createQuickEnemy(world, 0, 0);
+		} else {
+			enemy = EntityFactory.createEnemy(world, 0, 0);
+		}
 		Transform enemyTransform = transformMapper.get(enemy);
 		
 		boolean validPosition = false;
