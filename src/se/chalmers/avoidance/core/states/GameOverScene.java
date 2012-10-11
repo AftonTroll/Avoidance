@@ -24,7 +24,6 @@ import java.util.HashMap;
 
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.shape.RectangularShape;
 import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
@@ -34,7 +33,6 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import se.chalmers.avoidance.constants.FontConstants;
 import se.chalmers.avoidance.util.ScreenResolution;
-import se.chalmers.avoidance.util.Utils;
 
 /**
  * A Game Over Scene for displaying the users score. <p>
@@ -127,8 +125,8 @@ public class GameOverScene extends Scene {
 	private void createGameOverSprite(HashMap<String, TextureRegion> regions) {
 		Sprite sprite = new Sprite(0, 0, regions.get("gameOver.png"), vbom);
 		
-		float xPos = Utils.getXPosHorizontalCentering(sprite);
-		float yPos = Utils.getYPosVerticalCentering(sprite) - 150;
+		float xPos = ScreenResolution.getXPosHorizontalCentering(sprite);
+		float yPos = ScreenResolution.getYPosVerticalCentering(sprite) - 150;
 		sprite.setPosition(xPos, yPos);
 		
 		this.gameOverSprite = sprite;
@@ -142,8 +140,8 @@ public class GameOverScene extends Scene {
 	private void createButton(HashMap<String, TextureRegion> regions) {
 		ButtonSprite okButton = new ButtonSprite(0, 0, regions.get("okButton.png"), vbom);
 		
-		float xPos = Utils.getXPosHorizontalCentering(okButton);
-		float yPos = Utils.getYPosVerticalCentering(okButton) + 200;
+		float xPos = ScreenResolution.getXPosHorizontalCentering(okButton);
+		float yPos = ScreenResolution.getYPosVerticalCentering(okButton) + 200;
 		okButton.setPosition(xPos, yPos);
 		
 		this.button = okButton;
@@ -158,8 +156,8 @@ public class GameOverScene extends Scene {
 		//do this on the ui update thread or not?
 		scoreText.setText("Score: " + score);
 		
-		float xPos = Utils.getXPosHorizontalCentering(scoreText);
-		float yPos = Utils.getYPosVerticalCentering(scoreText) + 50;
+		float xPos = ScreenResolution.getXPosHorizontalCentering(scoreText);
+		float yPos = ScreenResolution.getYPosVerticalCentering(scoreText) + 50;
 		scoreText.setPosition(xPos, yPos);
 	}
 	
