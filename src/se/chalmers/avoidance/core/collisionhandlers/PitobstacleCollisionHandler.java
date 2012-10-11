@@ -14,10 +14,10 @@ public class PitobstacleCollisionHandler implements CollisionHandler {
 	
 	public void handleCollision(Entity movingEntity, Entity obstacle) {
 		GroupManager groupManager = world.getManager(GroupManager.class);
-		if (groupManager.getEntities("PLAYER").contains(movingEntity) && groupManager.getEntities("PITOBSTACLE").contains(obstacle)) {
+		if (groupManager.getEntities("PLAYER").contains(movingEntity) && groupManager.getEntities("PITOBSTACLES").contains(obstacle)) {
 			//Handle collison between pitobstacle and player
 		}
-		if(groupManager.getEntities("ENEMIES").contains(movingEntity) && groupManager.getEntities("PITOBSTACLE").contains(obstacle)){
+		if(groupManager.getEntities("ENEMIES").contains(movingEntity) && groupManager.getEntities("PITOBSTACLES").contains(obstacle)){
 			world.deleteEntity(movingEntity);
 		}
 	}
