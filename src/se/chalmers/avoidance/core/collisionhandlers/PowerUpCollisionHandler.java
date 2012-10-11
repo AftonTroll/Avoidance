@@ -26,7 +26,6 @@ import se.chalmers.avoidance.core.components.Velocity;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.World;
-import com.artemis.annotations.Mapper;
 import com.artemis.managers.GroupManager;
 
 /**
@@ -38,6 +37,10 @@ public class PowerUpCollisionHandler implements CollisionHandler{
     ComponentMapper<Velocity> vm;
     ComponentMapper<Buff> bm;
     
+    /**
+     * Constructs a PowerUpCollisionHandler.
+     * @param world The world.
+     */
     public PowerUpCollisionHandler(World world) {
     	vm = ComponentMapper.getFor(Velocity.class, world);
     	bm = ComponentMapper.getFor(Buff.class, world);

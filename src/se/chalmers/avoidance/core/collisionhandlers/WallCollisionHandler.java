@@ -42,6 +42,10 @@ public class WallCollisionHandler implements CollisionHandler{
 	ComponentMapper<Transform> transformMapper;
 	ComponentMapper<Size> sizeMapper;
 	
+	/**
+	 * Constructs a WallCollisionHandler
+	 * @param world The world.
+	 */
 	public WallCollisionHandler(World world) {
 		this.world = world;
 		velocityMapper = ComponentMapper.getFor(Velocity.class, world);
