@@ -36,12 +36,12 @@ public class FileUtilsTest {
 	}
 
 	@Test
-	public void testSaveAndReadFromFile() {
-		String path = "hej.txt";
+	public void testSaveAndAddAndReadFromFile() {
+		String path = "test.txt";
 		
 		//store empty list
 		List<String> list = new ArrayList<String>();
-		FileUtils.saveToFile(list, path);
+		FileUtils.saveToFile(FileUtils.createMultiLineString(list), path);
 		List<String> readList = FileUtils.readFromFile(path);
 		assertListEquals(list, readList);
 		
@@ -51,14 +51,14 @@ public class FileUtilsTest {
 		list.add("1198");
 		list.add("1835");
 		list.add("444");
-		FileUtils.saveToFile(list, path);
+		FileUtils.saveToFile(FileUtils.createMultiLineString(list), path);
 		readList = FileUtils.readFromFile(path);
 		assertListEquals(list, readList);
 		
 		//remove some elements
 		list.remove(0);
 		list.remove(1);
-		FileUtils.saveToFile(list, path);
+		FileUtils.saveToFile(FileUtils.createMultiLineString(list), path);
 		readList = FileUtils.readFromFile(path);
 		assertListEquals(list, readList);
 		
@@ -66,7 +66,7 @@ public class FileUtilsTest {
 		list.add("tja");
 		list.add("339");
 		list.add("hejhej");
-		FileUtils.saveToFile(list, path);
+		FileUtils.saveToFile(FileUtils.createMultiLineString(list), path);
 		readList = FileUtils.readFromFile(path);
 		assertListEquals(list, readList);
 		
@@ -74,6 +74,26 @@ public class FileUtilsTest {
 		FileUtils.saveToFile(null, path);
 		readList = FileUtils.readFromFile(path);
 		assertTrue(readList.isEmpty());
+		
+		
+		//add strings
+		
+		FileUtils.addToFile(w1, path);
+		FileUtils.addToFile(w2, path);
+		readList = FileUtils.readFromFile(path);
+		assertTrue(readList.get(0).equals(w1));
+		assertTrue(readList.get(1).equals(w2));
+		
+		
+		FileUtils.addToFile(w5, path);
+		FileUtils.addToFile(w3, path);
+		FileUtils.addToFile(w4, path);
+		readList = FileUtils.readFromFile(path);
+		assertTrue(readList.get(0).equals(w1));
+		assertTrue(readList.get(1).equals(w2));
+		assertTrue(readList.get(2).equals(w5));
+		assertTrue(readList.get(3).equals(w3));
+		assertTrue(readList.get(4).equals(w4));
 		
 	}
 

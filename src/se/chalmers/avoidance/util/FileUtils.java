@@ -83,15 +83,13 @@ public class FileUtils {
 	}
 	
 	/**
-	 * Saves a list of <code>Objects</code> to a file.
-	 * 
-	 * @param list the list to save
-	 * @param path the file path to store the list at
+	 * Saves a string to a file.
+	 * @param output the string to save
+	 * @param path the file path to store the string in
 	 */
-	public static void saveToFile(List<?> list, String path) {
-		// Put the output into a string
-		String output = list != null ? createMultiLineString(list) : "";
-		
+	public static void saveToFile(String output, String path) {
+		if (output == null)
+			output = "";
 		try {
 			// Save the file
 			FileOutputStream fos = context != null ? 
@@ -102,6 +100,21 @@ public class FileUtils {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Adds a string to the end of a file, and saves it.
+	 * @param output the string to add
+	 * @param path the file path to add the string to
+	 */
+	public static void addToFile(String output, String path) {
+		List<String> file = readFromFile(path);
+		StringBuilder builder = new StringBuilder();
+		builder.append(createMultiLineString(file));
+		if (builder.length() != 0)
+			builder.append("\n");
+		builder.append(output);
+		saveToFile(builder.toString(), path);
 	}
 	
 	//////////////////////////////////////////////////////////////////////
