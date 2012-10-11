@@ -59,6 +59,14 @@ public class GameState implements IState {
 	private PropertyChangeSupport pcs;
 	private GameOverScene gameOverScene;
 	
+	/**
+	 * Constructs a new <code>GameState</code>.
+	 * 
+	 * @param sensorManager a <code>SensorManager</code>
+	 * @param regions a <code>HashMap</code> containing loaded textures/regions
+	 * @param fonts a <code>HashMap</code> containing loaded fonts
+	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
+	 */
 	public GameState(SensorManager sensorManager, HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts, VertexBufferObjectManager vbom) {
 		initialize(sensorManager, regions, fonts, vbom);
 		this.pcs = new PropertyChangeSupport(this);
@@ -66,6 +74,14 @@ public class GameState implements IState {
 		this.gameOverScene.setButtonSpriteOnClickListener(getButtonSpriteOnClickListener());
 	}
 	
+	/**
+	 * Initializes the <code>GameState</code>.
+	 * 
+	 * @param sensorManager a <code>SensorManager</code>
+	 * @param regions a <code>HashMap</code> containing loaded textures/regions
+	 * @param fonts a <code>HashMap</code> containing loaded fonts
+	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
+	 */
 	private void initialize(SensorManager sensorManager, HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts, VertexBufferObjectManager vbom) {
 		scene = new Scene();
 		scene.setBackground(new Background(1f, 0f, 0f));
