@@ -41,8 +41,7 @@ public class Utils {
 	public static float simplifyAngle(float angle) {
 		float simplifiedAngle = angle % (float)(2 * Math.PI);
 		return simplifiedAngle < 0 ? (simplifiedAngle + (float)(2 * Math.PI)) : 
-														simplifiedAngle; //make angle positive
-		//TODO Change to a better name?
+			simplifiedAngle; //make angle positive
 	}
 	
 	/**
