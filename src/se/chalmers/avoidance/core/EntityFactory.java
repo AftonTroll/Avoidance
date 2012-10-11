@@ -122,6 +122,7 @@ public class EntityFactory {
 	public static Entity createQuickEnemy(World world, float xPos, float yPos) {
 		Entity enemy = world.createEntity();
 		world.getManager(GroupManager.class).add(enemy, "ENEMIES");
+		world.getManager(GroupManager.class).add(enemy, "MOVINGENTITIES");
 		
 		enemy.addComponent(new Transform(xPos, yPos));
 		enemy.addComponent(new Velocity());
