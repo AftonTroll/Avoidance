@@ -77,7 +77,7 @@ public class CollisionSystem extends EntitySystem{
 	@Override
 	protected void initialize(){
         collisionPairs = new Bag<CollisionPair>();
-        collisionPairs.add(new CollisionPair("PLAYER", "WALLS", new WallCollisionHandler(world))); 
+        collisionPairs.add(new CollisionPair("MOVINGENTITIES", "WALLS", new WallCollisionHandler(world))); 
         collisionPairs.add(new CollisionPair("PLAYER", "POWERUPS", new PowerUpCollisionHandler(world)));
         collisionPairs.add(new CollisionPair("ENEMIES", "PITOBSTACLES", new PitobstacleCollisionHandler(world)));
 	}

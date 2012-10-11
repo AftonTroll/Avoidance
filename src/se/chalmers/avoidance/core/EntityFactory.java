@@ -51,6 +51,7 @@ public class EntityFactory {
 		Entity player = world.createEntity();
 		world.getManager(TagManager.class).register("PLAYER", player);
 		world.getManager(GroupManager.class).add(player, "PLAYER");
+		world.getManager(GroupManager.class).add(player, "MOVINGENTITIES");
 		
 		player.addComponent(new Transform(200,100));
 		player.addComponent(new Velocity());
@@ -96,6 +97,7 @@ public class EntityFactory {
 	public static Entity createEnemy(World world, float xPos, float yPos) {
 		Entity enemy = world.createEntity();
 		world.getManager(GroupManager.class).add(enemy, "ENEMIES");
+		world.getManager(GroupManager.class).add(enemy, "MOVINGENTITIES");
 		
 		enemy.addComponent(new Transform(xPos, yPos));
 		enemy.addComponent(new Velocity());
