@@ -53,9 +53,9 @@ public class Jump extends Component {
 	}
 	
 	/**
-	 * Sets the duration left before the entity touches the ground. If the passed
+	 * Subtracts from the duration left before the entity touches the ground. If the passed
 	 * variable will set the duration left to less than zero, the duration left will be set to zero.
-	 * @param durationLeft How long until the entity should touch the ground.
+	 * @param subtractionAmount The amount to subtract from the duration left.
 	 */
 	public void subtractInTheAirDurationLeft(float subtractionAmount) {
 		if(inTheAir) {
@@ -71,16 +71,27 @@ public class Jump extends Component {
 		return inTheAirDurationLeft;
 	}
 	
-	public void setJumpCooldown(float cooldown) {
-		this.jumpCooldownLeft = cooldown;
+	/**
+	 * Sets how much is left of the jump cooldown.
+	 * @param cooldownLeft How long is left of the cooldown. 
+	 */
+	public void setJumpCooldownLeft(float cooldownLeft) {
+		this.jumpCooldownLeft = cooldownLeft;
 	}
 	
+	/**
+	 * Subtracts from the duration left before the entity is able to jump again.
+	 * @param subtractionAmount The amount to subtract from the duration left.
+	 */
 	public void subtractJumpCooldownLeft(float subtractionAmount) {
-		jumpCooldownLeft = Math.max(0, (inTheAirDurationLeft - subtractionAmount));
+		jumpCooldownLeft = Math.max(0, (jumpCooldownLeft - subtractionAmount));
 	}
 	
+	/**
+	 * Returns the cooldown left on jump.
+	 * @return The cooldown left.
+	 */
 	public float getJumpCooldownLeft() {
 		return jumpCooldownLeft;
 	}
-	
 }
