@@ -28,6 +28,7 @@ package se.chalmers.avoidance.core.systems;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.util.Utils;
@@ -36,6 +37,7 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
+import com.artemis.annotations.Mapper;
 import com.artemis.managers.TagManager;
 import com.artemis.utils.ImmutableBag;
 
@@ -53,6 +55,8 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	private ComponentMapper<Transform> transformMapper;
 	private ComponentMapper<Velocity> velocityMapper;
 	private TagManager tagManager;
+	@Mapper
+	ComponentMapper<Jump> statusMapper;
 	
 	/**
 	 * Constructs a new PlayerControlSystem.
@@ -92,6 +96,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 		
 		Entity entity = tagManager.getEntity("PLAYER");
 		if (entity != null) {
+			handleJump(entity); //Check if the player should be in the air.
 			//Update the Velocity
 			//Based on https://bitbucket.org/piemaster/artemoids/src/5c3a11ff2bdd/src/net/piemaster/artemoids/
 			//  systems/PlayerShipControlSystem.java
@@ -121,6 +126,18 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 			playerTransform.setY(playerTransform.getY() + dy);
 		}
 	}
+	
+	private void handleJump(Entity player) {
+		Jump status = statusMapper.get(player);
+		if(status.isInTheAir()) {
+			status.subtractInTheAirDurationLeft(world.delta);
+			if(status.getInTheAirDurationLeft() == 0) {
+				status.setInTheAir(false);
+			}
+		}
+		
+		
+	}
 
 	/**
 	 * Sets the values of the acceleration
@@ -133,6 +150,9 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 			}
 			if("AccelerometerY".equals(event.getPropertyName())){
 				lastAccelerationY = (Float) event.getNewValue();
+			}
+			if("touch".equals(event.getPropertyName())){
+				statusMapper.get(tagManager.getEntity("PLAYER")).setInTheAir(true);
 			}
 		}
 	}
