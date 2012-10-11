@@ -33,9 +33,11 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import se.chalmers.avoidance.core.EntityFactory;
 import se.chalmers.avoidance.core.systems.CollisionSystem;
+import se.chalmers.avoidance.core.systems.EnemyControlSystem;
 import se.chalmers.avoidance.core.systems.HudRenderSystem;
 import se.chalmers.avoidance.core.systems.PlayerControlSystem;
 import se.chalmers.avoidance.core.systems.SpatialRenderSystem;
+import se.chalmers.avoidance.core.systems.SpawnSystem;
 import se.chalmers.avoidance.input.AccelerometerListener;
 import se.chalmers.avoidance.util.ScreenResolution;
 import android.hardware.SensorManager;
@@ -74,6 +76,8 @@ public class GameState implements IState {
 		world.setSystem(new SpatialRenderSystem(regions, vbom, scene));
 		world.setSystem(new CollisionSystem());
 		world.setSystem(new PlayerControlSystem());
+		world.setSystem(new EnemyControlSystem());
+		world.setSystem(new SpawnSystem());
 		world.setSystem(new HudRenderSystem(scene, vbom, scoreFont));
 		
 		//Initialize world.
@@ -83,21 +87,6 @@ public class GameState implements IState {
 		AccelerometerListener aL = new AccelerometerListener(sensorManager);
 		aL.addPropertyChangeListener(world.getSystem(PlayerControlSystem.class));
 		aL.startListening();
-		
-		//Initialize entities
-		float wallThickness = 20f;
-		world.addEntity(EntityFactory.createPlayer(world));
-		world.addEntity(EntityFactory.createWall(world, ScreenResolution.getWidthResolution(), 
-				wallThickness, 0, 0));
-		world.addEntity(EntityFactory.createWall(world, ScreenResolution.getWidthResolution(), 
-				wallThickness, 0, ScreenResolution.getHeightResolution() - wallThickness));
-		world.addEntity(EntityFactory.createWall(world, wallThickness, 
-				ScreenResolution.getHeightResolution(), 0, 0));
-		world.addEntity(EntityFactory.createWall(world, wallThickness, 
-				ScreenResolution.getHeightResolution(), 
-				ScreenResolution.getWidthResolution() - wallThickness, 0));
-		world.addEntity(EntityFactory.createObstacle(world, 50, 50, 200, 200));
-		world.addEntity(EntityFactory.createScore(world));
 	}
 	
 	/**

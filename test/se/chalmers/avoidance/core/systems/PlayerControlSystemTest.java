@@ -27,6 +27,7 @@ import java.beans.PropertyChangeEvent;
 import org.junit.Before;
 import org.junit.Test;
 
+import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.util.Utils;
@@ -38,16 +39,17 @@ import com.artemis.managers.TagManager;
 public class PlayerControlSystemTest {
 
 	private static final float TOLERANCE = 0.0001f;
+	private final float friction = 0.7f;
 	private Entity player;
 	private final PlayerControlSystem pcs = new PlayerControlSystem();
 	private final World world = new World();
 	private final TagManager tagManager = new TagManager();
-	private final float[] accelerationX = {-5, 4.5f};
-	private final float[] accelerationY = {0, 20};
-	private final float[] expectedSpeed = {4.5f, 18};
+	private final float[] accelerationX = {-5f/20, 5*friction/20};
+	private final float[] accelerationY = {0, 20f/20};
+	private final float[] expectedSpeed = {5*friction, 20*friction};
 	private final float[] expectedAngle = {(float) Math.PI, (float) Math.PI/2};
-	private final float[] expectedX = {-2.25f, -4.5f};
-	private final float[] expectedY = {0, 9};
+	private final float[] expectedX = {-5*friction/2, -5*friction};
+	private final float[] expectedY = {0, 10*friction};
 	
 	
 	@Before
@@ -58,6 +60,7 @@ public class PlayerControlSystemTest {
 		player = world.createEntity();
 		player.addComponent(new Transform());
 		player.addComponent(new Velocity());
+		player.addComponent(new Friction(friction));
 		tagManager.register("PLAYER", player);
 		
 		pcs.initialize();
@@ -74,7 +77,6 @@ public class PlayerControlSystemTest {
 			pcs.propertyChange(new PropertyChangeEvent(this, "AccelerometerX",null,accelerationX[i]));
 			pcs.propertyChange(new PropertyChangeEvent(this, "AccelerometerY",null,accelerationY[i]));
 			pcs.processEntities(null);
-
 			assertTrue(Math.abs(velocity.getSpeed()-expectedSpeed[i]) <= TOLERANCE);
 			assertTrue(Math.abs(Utils.simplifyAngle(velocity.getAngle())-expectedAngle[i]) <= TOLERANCE);
 			assertTrue(Math.abs(transform.getX()-expectedX[i]) <= TOLERANCE);
