@@ -27,6 +27,7 @@ import java.beans.PropertyChangeEvent;
 import org.junit.Before;
 import org.junit.Test;
 
+import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.util.Utils;
@@ -56,11 +57,13 @@ public class PlayerControlSystemTest {
 		world.setSystem(pcs);
 		
 		player = world.createEntity();
+		world.addEntity(player);
 		player.addComponent(new Transform());
 		player.addComponent(new Velocity());
+		player.addComponent(new Jump());
 		tagManager.register("PLAYER", player);
 		
-		pcs.initialize();
+		world.initialize();
 	}
 
 	@Test
