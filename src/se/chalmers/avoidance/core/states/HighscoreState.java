@@ -23,7 +23,6 @@ package se.chalmers.avoidance.core.states;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,10 +33,12 @@ import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.util.HorizontalAlign;
 
 import se.chalmers.avoidance.constants.EventMessageConstants;
 import se.chalmers.avoidance.constants.FontConstants;
 import se.chalmers.avoidance.util.FileUtils;
+import se.chalmers.avoidance.util.ScreenResolution;
 import se.chalmers.avoidance.util.Utils;
 
 /**
@@ -52,6 +53,7 @@ public class HighscoreState implements IState {
 	
 	private Sprite highscoreTitle;
 	private Text highscoreList;
+	private Text rankingNumber;
 	private ButtonSprite backButton;
 	private ButtonSprite extraButton;
 	
@@ -81,25 +83,11 @@ public class HighscoreState implements IState {
 		createBackButton(regions, vbom);
 		
 		scene.attachChild(highscoreTitle);
+		scene.attachChild(rankingNumber);
 		scene.attachChild(highscoreList);
 		scene.attachChild(backButton);
 		
-		simulateHighscore();
-		List<String> list = FileUtils.readFromFile(FileUtils.PATH);
-		this.setHighscoreList(list);
-	}
-	
-	//temporary method for testing the GUI
-	private void simulateHighscore() {
-		List<String> list = new ArrayList<String>();
-		list.add("1392");
-		list.add("983");
-		list.add("1198");
-		list.add("1835");
-		list.add("444");
-		list.add("944");
-		list.add("1000");
-		FileUtils.saveToFile(list, FileUtils.PATH);
+		this.updateHighscoreList();
 	}
 	
 	/**
@@ -113,8 +101,8 @@ public class HighscoreState implements IState {
 			VertexBufferObjectManager vbom) {
 		Sprite sprite = new Sprite(0, 0, regions.get("highscore.png"), vbom);
 		
-		float xPos = Utils.getXPosHorizontalCentering(sprite);
-		float yPos = Utils.getYPosVerticalCentering(sprite) - 300;
+		float xPos = ScreenResolution.getXPosHorizontalCentering(sprite);
+		float yPos = ScreenResolution.getYPosVerticalCentering(sprite) - 300;
 		sprite.setPosition(xPos, yPos);
 		
 		this.highscoreTitle = sprite;
@@ -127,14 +115,22 @@ public class HighscoreState implements IState {
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
 	 */
 	private void createHighscoreList(HashMap<String, Font> fonts, VertexBufferObjectManager vbom) {
-		Text list = new Text(0, 0, fonts.get(FontConstants.GAME_OVER_SCORE), 
-				"01)  ", "01)   XXXXXXX".length() * MAX_HIGH_SCORE_ENTRIES, vbom);
+		Text list = new Text(0, 0, fonts.get(FontConstants.HIGH_SCORE), 
+				"", "XXXXXXX".length() * MAX_HIGH_SCORE_ENTRIES, vbom);
+		Text rank = new Text(0, 0, fonts.get(FontConstants.HIGH_SCORE), 
+				"", "1) ".length() * MAX_HIGH_SCORE_ENTRIES, vbom);
 		list.setColor(1.0f, 0.9f, 0.1f, 1.0f);
+		rank.setColor(1.0f, 0.9f, 0.1f, 1.0f);
+		list.setHorizontalAlign(HorizontalAlign.RIGHT);
+		rank.setHorizontalAlign(HorizontalAlign.RIGHT);
 		
-		float xPos = Utils.getXPosHorizontalCentering(list);
-		float yPos = Utils.getYPosVerticalCentering(list);
-		list.setPosition(xPos, yPos);
+		float xPos = ScreenResolution.getXPosHorizontalCentering(list);
+		float yPos = ScreenResolution.getYPosVerticalCentering(list);
+		rank.setPosition(xPos, yPos);
+		list.setPosition(xPos + rank.getWidth(), yPos);
+		
 		this.highscoreList = list;
+		this.rankingNumber = rank;
 	}
 	
 	/**
@@ -146,8 +142,8 @@ public class HighscoreState implements IState {
 	private void createBackButton(HashMap<String, TextureRegion> regions, VertexBufferObjectManager vbom) {
 		ButtonSprite button = new ButtonSprite(0, 0, regions.get("okButton.png"), vbom);
 		
-		float xPos = Utils.getXPosHorizontalCentering(button);
-		float yPos = Utils.getYPosVerticalCentering(button) + 300;
+		float xPos = ScreenResolution.getXPosHorizontalCentering(button);
+		float yPos = ScreenResolution.getYPosVerticalCentering(button) + 300;
 		button.setPosition(xPos, yPos);
 		
 		button.setOnClickListener(new ButtonSprite.OnClickListener() {
@@ -167,14 +163,45 @@ public class HighscoreState implements IState {
 	 * 
 	 * @param list the high scores
 	 */
-	public void setHighscoreList(List<String> list) {
-		String highscore = list.isEmpty() ? "No highscores found" : 
-			FileUtils.sortList(list, MAX_HIGH_SCORE_ENTRIES);
-		this.highscoreList.setText(highscore);
+	public void updateHighscoreList() {
+		String highscore;
+		String rank;
 		
-		float xPos = Utils.getXPosHorizontalCentering(highscoreList);
-		float yPos = Utils.getYPosVerticalCentering(highscoreList) - 20;
-		highscoreList.setPosition(xPos, yPos);
+		try {
+			highscore = retrieveHighscoreString(MAX_HIGH_SCORE_ENTRIES);
+			StringBuilder builder = new StringBuilder();
+			for (int i = 1; i <= MAX_HIGH_SCORE_ENTRIES; i++) {
+				builder.append(i);
+				builder.append(")   \n");
+			}
+			rank = builder.toString();
+		} catch (NoHighscoreException nhe) {
+			highscore = "No highscores found";
+			rank = "";
+		}
+		this.highscoreList.setText(highscore);
+		this.rankingNumber.setText(rank);
+		
+		float xPos = ScreenResolution.getXPosHorizontalCentering(rankingNumber) - (highscoreList.getWidth() / 2);
+		float yPos = ScreenResolution.getYPosVerticalCentering(rankingNumber);
+		rankingNumber.setPosition(xPos, yPos);
+		highscoreList.setPosition(xPos + rankingNumber.getWidth(), yPos);
+	}
+	
+	/**
+	 * Returns the high scores, formatted as one multi line string. <p>
+	 *
+	 * @return a sorted multi line string representing the high scores
+	 */
+	public String retrieveHighscoreString(int maxEntries) throws NoHighscoreException {
+		List<String> list = FileUtils.readFromFile(FileUtils.PATH);
+		List<Integer> numbers = FileUtils.getSortedIntegers(list);
+		if (numbers == null || numbers.isEmpty()) {
+			throw new NoHighscoreException();
+		}
+		Utils.trimList(numbers, MAX_HIGH_SCORE_ENTRIES);
+		String sortedList = FileUtils.createMultiLineString(numbers);
+		return sortedList;
 	}
 	
 	/**
@@ -208,6 +235,10 @@ public class HighscoreState implements IState {
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.removePropertyChangeListener(pcl);
+	}
+	
+	private class NoHighscoreException extends Exception {
+		
 	}
 
 }
