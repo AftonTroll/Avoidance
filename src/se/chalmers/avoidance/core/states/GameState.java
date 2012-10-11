@@ -31,7 +31,6 @@ import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import se.chalmers.avoidance.core.EntityFactory;
 import se.chalmers.avoidance.core.systems.CollisionSystem;
 import se.chalmers.avoidance.core.systems.EnemyControlSystem;
 import se.chalmers.avoidance.core.systems.HudRenderSystem;
@@ -39,8 +38,9 @@ import se.chalmers.avoidance.core.systems.PlayerControlSystem;
 import se.chalmers.avoidance.core.systems.SpatialRenderSystem;
 import se.chalmers.avoidance.core.systems.SpawnSystem;
 import se.chalmers.avoidance.input.AccelerometerListener;
-import se.chalmers.avoidance.util.ScreenResolution;
+import se.chalmers.avoidance.input.TouchListener;
 import android.hardware.SensorManager;
+import android.view.MotionEvent;
 
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
@@ -56,6 +56,7 @@ public class GameState implements IState {
 	private Scene scene;
 	private World world;
 	private PropertyChangeSupport pcs;
+	private TouchListener touchListener;
 	
 	public GameState(SensorManager sensorManager, HashMap<String, TextureRegion> regions, VertexBufferObjectManager vbom, Font scoreFont) {
 		initialize(sensorManager, regions, vbom, scoreFont);
@@ -87,6 +88,9 @@ public class GameState implements IState {
 		AccelerometerListener aL = new AccelerometerListener(sensorManager);
 		aL.addPropertyChangeListener(world.getSystem(PlayerControlSystem.class));
 		aL.startListening();
+		
+		touchListener = new TouchListener();
+		touchListener.addListener(world.getSystem(PlayerControlSystem.class));
 	}
 	
 	/**
@@ -105,6 +109,10 @@ public class GameState implements IState {
 	 */
 	public Scene getScene() {
 		return scene;
+	}
+	
+	public void onTouchEvent(MotionEvent event) {
+		touchListener.onTouchEvent(event);
 	}
 	
 	/**
