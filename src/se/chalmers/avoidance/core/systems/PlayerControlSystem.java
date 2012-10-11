@@ -52,9 +52,11 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	private final float ACCELERATION_MODIFIER = 20;
 	private float lastAccelerationX = 0;
 	private float lastAccelerationY = 0;
-	private ComponentMapper<Transform> transformMapper;
-	private ComponentMapper<Velocity> velocityMapper;
 	private TagManager tagManager;
+	@Mapper
+	ComponentMapper<Velocity> velocityMapper;
+	@Mapper
+	ComponentMapper<Transform> transformMapper;
 	@Mapper
 	ComponentMapper<Jump> statusMapper;
 	
@@ -70,10 +72,8 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	 */
 	@Override
 	protected void initialize() {
-		transformMapper = world.getMapper(Transform.class);
-		velocityMapper = world.getMapper(Velocity.class);
 		tagManager = world.getManager(TagManager.class);
-	}
+	}	
 
 	/**
 	 * Determines if the system should be processed or not
@@ -128,11 +128,11 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	}
 	
 	private void handleJump(Entity player) {
-		Jump status = statusMapper.get(player);
-		if(status.isInTheAir()) {
-			status.subtractInTheAirDurationLeft(world.delta);
-			if(status.getInTheAirDurationLeft() == 0) {
-				status.setInTheAir(false);
+		Jump jump = statusMapper.get(player);
+		if(jump.isInTheAir()) {
+			jump.subtractInTheAirDurationLeft(world.delta);
+			if(jump.getInTheAirDurationLeft() == 0) {
+				jump.setInTheAir(false);
 			}
 		}
 		
