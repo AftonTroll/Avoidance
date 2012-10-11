@@ -25,11 +25,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class StatusTest {
-	private Status status;
+	private Jump status;
 	
 	@Before
 	public void setUp() throws Exception {
-		status = new Status();
+		status = new Jump();
 	}
 	
 	@Test
@@ -39,9 +39,16 @@ public class StatusTest {
 
 	@Test
 	public void testInTheAir() {
-		assertTrue(status.isInTheAir() == false);
+		assertTrue(!status.isInTheAir());
 		
 		status.setInTheAir(true);
-		assertTrue(status.isInTheAir() == true);
+		assertTrue(status.isInTheAir());
+		assertTrue(status.getInTheAirDurationLeft() == 2);
+		status.subtractInTheAirDurationLeft(1);
+		assertTrue(status.getInTheAirDurationLeft() == 1);
+		status.subtractInTheAirDurationLeft(2);
+		assertTrue(status.getInTheAirDurationLeft() == 0);
+		status.setInTheAir(false);
+		assertTrue(!status.isInTheAir());
 	}
 }
