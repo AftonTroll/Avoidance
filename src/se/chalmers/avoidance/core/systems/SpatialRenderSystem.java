@@ -108,6 +108,10 @@ public class SpatialRenderSystem extends EntitySystem{
         }
 	}
 	
+	/**
+	 * Handles scaling of the sprite when the player has jumped.
+	 * @param player The player entity.
+	 */
 	private void handleJumpScaling(Entity player) {
 		if(player.getComponent(Jump.class).isInTheAir()) {
 			player.getComponent(Spatial.class).getSprite().setScale(2);
