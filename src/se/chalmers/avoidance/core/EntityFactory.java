@@ -24,6 +24,7 @@ import se.chalmers.avoidance.core.components.Acceleration;
 import se.chalmers.avoidance.core.components.Buff;
 import se.chalmers.avoidance.core.components.Buff.BuffType;
 import se.chalmers.avoidance.core.components.Friction;
+import se.chalmers.avoidance.core.components.Score;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Spatial;
 import se.chalmers.avoidance.core.components.Time;
@@ -161,7 +162,8 @@ public class EntityFactory {
 	 */
 	public static Entity createScore(World world){
 		Entity score = world.createEntity();
-		
+		world.getManager(TagManager.class).register("SCORE", score);
+		score.addComponent(new Score());
 		score.addComponent(new Time());
 		
 		return score;

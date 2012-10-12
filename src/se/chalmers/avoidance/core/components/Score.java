@@ -18,32 +18,45 @@
  *  
  */
 
-package se.chalmers.avoidance.core.collisionhandlers;
+package se.chalmers.avoidance.core.components;
 
-import com.artemis.Entity;
-import com.artemis.World;
-
-public class KillplayerobstacleCollisionHandler implements CollisionHandler {
+import com.artemis.Component;
+/**
+ * Component holding the score
+ * 
+ * @author Jakob Svensson
+ *
+ */
+public class Score extends Component {
 	
-	private World world;
+	private int killScore = 0;
+	private int powerupScore = 0;
 	
 	/**
-	 * Construct a new KillplayerobstacleCollisionHandler
+	 * Returns the current score from killing enemies and picking up power-ups
 	 * 
-	 * @param world the world object
+	 * @return the score 
 	 */
-	public KillplayerobstacleCollisionHandler(World world){
-		this.world=world;
+	public int getScore(){
+		return killScore+powerupScore;
 	}
 	
 	/**
-	 * Handles collision between player and killplayerobstacles
+	 * Adds score from killing enemies
 	 * 
-	 * @param player the player
-	 * @param obstacle the killplayerobstacle
+	 * @param score the score to be added
 	 */
-	public void handleCollision(Entity player, Entity obstacle) {
-		//game over 
+	public void addKillScore(int score){
+		killScore+=score;
+	}
+	
+	/**
+	 * Adds score from picking up power-ups
+	 * 
+	 * @param score the score to be added
+	 */
+	public void addPowerupScore(int score){
+		powerupScore+=score;
 	}
 
 }
