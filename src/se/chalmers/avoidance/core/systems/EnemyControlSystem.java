@@ -25,6 +25,8 @@
 
 package se.chalmers.avoidance.core.systems;
 
+import se.chalmers.avoidance.core.components.Acceleration;
+import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
@@ -45,9 +47,12 @@ import com.artemis.utils.ImmutableBag;
  *
  */
 public class EnemyControlSystem extends EntitySystem{
+	private final float MAX_SPEED = 400;
 	private ComponentMapper<Transform> transformMapper;
 	private ComponentMapper<Velocity> velocityMapper;
 	private ComponentMapper<Size> sizeMapper;
+	private ComponentMapper<Friction> frictionMapper;
+	private ComponentMapper<Acceleration> accelerationMapper;
 	private TagManager tagManager;
 	private GroupManager groupManager;
 	
@@ -66,6 +71,8 @@ public class EnemyControlSystem extends EntitySystem{
 		transformMapper = world.getMapper(Transform.class);
 		velocityMapper = world.getMapper(Velocity.class);
 		sizeMapper = world.getMapper(Size.class);
+		frictionMapper = world.getMapper(Friction.class);
+		accelerationMapper = world.getMapper(Acceleration.class);
 		tagManager = world.getManager(TagManager.class);
 		groupManager = world.getManager(GroupManager.class);
 	}
@@ -87,7 +94,6 @@ public class EnemyControlSystem extends EntitySystem{
 	 */
 	@Override
 	protected void processEntities(ImmutableBag<Entity> bag) {
-		float friction = 0.9f;
 		
 		Entity player = tagManager.getEntity("PLAYER");
 		if (player != null) {
@@ -106,8 +112,9 @@ public class EnemyControlSystem extends EntitySystem{
 
 				float accelerationAngle = (float) Math.atan2(playerCenterY-enemyCenterY, 
 						playerCenterX - enemyCenterX);
-				float accelX = Utils.getHorizontalSpeed(10, accelerationAngle);
-				float accelY = Utils.getVerticalSpeed(10, accelerationAngle);
+				float accelerationSpeed = accelerationMapper.get(enemy).getAcceleration();
+				float accelX = Utils.getHorizontalSpeed(accelerationSpeed, accelerationAngle);
+				float accelY = Utils.getVerticalSpeed(accelerationSpeed, accelerationAngle);
 				
 				//Update the Velocity
 				//Based on https://bitbucket.org/piemaster/artemoids/src/5c3a11ff2bdd/src/net/piemaster/artemoids/
@@ -123,13 +130,19 @@ public class EnemyControlSystem extends EntitySystem{
 				float newSpeed = (float) Math.sqrt(newVelX*newVelX+newVelY*newVelY);
 				
 				//Apply friction
-				newSpeed *= Math.pow(friction, world.delta);
+				newSpeed *= Math.pow(frictionMapper.get(enemy).getFriction(), world.delta);
+				
+				//Adjust the speed so it's not higher than the max speed
+				if(newSpeed > MAX_SPEED){
+					newSpeed = MAX_SPEED;
+				}
 				
 				vel.setAngle((float) Math.atan2(newVelY, newVelX));
 				vel.setSpeed(newSpeed);
 				
 				//Update the position
 				Transform trans = transformMapper.get(enemy);
+				trans.setDirection(accelerationAngle);
 				float speed = vel.getSpeed();
 				float angle = vel.getAngle();
 				float dx = world.delta * (startVelX + Utils.getHorizontalSpeed(speed, angle))/2;

@@ -25,7 +25,9 @@ import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import se.chalmers.avoidance.core.components.Score;
 import se.chalmers.avoidance.core.components.Time;
+import se.chalmers.avoidance.util.ScreenResolution;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -41,10 +43,12 @@ import com.artemis.systems.EntityProcessingSystem;
 public class HudRenderSystem extends EntityProcessingSystem{
 	
 	private Font font;
-	private Text score;
+	private Text scoreText;
+	private Text timeText;
 	private Scene scene;
 	private VertexBufferObjectManager vbom;
 	private ComponentMapper<Time> timeMapper;
+	private ComponentMapper<Score> scoreMapper;
 	
 	/**
 	 * Construct a new HudRenderSystem
@@ -54,7 +58,7 @@ public class HudRenderSystem extends EntityProcessingSystem{
 	 * @param font The font of the score text
 	 */
 	public HudRenderSystem(Scene scene, VertexBufferObjectManager vbom, Font font) {
-		super(Aspect.getAspectForAll(Time.class));
+		super(Aspect.getAspectForAll(Time.class,Score.class));
 		this.font = font;	
 		this.scene = scene;
 		this.vbom = vbom;
@@ -66,9 +70,13 @@ public class HudRenderSystem extends EntityProcessingSystem{
 	@Override
 	protected void initialize(){
 		timeMapper = world.getMapper(Time.class);
-		this.score = new Text(30, 30, this.font, "Score :", "Score: XXXXX".length(), vbom);
-		scene.attachChild(score);
-		score.setZIndex(100);
+		scoreMapper = world.getMapper(Score.class);
+		scoreText = new Text(ScreenResolution.getWidthResolution()*4/5, 30, this.font, "Score :", "Score: XXXXX".length(), vbom);
+		timeText = new Text(30, 30, this.font, "Time :", "Time: XXXXX".length(), vbom);
+		scene.attachChild(scoreText);
+		scene.attachChild(timeText);
+		scoreText.setZIndex(100);
+		timeText.setZIndex(100);
 	}
 	
 	/**
@@ -89,8 +97,10 @@ public class HudRenderSystem extends EntityProcessingSystem{
 	@Override
 	protected void process(Entity entity) {
 		Time time = timeMapper.get(entity);
+		Score score = scoreMapper.get(entity);
 		time.updateTime(world.getDelta());
-		score.setText("Score :"+Math.round(time.getTime()));
+		timeText.setText("Time: "+Math.round(time.getTime())/60+"m "+ Math.round(time.getTime())%60+"s");
+		scoreText.setText("Score :"+(Math.round(time.getTime())*10+score.getScore()));
 	}
 
 }

@@ -101,7 +101,7 @@ public class SpatialRenderSystem extends EntitySystem{
 		Spatial spatial = sm.get(e);
         Transform tf = tm.get(e);
         spatial.getSprite().setPosition(tf.getX(), tf.getY());
-        spatial.getSprite().setRotation(tf.getDirection());
+        spatial.getSprite().setRotation((float) (Math.toDegrees(tf.getDirection())));
         
         if(e.getId() == world.getManager(TagManager.class).getEntity("PLAYER").getId()) {
         	handleJumpScaling(e);
@@ -118,7 +118,6 @@ public class SpatialRenderSystem extends EntitySystem{
 		} else {
 			player.getComponent(Spatial.class).getSprite().setScale(1);
 		}
-		
 	}
 	
     @Override

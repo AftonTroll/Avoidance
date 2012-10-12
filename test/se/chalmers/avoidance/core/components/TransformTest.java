@@ -28,7 +28,7 @@ import org.junit.Test;
 
 import se.chalmers.avoidance.util.Utils;
 
-public class TransformTest {
+public class TransformTest extends FloatTest {
 	
 	private static float x1, x2;
 	private static float y1, y2;
@@ -135,7 +135,7 @@ public class TransformTest {
 		mTransform.setDirection(-2);
 		assertTrue(mTransform.getX() == x1);
 		assertTrue(mTransform.getY() == y1);
-		assertTrue(Math.abs((mTransform.getDirection() - Utils.simplifyAngle(-2))) < (2f / 10000f));
+		assertFloatEquals(mTransform.getDirection() , Utils.simplifyAngle(-2));
 	}
 
 	@Test
@@ -168,19 +168,19 @@ public class TransformTest {
 	public void testTranslateX() {
 		//add positive number
 		mTransform.translateX(x2);
-		assertTrue(mTransform.getX() == (x1 + x2));
+		assertFloatEquals(mTransform.getX() , (x1 + x2));
 		assertTrue(mTransform.getY() == y1);
 		assertTrue(mTransform.getDirection() == d1);
 		
 		// test to set 0 as value
 		mTransform.translateX(0);
-		assertTrue(mTransform.getX() == (x1 + x2));
+		assertFloatEquals(mTransform.getX() , (x1 + x2));
 		assertTrue(mTransform.getY() == y1);
 		assertTrue(mTransform.getDirection() == d1);
 
 		// test to set negative values
 		mTransform.translateX(-2);
-		assertTrue(mTransform.getX() == (x1 + x2) - 2);
+		assertFloatEquals(mTransform.getX() , (x1 + x2 - 2));
 		assertTrue(mTransform.getY() == y1);
 		assertTrue(mTransform.getDirection() == d1);
 	}
@@ -190,19 +190,19 @@ public class TransformTest {
 		//add positive number
 		mTransform.translateY(y2);
 		assertTrue(mTransform.getX() == x1);
-		assertTrue(mTransform.getY() == (y1 + y2));
+		assertFloatEquals(mTransform.getY() , (y1 + y2));
 		assertTrue(mTransform.getDirection() == d1);
 
 		// add 0 
 		mTransform.translateY(0);
 		assertTrue(mTransform.getX() == x1);
-		assertTrue(mTransform.getY() == (y1 + y2));
+		assertFloatEquals(mTransform.getY() , (y1 + y2));
 		assertTrue(mTransform.getDirection() == d1);
 
 		// add negative value
 		mTransform.translateY(-2);
 		assertTrue(mTransform.getX() == x1);
-		assertTrue(mTransform.getY() == (y1 + y2) - 2);
+		assertFloatEquals(mTransform.getY() , (y1 + y2 - 2));
 		assertTrue(mTransform.getDirection() == d1);
 	}
 
@@ -212,19 +212,19 @@ public class TransformTest {
 		mTransform.translateDirection(d2);
 		assertTrue(mTransform.getX() == x1);
 		assertTrue(mTransform.getY() == y1);
-		assertTrue(mTransform.getDirection() == (d1 + d2));
+		assertFloatEquals(mTransform.getDirection() , (d1 + d2));
 
 		// add 0 
 		mTransform.translateDirection(0);
 		assertTrue(mTransform.getX() == x1);
 		assertTrue(mTransform.getY() == y1);
-		assertTrue(mTransform.getDirection() == (d1 + d2));
+		assertFloatEquals(mTransform.getDirection() , (d1 + d2));
 
 		// add negative value
 		mTransform.translateDirection(-2);
 		assertTrue(mTransform.getX() == x1);
 		assertTrue(mTransform.getY() == y1);
-		assertTrue(mTransform.getDirection() == (d1 + d2) - 2);
+		assertFloatEquals(mTransform.getDirection() , (d1 + d2 - 2));
 	}
 
 	@Test
