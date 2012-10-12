@@ -22,6 +22,7 @@ package se.chalmers.avoidance.core;
 
 import se.chalmers.avoidance.core.components.Buff;
 import se.chalmers.avoidance.core.components.Buff.BuffType;
+import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Spatial;
 import se.chalmers.avoidance.core.components.Time;
@@ -56,6 +57,7 @@ public class EntityFactory {
 		player.addComponent(new Velocity());
 		player.addComponent(new Size(64,64));
 		player.addComponent(new Spatial("ball.png"));
+		player.addComponent(new Jump());
 		
 		return player;
 	}
