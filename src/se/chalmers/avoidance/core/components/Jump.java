@@ -31,7 +31,7 @@ public class Jump extends Component {
 	public static final float IN_THE_AIR_MAX_DURATION = 2;
 	private float inTheAirDurationLeft;
 	public static final float JUMP_COOLDOWN = 5;
-	private float jumpCooldownLeft;
+	private float jumpCooldownLeft = 0;
 	
 	/**
 	 * Sets if the entity is in the air.
@@ -41,6 +41,7 @@ public class Jump extends Component {
 		this.inTheAir = inTheAir;
 		if(inTheAir) {
 			inTheAirDurationLeft = IN_THE_AIR_MAX_DURATION;
+			jumpCooldownLeft = JUMP_COOLDOWN;
 		}
 	}
 	
