@@ -33,12 +33,24 @@ import org.andengine.audio.sound.Sound;
  *
  */
 public class AudioManager {
-	private static Map<String, Music> musicMap = new HashMap<String, Music>();
-	private static Map<String, Sound> soundMap = new HashMap<String, Sound>();
-	private static Music currentMusic = null;
+	private Map<String, Music> musicMap = new HashMap<String, Music>();
+	private Map<String, Sound> soundMap = new HashMap<String, Sound>();
+	private Music currentMusic = null;
+	private static AudioManager am;
 	
 	//Hidden constructor for the singleton pattern
 	private AudioManager(){
+	}
+	
+	/**
+	 * Gets the AudioManager instance
+	 * @return the audioManager
+	 */
+	public static AudioManager getInstance(){
+		if(am==null){
+			am = new AudioManager();
+		}
+		return am;
 	}
 	
 	/**
@@ -46,7 +58,7 @@ public class AudioManager {
 	 * @param name the name of the music
 	 * @param music the music
 	 */
-	public static void addMusic(String name, Music music){
+	public void addMusic(String name, Music music){
 		musicMap.put(name, music);
 	}
 	
@@ -55,7 +67,7 @@ public class AudioManager {
 	 * @param name the name of the sound
 	 * @param sound the sound
 	 */
-	public static void addSound(String name, Sound sound){
+	public void addSound(String name, Sound sound){
 		soundMap.put(name, sound);
 	}
 	
@@ -63,7 +75,7 @@ public class AudioManager {
 	 * Removes a music from the manager
 	 * @param name the name of the music
 	 */
-	public static void removeMusic(String name){
+	public void removeMusic(String name){
 		musicMap.remove(name);
 	}
 	
@@ -71,7 +83,7 @@ public class AudioManager {
 	 * Removes a sound from the manager
 	 * @param name the name of the sound
 	 */
-	public static void removeSound(String name){
+	public void removeSound(String name){
 		soundMap.remove(name);
 	}
 	
@@ -79,7 +91,7 @@ public class AudioManager {
 	 * Plays the music with the given name
 	 * @param name the name of the music
 	 */
-	public static void playMusic(String name){		
+	public void playMusic(String name){		
 		//Pause the current music
 		if(currentMusic != null){
 			currentMusic.pause();
@@ -101,7 +113,7 @@ public class AudioManager {
 	 * Plays the sound with the given name
 	 * @param name the name of the sound
 	 */
-	public static void playSound(String name){
+	public void playSound(String name){
 		if(soundMap.containsKey(name)){
 			soundMap.get(name).play();	
 		}
@@ -110,7 +122,7 @@ public class AudioManager {
 	/**
 	 * Pauses the music
 	 */
-	public static void pause(){
+	public void pause(){
 		if(currentMusic != null){
 			currentMusic.pause();
 		}
@@ -119,7 +131,7 @@ public class AudioManager {
 	/**
 	 * Resumes the music
 	 */
-	public static void resume(){
+	public void resume(){
 		if(currentMusic != null){
 			//if the currentMusic is stored since the last time the
 			//app was run

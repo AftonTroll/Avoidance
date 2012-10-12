@@ -96,12 +96,12 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
         
         music = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "heroism.ogg");
         music.setLooping(true);
-        AudioManager.addMusic("heroism.ogg", music);
+        AudioManager.getInstance().addMusic("heroism.ogg", music);
         
         sound = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "bounce.ogg");
-        AudioManager.addSound("bounce.ogg", sound);
+        AudioManager.getInstance().addSound("bounce.ogg", sound);
         
-        AudioManager.playMusic("heroism.ogg");
+        AudioManager.getInstance().playMusic("heroism.ogg");
         
         //Load textures
 		regions = new HashMap<String, TextureRegion>();
@@ -207,7 +207,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	@Override
 	public void onResume(){
 		super.onResume();
-		AudioManager.resume();
+		AudioManager.getInstance().resume();
 	}
 	
 	/**
@@ -217,6 +217,6 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	@Override
 	public void onPause(){
 		super.onPause();
-		AudioManager.pause();
+		AudioManager.getInstance().pause();
 	}
 }

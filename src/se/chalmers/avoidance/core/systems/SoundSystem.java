@@ -61,7 +61,7 @@ public class SoundSystem extends EntityProcessingSystem {
 	protected void process(Entity entity) {
 		Sound sound = soundMapper.get(entity);
 		if(sound.isPlaying()){
-			AudioManager.playSound(sound.getName());
+			AudioManager.getInstance().playSound(sound.getName());
 			sound.setPlaying(false);
 		}
 	}
