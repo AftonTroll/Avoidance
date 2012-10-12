@@ -151,6 +151,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 			if("AccelerometerY".equals(event.getPropertyName())){
 				lastAccelerationY = (Float) event.getNewValue();
 			}
+		} else if (event != null) {
 			if("touch".equals(event.getPropertyName())){
 				statusMapper.get(tagManager.getEntity("PLAYER")).setInTheAir(true);
 			}
