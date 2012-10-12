@@ -21,20 +21,21 @@
 package se.chalmers.avoidance.core.states;
 
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 
-import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.input.touch.TouchEvent;
 import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+
 import se.chalmers.avoidance.constants.EventMessageConstants;
 import se.chalmers.avoidance.constants.FontConstants;
+import se.chalmers.avoidance.core.collisionhandlers.GameOverNotifier;
 import se.chalmers.avoidance.core.systems.CollisionSystem;
 import se.chalmers.avoidance.core.systems.EnemyControlSystem;
 import se.chalmers.avoidance.core.systems.HudRenderSystem;
@@ -44,7 +45,6 @@ import se.chalmers.avoidance.core.systems.SpawnSystem;
 import se.chalmers.avoidance.input.AccelerometerListener;
 import se.chalmers.avoidance.input.TouchListener;
 import android.hardware.SensorManager;
-import android.view.MotionEvent;
 
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
@@ -55,7 +55,7 @@ import com.artemis.managers.TagManager;
  * 
  * @author Markus Ekström
  */
-public class GameState implements IState{
+public class GameState implements IState, PropertyChangeListener {
 
 	private Scene scene;
 	private World world;
@@ -94,8 +94,6 @@ public class GameState implements IState{
 		world.setManager(new GroupManager());
 		world.setManager(new TagManager());
 		
-		
-		
 		//Create and set systems here
 		world.setSystem(new SpatialRenderSystem(regions, vbom, scene));
 		world.setSystem(new CollisionSystem());
@@ -115,6 +113,10 @@ public class GameState implements IState{
 		touchListener = new TouchListener();
 		scene.setOnSceneTouchListener(touchListener);
 		touchListener.addListener(world.getSystem(PlayerControlSystem.class));
+		
+		// listen to 'Game Over'-events
+		GameOverNotifier.getInstance().addPropertyChangeListener(this);
+		GameOverNotifier.getInstance().setWorld(world);
 	}
 	
 	/**
@@ -177,6 +179,26 @@ public class GameState implements IState{
 				pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Game, StateID.Highscore);
 		    } 
 		};
+	}
+
+	/**
+	 * Listens to <code>PropertyChangeEvents</code>.<p>
+	 * Do NOT call manually.
+	 * 
+	 * @param event an event
+	 */
+	public void propertyChange(PropertyChangeEvent event) {
+		if (event != null && event.getNewValue() != null) {
+			if (EventMessageConstants.GAME_OVER.equals(event.getPropertyName())) {
+				int score = 0;
+				try {
+					score = (Integer) event.getNewValue();
+				} catch (ClassCastException cce) {
+					cce.printStackTrace(); //score is 0 if error occurs
+				}
+				gameOver(score);
+			}
+		}
 	}
 	
 }

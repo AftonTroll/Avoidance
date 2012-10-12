@@ -33,6 +33,11 @@ public final class EventMessageConstants {
 	public static final String QUIT_GAME = "System.Exit";
 	
 	/**
+	 * Identifier for the event used to signal 'Game Over'.
+	 */
+	public static final String GAME_OVER = "Game.Over";
+	
+	/**
 	 * Identifier for the event used to change state.
 	 */
 	public static final String CHANGE_STATE = "Change.State";
