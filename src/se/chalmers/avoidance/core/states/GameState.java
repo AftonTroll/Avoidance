@@ -25,8 +25,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 
+import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
@@ -51,23 +53,37 @@ import com.artemis.managers.TagManager;
  * 
  * @author Markus Ekström
  */
-public class GameState implements IState {
+public class GameState implements IState{
 
 	private Scene scene;
 	private World world;
 	private PropertyChangeSupport pcs;
 	private TouchListener touchListener;
 	
+	/**
+	 * Constructs a game state.
+	 * @param sensorManager Android's sensormanager.
+	 * @param regions A map of screen regions.
+	 * @param vbom The VertexBufferObjectManager.
+	 * @param scoreFont The font for the score.
+	 */
 	public GameState(SensorManager sensorManager, HashMap<String, TextureRegion> regions, VertexBufferObjectManager vbom, Font scoreFont) {
 		initialize(sensorManager, regions, vbom, scoreFont);
 		pcs = new PropertyChangeSupport(this);
 	}
 	
+	/**
+	 * Initializes the game.
+	 * @param sensorManager Android's sensormanager.
+	 * @param regions A map of screen regions.
+	 * @param vbom The VertexBufferObjectManager.
+	 * @param scoreFont The font for the score.
+	 */
 	private void initialize(SensorManager sensorManager, HashMap<String, TextureRegion> regions, VertexBufferObjectManager vbom, Font scoreFont ) {
 		scene = new Scene();
-		scene.setBackground(new Background(1f, 0f, 0f));
-		world = new World();
 		
+		scene.setBackground(new Background(1f, 0f, 0f));
+		world = new World();		
 		world.setManager(new GroupManager());
 		world.setManager(new TagManager());
 		
@@ -90,6 +106,7 @@ public class GameState implements IState {
 		aL.startListening();
 		
 		touchListener = new TouchListener();
+		scene.setOnSceneTouchListener(touchListener);
 		touchListener.addListener(world.getSystem(PlayerControlSystem.class));
 	}
 	
@@ -109,10 +126,6 @@ public class GameState implements IState {
 	 */
 	public Scene getScene() {
 		return scene;
-	}
-	
-	public void onTouchEvent(MotionEvent event) {
-		touchListener.onTouchEvent(event);
 	}
 	
 	/**
