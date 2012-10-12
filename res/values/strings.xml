@@ -4,5 +4,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="hint">Your name here</string>
+    <string name="submit_button">Submit</string>
+    <string name="score">Score: </string>
 
 </resources>

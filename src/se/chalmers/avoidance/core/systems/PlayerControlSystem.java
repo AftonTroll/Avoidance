@@ -28,6 +28,8 @@ package se.chalmers.avoidance.core.systems;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import se.chalmers.avoidance.core.components.Jump;
+import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.util.Utils;
@@ -36,6 +38,7 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
+import com.artemis.annotations.Mapper;
 import com.artemis.managers.TagManager;
 import com.artemis.utils.ImmutableBag;
 
@@ -48,11 +51,18 @@ import com.artemis.utils.ImmutableBag;
  */
 public class PlayerControlSystem extends EntitySystem implements PropertyChangeListener {
 	private final float ACCELERATION_MODIFIER = 20;
+	private final float MAX_SPEED = 400;
 	private float lastAccelerationX = 0;
 	private float lastAccelerationY = 0;
-	private ComponentMapper<Transform> transformMapper;
-	private ComponentMapper<Velocity> velocityMapper;
 	private TagManager tagManager;
+	@Mapper
+	ComponentMapper<Friction> frictionMapper;
+	@Mapper
+	ComponentMapper<Velocity> velocityMapper;
+	@Mapper
+	ComponentMapper<Transform> transformMapper;
+	@Mapper
+	ComponentMapper<Jump> statusMapper;
 	
 	/**
 	 * Constructs a new PlayerControlSystem.
@@ -66,10 +76,8 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	 */
 	@Override
 	protected void initialize() {
-		transformMapper = world.getMapper(Transform.class);
-		velocityMapper = world.getMapper(Velocity.class);
 		tagManager = world.getManager(TagManager.class);
-	}
+	}	
 
 	/**
 	 * Determines if the system should be processed or not
@@ -88,10 +96,10 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	 */
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
-		float friction = 0.9f;
 		
 		Entity entity = tagManager.getEntity("PLAYER");
 		if (entity != null) {
+			handleJump(entity); //Check if the player should be in the air.
 			//Update the Velocity
 			//Based on https://bitbucket.org/piemaster/artemoids/src/5c3a11ff2bdd/src/net/piemaster/artemoids/
 			//  systems/PlayerShipControlSystem.java
@@ -106,13 +114,19 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 			float newSpeed = (float) Math.sqrt(newVelX*newVelX+newVelY*newVelY);
 			
 			//Apply friction
-			newSpeed *= Math.pow(friction, world.delta);
+			newSpeed *= Math.pow(frictionMapper.get(entity).getFriction(), world.delta);
+			
+			//Adjust the speed so it's not higher than the max speed
+			if(newSpeed > MAX_SPEED){
+				newSpeed = MAX_SPEED;
+			}
 			
 			playerVel.setAngle((float) Math.atan2(newVelY, newVelX));
 			playerVel.setSpeed(newSpeed);
 			
 			//Update the position
 			Transform playerTransform = transformMapper.get(entity);
+			playerTransform.setDirection((float) Math.atan2(lastAccelerationY, lastAccelerationX));
 			float speed = playerVel.getSpeed();
 			float angle = playerVel.getAngle();
 			float dx = world.delta * (startVelX + Utils.getHorizontalSpeed(speed, angle))/2;
@@ -120,6 +134,20 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 			playerTransform.setX(playerTransform.getX() + dx);
 			playerTransform.setY(playerTransform.getY() + dy);
 		}
+	}
+	
+	private void handleJump(Entity player) {
+		Jump jump = statusMapper.get(player);
+		jump.subtractJumpCooldownLeft(world.delta);
+		if(jump.isInTheAir()) {
+			jump.subtractInTheAirDurationLeft(world.delta);
+			
+			if(jump.getInTheAirDurationLeft() == 0) {
+				jump.setInTheAir(false);
+			}
+		}
+		
+		
 	}
 
 	/**
@@ -133,6 +161,12 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 			}
 			if("AccelerometerY".equals(event.getPropertyName())){
 				lastAccelerationY = (Float) event.getNewValue();
+			}
+		} else if (event != null) {
+			if("touch".equals(event.getPropertyName())){
+				if(tagManager.getEntity("PLAYER").getComponent(Jump.class).getJumpCooldownLeft() == 0) {
+					statusMapper.get(tagManager.getEntity("PLAYER")).setInTheAir(true);
+				}
 			}
 		}
 	}

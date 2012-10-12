@@ -22,15 +22,19 @@ package se.chalmers.avoidance.util;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class UtilsTest {
+import se.chalmers.avoidance.core.components.FloatTest;
+
+public class UtilsTest extends FloatTest {
 	
 	private static float f1, f2, f3, f4, f5, f6;
 	private static float s1, s2, s3, s4, s5;
 	private static float a1, a2, a3, a4, a5;
-	private final float TOLERANCE = 0.0001f;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -55,40 +59,72 @@ public class UtilsTest {
 
 	@Test
 	public void testSimplifyAngle() {
-		assertTrue(Utils.simplifyAngle(f1) - f1  <= TOLERANCE);
-		assertTrue(Utils.simplifyAngle(f2) - f2  <= TOLERANCE);
-		assertTrue(Utils.simplifyAngle(f3) - (f3 - (float)(2 * Math.PI)) <= TOLERANCE);
-		assertTrue(Utils.simplifyAngle(f4) - ((float)(2 * Math.PI) + f4) <= TOLERANCE);
-		assertTrue(Utils.simplifyAngle(f5) - ((float) Math.PI) <= TOLERANCE);
-		assertTrue(Utils.simplifyAngle(f6) - (((float)(4 * Math.PI)) + f6) <= TOLERANCE);
+		assertFloatEquals(Utils.simplifyAngle(f1) - f1 );
+		assertFloatEquals(Utils.simplifyAngle(f2) - f2 );
+		assertFloatEquals(Utils.simplifyAngle(f3) - (f3 - (float)(2 * Math.PI)));
+		assertFloatEquals(Utils.simplifyAngle(f4) - ((float)(2 * Math.PI) + f4));
+		assertFloatEquals(Utils.simplifyAngle(f5) - ((float) Math.PI));
+		assertFloatEquals(Utils.simplifyAngle(f6) - (((float)(4 * Math.PI)) + f6));
 	}
 
 	@Test
 	public void testReverseAngle() {
-		assertTrue(Utils.reverseAngle(f1) - (float) Math.PI <= TOLERANCE);
-		assertTrue(Utils.reverseAngle(f2) - ((float) Math.PI + f2) <= TOLERANCE);
-		assertTrue(Utils.reverseAngle(f3) - (f3 - (float) Math.PI) <= TOLERANCE);
-		assertTrue(Utils.reverseAngle(f4) - ((float) Math.PI + f4) <= TOLERANCE);
-		assertTrue(Utils.reverseAngle(f5) - (f5 + (float) Math.PI) <= TOLERANCE);
-		assertTrue(Utils.reverseAngle(f6) - ((float) Math.PI + f6) <= TOLERANCE);
+		assertFloatEquals(Utils.reverseAngle(f1) - (float) Math.PI);
+		assertFloatEquals(Utils.reverseAngle(f2) - ((float) Math.PI + f2));
+		assertFloatEquals(Utils.reverseAngle(f3) - (f3 - (float) Math.PI));
+		assertFloatEquals(Utils.reverseAngle(f4) - ((float) Math.PI + f4));
+		assertFloatEquals(Utils.reverseAngle(f5) - (f5 + (float) Math.PI));
+		assertFloatEquals(Utils.reverseAngle(f6) - ((float) Math.PI + f6));
 	}
 	
 	@Test
 	public void testGetHorizontalSpeed(){
-		assertTrue(Math.abs(Utils.getHorizontalSpeed(s1, a1) - 5) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getHorizontalSpeed(s2, a2)) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getHorizontalSpeed(s3, a3)) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getHorizontalSpeed(s4, a4) + 15) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getHorizontalSpeed(s5, a5) - 2) <= TOLERANCE);
+		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(s1, a1) - 5));
+		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(s2, a2)));
+		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(s3, a3)));
+		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(s4, a4) + 15));
+		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(s5, a5) - 2));
 	}
 	
 	@Test
 	public void testGetVerticalSpeed(){
-		assertTrue(Math.abs(Utils.getVerticalSpeed(s1, a1)) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getVerticalSpeed(s2, a2)) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getVerticalSpeed(s3, a3) - 10) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getVerticalSpeed(s4, a4)) <= TOLERANCE);
-		assertTrue(Math.abs(Utils.getVerticalSpeed(s5, a5) -2 ) <= TOLERANCE);
+		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(s1, a1)));
+		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(s2, a2)));
+		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(s3, a3) - 10));
+		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(s4, a4)));
+		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(s5, a5) -2 ));
 	}
-
+	
+	@Test
+	public void testTrimList() {
+		List<Integer> list = new ArrayList<Integer>();
+		for (int i = 0; i < 30; i++) {
+			list.add(i);
+		}
+		
+		//decrease the lists size continously
+		Utils.trimList(list, 45);
+		assertTrue(list.size() == 30);
+		
+		Utils.trimList(list, 28);
+		assertTrue(list.size() == 28);
+		assertTrue(!list.contains(28));
+		
+		Utils.trimList(list, 17);
+		assertTrue(list.size() == 17);
+		assertTrue(list.contains(0));
+		assertTrue(!list.contains(17));
+		
+		Utils.trimList(list, 4);
+		assertTrue(list.size() == 4);
+		assertTrue(!list.contains(4));
+		assertTrue(list.contains(3));
+		
+		//can't increase the size, only decrease
+		Utils.trimList(list, 6);
+		assertTrue(list.size() == 4);
+		assertTrue(!list.contains(4));
+		assertTrue(list.contains(3));
+	}
+	
 }

@@ -43,12 +43,17 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import se.chalmers.avoidance.constants.EventMessageConstants;
+import se.chalmers.avoidance.constants.FontConstants;
 import se.chalmers.avoidance.core.states.GameState;
+import se.chalmers.avoidance.core.states.HighscoreState;
 import se.chalmers.avoidance.core.states.MenuState;
 import se.chalmers.avoidance.core.states.StateID;
 import se.chalmers.avoidance.core.states.StateManager;
 import se.chalmers.avoidance.util.AudioManager;
+import se.chalmers.avoidance.util.FileUtils;
 import se.chalmers.avoidance.util.ScreenResolution;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.hardware.SensorManager;
 
@@ -66,13 +71,12 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
     private StateManager stateManager;
 
     private HashMap<String, TextureRegion> regions;
-    private Font scoreFont;
+    private HashMap<String, Font> fonts;
    
     /**
      * Sets the engine options (camera, screen rotation, ...) 
      */
 	public EngineOptions onCreateEngineOptions() {
-		ScreenResolution.fetchFromActivity(this);
 		camera = new Camera(0, 0, ScreenResolution.getWidthResolution(), 
 				ScreenResolution.getHeightResolution());
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, 
@@ -105,9 +109,18 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
         
         //Load textures
 		regions = new HashMap<String, TextureRegion>();
-		scoreFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
-				TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 20);
-				
+		fonts = new HashMap<String, Font>();
+		
+		//create fonts
+		fonts.put(FontConstants.HUD_SCORE, FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
+				TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 32));
+		fonts.put(FontConstants.GAME_OVER_SCORE, FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
+				TextureOptions.BILINEAR, Typeface.create(Typeface.MONOSPACE, Typeface.BOLD_ITALIC), 
+				72, true, Color.WHITE));
+		fonts.put(FontConstants.HIGH_SCORE, FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
+				TextureOptions.BILINEAR, Typeface.create(Typeface.MONOSPACE, Typeface.BOLD_ITALIC), 
+				48, true, Color.WHITE));
+
         // Set the asset path of the images
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
         BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(
@@ -116,6 +129,14 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 //        Create TextureRegions like this for every image:
 //        regions.put("file_name.png", BitmapTextureAtlasTextureRegionFactory
 //               .createFromAsset( bitmapTextureAtlas, this, "file_name.png", x_position, y_position));
+        regions.put("highscore.png", BitmapTextureAtlasTextureRegionFactory
+		.createFromAsset( bitmapTextureAtlas, this, "highscore.png", 1748-445-552, 824-237-77));
+        
+        regions.put("gameOver.png", BitmapTextureAtlasTextureRegionFactory
+		.createFromAsset( bitmapTextureAtlas, this, "gameOver.png", 1748-445, 824-237));
+        
+        regions.put("okButton.png", BitmapTextureAtlasTextureRegionFactory
+		.createFromAsset( bitmapTextureAtlas, this, "okButton.png", 1748, 824));
         
         regions.put("ball.png", BitmapTextureAtlasTextureRegionFactory
 		.createFromAsset( bitmapTextureAtlas, this, "ball.png", 0, 0));
@@ -131,9 +152,21 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 
         regions.put("enemy.png",  BitmapTextureAtlasTextureRegionFactory
         		.createFromAsset( bitmapTextureAtlas, this, "enemy.png", 61,150));
+        regions.put("powerup.png",  BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, "powerup.png", 120,200));
+        regions.put("pitobstacle.png",  BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, "pitobstacle.png", 120,270));
+        
+        regions.put("killplayerobstacle.png",  BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, "killplayerobstacle.png", 120,340));
+        regions.put("quickenemy.png", BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, "quickenemy.png", 130,150));
         
         bitmapTextureAtlas.load();
-        scoreFont.load();
+
+        for (Font font : fonts.values()) {
+        	font.load();
+        }
         
 		onCreateResourcesCallback.onCreateResourcesFinished();
 	}
@@ -152,7 +185,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	 */
 	public void onPopulateScene(Scene scene, OnPopulateSceneCallback onPopulateSceneCallback)
 			throws Exception {
-		
+		FileUtils.setContext(this);
         initializeGame();         
         splashScene.detachSelf();
 		stateManager.setState(StateID.Menu);
@@ -176,10 +209,13 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 		stateManager = new StateManager(mEngine);
 
 		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
-				regions, this.getVertexBufferObjectManager(),scoreFont);
+				regions, fonts, this.getVertexBufferObjectManager());
 		MenuState menuState = new MenuState(this);
+		HighscoreState highscoreState = new HighscoreState(regions, fonts, 
+				this.getVertexBufferObjectManager());
 		stateManager.addState(StateID.Game, gameState);
 		stateManager.addState(StateID.Menu, menuState);
+		stateManager.addState(StateID.Highscore, highscoreState);
 		
 		stateManager.addPropertyChangeListener(this);
 	}
@@ -192,9 +228,12 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	    splashScene.setBackground(new Background(0.0f, 0.0f, 1.0f));
     }      
 
+    /**
+     * Handles events and takes the according action.
+     */
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event != null && event.getNewValue() != null) {
-			if ("SYSTEM.EXIT".equals(event.getPropertyName())) {
+			if (EventMessageConstants.QUIT_GAME.equals(event.getPropertyName())) {
 				this.finish();
 			}
 		}

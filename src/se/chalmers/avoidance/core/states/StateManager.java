@@ -28,6 +28,8 @@ import java.util.Map;
 
 import org.andengine.engine.Engine;
 
+import se.chalmers.avoidance.constants.EventMessageConstants;
+
 /**
  * A manager for the game's states.
  * 
@@ -93,9 +95,9 @@ public class StateManager implements PropertyChangeListener {
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event != null && event.getNewValue() != null) {
-			if ("SYSTEM.EXIT".equals(event.getPropertyName())) {
+			if (EventMessageConstants.QUIT_GAME.equals(event.getPropertyName())) {
 				pcs.firePropertyChange(event);
-			} else if ("CHANGE_STATE".equals(event.getPropertyName())) {
+			} else if (EventMessageConstants.CHANGE_STATE.equals(event.getPropertyName())) {
 				setState((StateID) event.getNewValue());
 			}
 		}

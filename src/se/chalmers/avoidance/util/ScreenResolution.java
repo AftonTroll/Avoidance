@@ -20,8 +20,7 @@
 
 package se.chalmers.avoidance.util;
 
-import android.app.Activity;
-import android.util.DisplayMetrics;
+import org.andengine.entity.shape.RectangularShape;
 
 /**
  * Abstract class that acts as a content provider for 
@@ -36,45 +35,46 @@ import android.util.DisplayMetrics;
  *
  */
 public abstract class ScreenResolution {
-	private static boolean initialized;
-	private static int CAMERA_WIDTH;
-	private static int CAMERA_HEIGHT;
+    
+    /**
+     * Returns the screens width.<p>
+     * 
+     * @return the screens width
+     */
+    public static int getWidthResolution() {
+    	return 1280; 
+    }
+    
+    /**
+     * Returns the screens height.<p>
+     * 
+     * @return the screens height 
+     */
+    public static int getHeightResolution() {
+    	return 800; 
+    }
 	
-	public static void fetchFromActivity(Activity activity) {
-		if (!initialized)
-			initializeScreenResolution(activity);
+	/**
+	 * Returns the x-position of the <code>RectangularShape</code> provided
+	 * in the argument, in case it would be centered horizontally (along the
+	 * x-axis).
+	 * 
+	 * @param shape a shape
+	 * @return the x-position of the shape if centered on the x-axis
+	 */
+	public static float getXPosHorizontalCentering(RectangularShape shape) {
+		return (ScreenResolution.getWidthResolution() - shape.getWidth()) / 2;
 	}
 	
 	/**
-     * Initializes the screen resolution variables. <p>
-     * The size is adjusted based on the current rotation of the display.
-     * However, it may include system decor elements, and thus not represent
-     * the actual raw size of the display.
-     * @see DisplayMetrics
-     */
-    private static void initializeScreenResolution(Activity activity) {
-    	//DisplayMetrics is compatible with all android versions, Display is not
-    	DisplayMetrics metrics = activity.getBaseContext().getResources().getDisplayMetrics();
-    	CAMERA_WIDTH = metrics.widthPixels;
-    	CAMERA_HEIGHT = metrics.heightPixels;
-    	initialized = true;
-    }
-    
-    /**
-     * Returns the screens width in pixels.
-     * @return the screens width in pixels
-     */
-    public static int getWidthResolution() {
-    	return 1280; //return fixed resolution for now
-//    	return ScreenResolution.CAMERA_WIDTH;
-    }
-    
-    /**
-     * Returns the screens height in pixels.
-     * @return the screens height in pixels.
-     */
-    public static int getHeightResolution() {
-    	return 800; //return fixed resolution for now
-//    	return ScreenResolution.CAMERA_HEIGHT;
-    }
+	 * Returns the y-position of the <code>RectangularShape</code> provided
+	 * in the argument, in case it would be centered vertically (along the
+	 * y-axis).
+	 * 
+	 * @param shape a shape
+	 * @return the y-position of the shape if centered on the y-axis
+	 */
+	public static float getYPosVerticalCentering(RectangularShape shape) {
+		return (ScreenResolution.getHeightResolution() - shape.getHeight()) / 2;
+	}
 }

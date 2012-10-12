@@ -27,10 +27,13 @@ import java.util.HashMap;
 
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import se.chalmers.avoidance.constants.EventMessageConstants;
+import se.chalmers.avoidance.constants.FontConstants;
 import se.chalmers.avoidance.core.systems.CollisionSystem;
 import se.chalmers.avoidance.core.systems.EnemyControlSystem;
 import se.chalmers.avoidance.core.systems.HudRenderSystem;
@@ -39,6 +42,7 @@ import se.chalmers.avoidance.core.systems.SoundSystem;
 import se.chalmers.avoidance.core.systems.SpatialRenderSystem;
 import se.chalmers.avoidance.core.systems.SpawnSystem;
 import se.chalmers.avoidance.input.AccelerometerListener;
+import se.chalmers.avoidance.input.TouchListener;
 import android.hardware.SensorManager;
 
 import com.artemis.World;
@@ -50,22 +54,42 @@ import com.artemis.managers.TagManager;
  * 
  * @author Markus Ekström
  */
-public class GameState implements IState {
+public class GameState implements IState{
 
 	private Scene scene;
 	private World world;
 	private PropertyChangeSupport pcs;
+	private TouchListener touchListener;
+	private GameOverScene gameOverScene;
 	
-	public GameState(SensorManager sensorManager, HashMap<String, TextureRegion> regions, VertexBufferObjectManager vbom, Font scoreFont) {
-		initialize(sensorManager, regions, vbom, scoreFont);
-		pcs = new PropertyChangeSupport(this);
+	/**
+	 * Constructs a new <code>GameState</code>.
+	 * 
+	 * @param sensorManager a <code>SensorManager</code>
+	 * @param regions a <code>HashMap</code> containing loaded textures/regions
+	 * @param fonts a <code>HashMap</code> containing loaded fonts
+	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
+	 */
+	public GameState(SensorManager sensorManager, HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts, VertexBufferObjectManager vbom) {
+		initialize(sensorManager, regions, fonts, vbom);
+		this.pcs = new PropertyChangeSupport(this);
+		this.gameOverScene = new GameOverScene(vbom, regions, fonts);
+		this.gameOverScene.setButtonSpriteOnClickListener(getButtonSpriteOnClickListener());
 	}
 	
-	private void initialize(SensorManager sensorManager, HashMap<String, TextureRegion> regions, VertexBufferObjectManager vbom, Font scoreFont ) {
+	/**
+	 * Initializes the <code>GameState</code>.
+	 * 
+	 * @param sensorManager a <code>SensorManager</code>
+	 * @param regions a <code>HashMap</code> containing loaded textures/regions
+	 * @param fonts a <code>HashMap</code> containing loaded fonts
+	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
+	 */
+	private void initialize(SensorManager sensorManager, HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts, VertexBufferObjectManager vbom) {
 		scene = new Scene();
-		scene.setBackground(new Background(1f, 0f, 0f));
-		world = new World();
 		
+		scene.setBackground(new Background(1f, 0f, 0f));
+		world = new World();		
 		world.setManager(new GroupManager());
 		world.setManager(new TagManager());
 		
@@ -78,7 +102,7 @@ public class GameState implements IState {
 		world.setSystem(new EnemyControlSystem());
 		world.setSystem(new SpawnSystem());
 		world.setSystem(new SoundSystem());
-		world.setSystem(new HudRenderSystem(scene, vbom, scoreFont));
+		world.setSystem(new HudRenderSystem(scene, vbom, fonts.get(FontConstants.HUD_SCORE)));
 		
 		//Initialize world.
 		world.initialize();
@@ -87,6 +111,10 @@ public class GameState implements IState {
 		AccelerometerListener aL = new AccelerometerListener(sensorManager);
 		aL.addPropertyChangeListener(world.getSystem(PlayerControlSystem.class));
 		aL.startListening();
+		
+		touchListener = new TouchListener();
+		scene.setOnSceneTouchListener(touchListener);
+		touchListener.addListener(world.getSystem(PlayerControlSystem.class));
 	}
 	
 	/**
@@ -122,4 +150,33 @@ public class GameState implements IState {
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.removePropertyChangeListener(pcl);
 	}
+	
+	/**
+	 * Shows the game over scene.
+	 * 
+	 * @param score the players score
+	 */
+	public void gameOver(int score) {
+		this.gameOverScene.setScore(score);
+		this.gameOverScene.addTo(scene);
+	}
+	
+	
+	/**
+	 * Returns a <code>ButtonSprite.OnClickListener</code>, that removes this scenes
+	 * child scene, and that changes the applications state to the high score state.
+	 * Should be used for the game over scene.
+	 * 
+	 * @return a <code>ButtonSprite.OnClickListener</code> for the game over scene
+	 */
+	private ButtonSprite.OnClickListener getButtonSpriteOnClickListener() {
+		return new ButtonSprite.OnClickListener() {
+			public void onClick( ButtonSprite pButtonSprite, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				//do this on the ui update thread or not?
+				scene.clearChildScene();
+				pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Game, StateID.Highscore);
+		    } 
+		};
+	}
+	
 }
