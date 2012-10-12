@@ -20,6 +20,7 @@
 package se.chalmers.avoidance.core.collisionhandlers;
 
 import se.chalmers.avoidance.core.components.Buff;
+import se.chalmers.avoidance.core.components.Score;
 import se.chalmers.avoidance.core.components.Buff.BuffType;
 import se.chalmers.avoidance.core.components.Velocity;
 
@@ -27,6 +28,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
+import com.artemis.managers.TagManager;
 
 /**
  * Handles collisions between the player and a power-up.
@@ -36,6 +38,7 @@ import com.artemis.managers.GroupManager;
 public class PowerUpCollisionHandler implements CollisionHandler{
     ComponentMapper<Velocity> vm;
     ComponentMapper<Buff> bm;
+    ComponentMapper<Score> sm;
     
     /**
      * Constructs a PowerUpCollisionHandler.
@@ -44,6 +47,7 @@ public class PowerUpCollisionHandler implements CollisionHandler{
     public PowerUpCollisionHandler(World world) {
     	vm = ComponentMapper.getFor(Velocity.class, world);
     	bm = ComponentMapper.getFor(Buff.class, world);
+    	sm = world.getMapper(Score.class);
     }
     
 	/**
@@ -61,6 +65,8 @@ public class PowerUpCollisionHandler implements CollisionHandler{
 				velocity.addSpeed(buff.getStrength());
 			}
 			powerup.deleteFromWorld();
+			Score score = sm.get(world.getManager(TagManager.class).getEntity("SCORE"));
+			score.addKillScore(100);
 		}
 	}
 }

@@ -24,6 +24,7 @@ import se.chalmers.avoidance.core.components.Acceleration;
 import se.chalmers.avoidance.core.components.Buff;
 import se.chalmers.avoidance.core.components.Buff.BuffType;
 import se.chalmers.avoidance.core.components.Friction;
+import se.chalmers.avoidance.core.components.Score;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Spatial;
 import se.chalmers.avoidance.core.components.Time;
@@ -53,6 +54,7 @@ public class EntityFactory {
 		Entity player = world.createEntity();
 		world.getManager(TagManager.class).register("PLAYER", player);
 		world.getManager(GroupManager.class).add(player, "PLAYER");
+		world.getManager(GroupManager.class).add(player, "MOVINGENTITIES");
 		
 		player.addComponent(new Transform(200,100));
 		player.addComponent(new Velocity());
@@ -99,6 +101,7 @@ public class EntityFactory {
 	public static Entity createEnemy(World world, float xPos, float yPos) {
 		Entity enemy = world.createEntity();
 		world.getManager(GroupManager.class).add(enemy, "ENEMIES");
+		world.getManager(GroupManager.class).add(enemy, "MOVINGENTITIES");
 		
 		enemy.addComponent(new Transform(xPos, yPos));
 		enemy.addComponent(new Velocity());
@@ -120,6 +123,7 @@ public class EntityFactory {
 	public static Entity createQuickEnemy(World world, float xPos, float yPos) {
 		Entity enemy = world.createEntity();
 		world.getManager(GroupManager.class).add(enemy, "ENEMIES");
+		world.getManager(GroupManager.class).add(enemy, "MOVINGENTITIES");
 		
 		enemy.addComponent(new Transform(xPos, yPos));
 		enemy.addComponent(new Velocity());
@@ -158,7 +162,8 @@ public class EntityFactory {
 	 */
 	public static Entity createScore(World world){
 		Entity score = world.createEntity();
-		
+		world.getManager(TagManager.class).register("SCORE", score);
+		score.addComponent(new Score());
 		score.addComponent(new Time());
 		
 		return score;
@@ -175,6 +180,28 @@ public class EntityFactory {
 		
 		return powerUp;
 		
+	}
+	
+	public static Entity createPitobstacle(World world, float xPos, float yPos){
+		Entity pitobstacle = world.createEntity();
+		world.getManager(GroupManager.class).add(pitobstacle, "PITOBSTACLES");
+		
+		pitobstacle.addComponent(new Transform(xPos, yPos));
+		pitobstacle.addComponent(new Size(64,64));
+		pitobstacle.addComponent(new Spatial("pitobstacle.png"));
+		
+		return pitobstacle;
+	}
+	
+	public static Entity createKillplayerbstacle(World world, float xPos, float yPos){
+		Entity killplayerobstacle = world.createEntity();
+		world.getManager(GroupManager.class).add(killplayerobstacle, "KILLPLAYEROBSTACLES");
+		
+		killplayerobstacle.addComponent(new Transform(xPos, yPos));
+		killplayerobstacle.addComponent(new Size(64,64));
+		killplayerobstacle.addComponent(new Spatial("killplayerobstacle.png"));
+		
+		return killplayerobstacle;
 	}
 	
 }

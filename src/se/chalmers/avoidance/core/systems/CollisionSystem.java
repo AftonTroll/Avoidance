@@ -28,6 +28,7 @@ import org.andengine.entity.shape.RectangularShape;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 
 import se.chalmers.avoidance.core.collisionhandlers.CollisionHandler;
+import se.chalmers.avoidance.core.collisionhandlers.PitobstacleCollisionHandler;
 import se.chalmers.avoidance.core.collisionhandlers.PowerUpCollisionHandler;
 import se.chalmers.avoidance.core.collisionhandlers.WallCollisionHandler;
 import se.chalmers.avoidance.core.components.Size;
@@ -76,8 +77,9 @@ public class CollisionSystem extends EntitySystem{
 	@Override
 	protected void initialize(){
         collisionPairs = new Bag<CollisionPair>();
-        collisionPairs.add(new CollisionPair("PLAYER", "WALLS", new WallCollisionHandler(world))); 
+        collisionPairs.add(new CollisionPair("MOVINGENTITIES", "WALLS", new WallCollisionHandler(world))); 
         collisionPairs.add(new CollisionPair("PLAYER", "POWERUPS", new PowerUpCollisionHandler(world)));
+        collisionPairs.add(new CollisionPair("MOVINGENTITIES", "PITOBSTACLES", new PitobstacleCollisionHandler(world)));
 	}
 	
 	
