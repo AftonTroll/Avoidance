@@ -107,12 +107,18 @@ public class AudioManager {
 		}
 	}
 	
+	/**
+	 * Pauses the music
+	 */
 	public static void pause(){
 		if(currentMusic != null){
 			currentMusic.pause();
 		}
 	}
 	
+	/**
+	 * Resumes the music
+	 */
 	public static void resume(){
 		if(currentMusic != null){
 			currentMusic.resume();
