@@ -20,6 +20,7 @@
 
 package se.chalmers.avoidance.core.states;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ import org.andengine.util.HorizontalAlign;
 
 import se.chalmers.avoidance.constants.EventMessageConstants;
 import se.chalmers.avoidance.constants.FontConstants;
+import se.chalmers.avoidance.core.collisionhandlers.GameOverNotifier;
 import se.chalmers.avoidance.util.FileUtils;
 import se.chalmers.avoidance.util.ScreenResolution;
 import se.chalmers.avoidance.util.Utils;
@@ -45,7 +47,7 @@ import se.chalmers.avoidance.util.Utils;
  * 
  * @author Florian Minges
  */
-public class HighscoreState implements IState {
+public class HighscoreState implements IState, PropertyChangeListener {
 	
 	private Scene scene;
 	private PropertyChangeSupport pcs;
@@ -87,6 +89,9 @@ public class HighscoreState implements IState {
 		scene.attachChild(backButton);
 		
 		this.updateHighscoreList();
+		
+		// listen to 'Game Over'-events, so we can update the high score
+		GameOverNotifier.getInstance().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -115,7 +120,7 @@ public class HighscoreState implements IState {
 	 */
 	private void createHighscoreList(HashMap<String, Font> fonts, VertexBufferObjectManager vbom) {
 		Text list = new Text(0, 0, fonts.get(FontConstants.HIGH_SCORE), 
-				"", "XXXXXXX".length() * MAX_HIGH_SCORE_ENTRIES, vbom);
+				"", "XXXXXXXXX".length() * MAX_HIGH_SCORE_ENTRIES, vbom);
 		Text rank = new Text(0, 0, fonts.get(FontConstants.HIGH_SCORE), 
 				"", "1) ".length() * MAX_HIGH_SCORE_ENTRIES, vbom);
 		list.setColor(1.0f, 0.9f, 0.1f, 1.0f);
@@ -174,6 +179,7 @@ public class HighscoreState implements IState {
 				builder.append(")   \n");
 			}
 			rank = builder.toString();
+			FileUtils.saveToFile(highscore, FileUtils.PATH); //save only the high scores
 		} catch (NoHighscoreException nhe) {
 			highscore = "No highscores found";
 			rank = "";
@@ -238,6 +244,27 @@ public class HighscoreState implements IState {
 	
 	private class NoHighscoreException extends Exception {
 		private static final long serialVersionUID = -4952572847775951630L;
+	}
+
+	/**
+	 * Listens to <code>PropertyChangeEvents</code>.<p>
+	 * Do NOT call manually.
+	 * 
+	 * @param event an event
+	 */
+	public void propertyChange(PropertyChangeEvent event) {
+		if (event != null && event.getNewValue() != null) {
+			if (EventMessageConstants.GAME_OVER.equals(event.getPropertyName())) {
+				int score = 0;
+				try {
+					score = (Integer) event.getNewValue();
+				} catch (ClassCastException cce) {
+					cce.printStackTrace(); //score is 0 if error occurs
+				}
+				FileUtils.addToFile(String.valueOf(score), FileUtils.PATH);
+				updateHighscoreList();
+			}
+		}
 	}
 
 }
