@@ -138,8 +138,10 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	
 	private void handleJump(Entity player) {
 		Jump jump = statusMapper.get(player);
+		jump.subtractJumpCooldownLeft(world.delta);
 		if(jump.isInTheAir()) {
 			jump.subtractInTheAirDurationLeft(world.delta);
+			
 			if(jump.getInTheAirDurationLeft() == 0) {
 				jump.setInTheAir(false);
 			}
@@ -162,7 +164,9 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 			}
 		} else if (event != null) {
 			if("touch".equals(event.getPropertyName())){
-				statusMapper.get(tagManager.getEntity("PLAYER")).setInTheAir(true);
+				if(tagManager.getEntity("PLAYER").getComponent(Jump.class).getJumpCooldownLeft() == 0) {
+					statusMapper.get(tagManager.getEntity("PLAYER")).setInTheAir(true);
+				}
 			}
 		}
 	}
