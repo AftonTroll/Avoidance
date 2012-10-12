@@ -22,9 +22,6 @@ package se.chalmers.avoidance.util;
 
 import org.andengine.entity.shape.RectangularShape;
 
-import android.app.Activity;
-import android.util.DisplayMetrics;
-
 /**
  * Abstract class that acts as a content provider for 
  * the screen resolution. <p>

@@ -22,7 +22,6 @@ package se.chalmers.avoidance.core.states;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -238,7 +237,7 @@ public class HighscoreState implements IState {
 	}
 	
 	private class NoHighscoreException extends Exception {
-		
+		private static final long serialVersionUID = -4952572847775951630L;
 	}
 
 }
