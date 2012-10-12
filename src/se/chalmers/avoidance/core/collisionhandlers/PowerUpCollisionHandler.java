@@ -20,6 +20,7 @@
 package se.chalmers.avoidance.core.collisionhandlers;
 
 import se.chalmers.avoidance.core.components.Buff;
+import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Score;
 import se.chalmers.avoidance.core.components.Buff.BuffType;
 import se.chalmers.avoidance.core.components.Velocity;
@@ -56,9 +57,8 @@ public class PowerUpCollisionHandler implements CollisionHandler{
 	 * @param powerup The power-up whose buff shall be applied to the player.
 	 */
 	public void handleCollision(Entity player, Entity powerup) {
-		World world = player.getWorld();
-		GroupManager groupManager = world.getManager(GroupManager.class);
-		if (groupManager.getEntities("PLAYER").contains(player) && groupManager.getEntities("POWERUPS").contains(powerup) ) {
+		if(!player.getComponent(Jump.class).isInTheAir()) {
+			World world = player.getWorld();
 			Velocity velocity = vm.get(player);
 			Buff buff = bm.get(powerup);
 			if(buff.getType() == BuffType.Speed) {
@@ -66,7 +66,7 @@ public class PowerUpCollisionHandler implements CollisionHandler{
 			}
 			powerup.deleteFromWorld();
 			Score score = sm.get(world.getManager(TagManager.class).getEntity("SCORE"));
+			powerup.deleteFromWorld();
 		}
-		powerup.deleteFromWorld();
 	}
 }
