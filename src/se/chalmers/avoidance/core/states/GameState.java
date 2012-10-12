@@ -62,6 +62,7 @@ public class GameState implements IState, PropertyChangeListener {
 	private PropertyChangeSupport pcs;
 	private TouchListener touchListener;
 	private GameOverScene gameOverScene;
+	private boolean process;
 	
 	/**
 	 * Constructs a new <code>GameState</code>.
@@ -104,6 +105,7 @@ public class GameState implements IState, PropertyChangeListener {
 		
 		//Initialize world.
 		world.initialize();
+		enableProcess(true);
 		
 		//Add listeners
 		AccelerometerListener aL = new AccelerometerListener(sensorManager);
@@ -125,8 +127,19 @@ public class GameState implements IState, PropertyChangeListener {
 	 * @param tpf Time since last frame.
 	 */
 	public void update(float tpf) {
-		world.setDelta(tpf);
-		world.process();
+		if (process) {
+			world.setDelta(tpf);
+			world.process();
+		}
+	}
+	
+	/**
+	 * Enables/Disables the ability to update the world/the game. <p>
+	 * @param enable true if you want the game to update;
+	 * false if you want to stop the updating.
+	 */
+	public void enableProcess(boolean enable) {
+		process = enable;
 	}
 
 	/**
@@ -159,6 +172,7 @@ public class GameState implements IState, PropertyChangeListener {
 	 * @param score the players score
 	 */
 	public void gameOver(int score) {
+		enableProcess(false);
 		this.gameOverScene.setScore(score);
 		this.gameOverScene.addTo(scene);
 	}
