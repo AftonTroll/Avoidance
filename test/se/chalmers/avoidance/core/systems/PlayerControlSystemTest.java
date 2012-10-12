@@ -23,6 +23,7 @@ package se.chalmers.avoidance.core.systems;
 import static org.junit.Assert.assertTrue;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeSupport;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -49,6 +50,7 @@ public class PlayerControlSystemTest {
 	private final float[] expectedAngle = {(float) Math.PI, (float) Math.PI/2};
 	private final float[] expectedX = {-2.25f, -4.5f};
 	private final float[] expectedY = {0, 9};
+	private PropertyChangeSupport pcsup = new PropertyChangeSupport(this);
 	
 	
 	@Before
@@ -64,6 +66,7 @@ public class PlayerControlSystemTest {
 		tagManager.register("PLAYER", player);
 		
 		world.initialize();
+		pcsup.addPropertyChangeListener(pcs);
 	}
 
 	@Test
@@ -89,6 +92,18 @@ public class PlayerControlSystemTest {
 		transform.setX(0);
 		transform.setY(0);
 		
+	}
+	
+	@Test
+	public void testHandleJump() {
+		Jump jump = player.getComponent(Jump.class);
+		world.setDelta(1);
+		world.process();
+		assertTrue(!jump.isInTheAir());
+		pcsup.firePropertyChange("touch", null, null);
+		world.process();
+		assertTrue(jump.isInTheAir());
+		world.process();
 	}
 }
 
