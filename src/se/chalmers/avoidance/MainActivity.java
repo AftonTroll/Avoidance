@@ -180,12 +180,4 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 			}
 		}
 	} 
-	
-	@Override
-    public boolean onTouchEvent(MotionEvent event) {
-		if(gameState != null) {
-			gameState.onTouchEvent(event);
-		}
-        return true;
-    }
 }
