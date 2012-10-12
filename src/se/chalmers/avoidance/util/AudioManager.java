@@ -35,7 +35,7 @@ import org.andengine.audio.sound.Sound;
 public class AudioManager {
 	private static Map<String, Music> musicMap = new HashMap<String, Music>();
 	private static Map<String, Sound> soundMap = new HashMap<String, Sound>();
-	private static Music currentMusic;
+	private static Music currentMusic = null;
 	
 	//Hidden constructor for the singleton pattern
 	private AudioManager(){
@@ -121,7 +121,13 @@ public class AudioManager {
 	 */
 	public static void resume(){
 		if(currentMusic != null){
-			currentMusic.resume();
+			//if the currentMusic is stored since the last time the
+			//app was run
+			if(currentMusic.isReleased()){
+				currentMusic = null;
+			} else {
+				currentMusic.resume();
+			}
 		}
 	}
 	
