@@ -136,6 +136,10 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 		}
 	}
 	
+	/**
+	 * Handles player jumping.
+	 * @param player The player entity.
+	 */
 	private void handleJump(Entity player) {
 		Jump jump = statusMapper.get(player);
 		jump.subtractJumpCooldownLeft(world.delta);
