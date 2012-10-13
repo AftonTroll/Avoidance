@@ -84,7 +84,8 @@ public class SpawnSystem extends EntityProcessingSystem{
 				ScreenResolution.getWidthResolution() - wallThickness, 0));
 		world.addEntity(EntityFactory.createObstacle(world, 50, 50, 200, 200));
 		world.addEntity(EntityFactory.createScore(world));
-		world.addEntity(EntityFactory.createPowerUp(world, 300, 300, BuffType.Speed, 300));
+		world.addEntity(EntityFactory.createSpeedPowerUp(world, 300, 300, 300));
+		world.addEntity(EntityFactory.createImmortalPowerUp(world, 500, 500, 5));
 		world.addEntity(EntityFactory.createPitobstacle(world, 400, 600));
 		world.addEntity(EntityFactory.createKillplayerbstacle(world, 800, 600));
 	}
