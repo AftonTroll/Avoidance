@@ -23,8 +23,8 @@ package se.chalmers.avoidance.core;
 import se.chalmers.avoidance.core.components.Acceleration;
 import se.chalmers.avoidance.core.components.Buff;
 import se.chalmers.avoidance.core.components.Buff.BuffType;
-import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Friction;
+import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Score;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Spatial;
@@ -57,7 +57,7 @@ public class EntityFactory {
 		world.getManager(GroupManager.class).add(player, "PLAYER");
 		world.getManager(GroupManager.class).add(player, "MOVINGENTITIES");
 		
-		player.addComponent(new Transform(200,100));
+		player.addComponent(new Transform(400,400));
 		player.addComponent(new Velocity());
 		player.addComponent(new Size(64,64));
 		player.addComponent(new Friction(0.7f));

@@ -140,6 +140,7 @@ public class GameState implements IState, PropertyChangeListener {
 	 */
 	public void enableProcess(boolean enable) {
 		process = enable;
+		System.out.println("enableProcess run with" + enable);
 	}
 
 	/**
@@ -172,6 +173,7 @@ public class GameState implements IState, PropertyChangeListener {
 	 * @param score the players score
 	 */
 	public void gameOver(int score) {
+		System.out.println("Game over processed");
 		enableProcess(false);
 		this.gameOverScene.setScore(score);
 		this.gameOverScene.addTo(scene);
@@ -195,13 +197,8 @@ public class GameState implements IState, PropertyChangeListener {
 		};
 	}
 
-	/**
-	 * Listens to <code>PropertyChangeEvents</code>.<p>
-	 * Do NOT call manually.
-	 * 
-	 * @param event an event
-	 */
 	public void propertyChange(PropertyChangeEvent event) {
+		System.out.println("property event caught");
 		if (event != null && event.getNewValue() != null) {
 			if (EventMessageConstants.GAME_OVER.equals(event.getPropertyName())) {
 				int score = 0;

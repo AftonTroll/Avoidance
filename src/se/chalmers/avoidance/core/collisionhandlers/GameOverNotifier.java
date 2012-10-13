@@ -43,8 +43,7 @@ public final class GameOverNotifier {
 
 	private static GameOverNotifier instance;
 	private PropertyChangeSupport pcs;
-	private ComponentMapper<Score> scoreMapper;
-	private Entity player;
+	private World world;
 	
 	/**
 	 * Returns the instance of this <code>GameOverNotifier</code>-class. <p>
@@ -70,10 +69,15 @@ public final class GameOverNotifier {
 	 */
 	void gameOver() {
 		int score = 0;
-		if (scoreMapper != null && player != null) {
-			score = scoreMapper.get(player).getScore();
+		
+		TagManager tagManager = world.getManager(TagManager.class);
+		ComponentMapper<Score> scoreMapper = world.getMapper(Score.class);
+		Entity scoreEntity = tagManager.getEntity("SCORE");
+		if (scoreMapper != null && scoreEntity != null) {
+			score = scoreMapper.get(scoreEntity).getScore();
 		}
 		pcs.firePropertyChange(EventMessageConstants.GAME_OVER, 0, score);
+		System.out.println("GameOverNotifier processed - right?");
 	}
 	
 	/**
@@ -83,9 +87,7 @@ public final class GameOverNotifier {
 	 * @param world the <code>World</code>
 	 */
 	public void setWorld(World world) {
-		TagManager tagManager = world.getManager(TagManager.class);
-		scoreMapper = world.getMapper(Score.class);
-		player = tagManager.getEntity("PLAYER");
+		this.world = world;
 	}
 	
 	/**
@@ -93,6 +95,7 @@ public final class GameOverNotifier {
 	 * @param pcl the listener to add
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
+		System.out.println("ADDED PROPERTY CHANGE LISTENER");
 		pcs.addPropertyChangeListener(pcl);
 	}
 
