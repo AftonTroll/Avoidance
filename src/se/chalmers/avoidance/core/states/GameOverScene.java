@@ -20,7 +20,7 @@
 
 package se.chalmers.avoidance.core.states;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
@@ -56,11 +56,11 @@ public class GameOverScene extends Scene {
 	 * Constructs a new game over scene.
 	 * 
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
-	 * @param regions a <code>HashMap</code> containing loaded textures/regions
-	 * @param fonts a <code>HashMap</code> containing loaded fonts
+	 * @param regions a <code>Map</code> containing loaded textures/regions
+	 * @param fonts a <code>Map</code> containing loaded fonts
 	 */
-	public GameOverScene(VertexBufferObjectManager vbom, HashMap<String, TextureRegion> regions, 
-			HashMap<String, Font> fonts) {
+	public GameOverScene(VertexBufferObjectManager vbom, Map<String, TextureRegion> regions, 
+			Map<String, Font> fonts) {
 		this.vbom = vbom;
 		initialize(regions, fonts);
 	}
@@ -78,10 +78,10 @@ public class GameOverScene extends Scene {
 	/**
 	 * Initializes this <code>GameOverScene</code>.
 	 * 
-	 * @param regions a <code>HashMap</code> containing loaded textures/regions
-	 * @param fonts a <code>HashMap</code> containing loaded fonts
+	 * @param regions a <code>Map</code> containing loaded textures/regions
+	 * @param fonts a <code>Map</code> containing loaded fonts
 	 */
-	public void initialize(HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts) {
+	public void initialize(Map<String, TextureRegion> regions, Map<String, Font> fonts) {
 		createTransparentBackground();
 		createGameOverSprite(regions);
 		createText(fonts);
@@ -107,9 +107,9 @@ public class GameOverScene extends Scene {
 	 * Creates and initializes the text component that holds
 	 * information about the users score.
 	 * 
-	 * @param fonts a <code>HashMap</code> containing loaded fonts
+	 * @param fonts a <code>Map</code> containing loaded fonts
 	 */
-	private void createText(HashMap<String, Font> fonts) {		
+	private void createText(Map<String, Font> fonts) {		
 		Text scoreText = new Text(0, 0, fonts.get(FontConstants.GAME_OVER_SCORE), 
 				"Score:", "Score: XXXXXXX".length(), vbom);
 		scoreText.setColor(1.0f, 0.9f, 0.1f, 1.0f);
@@ -120,9 +120,9 @@ public class GameOverScene extends Scene {
 	/**
 	 * Creates and initializes the game over sprite.
 	 * 
-	 * @param regions a <code>HashMap</code> containing loaded textures/regions
+	 * @param regions a <code>Map</code> containing loaded textures/regions
 	 */
-	private void createGameOverSprite(HashMap<String, TextureRegion> regions) {
+	private void createGameOverSprite(Map<String, TextureRegion> regions) {
 		Sprite sprite = new Sprite(0, 0, regions.get("gameOver.png"), vbom);
 		
 		float xPos = ScreenResolution.getXPosHorizontalCentering(sprite);
@@ -135,9 +135,9 @@ public class GameOverScene extends Scene {
 	/**
 	 * Creates and initializes the button.
 	 * 
-	 * @param regions a <code>HashMap</code> containing loaded textures/regions
+	 * @param regions a <code>Map</code> containing loaded textures/regions
 	 */
-	private void createButton(HashMap<String, TextureRegion> regions) {
+	private void createButton(Map<String, TextureRegion> regions) {
 		ButtonSprite okButton = new ButtonSprite(0, 0, regions.get("okButton.png"), vbom);
 		
 		float xPos = ScreenResolution.getXPosHorizontalCentering(okButton);
