@@ -24,6 +24,7 @@ package se.chalmers.avoidance.core.states;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
@@ -62,6 +63,11 @@ public class GameState implements IState{
 	private PropertyChangeSupport pcs;
 	private TouchListener touchListener;
 	private GameOverScene gameOverScene;
+	private SensorManager sensorManager;
+	private Map<String, TextureRegion> regions;
+	private Map<String, Font> fonts;
+	private VertexBufferObjectManager vbom;
+	
 	
 	/**
 	 * Constructs a new <code>GameState</code>.
@@ -71,8 +77,12 @@ public class GameState implements IState{
 	 * @param fonts a <code>HashMap</code> containing loaded fonts
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
 	 */
-	public GameState(SensorManager sensorManager, HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts, VertexBufferObjectManager vbom) {
-		initialize(sensorManager, regions, fonts, vbom);
+	public GameState(SensorManager sensorManager, Map<String, TextureRegion> regions, Map<String, Font> fonts, VertexBufferObjectManager vbom) {
+		this.sensorManager = sensorManager;
+		this.regions = regions;
+		this.fonts = fonts;
+		this.vbom = vbom;
+		initialize();
 		this.pcs = new PropertyChangeSupport(this);
 		this.gameOverScene = new GameOverScene(vbom, regions, fonts);
 		this.gameOverScene.setButtonSpriteOnClickListener(getButtonSpriteOnClickListener());
@@ -86,11 +96,10 @@ public class GameState implements IState{
 	 * @param fonts a <code>HashMap</code> containing loaded fonts
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
 	 */
-	private void initialize(SensorManager sensorManager, HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts, VertexBufferObjectManager vbom) {
+	private void initialize() {
 		scene = new Scene();
 		
 		scene.setBackground(new Background(1f, 0f, 0f));
-		world = new World();		
 		world.setManager(new GroupManager());
 		world.setManager(new TagManager());
 		
@@ -159,6 +168,11 @@ public class GameState implements IState{
 	public void gameOver(int score) {
 		this.gameOverScene.setScore(score);
 		this.gameOverScene.addTo(scene);
+	}
+	
+	public void restartGame() {
+		scene.detachChildren();
+		this.initialize();
 	}
 	
 	
