@@ -45,7 +45,7 @@ import se.chalmers.avoidance.util.Utils;
  * 
  * @author Florian Minges
  */
-public class HighscoreState implements IState {
+public class HighScoreState implements IState {
 	
 	private Scene scene;
 	private PropertyChangeSupport pcs;
@@ -61,7 +61,7 @@ public class HighscoreState implements IState {
 	/**
 	 * Constructs a new <code>HighscoreState</code>.
 	 */
-	public HighscoreState(HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts, 
+	public HighScoreState(HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts, 
 			VertexBufferObjectManager vbom) {
 		this.scene = new Scene();
 		initialize(regions, fonts, vbom);

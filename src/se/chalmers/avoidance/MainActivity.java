@@ -42,7 +42,7 @@ import org.andengine.ui.activity.BaseGameActivity;
 import se.chalmers.avoidance.constants.EventMessageConstants;
 import se.chalmers.avoidance.constants.FontConstants;
 import se.chalmers.avoidance.core.states.GameState;
-import se.chalmers.avoidance.core.states.HighscoreState;
+import se.chalmers.avoidance.core.states.HighScoreState;
 import se.chalmers.avoidance.core.states.MenuState;
 import se.chalmers.avoidance.core.states.StateID;
 import se.chalmers.avoidance.core.states.StateManager;
@@ -188,7 +188,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
 				regions, fonts, this.getVertexBufferObjectManager());
 		MenuState menuState = new MenuState(this);
-		HighscoreState highscoreState = new HighscoreState(regions, fonts, 
+		HighScoreState highscoreState = new HighScoreState(regions, fonts, 
 				this.getVertexBufferObjectManager());
 		stateManager.addState(StateID.Game, gameState);
 		stateManager.addState(StateID.Menu, menuState);
