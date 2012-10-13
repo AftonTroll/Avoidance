@@ -239,11 +239,5 @@ public class HighScoreState implements IState {
 	private class NoHighscoreException extends Exception {
 		private static final long serialVersionUID = -4952572847775951630L;
 	}
-	
-	/**
-	 * Currently not useful.
-	 */
-	public void restart() {
-	}
 
 }
