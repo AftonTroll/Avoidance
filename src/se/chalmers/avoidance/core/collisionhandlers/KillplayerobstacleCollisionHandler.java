@@ -20,8 +20,14 @@
 
 package se.chalmers.avoidance.core.collisionhandlers;
 
+import se.chalmers.avoidance.core.components.Jump;
+import se.chalmers.avoidance.core.components.Score;
+
+import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.managers.GroupManager;
+import com.artemis.managers.TagManager;
 
 public class KillplayerobstacleCollisionHandler implements CollisionHandler {
 	
@@ -43,7 +49,15 @@ public class KillplayerobstacleCollisionHandler implements CollisionHandler {
 	 * @param obstacle the killplayerobstacle
 	 */
 	public void handleCollision(Entity player, Entity obstacle) {
-		//game over 
+		GroupManager groupManager = world.getManager(GroupManager.class);
+		if (groupManager.getEntities("PLAYER").contains(player) && groupManager.getEntities("KILLPLAYEROBSTACLES").contains(obstacle)) {
+			ComponentMapper<Jump> jumpMapper = world.getMapper(Jump.class);
+			Jump jump = jumpMapper.get(player);
+			if (jump == null || !jump.isInTheAir()) {
+				GameOverNotifier.getInstance().gameOver();
+			}
+			
+		}
 	}
 
 }
