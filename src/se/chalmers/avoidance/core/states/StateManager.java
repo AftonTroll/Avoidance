@@ -99,8 +99,8 @@ public class StateManager implements PropertyChangeListener {
 				pcs.firePropertyChange(event);
 			} else if (EventMessageConstants.CHANGE_STATE.equals(event.getPropertyName())) {
 				setState((StateID) event.getNewValue());
-			} else if (EventMessageConstants.RESTART_STATE.equals(event.getPropertyName())) {
-				stateMap.get(event.getNewValue()).restart();
+			} else if (EventMessageConstants.RESTART_GAME.equals(event.getPropertyName())) {
+				pcs.firePropertyChange(EventMessageConstants.RESTART_GAME, null, null);
 			}
 		}
 	}
