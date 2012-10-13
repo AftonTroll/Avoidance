@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2012 Markus Ekström
+ * Copyright (c) 2012 Markus Ekström, Florian Minges
  * 
  * This file is part of Avoidance.
  * 
@@ -53,7 +53,7 @@ import com.artemis.managers.TagManager;
 /**
  * The game state.
  * 
- * @author Markus Ekström
+ * @author Markus Ekström, Florian Minges
  */
 public class GameState implements IState, PropertyChangeListener {
 

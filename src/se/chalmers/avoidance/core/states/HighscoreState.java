@@ -246,6 +246,10 @@ public class HighscoreState implements IState, PropertyChangeListener {
 		pcs.removePropertyChangeListener(pcl);
 	}
 	
+	/**
+	 * An exception thrown when no high score was found.
+	 * @author Florian Minges
+	 */
 	private class NoHighscoreException extends Exception {
 		private static final long serialVersionUID = -4952572847775951630L;
 	}
