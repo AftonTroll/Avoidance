@@ -172,22 +172,42 @@ public class EntityFactory {
 	}
 	
 	/**
-	 * Creates a new powerup and adds it to the POWERUPS group.
+	 * Creates a new speed-powerup and adds it to the POWERUPS group.
 	 * @param world The world
 	 * @param xPos The desired x-position of the powerup.
 	 * @param yPos The desired y-position of the powerup.
-	 * @param buffType The type of the powerup.
-	 * @param buffStrength The strength of the powerup.
+	 * @param buffStrength The amount of speed the powerup gives.
 	 * @return A powerup entity.
 	 */
-	public static Entity createPowerUp(World world, float xPos, float yPos, BuffType buffType, int buffStrength) {
+	public static Entity createSpeedPowerUp(World world, float xPos, float yPos, int buffStrength) {
 		Entity powerUp = world.createEntity();
 		world.getManager(GroupManager.class).add(powerUp, "POWERUPS");
 		
 		powerUp.addComponent(new Transform(xPos, yPos));
 		powerUp.addComponent(new Size(64, 64));
 		powerUp.addComponent(new Spatial("powerup.png"));
-		powerUp.addComponent(new Buff(buffType, buffStrength));
+		powerUp.addComponent(new Buff(BuffType.Speed, buffStrength));
+		
+		return powerUp;
+		
+	}
+	
+	/**
+	 * Creates a new immortal-powerup and adds it to the POWERUPS group.
+	 * @param world The world
+	 * @param xPos The desired x-position of the powerup.
+	 * @param yPos The desired y-position of the powerup.
+	 * @param buffStrength The duration of immortality the powerup gives..
+	 * @return A powerup entity.
+	 */
+	public static Entity createImmortalPowerUp(World world, float xPos, float yPos, int buffStrength) {
+		Entity powerUp = world.createEntity();
+		world.getManager(GroupManager.class).add(powerUp, "POWERUPS");
+		
+		powerUp.addComponent(new Transform(xPos, yPos));
+		powerUp.addComponent(new Size(64, 64));
+		powerUp.addComponent(new Spatial("powerup.png"));
+		powerUp.addComponent(new Buff(BuffType.Immortal, buffStrength));
 		
 		return powerUp;
 		
