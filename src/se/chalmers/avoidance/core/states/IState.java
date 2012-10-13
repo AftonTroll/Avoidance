@@ -44,6 +44,11 @@ public interface IState {
 	public Scene getScene();
 	
 	/**
+	 * Restarts the state.
+	 */
+	public void restart();
+	
+	/**
 	 * Adds a <code>PropertyChangeListener</code> to the state.
 	 * @param pcl the <code>PropertyChangeListener</code> to add
 	 */
