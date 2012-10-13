@@ -121,7 +121,9 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 				newSpeed = MAX_SPEED;
 			}
 			
-			playerVel.setAngle((float) Math.atan2(newVelY, newVelX));
+			if(!entity.getComponent(Jump.class).isInTheAir()) {
+				playerVel.setAngle((float) Math.atan2(newVelY, newVelX));
+			}
 			playerVel.setSpeed(newSpeed);
 			
 			//Update the position
