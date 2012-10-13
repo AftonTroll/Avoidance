@@ -140,6 +140,10 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
         regions.put("quickenemy.png", BitmapTextureAtlasTextureRegionFactory
         		.createFromAsset( bitmapTextureAtlas, this, "quickenemy.png", 130,150));
         
+        regions.put("background.png", BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, "background.png", 200,190));
+        
+        
         bitmapTextureAtlas.load();
         for (Font font : fonts.values()) {
         	font.load();

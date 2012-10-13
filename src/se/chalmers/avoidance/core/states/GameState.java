@@ -28,8 +28,10 @@ import java.util.HashMap;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.entity.sprite.ButtonSprite;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
@@ -89,7 +91,8 @@ public class GameState implements IState{
 	private void initialize(SensorManager sensorManager, HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts, VertexBufferObjectManager vbom) {
 		scene = new Scene();
 		
-		scene.setBackground(new Background(1f, 0f, 0f));
+		Sprite backgroundSprite = new Sprite(0, 0, 1280, 800, regions.get("background.png"), vbom);
+		scene.setBackground(new SpriteBackground(backgroundSprite));
 		world = new World();		
 		world.setManager(new GroupManager());
 		world.setManager(new TagManager());
