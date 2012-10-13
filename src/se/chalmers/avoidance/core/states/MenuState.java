@@ -182,7 +182,6 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 		//TODO Use constants instead of hard-coded strings
 		switch (pMenuItem.getID()) {
 		case MENU_START:
-			pcs.firePropertyChange(EventMessageConstants.RESTART_STATE, StateID.Game, StateID.Game);
 			pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Menu, StateID.Game);
 			return true;
 		case MENU_HIGHSCORES:
@@ -215,11 +214,5 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.removePropertyChangeListener(pcl);
-	}
-
-	/**
-	 * Currently not useful.
-	 */
-	public void restart() {
 	}
 }
