@@ -194,6 +194,12 @@ public class GameState implements IState, PropertyChangeListener {
 		};
 	}
 
+	/**
+	 * Listens to <code>PropertyChangeEvents</code>.<p>
+	 * Do NOT call manually.
+	 * 
+	 * @param event an event
+	 */
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event != null && event.getNewValue() != null) {
 			if (EventMessageConstants.GAME_OVER.equals(event.getPropertyName())) {

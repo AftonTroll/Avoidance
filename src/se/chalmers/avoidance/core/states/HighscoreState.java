@@ -58,7 +58,11 @@ public class HighscoreState implements IState, PropertyChangeListener {
 	private ButtonSprite backButton;
 	private ButtonSprite extraButton;
 	
+	/**
+	 * The maximum number of entries shown in the high score list.
+	 */
 	public static final int MAX_HIGH_SCORE_ENTRIES = 5;
+	
 	
 	/**
 	 * Constructs a new <code>HighscoreState</code>.
