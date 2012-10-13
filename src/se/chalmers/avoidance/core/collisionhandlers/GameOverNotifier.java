@@ -51,8 +51,9 @@ public final class GameOverNotifier {
 	 * @return the instance of this <code>GameOverNotifier</code>-class
 	 */
 	public static GameOverNotifier getInstance() {
-		if (instance == null)
+		if (instance == null) {
 			instance = new GameOverNotifier();
+		}
 		return instance;
 	}
 	
@@ -76,7 +77,7 @@ public final class GameOverNotifier {
 		if (scoreMapper != null && scoreEntity != null) {
 			score = scoreMapper.get(scoreEntity).getScore();
 		}
-		pcs.firePropertyChange(EventMessageConstants.GAME_OVER, 0, score);
+		pcs.firePropertyChange(EventMessageConstants.GAME_OVER, -1, score);
 		System.out.println("GameOverNotifier processed - right?");
 	}
 	
@@ -97,6 +98,7 @@ public final class GameOverNotifier {
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
 		System.out.println("ADDED PROPERTY CHANGE LISTENER");
 		pcs.addPropertyChangeListener(pcl);
+		System.out.println(pcl.toString());
 	}
 
 	/**
