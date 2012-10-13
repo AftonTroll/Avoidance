@@ -58,7 +58,7 @@ public class HighscoreState implements IState, PropertyChangeListener {
 	private ButtonSprite backButton;
 	private ButtonSprite extraButton;
 	
-	private final int MAX_HIGH_SCORE_ENTRIES = 5;
+	public static final int MAX_HIGH_SCORE_ENTRIES = 5;
 	
 	/**
 	 * Constructs a new <code>HighscoreState</code>.
@@ -253,7 +253,6 @@ public class HighscoreState implements IState, PropertyChangeListener {
 	 * @param event an event
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
-		System.out.println("Highscore State received an event.");
 		if (event != null && event.getNewValue() != null) {
 			if (EventMessageConstants.GAME_OVER.equals(event.getPropertyName())) {
 				int score = 0;

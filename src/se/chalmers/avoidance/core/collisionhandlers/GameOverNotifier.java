@@ -65,8 +65,8 @@ public final class GameOverNotifier {
 	}
 	
 	/**
-	 * Signals 'Game Over' to the appropriate class.
-	 * @param score the users score
+	 * Signals 'Game Over' to the appropriate class.<p>
+	 * Also adds the players score to the call.
 	 */
 	void gameOver() {
 		int score = 0;
@@ -77,8 +77,7 @@ public final class GameOverNotifier {
 		if (scoreMapper != null && scoreEntity != null) {
 			score = scoreMapper.get(scoreEntity).getScore();
 		}
-		pcs.firePropertyChange(EventMessageConstants.GAME_OVER, -1, score);
-		System.out.println("GameOverNotifier processed - right?");
+		pcs.firePropertyChange(EventMessageConstants.GAME_OVER, null, score);
 	}
 	
 	/**
@@ -96,9 +95,7 @@ public final class GameOverNotifier {
 	 * @param pcl the listener to add
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
-		System.out.println("ADDED PROPERTY CHANGE LISTENER");
 		pcs.addPropertyChangeListener(pcl);
-		System.out.println(pcl.toString());
 	}
 
 	/**

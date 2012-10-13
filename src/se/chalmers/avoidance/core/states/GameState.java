@@ -140,7 +140,6 @@ public class GameState implements IState, PropertyChangeListener {
 	 */
 	public void enableProcess(boolean enable) {
 		process = enable;
-		System.out.println("enableProcess run with" + enable);
 	}
 
 	/**
@@ -173,7 +172,6 @@ public class GameState implements IState, PropertyChangeListener {
 	 * @param score the players score
 	 */
 	public void gameOver(int score) {
-		System.out.println("Game over processed");
 		enableProcess(false);
 		this.gameOverScene.setScore(score);
 		this.gameOverScene.addTo(scene);
@@ -190,7 +188,6 @@ public class GameState implements IState, PropertyChangeListener {
 	private ButtonSprite.OnClickListener getButtonSpriteOnClickListener() {
 		return new ButtonSprite.OnClickListener() {
 			public void onClick( ButtonSprite pButtonSprite, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				//do this on the ui update thread or not?
 				scene.clearChildScene();
 				pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Game, StateID.Highscore);
 		    } 
@@ -198,7 +195,6 @@ public class GameState implements IState, PropertyChangeListener {
 	}
 
 	public void propertyChange(PropertyChangeEvent event) {
-		System.out.println("property event caught");
 		if (event != null && event.getNewValue() != null) {
 			if (EventMessageConstants.GAME_OVER.equals(event.getPropertyName())) {
 				int score = 0;
