@@ -82,7 +82,6 @@ public class GameState implements IState{
 		this.regions = regions;
 		this.fonts = fonts;
 		this.vbom = vbom;
-		initialize();
 		this.pcs = new PropertyChangeSupport(this);
 		this.gameOverScene = new GameOverScene(vbom, regions, fonts);
 		this.gameOverScene.setButtonSpriteOnClickListener(getButtonSpriteOnClickListener());
@@ -170,7 +169,10 @@ public class GameState implements IState{
 		this.gameOverScene.addTo(scene);
 	}
 	
-	public void restartGame() {
+	/**
+	 * Restarts the game.
+	 */
+	public void restart() {
 		scene.detachChildren();
 		this.initialize();
 	}
