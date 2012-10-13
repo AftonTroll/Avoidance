@@ -51,7 +51,6 @@ import se.chalmers.avoidance.util.ScreenResolution;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.hardware.SensorManager;
-import android.view.MotionEvent;
 
 /**
  * The starting point of the application.
@@ -107,6 +106,9 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 //        Create TextureRegions like this for every image:
 //        regions.put("file_name.png", BitmapTextureAtlasTextureRegionFactory
 //               .createFromAsset( bitmapTextureAtlas, this, "file_name.png", x_position, y_position));
+        regions.put("newHighscore.png", BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, "newHighscore.png", 1748-445-552, 824-237-77-200));
+        
         regions.put("highscore.png", BitmapTextureAtlasTextureRegionFactory
 		.createFromAsset( bitmapTextureAtlas, this, "highscore.png", 1748-445-552, 824-237-77));
         
