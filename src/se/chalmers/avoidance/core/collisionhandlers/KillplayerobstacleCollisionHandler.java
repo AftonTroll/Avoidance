@@ -21,13 +21,11 @@
 package se.chalmers.avoidance.core.collisionhandlers;
 
 import se.chalmers.avoidance.core.components.Jump;
-import se.chalmers.avoidance.core.components.Score;
 
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
-import com.artemis.managers.TagManager;
 
 public class KillplayerobstacleCollisionHandler implements CollisionHandler {
 	
