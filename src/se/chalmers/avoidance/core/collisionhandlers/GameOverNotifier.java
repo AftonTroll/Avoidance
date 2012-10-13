@@ -25,6 +25,7 @@ import java.beans.PropertyChangeSupport;
 
 import se.chalmers.avoidance.constants.EventMessageConstants;
 import se.chalmers.avoidance.core.components.Score;
+import se.chalmers.avoidance.core.components.Time;
 
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
@@ -73,9 +74,16 @@ public final class GameOverNotifier {
 		
 		TagManager tagManager = world.getManager(TagManager.class);
 		ComponentMapper<Score> scoreMapper = world.getMapper(Score.class);
+		ComponentMapper<Time> timeMapper = world.getMapper(Time.class);
 		Entity scoreEntity = tagManager.getEntity("SCORE");
-		if (scoreMapper != null && scoreEntity != null) {
-			score = scoreMapper.get(scoreEntity).getScore();
+		
+		if (scoreEntity != null) {
+			Time timeComponent = timeMapper.get(scoreEntity);
+			Score scoreComponent = scoreMapper.get(scoreEntity);
+			if (timeComponent != null && scoreComponent != null) {
+				score = Math.round(timeComponent.getTime()) * 10 + scoreComponent.getScore();
+			}
+			
 		}
 		pcs.firePropertyChange(EventMessageConstants.GAME_OVER, null, score);
 	}
