@@ -95,6 +95,8 @@ public class GameOverScene extends Scene {
 		attachChild(scoreText);
 		attachChild(button);
 		attachChild(newHighscoreSprite);
+		
+		this.setBackgroundEnabled(false);
 	}
 
 	/**
@@ -103,7 +105,7 @@ public class GameOverScene extends Scene {
 	private void createTransparentBackground() {
 		Rectangle rect = new Rectangle(0, 0, ScreenResolution.getWidthResolution(), 
 				ScreenResolution.getHeightResolution(), this.vbom);
-		rect.setColor(0.1f, 0.1f, 0.1f, 0.8f);
+		rect.setColor(0.1f, 0.1f, 0.1f, 0.95f);
 		this.transparentBackground = rect;
 	}
 	
