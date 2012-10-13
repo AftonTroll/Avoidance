@@ -214,6 +214,20 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 				this.finish();
 			}
 		}
+		if (event != null) {
+			if(EventMessageConstants.RESTART_GAME.equals(event.getPropertyName())) {
+				this.restartGame();
+			}
+		}
 	} 
+	
+	/**
+	 * Restarts the game.
+	 */
+	public void restartGame() {
+		stateManager.removeState(StateID.Game);
+		stateManager.addState(StateID.Game, new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
+				regions, fonts, this.getVertexBufferObjectManager()));
+	}
 
 }
