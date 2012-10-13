@@ -36,6 +36,8 @@ public final class EventMessageConstants {
 	 * Identifier for the event used to change state.
 	 */
 	public static final String CHANGE_STATE = "Change.State";
+
+	public static final String RESTART_STATE = "RESTART_STATE";
 	
 	private EventMessageConstants() {}
 }
