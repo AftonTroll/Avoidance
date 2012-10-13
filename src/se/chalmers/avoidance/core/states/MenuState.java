@@ -47,8 +47,8 @@ import android.opengl.GLES20;
 
 /**
  * Class containing information and data about the menu state.
+ * 
  * @author Florian Minges
- *
  */
 public class MenuState implements IState, IOnMenuItemClickListener {
 
@@ -60,7 +60,13 @@ public class MenuState implements IState, IOnMenuItemClickListener {
     private PropertyChangeSupport pcs;
 	private MenuScene menuScene;
 	
-    
+    /**
+     * Constructs a new <code>MenuState</code>. <p>
+     * 
+     * @param camera the game engines <code>Camera</code>
+     * @param regions a <code>HashMap</code> containing loaded textures/regions
+	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
+     */
 	public MenuState(Camera camera, HashMap<String, TextureRegion> regions, 
 			VertexBufferObjectManager vbom) {
 		initialize(camera, regions, vbom);
@@ -69,6 +75,10 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 	
     /**
      * Initializes the menu scene.
+     * 
+     * @param camera the game engines <code>Camera</code>
+     * @param regions a <code>HashMap</code> containing loaded textures/regions
+	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
      */
 	private void initialize(Camera camera, HashMap<String, TextureRegion> regions, 
 			VertexBufferObjectManager vbom) {
