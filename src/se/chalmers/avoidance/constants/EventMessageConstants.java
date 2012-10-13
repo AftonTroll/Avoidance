@@ -37,7 +37,7 @@ public final class EventMessageConstants {
 	 */
 	public static final String CHANGE_STATE = "Change.State";
 
-	public static final String RESTART_STATE = "RESTART_STATE";
+	public static final String RESTART_GAME = "RESTART_GAME";
 	
 	private EventMessageConstants() {}
 }
