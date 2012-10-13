@@ -82,6 +82,7 @@ public class GameState implements IState{
 		this.regions = regions;
 		this.fonts = fonts;
 		this.vbom = vbom;
+		this.initialize();
 		this.pcs = new PropertyChangeSupport(this);
 		this.gameOverScene = new GameOverScene(vbom, regions, fonts);
 		this.gameOverScene.setButtonSpriteOnClickListener(getButtonSpriteOnClickListener());
@@ -97,7 +98,7 @@ public class GameState implements IState{
 	 */
 	private void initialize() {
 		scene = new Scene();
-		
+		world = new World();
 		scene.setBackground(new Background(1f, 0f, 0f));
 		world.setManager(new GroupManager());
 		world.setManager(new TagManager());
@@ -131,8 +132,10 @@ public class GameState implements IState{
 	 * @param tpf Time since last frame.
 	 */
 	public void update(float tpf) {
-		world.setDelta(tpf);
-		world.process();
+		if(world != null) {
+			world.setDelta(tpf);
+			world.process();
+		}
 	}
 
 	/**
@@ -170,15 +173,6 @@ public class GameState implements IState{
 	}
 	
 	/**
-	 * Restarts the game.
-	 */
-	public void restart() {
-		scene.detachChildren();
-		this.initialize();
-	}
-	
-	
-	/**
 	 * Returns a <code>ButtonSprite.OnClickListener</code>, that removes this scenes
 	 * child scene, and that changes the applications state to the high score state.
 	 * Should be used for the game over scene.
@@ -191,6 +185,7 @@ public class GameState implements IState{
 				//do this on the ui update thread or not?
 				scene.clearChildScene();
 				pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Game, StateID.Highscore);
+				pcs.firePropertyChange(EventMessageConstants.RESTART_GAME, null, null);
 		    } 
 		};
 	}
