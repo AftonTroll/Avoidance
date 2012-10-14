@@ -25,42 +25,38 @@ import se.chalmers.avoidance.core.components.Jump;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.World;
-import com.artemis.managers.GroupManager;
 /**
- * Handles collision between player and killplayerobstacles.
+ * Handles collision between player and enemies.
  * 
  * @author Jakob Svensson
  *
  */
-public class KillplayerobstacleCollisionHandler implements CollisionHandler {
+public class EnemyCollisionHandler implements CollisionHandler{
 	
 	private World world;
 	
 	/**
-	 * Construct a new KillplayerobstacleCollisionHandler
+	 * Constructs a EnemyCollisionHandler.
 	 * 
-	 * @param world the world object
+	 * @param world The world.
 	 */
-	public KillplayerobstacleCollisionHandler(World world){
+	public EnemyCollisionHandler (World world){
 		this.world=world;
 	}
-	
 	/**
-	 * Handles collision between player and killplayerobstacles
+	 * Takes the player and enemy and handles the collision between them
 	 * 
-	 * @param player the player
-	 * @param obstacle the killplayerobstacle
+	 * @param player The player.
+	 * @param enemy The enemy.
 	 */
-	public void handleCollision(Entity player, Entity obstacle) {
-		GroupManager groupManager = world.getManager(GroupManager.class);
-		if (groupManager.getEntities("PLAYER").contains(player) && groupManager.getEntities("KILLPLAYEROBSTACLES").contains(obstacle)) {
-			ComponentMapper<Jump> jumpMapper = world.getMapper(Jump.class);
-			Jump jump = jumpMapper.get(player);
-			if (jump == null || !jump.isInTheAir()) {
-				GameOverNotifier.getInstance().gameOver();
-			}
-			
+	public void handleCollision(Entity player, Entity enemy) {
+		//Handle collison between enemy and player
+		ComponentMapper<Jump> jumpMapper = world.getMapper(Jump.class);
+		Jump jump = jumpMapper.get(player);
+		if (jump == null || !jump.isInTheAir()) {
+			GameOverNotifier.getInstance().gameOver();
 		}
+		
 	}
 
 }

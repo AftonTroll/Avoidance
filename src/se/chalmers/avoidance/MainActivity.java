@@ -37,6 +37,7 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import se.chalmers.avoidance.constants.EventMessageConstants;
@@ -51,7 +52,6 @@ import se.chalmers.avoidance.util.ScreenResolution;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.hardware.SensorManager;
-import android.view.MotionEvent;
 
 /**
  * The starting point of the application.
@@ -90,23 +90,35 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 		fonts = new HashMap<String, Font>();
 		
 		//create fonts
-		fonts.put(FontConstants.HUD_SCORE, FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
-				TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 32));
-		fonts.put(FontConstants.GAME_OVER_SCORE, FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
-				TextureOptions.BILINEAR, Typeface.create(Typeface.MONOSPACE, Typeface.BOLD_ITALIC), 
-				72, true, Color.WHITE));
-		fonts.put(FontConstants.HIGH_SCORE, FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
-				TextureOptions.BILINEAR, Typeface.create(Typeface.MONOSPACE, Typeface.BOLD_ITALIC), 
-				48, true, Color.WHITE));
+		fonts.put(FontConstants.HUD_SCORE, FontFactory.create(this.getFontManager(), 
+				this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, 
+				Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 32));
+		fonts.put(FontConstants.GAME_OVER_SCORE, FontFactory.create(this.getFontManager(), 
+				this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, 
+				Typeface.create(Typeface.MONOSPACE, Typeface.BOLD_ITALIC), 72, true, Color.WHITE));
+		fonts.put(FontConstants.HIGH_SCORE, FontFactory.create(this.getFontManager(), 
+				this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, 
+				Typeface.create(Typeface.MONOSPACE, Typeface.BOLD_ITALIC), 48, true, Color.WHITE));
 
         // Set the asset path of the images
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-        BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(
-                getTextureManager(), 2048, 1024,
-                TextureOptions.BILINEAR);
+        BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(getTextureManager(), 
+        		2048, 1024, TextureOptions.BILINEAR);
+        BitmapTextureAtlas menuTextureAtlas = new BitmapTextureAtlas(getTextureManager(), 
+        		512, 512, TextureOptions.BILINEAR);
+        BitmapTextureAtlas backgroundTextureAtlas = new BitmapTextureAtlas(getTextureManager(), 
+        		1024, 1024, TextureOptions.BILINEAR);
+    	
+        
 //        Create TextureRegions like this for every image:
 //        regions.put("file_name.png", BitmapTextureAtlasTextureRegionFactory
-//               .createFromAsset( bitmapTextureAtlas, this, "file_name.png", x_position, y_position));
+//               .createFromAsset( bitmapTextureAtlas, this, "file_name.png", 
+//       		 x_position, y_position));
+        
+        regions.put("newHighscore.png", BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, "newHighscore.png", 1748-445-552, 
+        				824-237-77-200));
+        
         regions.put("highscore.png", BitmapTextureAtlasTextureRegionFactory
 		.createFromAsset( bitmapTextureAtlas, this, "highscore.png", 1748-445-552, 824-237-77));
         
@@ -140,11 +152,28 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
         regions.put("quickenemy.png", BitmapTextureAtlasTextureRegionFactory
         		.createFromAsset( bitmapTextureAtlas, this, "quickenemy.png", 130,150));
         
+
         regions.put("background.png", BitmapTextureAtlasTextureRegionFactory
         		.createFromAsset( bitmapTextureAtlas, this, "background.png", 200,190));
+ 
         
-        
+        //add menu textures
+    	regions.put("menu_start.png", BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			menuTextureAtlas, this, "menu_start.png", 0, 0));
+    	regions.put("menu_highscore.png", BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			menuTextureAtlas, this, "menu_highscore.png", 0, 100));
+    	regions.put("menu_credits.png", BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			menuTextureAtlas, this, "menu_credits.png", 0, 200));
+    	regions.put("menu_quit.png", BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			menuTextureAtlas, this, "menu_quit.png", 0, 300));
+    	
+    	//add menu background
+    	regions.put("background.jpg", BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			backgroundTextureAtlas, this, "background.jpg", 0, 0));
+ 
         bitmapTextureAtlas.load();
+        menuTextureAtlas.load();
+        backgroundTextureAtlas.load();
         for (Font font : fonts.values()) {
         	font.load();
         }
@@ -189,11 +218,11 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	private void initializeGame() {
 		stateManager = new StateManager(mEngine);
 
+		VertexBufferObjectManager vbom = this.getVertexBufferObjectManager();
 		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
-				regions, fonts, this.getVertexBufferObjectManager());
-		MenuState menuState = new MenuState(this);
-		HighscoreState highscoreState = new HighscoreState(regions, fonts, 
-				this.getVertexBufferObjectManager());
+				regions, fonts, vbom);
+		MenuState menuState = new MenuState(mEngine.getCamera(), regions, vbom);
+		HighscoreState highscoreState = new HighscoreState(regions, fonts, vbom);
 		stateManager.addState(StateID.Game, gameState);
 		stateManager.addState(StateID.Menu, menuState);
 		stateManager.addState(StateID.Highscore, highscoreState);
