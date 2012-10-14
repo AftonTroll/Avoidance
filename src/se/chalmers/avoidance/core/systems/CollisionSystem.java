@@ -149,16 +149,27 @@ public class CollisionSystem extends EntitySystem{
 		float e1Width = e1Size.getWidth();
 		float e1Height = e1Size.getHeight();
 		
-		collisionObject1.setX(e1X);
-		collisionObject1.setY(e1Y);
-		collisionObject1.setWidth(e1Width);
-		collisionObject1.setHeight(e1Height);
-		
 		float e2X = e2Transform.getX();
 		float e2Y = e2Transform.getY();
 		float e2Width = e2Size.getWidth();
 		float e2Height = e2Size.getHeight();
 		
+		GroupManager groupManager = world.getManager(GroupManager.class);
+		
+		if(groupManager.getEntities("CIRCLESHAPES").contains(e1)&&groupManager.getEntities("CIRCLESHAPES").contains(e2)){
+			
+			float xDelta = e1X+e1Width/2-(e2X+e2Width/2);
+			float yDelta = e1Y+e1Height/2-(e2Y+e2Height/2);
+			float colDist = e1Width/2+e2Width/2;
+			return xDelta*xDelta+yDelta*yDelta<=colDist*colDist;		
+			
+		}
+
+		collisionObject1.setX(e1X);
+		collisionObject1.setY(e1Y);
+		collisionObject1.setWidth(e1Width);
+		collisionObject1.setHeight(e1Height);
+				
 		collisionObject2.setX(e2X);
 		collisionObject2.setY(e2Y);
 		collisionObject2.setWidth(e2Width);
