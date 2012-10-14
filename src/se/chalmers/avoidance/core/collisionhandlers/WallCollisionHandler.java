@@ -65,7 +65,10 @@ public class WallCollisionHandler implements CollisionHandler{
 		Size playerSize = sizeMapper.get(movingEntity);
 		Transform playerTransform = transformMapper.get(movingEntity);
 		
-		soundMapper.get(wall).setPlaying(true);
+		Sound sound = soundMapper.get(wall);
+		if(sound != null){
+			sound.setPlaying(true);
+		}
 		
 		float wallWidth = wallSize.getWidth();
 		float wallHeight = wallSize.getHeight();

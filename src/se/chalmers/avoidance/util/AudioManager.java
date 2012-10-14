@@ -46,7 +46,7 @@ public class AudioManager {
 	 * Gets the AudioManager instance
 	 * @return the audioManager
 	 */
-	public static AudioManager getInstance(){
+	public static synchronized AudioManager getInstance(){
 		if(am==null){
 			am = new AudioManager();
 		}
