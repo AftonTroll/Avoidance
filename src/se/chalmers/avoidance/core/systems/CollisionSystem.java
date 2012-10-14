@@ -28,6 +28,7 @@ import org.andengine.entity.shape.RectangularShape;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 
 import se.chalmers.avoidance.core.collisionhandlers.CollisionHandler;
+import se.chalmers.avoidance.core.collisionhandlers.EnemyCollisionHandler;
 import se.chalmers.avoidance.core.collisionhandlers.KillplayerobstacleCollisionHandler;
 import se.chalmers.avoidance.core.collisionhandlers.PitobstacleCollisionHandler;
 import se.chalmers.avoidance.core.collisionhandlers.PowerUpCollisionHandler;
@@ -82,6 +83,7 @@ public class CollisionSystem extends EntitySystem{
         collisionPairs.add(new CollisionPair("PLAYER", "POWERUPS", new PowerUpCollisionHandler(world)));
         collisionPairs.add(new CollisionPair("MOVINGENTITIES", "PITOBSTACLES", new PitobstacleCollisionHandler(world)));
         collisionPairs.add(new CollisionPair("PLAYER", "KILLPLAYEROBSTACLES", new KillplayerobstacleCollisionHandler(world)));
+        collisionPairs.add(new CollisionPair("PLAYER", "ENEMIES", new EnemyCollisionHandler(world)));
 	}
 	
 	
