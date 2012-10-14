@@ -171,6 +171,15 @@ public class EntityFactory {
 		return score;
 	}
 	
+	/**
+	 * Creates a new powerup and adds it to the POWERUPS group.
+	 * @param world The world
+	 * @param xPos The desired x-position of the powerup.
+	 * @param yPos The desired y-position of the powerup.
+	 * @param buffType The type of the powerup.
+	 * @param buffStrength The strength of the powerup.
+	 * @return A powerup entity.
+	 */
 	public static Entity createPowerUp(World world, float xPos, float yPos, BuffType buffType, int buffStrength) {
 		Entity powerUp = world.createEntity();
 		world.getManager(GroupManager.class).add(powerUp, "POWERUPS");
