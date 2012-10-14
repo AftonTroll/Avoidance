@@ -27,6 +27,7 @@ import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Score;
 import se.chalmers.avoidance.core.components.Size;
+import se.chalmers.avoidance.core.components.Sound;
 import se.chalmers.avoidance.core.components.Spatial;
 import se.chalmers.avoidance.core.components.Time;
 import se.chalmers.avoidance.core.components.Transform;
@@ -89,6 +90,7 @@ public class EntityFactory {
 		}else{
 			wall.addComponent(new Spatial("wall_vertical.png"));
 		}
+		wall.addComponent(new Sound("bounce.ogg"));
 		
 		return wall;
 	}
@@ -156,6 +158,7 @@ public class EntityFactory {
 		obstacle.addComponent(new Transform(xPos, yPos));
 		obstacle.addComponent(new Size(width,height));
 		obstacle.addComponent(new Spatial("obstacle.png"));
+		obstacle.addComponent(new Sound("bounce.ogg"));
 		
 		return obstacle;
 	}

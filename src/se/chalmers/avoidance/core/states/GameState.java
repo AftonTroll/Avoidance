@@ -41,6 +41,7 @@ import se.chalmers.avoidance.core.systems.CollisionSystem;
 import se.chalmers.avoidance.core.systems.EnemyControlSystem;
 import se.chalmers.avoidance.core.systems.HudRenderSystem;
 import se.chalmers.avoidance.core.systems.PlayerControlSystem;
+import se.chalmers.avoidance.core.systems.SoundSystem;
 import se.chalmers.avoidance.core.systems.SpatialRenderSystem;
 import se.chalmers.avoidance.core.systems.SpawnSystem;
 import se.chalmers.avoidance.input.AccelerometerListener;
@@ -103,6 +104,7 @@ public class GameState implements IState, PropertyChangeListener {
 		world.setSystem(new PlayerControlSystem());
 		world.setSystem(new EnemyControlSystem());
 		world.setSystem(new SpawnSystem());
+		world.setSystem(new SoundSystem());
 		world.setSystem(new HudRenderSystem(scene, vbom, fonts.get(FontConstants.HUD_SCORE)));
 		
 		//Initialize world.

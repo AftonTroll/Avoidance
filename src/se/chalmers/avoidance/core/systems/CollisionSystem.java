@@ -53,6 +53,7 @@ import com.artemis.utils.ImmutableBag;
  *
  */
 public class CollisionSystem extends EntitySystem{
+
 	@Mapper
 	ComponentMapper<Velocity> velocityMapper;
 	@Mapper
@@ -62,7 +63,6 @@ public class CollisionSystem extends EntitySystem{
     private Bag<CollisionPair> collisionPairs;
     private CollisionObject collisionObject1 = new CollisionObject(0, 0, 0, 0);
     private CollisionObject collisionObject2 = new CollisionObject(0, 0, 0, 0);
-
 	
     /**
      * Constructs a new CollisionSystem 
