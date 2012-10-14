@@ -26,7 +26,12 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
-
+/**
+ * Handles collision between player and killplayerobstacles.
+ * 
+ * @author Jakob Svensson
+ *
+ */
 public class KillplayerobstacleCollisionHandler implements CollisionHandler {
 	
 	private World world;
