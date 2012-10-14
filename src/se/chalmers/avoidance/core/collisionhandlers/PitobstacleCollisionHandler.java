@@ -28,7 +28,12 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
-
+/**
+ * Handles collision between player and pitobstacles. 
+ * 
+ * @author Jakob Svensson
+ *
+ */
 public class PitobstacleCollisionHandler implements CollisionHandler {
 	
 	private World world;
