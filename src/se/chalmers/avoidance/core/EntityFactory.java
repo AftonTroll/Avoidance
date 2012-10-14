@@ -23,8 +23,8 @@ package se.chalmers.avoidance.core;
 import se.chalmers.avoidance.core.components.Acceleration;
 import se.chalmers.avoidance.core.components.Buff;
 import se.chalmers.avoidance.core.components.Buff.BuffType;
-import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Friction;
+import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Score;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Sound;
@@ -58,7 +58,7 @@ public class EntityFactory {
 		world.getManager(GroupManager.class).add(player, "PLAYER");
 		world.getManager(GroupManager.class).add(player, "MOVINGENTITIES");
 		
-		player.addComponent(new Transform(200,100));
+		player.addComponent(new Transform(400,400));
 		player.addComponent(new Velocity());
 		player.addComponent(new Size(64,64));
 		player.addComponent(new Friction(0.7f));
@@ -174,6 +174,15 @@ public class EntityFactory {
 		return score;
 	}
 	
+	/**
+	 * Creates a new powerup and adds it to the POWERUPS group.
+	 * @param world The world
+	 * @param xPos The desired x-position of the powerup.
+	 * @param yPos The desired y-position of the powerup.
+	 * @param buffType The type of the powerup.
+	 * @param buffStrength The strength of the powerup.
+	 * @return A powerup entity.
+	 */
 	public static Entity createPowerUp(World world, float xPos, float yPos, BuffType buffType, int buffStrength) {
 		Entity powerUp = world.createEntity();
 		world.getManager(GroupManager.class).add(powerUp, "POWERUPS");
