@@ -116,17 +116,17 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 //       		 x_position, y_position));
         
         regions.put("newHighscore.png", BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "newHighscore.png", 1748-445-552, 
+        		.createFromAsset( bitmapTextureAtlas, this, "newHighscore.png", 200, 
         				824-237-77-200));
         
         regions.put("highscore.png", BitmapTextureAtlasTextureRegionFactory
-		.createFromAsset( bitmapTextureAtlas, this, "highscore.png", 1748-445-552, 824-237-77));
+		.createFromAsset( bitmapTextureAtlas, this, "highscore.png", 200, 824-237-77));
         
         regions.put("gameOver.png", BitmapTextureAtlasTextureRegionFactory
-		.createFromAsset( bitmapTextureAtlas, this, "gameOver.png", 1748-445, 824-237));
+		.createFromAsset( bitmapTextureAtlas, this, "gameOver.png", 200, 824-237));
         
         regions.put("okButton.png", BitmapTextureAtlasTextureRegionFactory
-		.createFromAsset( bitmapTextureAtlas, this, "okButton.png", 1748, 824));
+		.createFromAsset( bitmapTextureAtlas, this, "okButton.png", 200, 824));
         
         regions.put("ball.png", BitmapTextureAtlasTextureRegionFactory
 		.createFromAsset( bitmapTextureAtlas, this, "ball.png", 0, 0));
@@ -154,7 +154,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
         
 
         regions.put("background.png", BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "background.png", 200,190));
+        		.createFromAsset( bitmapTextureAtlas, this, "background.png", 2048-1280,190));
  
         
         //add menu textures
