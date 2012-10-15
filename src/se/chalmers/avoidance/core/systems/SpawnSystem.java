@@ -71,8 +71,10 @@ public class SpawnSystem extends EntityProcessingSystem{
 		tagManager = world.getManager(TagManager.class);
 		groupManager = world.getManager(GroupManager.class);
 		float wallThickness = 20f;
+		float centerX = ScreenResolution.getWidthResolution()/2f;
+		float centerY = ScreenResolution.getHeightResolution()/2f;
 		//Create all the entities that should be on the map when the game starts
-		world.addEntity(EntityFactory.createPlayer(world));
+		world.addEntity(EntityFactory.createPlayer(world, centerX -32, centerY -32));
 		world.addEntity(EntityFactory.createWall(world, ScreenResolution.getWidthResolution(), 
 				wallThickness, 0, 0));
 		world.addEntity(EntityFactory.createWall(world, ScreenResolution.getWidthResolution(), 
@@ -82,11 +84,21 @@ public class SpawnSystem extends EntityProcessingSystem{
 		world.addEntity(EntityFactory.createWall(world, wallThickness, 
 				ScreenResolution.getHeightResolution(), 
 				ScreenResolution.getWidthResolution() - wallThickness, 0));
-		world.addEntity(EntityFactory.createObstacle(world, 50, 50, 200, 200));
+		world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX-225, centerY -125));
+		world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX+175, centerY -125));
+		//world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX-225, centerY -25));
+		//world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX+175, centerY -25));
+		world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX-225, centerY +75));
+		world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX+175, centerY +75));
+		world.addEntity(EntityFactory.createPitobstacle(world, centerX-32, 
+				ScreenResolution.getHeightResolution() - wallThickness-164));
+		world.addEntity(EntityFactory.createPowerUp(world, centerX-32, wallThickness + 50,
+				BuffType.Speed, 300));
+		world.addEntity(EntityFactory.createKillplayerbstacle(world, centerX-182,
+				ScreenResolution.getHeightResolution()-wallThickness-114));
+		world.addEntity(EntityFactory.createKillplayerbstacle(world, centerX+118,
+				ScreenResolution.getHeightResolution()-wallThickness-114));
 		world.addEntity(EntityFactory.createScore(world));
-		world.addEntity(EntityFactory.createPowerUp(world, 300, 300, BuffType.Speed, 300));
-		world.addEntity(EntityFactory.createPitobstacle(world, 400, 600));
-		world.addEntity(EntityFactory.createKillplayerbstacle(world, 800, 600));
 	}
 
 	/**

@@ -50,15 +50,17 @@ public class EntityFactory {
 	 * Creates a player entity with a PLAYER tag.
 	 * 
 	 * @param world The world.
+	 * @param xPos the horizontal position of the player.
+	 * @param yPos the vertical position of the player.
 	 * @return An Entity (the player entity).
 	 */
-	public static Entity createPlayer(World world){
+	public static Entity createPlayer(World world, float xPos, float yPos){
 		Entity player = world.createEntity();
 		world.getManager(TagManager.class).register("PLAYER", player);
 		world.getManager(GroupManager.class).add(player, "PLAYER");
 		world.getManager(GroupManager.class).add(player, "MOVINGENTITIES");
 		
-		player.addComponent(new Transform(400,400));
+		player.addComponent(new Transform(xPos,yPos));
 		player.addComponent(new Velocity());
 		player.addComponent(new Size(64,64));
 		player.addComponent(new Friction(0.7f));
@@ -196,6 +198,13 @@ public class EntityFactory {
 		
 	}
 	
+	/**
+	 * Creates a new pit obstacle and adds it to the PITOBSTACLES group.
+	 * @param world the world.
+	 * @param xPos the desired x-position of the pitobstacle.
+	 * @param yPos the desired y-position of the pitobstacle.
+	 * @return A pit obstacle entity
+	 */
 	public static Entity createPitobstacle(World world, float xPos, float yPos){
 		Entity pitobstacle = world.createEntity();
 		world.getManager(GroupManager.class).add(pitobstacle, "PITOBSTACLES");
@@ -207,6 +216,13 @@ public class EntityFactory {
 		return pitobstacle;
 	}
 	
+	/**
+	 * Creates a new kill player obstacle and adds it to the KILLPLAYERPITOBSTACLES group.
+	 * @param world the world.
+	 * @param xPos the desired x-position of the kill player obstacle.
+	 * @param yPos the desired y-position of the kill player obstacle.
+	 * @return A kill player obstacle entity
+	 */
 	public static Entity createKillplayerbstacle(World world, float xPos, float yPos){
 		Entity killplayerobstacle = world.createEntity();
 		world.getManager(GroupManager.class).add(killplayerobstacle, "KILLPLAYEROBSTACLES");
