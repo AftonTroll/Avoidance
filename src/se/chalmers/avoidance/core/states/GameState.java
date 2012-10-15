@@ -131,7 +131,7 @@ public class GameState implements IState, PropertyChangeListener {
 	 * @param tpf Time since last frame.
 	 */
 	public void update(float tpf) {
-		if (process && tpf < 1.0f) {
+		if (process && tpf < 1.0f) { //doesn't update if tpf is too big (ie lags)
 			world.setDelta(tpf);
 			world.process();
 		}
