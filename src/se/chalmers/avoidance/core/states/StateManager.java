@@ -83,6 +83,19 @@ public class StateManager implements PropertyChangeListener {
 	}
 	
 	/**
+	 * Returns the <code>StateID</code> of the current active state.
+	 * @return the <code>StateID</code> of the current active state
+	 */
+	public StateID getActiveStateID() {
+		for (StateID id : stateMap.keySet()) {
+			if (stateMap.get(id).equals(currentState)) {
+				return id;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Updates the current state.
 	 * @param tpf Time since last frame.
 	 */
