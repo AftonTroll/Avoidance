@@ -64,6 +64,7 @@ import se.chalmers.avoidance.util.ScreenResolution;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.hardware.SensorManager;
+import android.view.KeyEvent;
 
 /**
  * The starting point of the application.
