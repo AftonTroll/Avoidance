@@ -213,8 +213,7 @@ public class GameState implements IState, PropertyChangeListener {
 			int score = 0;
 			try {
 				score = (Integer) event.getNewValue();
-			} catch (ClassCastException cce) {
-			}
+			} catch (ClassCastException cce) {}
 			gameOver(score, event);
 		}
 	}

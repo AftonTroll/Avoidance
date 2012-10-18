@@ -196,7 +196,7 @@ public class GameOverScene extends Scene {
 				greaterScores++;
 			}
 		}
-		
+
 		return greaterScores < HighScoreState.MAX_HIGH_SCORE_ENTRIES;
 	}
 	
