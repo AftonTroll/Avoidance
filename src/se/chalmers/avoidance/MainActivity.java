@@ -249,6 +249,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 		stateManager.addState(StateID.Game, gameState);
 		stateManager.addState(StateID.Menu, menuState);
 		stateManager.addState(StateID.Highscore, highscoreState);
+		gameState.addPropertyChangeListener(highscoreState);
 		
 		stateManager.addPropertyChangeListener(this);
 	}

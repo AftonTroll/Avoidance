@@ -37,7 +37,6 @@ import org.andengine.util.HorizontalAlign;
 
 import se.chalmers.avoidance.constants.EventMessageConstants;
 import se.chalmers.avoidance.constants.FontConstants;
-import se.chalmers.avoidance.core.collisionhandlers.GameOverNotifier;
 import se.chalmers.avoidance.util.FileUtils;
 import se.chalmers.avoidance.util.ScreenResolution;
 import se.chalmers.avoidance.util.Utils;
@@ -93,9 +92,6 @@ public class HighscoreState implements IState, PropertyChangeListener {
 		scene.attachChild(backButton);
 		
 		this.updateHighscoreList();
-		
-		// listen to 'Game Over'-events, so we can update the high score
-		GameOverNotifier.getInstance().addPropertyChangeListener(this);
 	}
 	
 	/**
@@ -208,9 +204,8 @@ public class HighscoreState implements IState, PropertyChangeListener {
 		if (numbers == null || numbers.isEmpty()) {
 			throw new NoHighscoreException();
 		}
-		Utils.trimList(numbers, MAX_HIGH_SCORE_ENTRIES);
-		String sortedList = FileUtils.createMultiLineString(numbers);
-		return sortedList;
+		Utils.trimList(numbers, maxEntries);
+		return FileUtils.createMultiLineString(numbers);
 	}
 	
 	/**
