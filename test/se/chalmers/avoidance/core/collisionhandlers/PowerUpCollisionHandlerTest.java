@@ -57,7 +57,7 @@ public class PowerUpCollisionHandlerTest {
 		world.setManager(groupManager);
 		world.setManager(tagManager);
 		world.setSystem(cs);
-		player = EntityFactory.createPlayer(world);
+		player = EntityFactory.createPlayer(world, 0,0);
 		powerup = EntityFactory.createPowerUp(world, 40, 40, BuffType.Speed, 100);
 		world.initialize();
 		
