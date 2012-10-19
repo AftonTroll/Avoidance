@@ -194,7 +194,6 @@ public class GameState implements IState, PropertyChangeListener {
 			public void onClick( ButtonSprite pButtonSprite, float pTouchAreaLocalX, float pTouchAreaLocalY) {
 				scene.clearChildScene();
 				pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Game, StateID.Highscore);
-				pcs.firePropertyChange(EventMessageConstants.RESTART_GAME, null, null);
 		    } 
 		};
 	}
