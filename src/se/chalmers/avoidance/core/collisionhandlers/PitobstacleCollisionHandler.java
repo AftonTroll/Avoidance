@@ -20,6 +20,7 @@
 
 package se.chalmers.avoidance.core.collisionhandlers;
 
+import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Score;
 
 import com.artemis.ComponentMapper;
@@ -27,7 +28,12 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
-
+/**
+ * Handles collision between player and pitobstacles. 
+ * 
+ * @author Jakob Svensson
+ *
+ */
 public class PitobstacleCollisionHandler implements CollisionHandler {
 	
 	private World world;
@@ -53,6 +59,12 @@ public class PitobstacleCollisionHandler implements CollisionHandler {
 		GroupManager groupManager = world.getManager(GroupManager.class);
 		if (groupManager.getEntities("PLAYER").contains(movingEntity) && groupManager.getEntities("PITOBSTACLES").contains(obstacle)) {
 			//Handle collison between pitobstacle and player
+			ComponentMapper<Jump> jumpMapper = world.getMapper(Jump.class);
+			Jump jump = jumpMapper.get(movingEntity);
+			if (jump == null || !jump.isInTheAir()) {
+				GameOverNotifier.getInstance().gameOver();
+			}
+			
 		}
 		if(groupManager.getEntities("ENEMIES").contains(movingEntity) && groupManager.getEntities("PITOBSTACLES").contains(obstacle)){
 			world.deleteEntity(movingEntity);

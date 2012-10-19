@@ -21,6 +21,7 @@
 package se.chalmers.avoidance.core.states;
 
 import java.util.Map;
+import java.util.List;
 
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
@@ -32,6 +33,7 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import se.chalmers.avoidance.constants.FontConstants;
+import se.chalmers.avoidance.util.FileUtils;
 import se.chalmers.avoidance.util.ScreenResolution;
 
 /**
@@ -43,7 +45,7 @@ import se.chalmers.avoidance.util.ScreenResolution;
  * @author Florian Minges
  */
 public class GameOverScene extends Scene {
-	
+
 	private VertexBufferObjectManager vbom;
 
 	private Rectangle transparentBackground;
@@ -86,11 +88,15 @@ public class GameOverScene extends Scene {
 		createGameOverSprite(regions);
 		createText(fonts);
 		createButton(regions);
+		createNewHighscoreSprite(regions);
 		
 		attachChild(transparentBackground);
 		attachChild(gameOverSprite);
 		attachChild(scoreText);
 		attachChild(button);
+		attachChild(newHighscoreSprite);
+		
+		this.setBackgroundEnabled(false);
 	}
 
 	/**
@@ -99,7 +105,7 @@ public class GameOverScene extends Scene {
 	private void createTransparentBackground() {
 		Rectangle rect = new Rectangle(0, 0, ScreenResolution.getWidthResolution(), 
 				ScreenResolution.getHeightResolution(), this.vbom);
-		rect.setColor(0.1f, 0.1f, 0.1f, 0.8f);
+		rect.setColor(0.1f, 0.1f, 0.1f, 0.95f);
 		this.transparentBackground = rect;
 	}
 	
@@ -148,17 +154,53 @@ public class GameOverScene extends Scene {
 	}
 	
 	/**
+	 * Creates and initializes a 'new high score'-sprite. <p>
+	 * 
+	 * @param regions a <code>HashMap</code> containing loaded textures/regions
+	 */
+	private void createNewHighscoreSprite(Map<String, TextureRegion> regions) {
+		Sprite sprite = new Sprite(0, 0, regions.get("newHighscore.png"), vbom);
+		
+		float xPos = ScreenResolution.getXPosHorizontalCentering(sprite) + 400;
+		float yPos = ScreenResolution.getYPosVerticalCentering(sprite);
+		sprite.setPosition(xPos, yPos);
+		
+		this.newHighscoreSprite = sprite;
+	}
+	
+	/**
 	 * Sets the score to display, and positions it correctly.
 	 * 
 	 * @param score the users score
 	 */
 	public void setScore(int score) {
-		//do this on the ui update thread or not?
 		scoreText.setText("Score: " + score);
 		
 		float xPos = ScreenResolution.getXPosHorizontalCentering(scoreText);
 		float yPos = ScreenResolution.getYPosVerticalCentering(scoreText) + 50;
 		scoreText.setPosition(xPos, yPos);
+		
+		newHighscoreSprite.setVisible(isNewHighscore(score));
+	}
+	
+	/**
+	 * Checks if the supplied score is a new high score.<p>
+	 * A new high score is currently a top 5 place.
+	 * 
+	 * @param score the score
+	 * @return true if the <code>score</code> is a new high score
+	 */
+	private boolean isNewHighscore(int score) {
+		List<String> list = FileUtils.readFromFile(FileUtils.PATH);
+		List<Integer> highscoreList = FileUtils.getSortedIntegers(list);
+		int greaterScores = 0;
+		for (int highscore: highscoreList) {
+			if (score < highscore) {
+				greaterScores++;
+			}
+		}
+		
+		return greaterScores <= HighScoreState.MAX_HIGH_SCORE_ENTRIES;
 	}
 	
 	/**

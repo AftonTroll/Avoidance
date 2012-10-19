@@ -24,6 +24,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
+import org.andengine.audio.sound.Sound;
+import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -37,6 +41,7 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import se.chalmers.avoidance.constants.EventMessageConstants;
@@ -46,12 +51,12 @@ import se.chalmers.avoidance.core.states.HighScoreState;
 import se.chalmers.avoidance.core.states.MenuState;
 import se.chalmers.avoidance.core.states.StateID;
 import se.chalmers.avoidance.core.states.StateManager;
+import se.chalmers.avoidance.util.AudioManager;
 import se.chalmers.avoidance.util.FileUtils;
 import se.chalmers.avoidance.util.ScreenResolution;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.hardware.SensorManager;
-import android.view.MotionEvent;
 
 /**
  * The starting point of the application.
@@ -77,6 +82,8 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 				ScreenResolution.getHeightResolution());
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, 
         		new FillResolutionPolicy(), camera);
+        engineOptions.getAudioOptions().setNeedsMusic(true);
+        engineOptions.getAudioOptions().setNeedsSound(true);
         return engineOptions;
 
 	}
@@ -86,35 +93,63 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	 */
 	public void onCreateResources(OnCreateResourcesCallback onCreateResourcesCallback)
 			throws Exception {
+		//Load sound
+        MusicFactory.setAssetBasePath("audio/");
+        SoundFactory.setAssetBasePath("audio/");
+        Music music;
+        Sound sound;
+        
+        music = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "heroism.ogg");
+        music.setLooping(true);
+        AudioManager.getInstance().addMusic("heroism.ogg", music);
+        
+        sound = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "bounce.ogg");
+        AudioManager.getInstance().addSound("bounce.ogg", sound);
+        
+        AudioManager.getInstance().playMusic("heroism.ogg");
+        
+        //Load textures
 		regions = new HashMap<String, TextureRegion>();
 		fonts = new HashMap<String, Font>();
 		
 		//create fonts
-		fonts.put(FontConstants.HUD_SCORE, FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
-				TextureOptions.BILINEAR, Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 32));
-		fonts.put(FontConstants.GAME_OVER_SCORE, FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
-				TextureOptions.BILINEAR, Typeface.create(Typeface.MONOSPACE, Typeface.BOLD_ITALIC), 
-				72, true, Color.WHITE));
-		fonts.put(FontConstants.HIGH_SCORE, FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256,
-				TextureOptions.BILINEAR, Typeface.create(Typeface.MONOSPACE, Typeface.BOLD_ITALIC), 
-				48, true, Color.WHITE));
+		fonts.put(FontConstants.HUD_SCORE, FontFactory.create(this.getFontManager(), 
+				this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, 
+				Typeface.create(Typeface.DEFAULT, Typeface.NORMAL), 32));
+		fonts.put(FontConstants.GAME_OVER_SCORE, FontFactory.create(this.getFontManager(), 
+				this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, 
+				Typeface.create(Typeface.MONOSPACE, Typeface.BOLD_ITALIC), 72, true, Color.WHITE));
+		fonts.put(FontConstants.HIGH_SCORE, FontFactory.create(this.getFontManager(), 
+				this.getTextureManager(), 256, 256, TextureOptions.BILINEAR, 
+				Typeface.create(Typeface.MONOSPACE, Typeface.BOLD_ITALIC), 48, true, Color.WHITE));
 
         // Set the asset path of the images
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-        BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(
-                getTextureManager(), 2048, 1024,
-                TextureOptions.BILINEAR);
+        BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(getTextureManager(), 
+        		2048, 1024, TextureOptions.BILINEAR);
+        BitmapTextureAtlas menuTextureAtlas = new BitmapTextureAtlas(getTextureManager(), 
+        		512, 512, TextureOptions.BILINEAR);
+        BitmapTextureAtlas backgroundTextureAtlas = new BitmapTextureAtlas(getTextureManager(), 
+        		1024, 1024, TextureOptions.BILINEAR);
+    	
+        
 //        Create TextureRegions like this for every image:
 //        regions.put("file_name.png", BitmapTextureAtlasTextureRegionFactory
-//               .createFromAsset( bitmapTextureAtlas, this, "file_name.png", x_position, y_position));
+//               .createFromAsset( bitmapTextureAtlas, this, "file_name.png", 
+//       		 x_position, y_position));
+        
+        regions.put("newHighscore.png", BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, "newHighscore.png", 200, 
+        				824-237-77-200));
+        
         regions.put("highscore.png", BitmapTextureAtlasTextureRegionFactory
-		.createFromAsset( bitmapTextureAtlas, this, "highscore.png", 1748-445-552, 824-237-77));
+		.createFromAsset( bitmapTextureAtlas, this, "highscore.png", 200, 824-237-77));
         
         regions.put("gameOver.png", BitmapTextureAtlasTextureRegionFactory
-		.createFromAsset( bitmapTextureAtlas, this, "gameOver.png", 1748-445, 824-237));
+		.createFromAsset( bitmapTextureAtlas, this, "gameOver.png", 200, 824-237));
         
         regions.put("okButton.png", BitmapTextureAtlasTextureRegionFactory
-		.createFromAsset( bitmapTextureAtlas, this, "okButton.png", 1748, 824));
+		.createFromAsset( bitmapTextureAtlas, this, "okButton.png", 200, 824));
         
         regions.put("ball.png", BitmapTextureAtlasTextureRegionFactory
 		.createFromAsset( bitmapTextureAtlas, this, "ball.png", 0, 0));
@@ -140,7 +175,28 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
         regions.put("quickenemy.png", BitmapTextureAtlasTextureRegionFactory
         		.createFromAsset( bitmapTextureAtlas, this, "quickenemy.png", 130,150));
         
+
+        regions.put("background.png", BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, "background.png", 2048-1280,190));
+ 
+        
+        //add menu textures
+    	regions.put("menu_start.png", BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			menuTextureAtlas, this, "menu_start.png", 0, 0));
+    	regions.put("menu_highscore.png", BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			menuTextureAtlas, this, "menu_highscore.png", 0, 100));
+    	regions.put("menu_credits.png", BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			menuTextureAtlas, this, "menu_credits.png", 0, 200));
+    	regions.put("menu_quit.png", BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			menuTextureAtlas, this, "menu_quit.png", 0, 300));
+    	
+    	//add menu background
+    	regions.put("background.jpg", BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			backgroundTextureAtlas, this, "background.jpg", 0, 0));
+ 
         bitmapTextureAtlas.load();
+        menuTextureAtlas.load();
+        backgroundTextureAtlas.load();
         for (Font font : fonts.values()) {
         	font.load();
         }
@@ -185,11 +241,11 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	private void initializeGame() {
 		stateManager = new StateManager(mEngine);
 
-		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
-				regions, fonts, this.getVertexBufferObjectManager());
-		MenuState menuState = new MenuState(this);
-		HighScoreState highscoreState = new HighScoreState(regions, fonts, 
-				this.getVertexBufferObjectManager());
+		VertexBufferObjectManager vbom = this.getVertexBufferObjectManager();
+		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE),
+				regions, fonts, vbom);
+		MenuState menuState = new MenuState(mEngine.getCamera(), regions, vbom);
+		HighScoreState highscoreState = new HighScoreState(regions, fonts, vbom);
 		stateManager.addState(StateID.Game, gameState);
 		stateManager.addState(StateID.Menu, menuState);
 		stateManager.addState(StateID.Highscore, highscoreState);
@@ -229,5 +285,24 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 		stateManager.addState(StateID.Game, new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
 				regions, fonts, this.getVertexBufferObjectManager()));
 	}
-
+	
+	/**
+	 * Used when the activity is resumed
+	 * Resumes the Audio
+	 */
+	@Override
+	public void onResume(){
+		super.onResume();
+		AudioManager.getInstance().resume();
+	}
+	
+	/**
+	 * Used when the activity is paused
+	 * Pauses the Audio
+	 */
+	@Override
+	public void onPause(){
+		super.onPause();
+		AudioManager.getInstance().pause();
+	}
 }

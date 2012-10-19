@@ -20,6 +20,7 @@
 package se.chalmers.avoidance.core.collisionhandlers;
 
 import se.chalmers.avoidance.core.components.Size;
+import se.chalmers.avoidance.core.components.Sound;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.util.Utils;
@@ -38,6 +39,7 @@ public class WallCollisionHandler implements CollisionHandler{
 	ComponentMapper<Velocity> velocityMapper;
 	ComponentMapper<Transform> transformMapper;
 	ComponentMapper<Size> sizeMapper;
+	ComponentMapper<Sound> soundMapper;
 	
 	/**
 	 * Constructs a WallCollisionHandler
@@ -47,6 +49,7 @@ public class WallCollisionHandler implements CollisionHandler{
 		velocityMapper = ComponentMapper.getFor(Velocity.class, world);
 		transformMapper = ComponentMapper.getFor(Transform.class, world);
 		sizeMapper = ComponentMapper.getFor(Size.class, world);
+		soundMapper = ComponentMapper.getFor(Sound.class, world);
 		
 	}
 	/**
@@ -61,6 +64,11 @@ public class WallCollisionHandler implements CollisionHandler{
 		Velocity playerVelocity = velocityMapper.get(movingEntity);
 		Size playerSize = sizeMapper.get(movingEntity);
 		Transform playerTransform = transformMapper.get(movingEntity);
+		
+		Sound sound = soundMapper.get(wall);
+		if(sound != null){
+			sound.setPlaying(true);
+		}
 		
 		float wallWidth = wallSize.getWidth();
 		float wallHeight = wallSize.getHeight();
@@ -91,7 +99,28 @@ public class WallCollisionHandler implements CollisionHandler{
 			}
 			
 		}else{
-			//Corner or almost corner collision			
+			//Corner or almost corner collision	
+			if(playerTransform.getX()>wallX){
+				if(playerTransform.getY()>wallY){
+					//Collision near lower right corner		
+					playerTransform.setX(wallX+wallWidth);
+					playerTransform.setY(wallY+wallHeight);
+				}else{
+					//Collision near upper right corner
+					playerTransform.setX(wallX+wallWidth);
+					playerTransform.setY(wallY-playerSize.getHeight());
+				}
+			}else{
+				if(playerTransform.getY()>wallY){
+					//Collision near lower left corner
+					playerTransform.setX(wallX-playerSize.getWidth());
+					playerTransform.setY(wallY+wallHeight);
+				}else{
+					//Collision near upper left corner
+					playerTransform.setX(wallX-playerSize.getWidth());
+					playerTransform.setY(wallY-playerSize.getHeight());
+				}
+			}
 			newAngle = Utils.reverseAngle(angle);
 		}
 		playerVelocity.setAngle(newAngle);
