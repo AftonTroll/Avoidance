@@ -194,13 +194,13 @@ public class GameOverScene extends Scene {
 		List<String> list = FileUtils.readFromFile(FileUtils.PATH);
 		List<Integer> highscoreList = FileUtils.getSortedIntegers(list);
 		int greaterScores = 0;
-		for (int highscore: highscoreList) {
-			if (score < highscore) {
+		for (int i = 0; i < highscoreList.size(); i++) {
+			if (score < highscoreList.get(i)) {
 				greaterScores++;
 			}
 		}
 		
-		return greaterScores <= HighscoreState.MAX_HIGH_SCORE_ENTRIES;
+		return greaterScores < HighscoreState.MAX_HIGH_SCORE_ENTRIES;
 	}
 	
 	/**

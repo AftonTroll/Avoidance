@@ -99,7 +99,28 @@ public class WallCollisionHandler implements CollisionHandler{
 			}
 			
 		}else{
-			//Corner or almost corner collision			
+			//Corner or almost corner collision	
+			if(playerTransform.getX()>wallX){
+				if(playerTransform.getY()>wallY){
+					//Collision near lower right corner		
+					playerTransform.setX(wallX+wallWidth);
+					playerTransform.setY(wallY+wallHeight);
+				}else{
+					//Collision near upper right corner
+					playerTransform.setX(wallX+wallWidth);
+					playerTransform.setY(wallY-playerSize.getHeight());
+				}
+			}else{
+				if(playerTransform.getY()>wallY){
+					//Collision near lower left corner
+					playerTransform.setX(wallX-playerSize.getWidth());
+					playerTransform.setY(wallY+wallHeight);
+				}else{
+					//Collision near upper left corner
+					playerTransform.setX(wallX-playerSize.getWidth());
+					playerTransform.setY(wallY-playerSize.getHeight());
+				}
+			}
 			newAngle = Utils.reverseAngle(angle);
 		}
 		playerVelocity.setAngle(newAngle);

@@ -36,6 +36,7 @@ import se.chalmers.avoidance.core.collisionhandlers.WallCollisionHandler;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
+import se.chalmers.avoidance.util.ScreenResolution;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -43,6 +44,7 @@ import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.annotations.Mapper;
 import com.artemis.managers.GroupManager;
+import com.artemis.managers.TagManager;
 import com.artemis.utils.Bag;
 import com.artemis.utils.ImmutableBag;
 /**
@@ -109,25 +111,32 @@ public class CollisionSystem extends EntitySystem{
         for(int i = 0; collisionPairs.size() > i; i++) {
             collisionPairs.get(i).checkForCollisions();
         }
-//		ImmutableBag<Entity> walls = world.getManager(GroupManager.class).getEntities("WALLS");
-//		ImmutableBag<Entity> enemies = world.getManager(GroupManager.class).getEntities("ENEMIES");
-//		Entity player = world.getManager(TagManager.class).getEntity("PLAYER");
-//		for (int i=0;i<walls.size();i++){
-//			if(collisionExists(player, walls.get(i))){
-//				handleWallCollision(player, walls.get(i));
-//			}
-//			for (int j=0;j<enemies.size();j++){
-//				if(collisionExists(enemies.get(j), walls.get(i))){
-//					handleWallCollision(enemies.get(j), walls.get(i));
-//				}
-//			}
-//		}
-//		
-//		for (int j=0;j<enemies.size();j++){
-//			if(collisionExists(player, enemies.get(j))){
-//				//handeEnemyCollision();
-//			}
-//		}	
+       
+        Entity player = world.getManager(TagManager.class).getEntity("PLAYER");  
+        Transform playerTransform = transformMapper.get(player);
+        ImmutableBag<Entity> walls = world.getManager(GroupManager.class).getEntities("WALLS");
+        Size wallSize = sizeMapper.get(walls.get(0));
+        Size playerSize = sizeMapper.get(player);
+        
+        float wallthickness;
+        if(wallSize.getWidth()<wallSize.getHeight()){
+        	wallthickness=wallSize.getWidth();
+        }else{
+        	wallthickness=wallSize.getHeight();
+        }
+        //Check if player is outside of the map
+        if(playerTransform.getX()<0){
+        	playerTransform.setX(wallthickness);
+        }
+        if(playerTransform.getX()>ScreenResolution.getWidthResolution()){
+        	playerTransform.setX(ScreenResolution.getWidthResolution()-wallthickness-playerSize.getWidth());
+        }
+        if(playerTransform.getY()<0){
+        	playerTransform.setY(wallthickness);
+        }
+        if(playerTransform.getY()>ScreenResolution.getHeightResolution()){
+        	playerTransform.setY(ScreenResolution.getHeightResolution()-wallthickness-playerSize.getHeight());
+        }	
 	}
 		
 	/**
@@ -149,16 +158,27 @@ public class CollisionSystem extends EntitySystem{
 		float e1Width = e1Size.getWidth();
 		float e1Height = e1Size.getHeight();
 		
-		collisionObject1.setX(e1X);
-		collisionObject1.setY(e1Y);
-		collisionObject1.setWidth(e1Width);
-		collisionObject1.setHeight(e1Height);
-		
 		float e2X = e2Transform.getX();
 		float e2Y = e2Transform.getY();
 		float e2Width = e2Size.getWidth();
 		float e2Height = e2Size.getHeight();
 		
+		GroupManager groupManager = world.getManager(GroupManager.class);
+		
+		if(groupManager.getEntities("CIRCLESHAPES").contains(e1)&&groupManager.getEntities("CIRCLESHAPES").contains(e2)){
+			
+			float xDelta = e1X+e1Width/2-(e2X+e2Width/2);
+			float yDelta = e1Y+e1Height/2-(e2Y+e2Height/2);
+			float colDist = e1Width/2+e2Width/2;
+			return xDelta*xDelta+yDelta*yDelta<=colDist*colDist;		
+			
+		}
+
+		collisionObject1.setX(e1X);
+		collisionObject1.setY(e1Y);
+		collisionObject1.setWidth(e1Width);
+		collisionObject1.setHeight(e1Height);
+				
 		collisionObject2.setX(e2X);
 		collisionObject2.setY(e2Y);
 		collisionObject2.setWidth(e2Width);
