@@ -48,7 +48,7 @@ import com.artemis.managers.TagManager;
 import com.artemis.utils.Bag;
 import com.artemis.utils.ImmutableBag;
 /**
- * System for handling collision between entities
+ * System for handling collision between entities.
  * 
  * @author Jakob Svensson
  * @author Markus Ekström
@@ -67,16 +67,14 @@ public class CollisionSystem extends EntitySystem{
     private CollisionObject collisionObject2 = new CollisionObject(0, 0, 0, 0);
 	
     /**
-     * Constructs a new CollisionSystem 
-     * 
-     * @param world the world object of the game
+     * Constructs a new CollisionSystem.
      */
 	public CollisionSystem() {
 		super(Aspect.getAspectForAll(Transform.class, Size.class));
 	}
 	
 	/**
-	 * This method is called when the system is initialized
+	 * This method is called when the system is initialized.
 	 */
 	@Override
 	protected void initialize(){
@@ -91,7 +89,7 @@ public class CollisionSystem extends EntitySystem{
 	
 	
 	/**
-	 * Determines if the system should be processed or not
+	 * Determines if the system should be processed or not.
 	 * 
 	 * @return true if system should be processed, false if not	
 	 */
@@ -101,7 +99,7 @@ public class CollisionSystem extends EntitySystem{
 	}
 	
 	/**
-	 * Processes entities and checks for collisions between them
+	 * Processes entities and checks for collisions between them.
 	 * 
 	 * @param ImmutableBag<Entity> the entities this system contains.
 	 */
@@ -140,7 +138,7 @@ public class CollisionSystem extends EntitySystem{
 	}
 		
 	/**
-	 * Checks if two entities is colliding with each other 
+	 * Checks if two entities is colliding with each other.
 	 * 
 	 * @param e1 The first entity
 	 * @param e2 The second entity
@@ -165,7 +163,8 @@ public class CollisionSystem extends EntitySystem{
 		
 		GroupManager groupManager = world.getManager(GroupManager.class);
 		
-		if(groupManager.getEntities("CIRCLESHAPES").contains(e1)&&groupManager.getEntities("CIRCLESHAPES").contains(e2)){
+		if(groupManager.getEntities("CIRCLESHAPES").contains(e1)&&
+				groupManager.getEntities("CIRCLESHAPES").contains(e2)){
 			
 			float xDelta = e1X+e1Width/2-(e2X+e2Width/2);
 			float yDelta = e1Y+e1Height/2-(e2Y+e2Height/2);
@@ -191,7 +190,7 @@ public class CollisionSystem extends EntitySystem{
 
 	
 	/**
-	 * An object used to check for collision with Andengine's collision detection
+	 * An object used to check for collision with Andengine's collision detection.
 	 * 
 	 * @author Jakob Svensson
 	 *
@@ -199,7 +198,7 @@ public class CollisionSystem extends EntitySystem{
 	private class CollisionObject extends RectangularShape{
 		
 		/**
-		 * Constructs a new collisionObject object
+		 * Constructs a new collisionObject object.
 		 * 
 		 * @param pX the x position of the object
 		 * @param pY the y position of the object

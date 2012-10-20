@@ -182,6 +182,4 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.removePropertyChangeListener(pcl);
 	}
-
-
 }

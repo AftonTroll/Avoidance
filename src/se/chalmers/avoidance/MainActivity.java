@@ -47,7 +47,7 @@ import org.andengine.ui.activity.BaseGameActivity;
 import se.chalmers.avoidance.constants.EventMessageConstants;
 import se.chalmers.avoidance.constants.FontConstants;
 import se.chalmers.avoidance.core.states.GameState;
-import se.chalmers.avoidance.core.states.HighscoreState;
+import se.chalmers.avoidance.core.states.HighScoreState;
 import se.chalmers.avoidance.core.states.MenuState;
 import se.chalmers.avoidance.core.states.StateID;
 import se.chalmers.avoidance.core.states.StateManager;
@@ -243,10 +243,10 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 		stateManager = new StateManager(mEngine);
 
 		VertexBufferObjectManager vbom = this.getVertexBufferObjectManager();
-		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
+		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE),
 				regions, fonts, vbom);
 		MenuState menuState = new MenuState(mEngine.getCamera(), regions, vbom);
-		HighscoreState highscoreState = new HighscoreState(regions, fonts, vbom);
+		HighScoreState highscoreState = new HighScoreState(regions, fonts, vbom);
 		stateManager.addState(StateID.Game, gameState);
 		stateManager.addState(StateID.Menu, menuState);
 		stateManager.addState(StateID.Highscore, highscoreState);
@@ -272,6 +272,20 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 				this.finish();
 			}
 		}
+		if (event != null) {
+			if(EventMessageConstants.RESTART_GAME.equals(event.getPropertyName())) {
+				this.restartGame();
+			}
+		}
+	} 
+	
+	/**
+	 * Restarts the game.
+	 */
+	public void restartGame() {
+		stateManager.removeState(StateID.Game);
+		stateManager.addState(StateID.Game, new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
+				regions, fonts, this.getVertexBufferObjectManager()));
 	}
 	
 	/**
