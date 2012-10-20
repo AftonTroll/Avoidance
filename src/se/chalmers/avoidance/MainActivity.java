@@ -334,7 +334,6 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	public void onResume(){
 		super.onResume();
 		AudioManager.getInstance().resume();
-		mEngine.start();
 	}
 	
 	/**
@@ -344,7 +343,6 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	@Override
 	public void onPause(){
 		super.onPause();
-		mEngine.stop();
 		AudioManager.getInstance().pause();
 	}
 	
