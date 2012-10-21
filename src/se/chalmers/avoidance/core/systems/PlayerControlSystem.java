@@ -56,13 +56,13 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	private float lastAccelerationY = 0;
 	private TagManager tagManager;
 	@Mapper
-	ComponentMapper<Friction> frictionMapper;
+	private ComponentMapper<Friction> frictionMapper;
 	@Mapper
-	ComponentMapper<Velocity> velocityMapper;
+	private ComponentMapper<Velocity> velocityMapper;
 	@Mapper
-	ComponentMapper<Transform> transformMapper;
+	private ComponentMapper<Transform> transformMapper;
 	@Mapper
-	ComponentMapper<Jump> statusMapper;
+	private ComponentMapper<Jump> statusMapper;
 	
 	/**
 	 * Constructs a new PlayerControlSystem.
@@ -161,18 +161,21 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	 * @param event the propertyChangeEvent containing the values of the accelerometer
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
-		if(event!=null && event.getNewValue() != null){
+		if(event==null){
+			return;
+		}
+		if(event.getNewValue() != null){
 			if("AccelerometerX".equals(event.getPropertyName())){
 				lastAccelerationX = (Float) event.getNewValue();
 			}
 			if("AccelerometerY".equals(event.getPropertyName())){
 				lastAccelerationY = (Float) event.getNewValue();
 			}
-		} else if (event != null) {
-			if("touch".equals(event.getPropertyName())){
-				if(tagManager.getEntity("PLAYER").getComponent(Jump.class).getJumpCooldownLeft() == 0) {
-					statusMapper.get(tagManager.getEntity("PLAYER")).setInTheAir(true);
-				}
+		//if there is no new value
+		} else {
+			if("touch".equals(event.getPropertyName()) && 
+					tagManager.getEntity("PLAYER").getComponent(Jump.class).getJumpCooldownLeft() == 0) {
+				statusMapper.get(tagManager.getEntity("PLAYER")).setInTheAir(true);
 			}
 		}
 	}

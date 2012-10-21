@@ -41,7 +41,7 @@ import com.artemis.managers.TagManager;
 public class PlayerControlSystemTest {
 
 	private static final float TOLERANCE = 0.0001f;
-	private final float friction = 0.7f;
+	private static final float friction = 0.7f;
 	private Entity player;
 	private final PlayerControlSystem pcs = new PlayerControlSystem();
 	private final World world = new World();

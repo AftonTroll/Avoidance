@@ -17,7 +17,7 @@ public class SoundSystemTest {
 	private static Entity e2;
 	
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	public static void setUpBeforeClass() {
 		world = new World();
 		ss = new SoundSystem();
 		world.setSystem(ss);
