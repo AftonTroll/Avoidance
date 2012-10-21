@@ -86,17 +86,15 @@ public class SpawnSystem extends EntityProcessingSystem{
 				ScreenResolution.getWidthResolution() - wallThickness, 0));
 		world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX-225, centerY -125));
 		world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX+175, centerY -125));
-		//world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX-225, centerY -25));
-		//world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX+175, centerY -25));
 		world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX-225, centerY +75));
 		world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX+175, centerY +75));
 		world.addEntity(EntityFactory.createPitobstacle(world, centerX-32, 
 				ScreenResolution.getHeightResolution() - wallThickness-164));
 		world.addEntity(EntityFactory.createPowerUp(world, centerX-32, wallThickness + 50,
 				BuffType.Speed, 300));
-		world.addEntity(EntityFactory.createKillplayerbstacle(world, centerX-182,
+		world.addEntity(EntityFactory.createKillplayerbstacle(world, centerX-232,
 				ScreenResolution.getHeightResolution()-wallThickness-114));
-		world.addEntity(EntityFactory.createKillplayerbstacle(world, centerX+118,
+		world.addEntity(EntityFactory.createKillplayerbstacle(world, centerX+168,
 				ScreenResolution.getHeightResolution()-wallThickness-114));
 		world.addEntity(EntityFactory.createScore(world));
 	}
