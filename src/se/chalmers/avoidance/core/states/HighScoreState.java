@@ -168,8 +168,6 @@ public class HighScoreState implements IState , PropertyChangeListener {
 	/**
 	 * Sets the text of the high score list, or displays an
 	 * error message if no satisfying list was provided.
-	 * 
-	 * @param list the high scores
 	 */
 	public void updateHighScoreList() {
 		String highscore;

@@ -92,8 +92,9 @@ public class FileUtils {
 	 * @param path the file path to store the string in
 	 */
 	public static void saveToFile(String output, String path) {
-		if (output == null)
+		if (output == null) {
 			output = "";
+		}
 		try {
 			// Save the file
 			FileOutputStream fos = context != null ? 
@@ -115,8 +116,9 @@ public class FileUtils {
 		List<String> file = readFromFile(path);
 		StringBuilder builder = new StringBuilder();
 		builder.append(createMultiLineString(file));
-		if (builder.length() != 0)
+		if (builder.length() != 0) {
 			builder.append("\n");
+		}
 		builder.append(output);
 		saveToFile(builder.toString(), path);
 	}
@@ -166,17 +168,18 @@ public class FileUtils {
 	 * 
 	 * WARNING! The supplied list will be trimmed to the size
 	 * of the number of maxLines given in the argument. That is,
-	 * if you keep the reference to the list, beware that it might
-	 * have changed.
+	 * if you keep the reference to the list, beware that its size
+	 * might have changed.
 	 * 
-	 * @param list the objects to put in a string
+	 * @param listOfObjects the objects to put in a string
 	 * @param maxLines the maximum number of lines/strings to use
 	 * @return a multi line string of the given list
 	 */
 	public static String createMultiLineString(List<?> listOfObjects, int maxLines) {
 		
-		if (listOfObjects == null || listOfObjects.isEmpty())
+		if (listOfObjects == null || listOfObjects.isEmpty()) {
 			return "";
+		}
 		
 		StringBuilder output = new StringBuilder();
 		
@@ -203,8 +206,9 @@ public class FileUtils {
 	 * @return a multi line string of the given list
 	 */
 	public static String createMultiLineString(List<?> list) {
-		if (list == null)
+		if (list == null) {
 			return "";
+		}
 		return createMultiLineString(list, list.size());
 	}
 	
