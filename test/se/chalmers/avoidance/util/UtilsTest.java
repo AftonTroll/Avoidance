@@ -37,7 +37,7 @@ public class UtilsTest extends FloatTest {
 	private static float a1, a2, a3, a4, a5;
 
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	public static void setUpBeforeClass() {
 		f1 = 0f;
 		f2 = 2f;
 		f3 = 8f;

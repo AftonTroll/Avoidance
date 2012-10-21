@@ -32,7 +32,7 @@ import org.andengine.audio.sound.Sound;
  * @author Filip Brynfors
  *
  */
-public class AudioManager {
+public final class AudioManager {
 	private Map<String, Music> musicMap = new HashMap<String, Music>();
 	private Map<String, Sound> soundMap = new HashMap<String, Sound>();
 	private Music currentMusic = null;
