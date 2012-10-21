@@ -53,9 +53,9 @@ import android.opengl.GLES20;
 public class MenuState implements IState, IOnMenuItemClickListener {
 
     private static final int MENU_START = 0;
-    private static final int MENU_HIGHSCORES = MENU_START + 1;
-    private static final int MENU_CREDITS = MENU_START + 2;
-    private static final int MENU_QUIT = MENU_START + 3;
+    private static final int MENU_HIGHSCORES = 1;
+    private static final int MENU_CREDITS = 2;
+    private static final int MENU_QUIT = 3;
 
     private PropertyChangeSupport pcs;
 	private MenuScene menuScene;

@@ -34,6 +34,7 @@ import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.HorizontalAlign;
+import org.andengine.util.color.Color;
 
 import se.chalmers.avoidance.constants.EventMessageConstants;
 import se.chalmers.avoidance.constants.FontConstants;
@@ -61,6 +62,8 @@ public class HighScoreState implements IState , PropertyChangeListener {
 	 * The maximum number of entries shown in the high score list.
 	 */
 	public static final int MAX_HIGH_SCORE_ENTRIES = 5;
+	
+	private static final Color HIGH_SCORE_LIST_COLOR = new Color(1.0f, 0.9f, 0.1f, 1.0f);
 	
 	
 	/**
@@ -106,13 +109,11 @@ public class HighScoreState implements IState , PropertyChangeListener {
 	 */
 	private void createHighScoreTitle(Map<String, TextureRegion> regions, 
 			VertexBufferObjectManager vbom) {
-		Sprite sprite = new Sprite(0, 0, regions.get("highscore.png"), vbom);
+		highscoreTitle = new Sprite(0, 0, regions.get("highscore.png"), vbom);
 		
-		float xPos = ScreenResolution.getXPosHorizontalCentering(sprite);
-		float yPos = ScreenResolution.getYPosVerticalCentering(sprite) - 300;
-		sprite.setPosition(xPos, yPos);
-		
-		this.highscoreTitle = sprite;
+		float xPos = ScreenResolution.getXPosHorizontalCentering(highscoreTitle);
+		float yPos = ScreenResolution.getYPosVerticalCentering(highscoreTitle) - 300;
+		highscoreTitle.setPosition(xPos, yPos);
 	}
 	
 	/**
@@ -122,22 +123,19 @@ public class HighScoreState implements IState , PropertyChangeListener {
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
 	 */
 	private void createHighScoreList(Map<String, Font> fonts, VertexBufferObjectManager vbom) {
-		Text list = new Text(0, 0, fonts.get(FontConstants.HIGH_SCORE), 
+		highscoreList = new Text(0, 0, fonts.get(FontConstants.HIGH_SCORE), 
 				"", "XXXXXXXXX".length() * MAX_HIGH_SCORE_ENTRIES, vbom);
-		Text rank = new Text(0, 0, fonts.get(FontConstants.HIGH_SCORE), 
+		rankingNumber = new Text(0, 0, fonts.get(FontConstants.HIGH_SCORE), 
 				"", "1) ".length() * MAX_HIGH_SCORE_ENTRIES, vbom);
-		list.setColor(1.0f, 0.9f, 0.1f, 1.0f);
-		rank.setColor(1.0f, 0.9f, 0.1f, 1.0f);
-		list.setHorizontalAlign(HorizontalAlign.RIGHT);
-		rank.setHorizontalAlign(HorizontalAlign.RIGHT);
+		highscoreList.setColor(HIGH_SCORE_LIST_COLOR);
+		rankingNumber.setColor(HIGH_SCORE_LIST_COLOR);
+		highscoreList.setHorizontalAlign(HorizontalAlign.RIGHT);
+		rankingNumber.setHorizontalAlign(HorizontalAlign.RIGHT);
 		
-		float xPos = ScreenResolution.getXPosHorizontalCentering(list);
-		float yPos = ScreenResolution.getYPosVerticalCentering(list);
-		rank.setPosition(xPos, yPos);
-		list.setPosition(xPos + rank.getWidth(), yPos);
-		
-		this.highscoreList = list;
-		this.rankingNumber = rank;
+		float xPos = ScreenResolution.getXPosHorizontalCentering(highscoreList);
+		float yPos = ScreenResolution.getYPosVerticalCentering(highscoreList);
+		rankingNumber.setPosition(xPos, yPos);
+		highscoreList.setPosition(xPos + rankingNumber.getWidth(), yPos);
 	}
 	
 	/**
@@ -147,21 +145,19 @@ public class HighScoreState implements IState , PropertyChangeListener {
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
 	 */
 	private void createBackButton(Map<String, TextureRegion> regions, VertexBufferObjectManager vbom) {
-		ButtonSprite button = new ButtonSprite(0, 0, regions.get("okButton.png"), vbom);
+		backButton = new ButtonSprite(0, 0, regions.get("okButton.png"), vbom);
 		
-		float xPos = ScreenResolution.getXPosHorizontalCentering(button);
-		float yPos = ScreenResolution.getYPosVerticalCentering(button) + 300;
-		button.setPosition(xPos, yPos);
+		float xPos = ScreenResolution.getXPosHorizontalCentering(backButton);
+		float yPos = ScreenResolution.getYPosVerticalCentering(backButton) + 300;
+		backButton.setPosition(xPos, yPos);
 		
-		button.setOnClickListener(new ButtonSprite.OnClickListener() {
+		backButton.setOnClickListener(new ButtonSprite.OnClickListener() {
 			public void onClick( ButtonSprite pButtonSprite, float pTouchAreaLocalX, float pTouchAreaLocalY) {
 				pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Highscore, StateID.Menu);
 		    } 
 		});
-		this.scene.registerTouchArea(button);
+		this.scene.registerTouchArea(backButton);
 		this.scene.setTouchAreaBindingOnActionDownEnabled(true);
-		
-		this.backButton = button;
 	}
 	
 	/**
