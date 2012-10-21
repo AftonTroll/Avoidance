@@ -27,7 +27,7 @@ package se.chalmers.avoidance.core.states;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
@@ -64,10 +64,10 @@ public class MenuState implements IState, IOnMenuItemClickListener {
      * Constructs a new <code>MenuState</code>. <p>
      * 
      * @param camera the game engines <code>Camera</code>
-     * @param regions a <code>HashMap</code> containing loaded textures/regions
+     * @param regions a <code>Map</code> containing loaded textures/regions
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
      */
-	public MenuState(Camera camera, HashMap<String, TextureRegion> regions, 
+	public MenuState(Camera camera, Map<String, TextureRegion> regions, 
 			VertexBufferObjectManager vbom) {
 		initialize(camera, regions, vbom);
 		pcs = new PropertyChangeSupport(this);
@@ -77,10 +77,10 @@ public class MenuState implements IState, IOnMenuItemClickListener {
      * Initializes the menu scene.
      * 
      * @param camera the game engines <code>Camera</code>
-     * @param regions a <code>HashMap</code> containing loaded textures/regions
+     * @param regions a <code>Map</code> containing loaded textures/regions
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
      */
-	private void initialize(Camera camera, HashMap<String, TextureRegion> regions, 
+	private void initialize(Camera camera, Map<String, TextureRegion> regions, 
 			VertexBufferObjectManager vbom) {
 		menuScene = new MenuScene();
 		menuScene.setCamera(camera);
@@ -145,7 +145,6 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 	public boolean onMenuItemClicked(final MenuScene pMenuScene,
 			final IMenuItem pMenuItem, final float pMenuItemLocalX,
 			final float pMenuItemLocalY) {
-		//TODO Use constants instead of hard-coded strings
 		switch (pMenuItem.getID()) {
 		case MENU_START:
 			pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Menu, StateID.Game);

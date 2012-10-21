@@ -29,11 +29,13 @@ import java.util.List;
  * @author Florian Minges, Filip Brynfors
  *
  */
-public class Utils {
+public final class Utils {
+	
+	private Utils() {}
 	
 	/**
 	 * Simplifies the angle so that it fits in the interval
-	 * 0 <= angle < (2 * PI)
+	 * 0 <= angle < (2 * PI).
 	 * 
 	 * @param angle The angle you want to simplify.
 	 * @return The simplified angle.
@@ -46,7 +48,7 @@ public class Utils {
 	
 	/**
 	 * Calculates the speed of the horizontal part of the velocity with
-	 * the given angle and speed
+	 * the given angle and speed.
 	 * @param speed the speed of the velocity
 	 * @param angle the angle of the velocity
 	 * @return the horizontal part of the velocity
@@ -57,7 +59,7 @@ public class Utils {
 	
 	/**
 	 * Calculates the speed of the vertical part of the velocity with
-	 * the given angle and speed
+	 * the given angle and speed.
 	 * @param speed the speed of the velocity
 	 * @param angle the angle of the velocity
 	 * @return the vertical part of the velocity

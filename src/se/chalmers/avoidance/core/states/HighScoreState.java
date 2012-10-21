@@ -56,7 +56,6 @@ public class HighScoreState implements IState , PropertyChangeListener {
 	private Text highscoreList;
 	private Text rankingNumber;
 	private ButtonSprite backButton;
-	private ButtonSprite extraButton;
 	
 	/**
 	 * The maximum number of entries shown in the high score list.
@@ -168,8 +167,6 @@ public class HighScoreState implements IState , PropertyChangeListener {
 	/**
 	 * Sets the text of the high score list, or displays an
 	 * error message if no satisfying list was provided.
-	 * 
-	 * @param list the high scores
 	 */
 	public void updateHighScoreList() {
 		String highscore;
@@ -266,9 +263,7 @@ public class HighScoreState implements IState , PropertyChangeListener {
 				int score = 0;
 				try {
 					score = (Integer) event.getNewValue();
-				} catch (ClassCastException cce) {
-					cce.printStackTrace(); //score is 0 if error occurs
-				}
+				} catch (ClassCastException cce) {} //score is 0 if error occurs
 				FileUtils.addToFile(String.valueOf(score), FileUtils.PATH);
 				updateHighScoreList();
 			}
