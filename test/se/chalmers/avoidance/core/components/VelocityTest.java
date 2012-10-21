@@ -77,8 +77,9 @@ public class VelocityTest extends FloatTest {
 		// positive speed
 		mVelocity.setSpeed(s2);
 		assertFloatEquals(mVelocity.getSpeed() , s2);
-		if (a1 != s2)
+		if (a1 != s2) {
 			assertFloatEquals(mVelocity.getAngle() , a1);
+		}
 		
 		// 0 speed
 		mVelocity.setSpeed(0);
@@ -96,8 +97,9 @@ public class VelocityTest extends FloatTest {
 		// positive angle
 		mVelocity.setAngle(a2);
 		assertFloatEquals(mVelocity.getAngle() , a2);
-		if (s1 != a2)
+		if (s1 != a2) {
 			assertFloatEquals(mVelocity.getSpeed() , s1);
+		}
 
 		// 0 angle
 		mVelocity.setAngle(0);

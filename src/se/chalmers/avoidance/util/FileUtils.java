@@ -40,7 +40,7 @@ import android.content.Context;
  * 
  * @author Florian Minges
  */
-public class FileUtils {
+public final class FileUtils {
 
 	private static Context context;
 	
@@ -79,19 +79,20 @@ public class FileUtils {
 				returnList.add(row);
 			}
 			fis.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (IOException e) {}
 
 		return returnList;
 	}
 	
 	/**
-	 * Saves a string to a file.
-	 * @param output the string to save
+	 * Saves a object to a file.<p>
+	 * ie it saves what the objects <code>toString()</code>-method
+	 * returns.
+	 * 
+	 * @param output the object to save
 	 * @param path the file path to store the string in
 	 */
-	public static void saveToFile(String output, String path) {
+	public static void saveToFile(Object output, String path) {
 		if (output == null) {
 			output = "";
 		}
@@ -102,9 +103,7 @@ public class FileUtils {
 						new FileOutputStream(path);
 			fos.write(output.toString().getBytes());
 			fos.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (IOException e) {}
 	}
 	
 	/**
@@ -148,7 +147,6 @@ public class FileUtils {
 			try {
 				returnList.add(Integer.valueOf(list.get(i)));
 			} catch (NumberFormatException nfe) {
-				nfe.printStackTrace();
 				return null;
 			}
 		}

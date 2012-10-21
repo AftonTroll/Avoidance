@@ -29,7 +29,9 @@ import java.util.List;
  * @author Florian Minges, Filip Brynfors
  *
  */
-public class Utils {
+public final class Utils {
+	
+	private Utils() {}
 	
 	/**
 	 * Simplifies the angle so that it fits in the interval
