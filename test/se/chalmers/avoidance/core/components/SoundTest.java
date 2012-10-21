@@ -10,7 +10,7 @@ public class SoundTest {
 	private Sound sound;
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		sound = new Sound("bounce");
 	}
 

@@ -9,7 +9,7 @@ public class AccelerationTest {
 	private static Acceleration a1, a2;
 	
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	public static void setUpBeforeClass() {
 		a1 = new Acceleration(5);
 		a2 = new Acceleration(30.5f);
 	}

@@ -9,7 +9,7 @@ public class FrictionTest {
 	private static Friction f1, f2, f3;
 	
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	public static void setUpBeforeClass() {
 		f1 = new Friction(0.1f);
 		f2 = new Friction(0.9f);
 		f3 = new Friction(3f);
