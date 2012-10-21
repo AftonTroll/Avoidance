@@ -83,6 +83,16 @@ public class StateManager implements PropertyChangeListener {
 	}
 	
 	/**
+	 * Returns the state associated with the <code>StateID</code> in the parameter.
+	 * 
+	 * @param stateID the states ID
+	 * @return the state associated with the given <code>StateID</code>
+	 */
+	public IState getState(StateID stateID) {
+		return stateMap.get(stateID);
+	}
+	
+	/**
 	 * Returns the <code>StateID</code> of the current active state.
 	 * @return the <code>StateID</code> of the current active state
 	 */

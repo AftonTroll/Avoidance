@@ -284,8 +284,11 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	 */
 	public void restartGame() {
 		stateManager.removeState(StateID.Game);
-		stateManager.addState(StateID.Game, new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
-				regions, fonts, this.getVertexBufferObjectManager()));
+		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
+				regions, fonts, this.getVertexBufferObjectManager());
+		stateManager.addState(StateID.Game, gameState);
+		gameState.addPropertyChangeListener((HighScoreState)stateManager.getState(
+				StateID.Highscore));
 	}
 	
 	/**
