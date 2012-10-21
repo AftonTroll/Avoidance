@@ -23,25 +23,18 @@ package se.chalmers.avoidance.core.components;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import se.chalmers.avoidance.util.Utils;
 
 public class VelocityTest extends FloatTest {
 
-	private static float s1, s2;
-	private static float a1, a2;
+	private static float s1 = 4f;
+	private static float s2 = 10f;
+	private static float a1 = (float) (Math.PI / 2);
+	private static float a2 = (float) Math.PI;
 
 	private Velocity mVelocity;
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		s1 = 4f;
-		s2 = 10f;
-		a1 = (float) (Math.PI / 2);
-		a2 = (float) Math.PI;
-	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -148,7 +141,7 @@ public class VelocityTest extends FloatTest {
 		// 360 degree turn -> still the same angle
 		mVelocity.addAngle((float) (2 * Math.PI));
 		assertFloatEquals(mVelocity.getAngle() - a1); 
-		mVelocity.addAngle((float) (-2 * Math.PI));
+		mVelocity.addAngle((float) -(2 * Math.PI));
 		assertFloatEquals(mVelocity.getAngle() - a1);
 
 		// add angle of 0 radian
