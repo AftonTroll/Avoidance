@@ -57,6 +57,7 @@ import se.chalmers.avoidance.util.ScreenResolution;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.hardware.SensorManager;
+import android.view.KeyEvent;
 
 /**
  * The starting point of the application.
@@ -249,6 +250,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 		stateManager.addState(StateID.Game, gameState);
 		stateManager.addState(StateID.Menu, menuState);
 		stateManager.addState(StateID.Highscore, highscoreState);
+		gameState.addPropertyChangeListener(highscoreState);
 		
 		stateManager.addPropertyChangeListener(this);
 	}
@@ -282,13 +284,16 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	 */
 	public void restartGame() {
 		stateManager.removeState(StateID.Game);
-		stateManager.addState(StateID.Game, new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
-				regions, fonts, this.getVertexBufferObjectManager()));
+		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
+				regions, fonts, this.getVertexBufferObjectManager());
+		stateManager.addState(StateID.Game, gameState);
+		gameState.addPropertyChangeListener((HighScoreState)stateManager.getState(
+				StateID.Highscore));
 	}
 	
 	/**
-	 * Used when the activity is resumed
-	 * Resumes the Audio
+	 * Used when the activity is resumed.<p>
+	 * Resumes the Audio and the application.
 	 */
 	@Override
 	public void onResume(){
@@ -297,12 +302,26 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	}
 	
 	/**
-	 * Used when the activity is paused
-	 * Pauses the Audio
+	 * Used when the activity is paused.<p>
+	 * Pauses the Audio and the application.
 	 */
 	@Override
 	public void onPause(){
 		super.onPause();
 		AudioManager.getInstance().pause();
+	}
+	
+	/**
+	 * Gets called when the backbutton is pressed.<p>
+	 * Either sets the state to the menu, or exits the application.
+	 */
+	@Override
+	public void onBackPressed() {
+		if (stateManager.getActiveStateID() == StateID.Menu) {
+			finish();
+		} else {
+			stateManager.setState(StateID.Menu);
+		}
+	   
 	}
 }

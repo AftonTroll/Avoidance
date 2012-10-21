@@ -24,7 +24,6 @@ package se.chalmers.avoidance.core.states;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.andengine.entity.scene.Scene;
@@ -133,6 +132,9 @@ public class GameState implements IState, PropertyChangeListener {
 	 */
 	public void update(float tpf) {
 		if (process) {
+			if (tpf > 1.0f) {
+				tpf = 0; //ie, if tpf is too large, don't update
+			}
 			world.setDelta(tpf);
 			world.process();
 		}
@@ -175,11 +177,15 @@ public class GameState implements IState, PropertyChangeListener {
 	 * Shows the game over scene.
 	 * 
 	 * @param score the players score
+	 * @param event the <code>PropertyChangeEvent</code> that triggered this method
 	 */
-	public void gameOver(int score) {
-		enableProcess(false);
-		this.gameOverScene.setScore(score);
-		this.gameOverScene.addTo(scene);
+	public synchronized void gameOver(int score, PropertyChangeEvent event) {
+		if (process) {
+			enableProcess(false);
+			this.gameOverScene.setScore(score);
+			this.gameOverScene.addTo(scene);
+			pcs.firePropertyChange(event);
+		} 
 	}
 	
 	/**
@@ -213,7 +219,7 @@ public class GameState implements IState, PropertyChangeListener {
 				} catch (ClassCastException cce) {
 					cce.printStackTrace(); //score is 0 if error occurs
 				}
-				gameOver(score);
+				gameOver(score, event);
 			}
 		}
 	}

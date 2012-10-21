@@ -51,7 +51,7 @@ public final class GameOverNotifier {
 	 * Creates a new instance if there is none yet.
 	 * @return the instance of this <code>GameOverNotifier</code>-class
 	 */
-	public static GameOverNotifier getInstance() {
+	public synchronized static GameOverNotifier getInstance() {
 		if (instance == null) {
 			instance = new GameOverNotifier();
 		}
