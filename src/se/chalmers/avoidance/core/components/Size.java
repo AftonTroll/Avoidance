@@ -143,17 +143,22 @@ public class Size extends Component {
 	@Override
 	public boolean equals(Object obj) {
 		//Eclipse auto-generated
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Size other = (Size) obj;
-		if (Float.floatToIntBits(height) != Float.floatToIntBits(other.height))
+		if (Float.floatToIntBits(height) != Float.floatToIntBits(other.height)) {
 			return false;
-		if (Float.floatToIntBits(width) != Float.floatToIntBits(other.width))
+		}
+		if (Float.floatToIntBits(width) != Float.floatToIntBits(other.width)) {
 			return false;
+		}
 		return true;
 	}
 

@@ -78,8 +78,9 @@ public class SizeTest extends FloatTest {
 		// positive value
 		mSize.setWidth(w2);
 		assertFloatEquals(mSize.getWidth() - w2);
-		if (h1 - w2 >= TOLERANCE)
+		if (h1 - w2 >= TOLERANCE) {
 			assertFloatEquals(mSize.getHeight() - h1);
+		}
 		
 		// negative value
 		mSize.setWidth(-1);
@@ -98,8 +99,9 @@ public class SizeTest extends FloatTest {
 		// positive value
 		mSize.setHeight(h2);
 		assertFloatEquals(mSize.getHeight() - h2);
-		if (w1 - h2 >= TOLERANCE)
+		if (w1 - h2 >= TOLERANCE) {
 			assertFloatEquals(mSize.getWidth() - w1);
+		}
 		
 		// negative value
 		mSize.setHeight(-1);

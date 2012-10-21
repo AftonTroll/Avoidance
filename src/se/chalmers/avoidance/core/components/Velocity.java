@@ -131,6 +131,7 @@ public class Velocity extends Component {
 	 */
 	@Override
 	public int hashCode() {
+		//Eclipse auto-generated
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + Float.floatToIntBits(angle);
@@ -143,17 +144,23 @@ public class Velocity extends Component {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		//Eclipse auto-generated
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Velocity other = (Velocity) obj;
-		if (Float.floatToIntBits(angle) != Float.floatToIntBits(other.angle))
+		if (Float.floatToIntBits(angle) != Float.floatToIntBits(other.angle)) {
 			return false;
-		if (Float.floatToIntBits(speed) != Float.floatToIntBits(other.speed))
+		}
+		if (Float.floatToIntBits(speed) != Float.floatToIntBits(other.speed)) {
 			return false;
+		}
 		return true;
 	}
 	
