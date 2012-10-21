@@ -28,8 +28,8 @@ import se.chalmers.avoidance.core.components.FloatTest;
 
 public class ScreenResolutionTest extends FloatTest {
 	
-	private static float [] widths = {0f, 20f, 200f, 300f, 500f, 1000f, 2000f};
-	private static float [] heights = {0f, 20f, 200f, 300f, 500f, 1000f};
+	private static final float [] WIDTHS = {0f, 20f, 200f, 300f, 500f, 1000f, 2000f};
+	private static final float [] HEIGHTS = {0f, 20f, 200f, 300f, 500f, 1000f};
 	
 	@Test
 	public void testScreenResolution() {
@@ -60,24 +60,24 @@ public class ScreenResolutionTest extends FloatTest {
 	@Test
 	public void testGetXPosHorizontalCentering() {
 //		return (ScreenResolution.getWidthResolution() - shape.getWidth()) / 2; <- the method
-		assertFloatEquals(mockMethodGetXPosHorizontalCentering(widths[0]), 640);
-		assertFloatEquals(mockMethodGetXPosHorizontalCentering(widths[1]), 630);
-		assertFloatEquals(mockMethodGetXPosHorizontalCentering(widths[2]), 540);
-		assertFloatEquals(mockMethodGetXPosHorizontalCentering(widths[3]), 490);
-		assertFloatEquals(mockMethodGetXPosHorizontalCentering(widths[4]), 390);
-		assertFloatEquals(mockMethodGetXPosHorizontalCentering(widths[5]), 140);
-		assertFloatEquals(mockMethodGetXPosHorizontalCentering(widths[6]), -360);
+		assertFloatEquals(mockMethodGetXPosHorizontalCentering(WIDTHS[0]), 640);
+		assertFloatEquals(mockMethodGetXPosHorizontalCentering(WIDTHS[1]), 630);
+		assertFloatEquals(mockMethodGetXPosHorizontalCentering(WIDTHS[2]), 540);
+		assertFloatEquals(mockMethodGetXPosHorizontalCentering(WIDTHS[3]), 490);
+		assertFloatEquals(mockMethodGetXPosHorizontalCentering(WIDTHS[4]), 390);
+		assertFloatEquals(mockMethodGetXPosHorizontalCentering(WIDTHS[5]), 140);
+		assertFloatEquals(mockMethodGetXPosHorizontalCentering(WIDTHS[6]), -360);
 	}
 	
 	@Test
 	public void testGetYPosVerticalCentering() {
 //		return (ScreenResolution.getHeightResolution() - shape.getHeight()) / 2; <- the method
-		assertFloatEquals(mockMethodGetYPosVerticalCentering(heights[0]), 400);
-		assertFloatEquals(mockMethodGetYPosVerticalCentering(heights[1]), 390);
-		assertFloatEquals(mockMethodGetYPosVerticalCentering(heights[2]), 300);
-		assertFloatEquals(mockMethodGetYPosVerticalCentering(heights[3]), 250);
-		assertFloatEquals(mockMethodGetYPosVerticalCentering(heights[4]), 150);
-		assertFloatEquals(mockMethodGetYPosVerticalCentering(heights[5]), -100);
+		assertFloatEquals(mockMethodGetYPosVerticalCentering(HEIGHTS[0]), 400);
+		assertFloatEquals(mockMethodGetYPosVerticalCentering(HEIGHTS[1]), 390);
+		assertFloatEquals(mockMethodGetYPosVerticalCentering(HEIGHTS[2]), 300);
+		assertFloatEquals(mockMethodGetYPosVerticalCentering(HEIGHTS[3]), 250);
+		assertFloatEquals(mockMethodGetYPosVerticalCentering(HEIGHTS[4]), 150);
+		assertFloatEquals(mockMethodGetYPosVerticalCentering(HEIGHTS[5]), -100);
 	}
 	
 }
