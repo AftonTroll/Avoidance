@@ -59,6 +59,7 @@ public class EntityFactory {
 		world.getManager(TagManager.class).register("PLAYER", player);
 		world.getManager(GroupManager.class).add(player, "PLAYER");
 		world.getManager(GroupManager.class).add(player, "MOVINGENTITIES");
+		world.getManager(GroupManager.class).add(player, "CIRCLESHAPES");
 		
 		player.addComponent(new Transform(xPos,yPos));
 		player.addComponent(new Velocity());
@@ -108,6 +109,7 @@ public class EntityFactory {
 		Entity enemy = world.createEntity();
 		world.getManager(GroupManager.class).add(enemy, "ENEMIES");
 		world.getManager(GroupManager.class).add(enemy, "MOVINGENTITIES");
+		world.getManager(GroupManager.class).add(enemy, "CIRCLESHAPES");
 		
 		enemy.addComponent(new Transform(xPos, yPos));
 		enemy.addComponent(new Velocity());
@@ -130,6 +132,7 @@ public class EntityFactory {
 		Entity enemy = world.createEntity();
 		world.getManager(GroupManager.class).add(enemy, "ENEMIES");
 		world.getManager(GroupManager.class).add(enemy, "MOVINGENTITIES");
+		world.getManager(GroupManager.class).add(enemy, "CIRCLESHAPES");
 		
 		enemy.addComponent(new Transform(xPos, yPos));
 		enemy.addComponent(new Velocity());
@@ -188,6 +191,7 @@ public class EntityFactory {
 	public static Entity createPowerUp(World world, float xPos, float yPos, BuffType buffType, int buffStrength) {
 		Entity powerUp = world.createEntity();
 		world.getManager(GroupManager.class).add(powerUp, "POWERUPS");
+		world.getManager(GroupManager.class).add(powerUp, "CIRCLESHAPES");
 		
 		powerUp.addComponent(new Transform(xPos, yPos));
 		powerUp.addComponent(new Size(64, 64));
@@ -208,6 +212,7 @@ public class EntityFactory {
 	public static Entity createPitobstacle(World world, float xPos, float yPos){
 		Entity pitobstacle = world.createEntity();
 		world.getManager(GroupManager.class).add(pitobstacle, "PITOBSTACLES");
+		world.getManager(GroupManager.class).add(pitobstacle, "CIRCLESHAPES");
 		
 		pitobstacle.addComponent(new Transform(xPos, yPos));
 		pitobstacle.addComponent(new Size(64,64));

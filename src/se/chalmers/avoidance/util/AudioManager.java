@@ -27,12 +27,12 @@ import org.andengine.audio.music.Music;
 import org.andengine.audio.sound.Sound;
 
 /**
- * A manager that stores and plays music and sounds
+ * A manager that stores and plays music and sounds.
  * 
  * @author Filip Brynfors
  *
  */
-public class AudioManager {
+public final class AudioManager {
 	private Map<String, Music> musicMap = new HashMap<String, Music>();
 	private Map<String, Sound> soundMap = new HashMap<String, Sound>();
 	private Music currentMusic = null;
@@ -43,7 +43,7 @@ public class AudioManager {
 	}
 	
 	/**
-	 * Gets the AudioManager instance
+	 * Gets the AudioManager instance.
 	 * @return the audioManager
 	 */
 	public static synchronized AudioManager getInstance(){
@@ -54,7 +54,7 @@ public class AudioManager {
 	}
 	
 	/**
-	 * Adds a new music to the manager
+	 * Adds a new music to the manager.
 	 * @param name the name of the music
 	 * @param music the music
 	 */
@@ -63,7 +63,7 @@ public class AudioManager {
 	}
 	
 	/**
-	 * Adds a new sound to the manager
+	 * Adds a new sound to the manager.
 	 * @param name the name of the sound
 	 * @param sound the sound
 	 */
@@ -72,7 +72,7 @@ public class AudioManager {
 	}
 	
 	/**
-	 * Removes a music from the manager
+	 * Removes a music from the manager.
 	 * @param name the name of the music
 	 */
 	public void removeMusic(String name){
@@ -80,7 +80,7 @@ public class AudioManager {
 	}
 	
 	/**
-	 * Removes a sound from the manager
+	 * Removes a sound from the manager.
 	 * @param name the name of the sound
 	 */
 	public void removeSound(String name){
@@ -88,7 +88,7 @@ public class AudioManager {
 	}
 	
 	/**
-	 * Plays the music with the given name
+	 * Plays the music with the given name.
 	 * @param name the name of the music
 	 */
 	public void playMusic(String name){		
@@ -110,7 +110,7 @@ public class AudioManager {
 	}
 	
 	/**
-	 * Plays the sound with the given name
+	 * Plays the sound with the given name.
 	 * @param name the name of the sound
 	 */
 	public void playSound(String name){
@@ -120,7 +120,7 @@ public class AudioManager {
 	}
 	
 	/**
-	 * Pauses the music
+	 * Pauses the music.
 	 */
 	public void pause(){
 		if(currentMusic != null){
@@ -129,7 +129,7 @@ public class AudioManager {
 	}
 	
 	/**
-	 * Resumes the music
+	 * Resumes the music.
 	 */
 	public void resume(){
 		if(currentMusic != null){

@@ -32,9 +32,9 @@ import com.artemis.World;
  *
  */
 public class EnemyCollisionHandler implements CollisionHandler{
-	
+
 	private World world;
-	
+
 	/**
 	 * Constructs a EnemyCollisionHandler.
 	 * 
@@ -44,7 +44,7 @@ public class EnemyCollisionHandler implements CollisionHandler{
 		this.world=world;
 	}
 	/**
-	 * Takes the player and enemy and handles the collision between them
+	 * Takes the player and enemy and handles the collision between them.
 	 * 
 	 * @param player The player.
 	 * @param enemy The enemy.
@@ -56,7 +56,7 @@ public class EnemyCollisionHandler implements CollisionHandler{
 		if (jump == null || !jump.isInTheAir()) {
 			GameOverNotifier.getInstance().gameOver();
 		}
-		
+
 	}
 
 }

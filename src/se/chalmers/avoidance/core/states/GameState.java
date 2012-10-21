@@ -24,7 +24,7 @@ package se.chalmers.avoidance.core.states;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.SpriteBackground;
@@ -74,8 +74,8 @@ public class GameState implements IState, PropertyChangeListener {
 	 * @param fonts a <code>HashMap</code> containing loaded fonts
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
 	 */
-	public GameState(SensorManager sensorManager, HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts, VertexBufferObjectManager vbom) {
-		initialize(sensorManager, regions, fonts, vbom);
+	public GameState(SensorManager sensorManager, Map<String, TextureRegion> regions, Map<String, Font> fonts, VertexBufferObjectManager vbom) {
+		this.initialize(sensorManager, regions, fonts, vbom);
 		this.pcs = new PropertyChangeSupport(this);
 		this.gameOverScene = new GameOverScene(vbom, regions, fonts);
 		this.gameOverScene.setButtonSpriteOnClickListener(getButtonSpriteOnClickListener());
@@ -89,12 +89,12 @@ public class GameState implements IState, PropertyChangeListener {
 	 * @param fonts a <code>HashMap</code> containing loaded fonts
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
 	 */
-	private void initialize(SensorManager sensorManager, HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts, VertexBufferObjectManager vbom) {
+	private void initialize(SensorManager sensorManager, Map<String, TextureRegion> regions, Map<String, Font> fonts, VertexBufferObjectManager vbom) {
 		scene = new Scene();
 		
 		Sprite backgroundSprite = new Sprite(0, 0, 1280, 800, regions.get("background.png"), vbom);
 		scene.setBackground(new SpriteBackground(backgroundSprite));
-		world = new World();		
+		world = new World();
 		world.setManager(new GroupManager());
 		world.setManager(new TagManager());
 		
@@ -132,6 +132,9 @@ public class GameState implements IState, PropertyChangeListener {
 	 */
 	public void update(float tpf) {
 		if (process) {
+			if (tpf > 1.0f) {
+				tpf = 0; //ie, if tpf is too large, don't update
+			}
 			world.setDelta(tpf);
 			world.process();
 		}
@@ -174,13 +177,16 @@ public class GameState implements IState, PropertyChangeListener {
 	 * Shows the game over scene.
 	 * 
 	 * @param score the players score
+	 * @param event the <code>PropertyChangeEvent</code> that triggered this method
 	 */
-	public void gameOver(int score) {
-		enableProcess(false);
-		this.gameOverScene.setScore(score);
-		this.gameOverScene.addTo(scene);
+	public synchronized void gameOver(int score, PropertyChangeEvent event) {
+		if (process) {
+			enableProcess(false);
+			this.gameOverScene.setScore(score);
+			this.gameOverScene.addTo(scene);
+			pcs.firePropertyChange(event);
+		} 
 	}
-	
 	
 	/**
 	 * Returns a <code>ButtonSprite.OnClickListener</code>, that removes this scenes
@@ -213,7 +219,7 @@ public class GameState implements IState, PropertyChangeListener {
 				} catch (ClassCastException cce) {
 					cce.printStackTrace(); //score is 0 if error occurs
 				}
-				gameOver(score);
+				gameOver(score, event);
 			}
 		}
 	}

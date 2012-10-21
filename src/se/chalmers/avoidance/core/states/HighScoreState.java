@@ -23,8 +23,8 @@ package se.chalmers.avoidance.core.states;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.ButtonSprite;
@@ -34,10 +34,10 @@ import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.HorizontalAlign;
+import org.andengine.util.color.Color;
 
 import se.chalmers.avoidance.constants.EventMessageConstants;
 import se.chalmers.avoidance.constants.FontConstants;
-import se.chalmers.avoidance.core.collisionhandlers.GameOverNotifier;
 import se.chalmers.avoidance.util.FileUtils;
 import se.chalmers.avoidance.util.ScreenResolution;
 import se.chalmers.avoidance.util.Utils;
@@ -47,7 +47,7 @@ import se.chalmers.avoidance.util.Utils;
  * 
  * @author Florian Minges
  */
-public class HighscoreState implements IState, PropertyChangeListener {
+public class HighScoreState implements IState , PropertyChangeListener {
 	
 	private Scene scene;
 	private PropertyChangeSupport pcs;
@@ -56,18 +56,19 @@ public class HighscoreState implements IState, PropertyChangeListener {
 	private Text highscoreList;
 	private Text rankingNumber;
 	private ButtonSprite backButton;
-	private ButtonSprite extraButton;
 	
 	/**
 	 * The maximum number of entries shown in the high score list.
 	 */
 	public static final int MAX_HIGH_SCORE_ENTRIES = 5;
 	
+	private static final Color HIGH_SCORE_LIST_COLOR = new Color(1.0f, 0.9f, 0.1f, 1.0f);
+	
 	
 	/**
 	 * Constructs a new <code>HighscoreState</code>.
 	 */
-	public HighscoreState(HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts, 
+	public HighScoreState(Map<String, TextureRegion> regions, Map<String, Font> fonts, 
 			VertexBufferObjectManager vbom) {
 		this.scene = new Scene();
 		initialize(regions, fonts, vbom);
@@ -77,14 +78,14 @@ public class HighscoreState implements IState, PropertyChangeListener {
 	/**
 	 * Initializes the high score state.
 	 * 
-	 * @param regions a <code>HashMap</code> containing loaded textures/regions
-	 * @param fonts a <code>HashMap</code> containing loaded fonts
+	 * @param regions a <code>Map</code> containing loaded textures/regions
+	 * @param fonts a <code>Map</code> containing loaded fonts
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
 	 */
-	private void initialize(HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts, 
+	private void initialize(Map<String, TextureRegion> regions, Map<String, Font> fonts, 
 			VertexBufferObjectManager vbom) {
-		createHighscoreTitle(regions, vbom);
-		createHighscoreList(fonts, vbom);
+		createHighScoreTitle(regions, vbom);
+		createHighScoreList(fonts, vbom);
 		createBackButton(regions, vbom);
 		
 		scene.attachChild(highscoreTitle);
@@ -92,91 +93,79 @@ public class HighscoreState implements IState, PropertyChangeListener {
 		scene.attachChild(highscoreList);
 		scene.attachChild(backButton);
 		
-		this.updateHighscoreList();
-		
-		// listen to 'Game Over'-events, so we can update the high score
-		GameOverNotifier.getInstance().addPropertyChangeListener(this);
+		this.updateHighScoreList();
 	}
 	
 	/**
 	 * Creates and initializes a high score title, 
 	 * using a <code>Sprite</code>.
 	 * 
-	 * @param regions a <code>HashMap</code> containing loaded textures/regions
+	 * @param regions a <code>Map</code> containing loaded textures/regions
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
 	 */
-	private void createHighscoreTitle(HashMap<String, TextureRegion> regions, 
+	private void createHighScoreTitle(Map<String, TextureRegion> regions, 
 			VertexBufferObjectManager vbom) {
-		Sprite sprite = new Sprite(0, 0, regions.get("highscore.png"), vbom);
+		highscoreTitle = new Sprite(0, 0, regions.get("highscore.png"), vbom);
 		
-		float xPos = ScreenResolution.getXPosHorizontalCentering(sprite);
-		float yPos = ScreenResolution.getYPosVerticalCentering(sprite) - 300;
-		sprite.setPosition(xPos, yPos);
-		
-		this.highscoreTitle = sprite;
+		float xPos = ScreenResolution.getXPosHorizontalCentering(highscoreTitle);
+		float yPos = ScreenResolution.getYPosVerticalCentering(highscoreTitle) - 300;
+		highscoreTitle.setPosition(xPos, yPos);
 	}
 	
 	/**
 	 * Creates and initializes the high score list.
 	 * 
-	 * @param fonts a <code>HashMap</code> containing loaded fonts
+	 * @param fonts a <code>Map</code> containing loaded fonts
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
 	 */
-	private void createHighscoreList(HashMap<String, Font> fonts, VertexBufferObjectManager vbom) {
-		Text list = new Text(0, 0, fonts.get(FontConstants.HIGH_SCORE), 
+	private void createHighScoreList(Map<String, Font> fonts, VertexBufferObjectManager vbom) {
+		highscoreList = new Text(0, 0, fonts.get(FontConstants.HIGH_SCORE), 
 				"", "XXXXXXXXX".length() * MAX_HIGH_SCORE_ENTRIES, vbom);
-		Text rank = new Text(0, 0, fonts.get(FontConstants.HIGH_SCORE), 
+		rankingNumber = new Text(0, 0, fonts.get(FontConstants.HIGH_SCORE), 
 				"", "1) ".length() * MAX_HIGH_SCORE_ENTRIES, vbom);
-		list.setColor(1.0f, 0.9f, 0.1f, 1.0f);
-		rank.setColor(1.0f, 0.9f, 0.1f, 1.0f);
-		list.setHorizontalAlign(HorizontalAlign.RIGHT);
-		rank.setHorizontalAlign(HorizontalAlign.RIGHT);
+		highscoreList.setColor(HIGH_SCORE_LIST_COLOR);
+		rankingNumber.setColor(HIGH_SCORE_LIST_COLOR);
+		highscoreList.setHorizontalAlign(HorizontalAlign.RIGHT);
+		rankingNumber.setHorizontalAlign(HorizontalAlign.RIGHT);
 		
-		float xPos = ScreenResolution.getXPosHorizontalCentering(list);
-		float yPos = ScreenResolution.getYPosVerticalCentering(list);
-		rank.setPosition(xPos, yPos);
-		list.setPosition(xPos + rank.getWidth(), yPos);
-		
-		this.highscoreList = list;
-		this.rankingNumber = rank;
+		float xPos = ScreenResolution.getXPosHorizontalCentering(highscoreList);
+		float yPos = ScreenResolution.getYPosVerticalCentering(highscoreList);
+		rankingNumber.setPosition(xPos, yPos);
+		highscoreList.setPosition(xPos + rankingNumber.getWidth(), yPos);
 	}
 	
 	/**
 	 * Creates and initializes the back button.
 	 * 
-	 * @param regions a <code>HashMap</code> containing loaded textures/regions
+	 * @param regions a <code>Map</code> containing loaded textures/regions
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
 	 */
-	private void createBackButton(HashMap<String, TextureRegion> regions, VertexBufferObjectManager vbom) {
-		ButtonSprite button = new ButtonSprite(0, 0, regions.get("okButton.png"), vbom);
+	private void createBackButton(Map<String, TextureRegion> regions, VertexBufferObjectManager vbom) {
+		backButton = new ButtonSprite(0, 0, regions.get("okButton.png"), vbom);
 		
-		float xPos = ScreenResolution.getXPosHorizontalCentering(button);
-		float yPos = ScreenResolution.getYPosVerticalCentering(button) + 300;
-		button.setPosition(xPos, yPos);
+		float xPos = ScreenResolution.getXPosHorizontalCentering(backButton);
+		float yPos = ScreenResolution.getYPosVerticalCentering(backButton) + 300;
+		backButton.setPosition(xPos, yPos);
 		
-		button.setOnClickListener(new ButtonSprite.OnClickListener() {
+		backButton.setOnClickListener(new ButtonSprite.OnClickListener() {
 			public void onClick( ButtonSprite pButtonSprite, float pTouchAreaLocalX, float pTouchAreaLocalY) {
 				pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Highscore, StateID.Menu);
 		    } 
 		});
-		this.scene.registerTouchArea(button);
+		this.scene.registerTouchArea(backButton);
 		this.scene.setTouchAreaBindingOnActionDownEnabled(true);
-		
-		this.backButton = button;
 	}
 	
 	/**
 	 * Sets the text of the high score list, or displays an
 	 * error message if no satisfying list was provided.
-	 * 
-	 * @param list the high scores
 	 */
-	public void updateHighscoreList() {
+	public void updateHighScoreList() {
 		String highscore;
 		String rank;
 		
 		try {
-			highscore = retrieveHighscoreString(MAX_HIGH_SCORE_ENTRIES);
+			highscore = retrieveHighScoreString(MAX_HIGH_SCORE_ENTRIES);
 			StringBuilder builder = new StringBuilder();
 			for (int i = 1; i <= MAX_HIGH_SCORE_ENTRIES; i++) {
 				builder.append(i);
@@ -184,7 +173,7 @@ public class HighscoreState implements IState, PropertyChangeListener {
 			}
 			rank = builder.toString();
 			FileUtils.saveToFile(highscore, FileUtils.PATH); //save only the high scores
-		} catch (NoHighscoreException nhe) {
+		} catch (NoHighScoreException nhe) {
 			highscore = "No highscores found";
 			rank = "";
 		}
@@ -202,15 +191,14 @@ public class HighscoreState implements IState, PropertyChangeListener {
 	 *
 	 * @return a sorted multi line string representing the high scores
 	 */
-	public String retrieveHighscoreString(int maxEntries) throws NoHighscoreException {
+	public String retrieveHighScoreString(int maxEntries) throws NoHighScoreException {
 		List<String> list = FileUtils.readFromFile(FileUtils.PATH);
 		List<Integer> numbers = FileUtils.getSortedIntegers(list);
 		if (numbers == null || numbers.isEmpty()) {
-			throw new NoHighscoreException();
+			throw new NoHighScoreException();
 		}
-		Utils.trimList(numbers, MAX_HIGH_SCORE_ENTRIES);
-		String sortedList = FileUtils.createMultiLineString(numbers);
-		return sortedList;
+		Utils.trimList(numbers, maxEntries);
+		return FileUtils.createMultiLineString(numbers);
 	}
 	
 	/**
@@ -250,7 +238,7 @@ public class HighscoreState implements IState, PropertyChangeListener {
 	 * An exception thrown when no high score was found.
 	 * @author Florian Minges
 	 */
-	private class NoHighscoreException extends Exception {
+	private class NoHighScoreException extends Exception {
 		private static final long serialVersionUID = -4952572847775951630L;
 	}
 
@@ -266,11 +254,9 @@ public class HighscoreState implements IState, PropertyChangeListener {
 				int score = 0;
 				try {
 					score = (Integer) event.getNewValue();
-				} catch (ClassCastException cce) {
-					cce.printStackTrace(); //score is 0 if error occurs
-				}
+				} catch (ClassCastException cce) {} //score is 0 if error occurs
 				FileUtils.addToFile(String.valueOf(score), FileUtils.PATH);
-				updateHighscoreList();
+				updateHighScoreList();
 			}
 		}
 	}

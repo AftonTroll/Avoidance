@@ -23,7 +23,7 @@ package se.chalmers.avoidance.core.components;
 import com.artemis.Component;
 
 /**
- * Component containing information about the sound
+ * Component containing information about the sound.
  * 
  * @author Filip Brynfors
  *
@@ -33,7 +33,7 @@ public class Sound extends Component {
 	private boolean playing = false;
 	
 	/**
-	 * Constructs a sound with the specified name
+	 * Constructs a sound with the specified name.
 	 * @param name the name
 	 */
 	public Sound(String name){
@@ -57,7 +57,7 @@ public class Sound extends Component {
 	}
 	
 	/**
-	 * Sets if the sound should be playing or not
+	 * Sets if the sound should be playing or not.
 	 * @param playing true if the sound should be playing
 	 */
 	public void setPlaying(boolean playing) {
@@ -65,7 +65,7 @@ public class Sound extends Component {
 	}
 	
 	/**
-	 * Returns whether the sound should be playing or not
+	 * Returns whether the sound should be playing or not.
 	 * @return true if the sound should be playing, false otherwise
 	 */
 	public boolean isPlaying() {

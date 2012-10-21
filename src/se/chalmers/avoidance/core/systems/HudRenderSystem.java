@@ -35,13 +35,13 @@ import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 
 /**
- * System for handling rendering of the heads-up display * 
+ * System for handling rendering of the heads-up display.
  * 
  * @author Jakob Svensson
  *
  */
 public class HudRenderSystem extends EntityProcessingSystem{
-	
+
 	private Font font;
 	private Text scoreText;
 	private Text timeText;
@@ -49,9 +49,9 @@ public class HudRenderSystem extends EntityProcessingSystem{
 	private VertexBufferObjectManager vbom;
 	private ComponentMapper<Time> timeMapper;
 	private ComponentMapper<Score> scoreMapper;
-	
+
 	/**
-	 * Construct a new HudRenderSystem
+	 * Construct a new HudRenderSystem.
 	 * 
 	 * @param scene The scene of the game
 	 * @param vbom A VertexBufferObjectManager
@@ -63,24 +63,25 @@ public class HudRenderSystem extends EntityProcessingSystem{
 		this.scene = scene;
 		this.vbom = vbom;
 	}
-	
+
 	/**
-	 * This method is called when the system is initialized
+	 * This method is called when the system is initialized.
 	 */
 	@Override
 	protected void initialize(){
 		timeMapper = world.getMapper(Time.class);
 		scoreMapper = world.getMapper(Score.class);
-		scoreText = new Text(ScreenResolution.getWidthResolution()*4/5, 30, this.font, "Score :", "Score: XXXXX".length(), vbom);
+		scoreText = new Text(ScreenResolution.getWidthResolution()*4/5, 30,
+				this.font, "Score :", "Score: XXXXX".length(), vbom);
 		timeText = new Text(30, 30, this.font, "Time :", "Time: XXXXX".length(), vbom);
 		scene.attachChild(scoreText);
 		scene.attachChild(timeText);
 		scoreText.setZIndex(100);
 		timeText.setZIndex(100);
 	}
-	
+
 	/**
-	 * Determines if the system should be processed or not
+	 * Determines if the system should be processed or not.
 	 * 
 	 * @return true if system should be processed, false if not	
 	 */
@@ -88,9 +89,9 @@ public class HudRenderSystem extends EntityProcessingSystem{
 	protected boolean checkProcessing() {
 		return true;
 	}
-	
+
 	/**
-	 * Processes entities
+	 * Processes entities.
 	 * 
 	 * @param entity the entity to be processed
 	 */
@@ -99,7 +100,8 @@ public class HudRenderSystem extends EntityProcessingSystem{
 		Time time = timeMapper.get(entity);
 		Score score = scoreMapper.get(entity);
 		time.updateTime(world.getDelta());
-		timeText.setText("Time: "+Math.round(time.getTime())/60+"m "+ Math.round(time.getTime())%60+"s");
+		timeText.setText("Time: "+Math.round(time.getTime())/60+"m "+
+				Math.round(time.getTime())%60+"s");
 		scoreText.setText("Score :"+(Math.round(time.getTime())*10+score.getScore()));
 	}
 

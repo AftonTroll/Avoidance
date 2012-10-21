@@ -28,8 +28,8 @@ package se.chalmers.avoidance.core.systems;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Friction;
+import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.util.Utils;
@@ -43,26 +43,26 @@ import com.artemis.managers.TagManager;
 import com.artemis.utils.ImmutableBag;
 
 /**
- * System that handles the input of the user
+ * System that handles the input of the user.
  * and updates the players velocity and position
  * 
  * @author Filip Brynfors
  *
  */
 public class PlayerControlSystem extends EntitySystem implements PropertyChangeListener {
-	private final float ACCELERATION_MODIFIER = 20;
-	private final float MAX_SPEED = 400;
+	private static final float ACCELERATION_MODIFIER = 20;
+	private static final float MAX_SPEED = 400;
 	private float lastAccelerationX = 0;
 	private float lastAccelerationY = 0;
 	private TagManager tagManager;
 	@Mapper
-	ComponentMapper<Friction> frictionMapper;
+	private ComponentMapper<Friction> frictionMapper;
 	@Mapper
-	ComponentMapper<Velocity> velocityMapper;
+	private ComponentMapper<Velocity> velocityMapper;
 	@Mapper
-	ComponentMapper<Transform> transformMapper;
+	private ComponentMapper<Transform> transformMapper;
 	@Mapper
-	ComponentMapper<Jump> statusMapper;
+	private ComponentMapper<Jump> statusMapper;
 	
 	/**
 	 * Constructs a new PlayerControlSystem.
@@ -72,7 +72,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	}
 	
 	/**
-	 * This method is called when the system is initialized
+	 * This method is called when the system is initialized.
 	 */
 	@Override
 	protected void initialize() {
@@ -80,7 +80,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	}	
 
 	/**
-	 * Determines if the system should be processed or not
+	 * Determines if the system should be processed or not.
 	 * 
 	 * @return true if system should be processed, false otherwise
 	 */
@@ -157,22 +157,25 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	}
 
 	/**
-	 * Sets the values of the acceleration
+	 * Sets the values of the acceleration.
 	 * @param event the propertyChangeEvent containing the values of the accelerometer
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
-		if(event!=null && event.getNewValue() != null){
+		if(event==null){
+			return;
+		}
+		if(event.getNewValue() != null){
 			if("AccelerometerX".equals(event.getPropertyName())){
 				lastAccelerationX = (Float) event.getNewValue();
 			}
 			if("AccelerometerY".equals(event.getPropertyName())){
 				lastAccelerationY = (Float) event.getNewValue();
 			}
-		} else if (event != null) {
-			if("touch".equals(event.getPropertyName())){
-				if(tagManager.getEntity("PLAYER").getComponent(Jump.class).getJumpCooldownLeft() == 0) {
-					statusMapper.get(tagManager.getEntity("PLAYER")).setInTheAir(true);
-				}
+		//if there is no new value
+		} else {
+			if("touch".equals(event.getPropertyName()) && 
+					tagManager.getEntity("PLAYER").getComponent(Jump.class).getJumpCooldownLeft() == 0) {
+				statusMapper.get(tagManager.getEntity("PLAYER")).setInTheAir(true);
 			}
 		}
 	}

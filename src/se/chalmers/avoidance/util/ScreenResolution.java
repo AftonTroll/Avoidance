@@ -36,13 +36,16 @@ import org.andengine.entity.shape.RectangularShape;
  */
 public abstract class ScreenResolution {
     
+	private static final int CAMERA_WIDTH = 1280;
+	private static final int CAMERA_HEIGHT = 800;
+	
     /**
      * Returns the screens width.<p>
      * 
      * @return the screens width
      */
     public static int getWidthResolution() {
-    	return 1280; 
+    	return CAMERA_WIDTH; 
     }
     
     /**
@@ -51,7 +54,7 @@ public abstract class ScreenResolution {
      * @return the screens height 
      */
     public static int getHeightResolution() {
-    	return 800; 
+    	return CAMERA_HEIGHT; 
     }
 	
 	/**

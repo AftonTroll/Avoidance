@@ -29,7 +29,7 @@ import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 
 /**
- * System that handles the playing of sounds
+ * System that handles the playing of sounds.
  * 
  * @author Filip Brynfors
  *
@@ -45,7 +45,7 @@ public class SoundSystem extends EntityProcessingSystem {
 	}
 	
 	/**
-	 * This method is called when the system is initialized
+	 * This method is called when the system is initialized.
 	 */
 	@Override
 	protected void initialize(){

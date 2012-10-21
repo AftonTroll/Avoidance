@@ -33,33 +33,34 @@ import com.artemis.managers.GroupManager;
  *
  */
 public class KillplayerobstacleCollisionHandler implements CollisionHandler {
-	
+
 	private World world;
-	
+
 	/**
-	 * Construct a new KillplayerobstacleCollisionHandler
+	 * Construct a new KillplayerobstacleCollisionHandler.
 	 * 
 	 * @param world the world object
 	 */
 	public KillplayerobstacleCollisionHandler(World world){
 		this.world=world;
 	}
-	
+
 	/**
-	 * Handles collision between player and killplayerobstacles
+	 * Handles collision between player and killplayerobstacles.
 	 * 
 	 * @param player the player
 	 * @param obstacle the killplayerobstacle
 	 */
 	public void handleCollision(Entity player, Entity obstacle) {
 		GroupManager groupManager = world.getManager(GroupManager.class);
-		if (groupManager.getEntities("PLAYER").contains(player) && groupManager.getEntities("KILLPLAYEROBSTACLES").contains(obstacle)) {
+		if (groupManager.getEntities("PLAYER").contains(player) &&
+				groupManager.getEntities("KILLPLAYEROBSTACLES").contains(obstacle)) {
 			ComponentMapper<Jump> jumpMapper = world.getMapper(Jump.class);
 			Jump jump = jumpMapper.get(player);
 			if (jump == null || !jump.isInTheAir()) {
 				GameOverNotifier.getInstance().gameOver();
 			}
-			
+		
 		}
 	}
 

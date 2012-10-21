@@ -25,74 +25,66 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import se.chalmers.avoidance.core.components.FloatTest;
 
 public class UtilsTest extends FloatTest {
 	
-	private static float f1, f2, f3, f4, f5, f6;
-	private static float s1, s2, s3, s4, s5;
-	private static float a1, a2, a3, a4, a5;
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		f1 = 0f;
-		f2 = 2f;
-		f3 = 8f;
-		f4 = -2f;
-		f5 = -(float)Math.PI;
-		f6 = -7f;
-		
-		s1 = 5f;
-		a1 = 0f;
-		s2 = 0f;
-		a2 = 0f;
-		s3 = 10f;
-		a3 = (float) Math.PI/2;
-		s4 = 15f;
-		a4 = (float) -Math.PI;
-		s5 = (float) Math.sqrt(8);
-		a5 = (float) (Math.PI/4);
-	}
+	private static final float F1 = 0f;
+	private static final float F2 = 2f;
+	private static final float F3 = 8f;
+	private static final float F4 = -2f;
+	private static final float F5 = -(float)Math.PI;
+	private static final float F6 = -7f;
+	
+	private static final float S1 = 5f;
+	private static final float A1 = 0f;
+	private static final float S2 = 0f;
+	private static final float A2 = 0f;
+	private static final float S3 = 10f;
+	private static final float A3 = (float) Math.PI/2;
+	private static final float S4 = 15f;
+	private static final float A4 = (float) -Math.PI;
+	private static final float S5 = (float) Math.sqrt(8);
+	private static final float A5 = (float) (Math.PI/4);
 
 	@Test
 	public void testSimplifyAngle() {
-		assertFloatEquals(Utils.simplifyAngle(f1) - f1 );
-		assertFloatEquals(Utils.simplifyAngle(f2) - f2 );
-		assertFloatEquals(Utils.simplifyAngle(f3) - (f3 - (float)(2 * Math.PI)));
-		assertFloatEquals(Utils.simplifyAngle(f4) - ((float)(2 * Math.PI) + f4));
-		assertFloatEquals(Utils.simplifyAngle(f5) - ((float) Math.PI));
-		assertFloatEquals(Utils.simplifyAngle(f6) - (((float)(4 * Math.PI)) + f6));
+		assertFloatEquals(Utils.simplifyAngle(F1) - F1 );
+		assertFloatEquals(Utils.simplifyAngle(F2) - F2 );
+		assertFloatEquals(Utils.simplifyAngle(F3) - (F3 - (float)(2 * Math.PI)));
+		assertFloatEquals(Utils.simplifyAngle(F4) - ((float)(2 * Math.PI) + F4));
+		assertFloatEquals(Utils.simplifyAngle(F5) - ((float) Math.PI));
+		assertFloatEquals(Utils.simplifyAngle(F6) - (((float)(4 * Math.PI)) + F6));
 	}
 
 	@Test
 	public void testReverseAngle() {
-		assertFloatEquals(Utils.reverseAngle(f1) - (float) Math.PI);
-		assertFloatEquals(Utils.reverseAngle(f2) - ((float) Math.PI + f2));
-		assertFloatEquals(Utils.reverseAngle(f3) - (f3 - (float) Math.PI));
-		assertFloatEquals(Utils.reverseAngle(f4) - ((float) Math.PI + f4));
-		assertFloatEquals(Utils.reverseAngle(f5) - (f5 + (float) Math.PI));
-		assertFloatEquals(Utils.reverseAngle(f6) - ((float) Math.PI + f6));
+		assertFloatEquals(Utils.reverseAngle(F1) - (float) Math.PI);
+		assertFloatEquals(Utils.reverseAngle(F2) - ((float) Math.PI + F2));
+		assertFloatEquals(Utils.reverseAngle(F3) - (F3 - (float) Math.PI));
+		assertFloatEquals(Utils.reverseAngle(F4) - ((float) Math.PI + F4));
+		assertFloatEquals(Utils.reverseAngle(F5) - (F5 + (float) Math.PI));
+		assertFloatEquals(Utils.reverseAngle(F6) - ((float) Math.PI + F6));
 	}
 	
 	@Test
 	public void testGetHorizontalSpeed(){
-		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(s1, a1) - 5));
-		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(s2, a2)));
-		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(s3, a3)));
-		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(s4, a4) + 15));
-		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(s5, a5) - 2));
+		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(S1, A1) - 5));
+		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(S2, A2)));
+		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(S3, A3)));
+		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(S4, A4) + 15));
+		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(S5, A5) - 2));
 	}
 	
 	@Test
 	public void testGetVerticalSpeed(){
-		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(s1, a1)));
-		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(s2, a2)));
-		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(s3, a3) - 10));
-		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(s4, a4)));
-		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(s5, a5) -2 ));
+		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(S1, A1)));
+		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(S2, A2)));
+		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(S3, A3) - 10));
+		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(S4, A4)));
+		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(S5, A5) -2 ));
 	}
 	
 	@Test

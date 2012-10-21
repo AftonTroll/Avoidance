@@ -47,7 +47,7 @@ import org.andengine.ui.activity.BaseGameActivity;
 import se.chalmers.avoidance.constants.EventMessageConstants;
 import se.chalmers.avoidance.constants.FontConstants;
 import se.chalmers.avoidance.core.states.GameState;
-import se.chalmers.avoidance.core.states.HighscoreState;
+import se.chalmers.avoidance.core.states.HighScoreState;
 import se.chalmers.avoidance.core.states.MenuState;
 import se.chalmers.avoidance.core.states.StateID;
 import se.chalmers.avoidance.core.states.StateManager;
@@ -57,6 +57,7 @@ import se.chalmers.avoidance.util.ScreenResolution;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.hardware.SensorManager;
+import android.view.KeyEvent;
 
 /**
  * The starting point of the application.
@@ -242,13 +243,14 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 		stateManager = new StateManager(mEngine);
 
 		VertexBufferObjectManager vbom = this.getVertexBufferObjectManager();
-		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
+		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE),
 				regions, fonts, vbom);
 		MenuState menuState = new MenuState(mEngine.getCamera(), regions, vbom);
-		HighscoreState highscoreState = new HighscoreState(regions, fonts, vbom);
+		HighScoreState highscoreState = new HighScoreState(regions, fonts, vbom);
 		stateManager.addState(StateID.Game, gameState);
 		stateManager.addState(StateID.Menu, menuState);
 		stateManager.addState(StateID.Highscore, highscoreState);
+		gameState.addPropertyChangeListener(highscoreState);
 		
 		stateManager.addPropertyChangeListener(this);
 	}
@@ -270,11 +272,28 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 				this.finish();
 			}
 		}
+		if (event != null) {
+			if(EventMessageConstants.RESTART_GAME.equals(event.getPropertyName())) {
+				this.restartGame();
+			}
+		}
+	} 
+	
+	/**
+	 * Restarts the game.
+	 */
+	public void restartGame() {
+		stateManager.removeState(StateID.Game);
+		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE), 
+				regions, fonts, this.getVertexBufferObjectManager());
+		stateManager.addState(StateID.Game, gameState);
+		gameState.addPropertyChangeListener((HighScoreState)stateManager.getState(
+				StateID.Highscore));
 	}
 	
 	/**
-	 * Used when the activity is resumed
-	 * Resumes the Audio
+	 * Used when the activity is resumed.<p>
+	 * Resumes the Audio and the application.
 	 */
 	@Override
 	public void onResume(){
@@ -283,12 +302,26 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	}
 	
 	/**
-	 * Used when the activity is paused
-	 * Pauses the Audio
+	 * Used when the activity is paused.<p>
+	 * Pauses the Audio and the application.
 	 */
 	@Override
 	public void onPause(){
 		super.onPause();
 		AudioManager.getInstance().pause();
+	}
+	
+	/**
+	 * Gets called when the backbutton is pressed.<p>
+	 * Either sets the state to the menu, or exits the application.
+	 */
+	@Override
+	public void onBackPressed() {
+		if (stateManager.getActiveStateID() == StateID.Menu) {
+			finish();
+		} else {
+			stateManager.setState(StateID.Menu);
+		}
+	   
 	}
 }
