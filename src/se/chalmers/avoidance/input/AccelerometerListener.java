@@ -30,7 +30,7 @@ import android.hardware.SensorManager;
 
 /**
  * A listener that listens to the sensor
- * and passes on the values to its listeners
+ * and passes on the values to its listeners.
  * 
  * @author Filip brynfors
  *
@@ -52,7 +52,7 @@ public class AccelerometerListener implements SensorEventListener {
 	}
 	
 	/**
-	 * Adds a new propertyChangeListener
+	 * Adds a new propertyChangeListener.
 	 * @param pcl the listener
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener pcl){
@@ -60,7 +60,7 @@ public class AccelerometerListener implements SensorEventListener {
 	}
 	
 	/**
-	 * Removes a propertyChangeListener
+	 * Removes a propertyChangeListener.
 	 * @param pcl the listener
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener pcl){
@@ -68,28 +68,28 @@ public class AccelerometerListener implements SensorEventListener {
 	}
 	
 	/**
-	 * Starts listening to the accelerometer
+	 * Starts listening to the accelerometer.
 	 */
 	public void startListening(){
 		manager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
 	}
 	
 	/**
-	 * Stops listening to the accelerometer
+	 * Stops listening to the accelerometer.
 	 */
 	public void stopListening(){
 		manager.unregisterListener(this);
 	}
 
 	/**
-	 * Used when the accuracy is changed
+	 * Used when the accuracy is changed.
 	 */
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		
 	}
 
 	/**
-	 * Used when the value of the sensor is changed
+	 * Used when the value of the sensor is changed.
 	 */
 	public void onSensorChanged(SensorEvent event) {
 		pcs.firePropertyChange("AccelerometerX", null, event.values[1]);

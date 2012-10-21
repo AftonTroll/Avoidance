@@ -41,13 +41,13 @@ import com.artemis.managers.TagManager;
 import com.artemis.utils.ImmutableBag;
 
 /**
- * System that updates the enemies velocity and position
+ * System that updates the enemies velocity and position.
  * 
  * @author Filip Brynfors
  *
  */
 public class EnemyControlSystem extends EntitySystem{
-	private final float MAX_SPEED = 400;
+	private static final float MAX_SPEED = 400;
 	private ComponentMapper<Transform> transformMapper;
 	private ComponentMapper<Velocity> velocityMapper;
 	private ComponentMapper<Size> sizeMapper;
@@ -64,7 +64,7 @@ public class EnemyControlSystem extends EntitySystem{
 	}
 	
 	/**
-	 * This method is called when the system is initialized
+	 * This method is called when the system is initialized.
 	 */
 	@Override
 	protected void initialize() {
@@ -78,7 +78,7 @@ public class EnemyControlSystem extends EntitySystem{
 	}
 
 	/**
-	 * Determines if the system should be processed or not
+	 * Determines if the system should be processed or not.
 	 * 
 	 * @return true if system should be processed, false otherwise
 	 */
@@ -90,7 +90,7 @@ public class EnemyControlSystem extends EntitySystem{
 	/**
 	 * This method is called when the enemies are to be updated.
 	 * Updates the velocity and position of the enemies
-	 * @param entities the bag of entities with the wanted components
+	 * @param bag the bag of entities with the wanted components
 	 */
 	@Override
 	protected void processEntities(ImmutableBag<Entity> bag) {

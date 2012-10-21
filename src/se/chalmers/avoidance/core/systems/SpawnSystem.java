@@ -22,10 +22,10 @@ package se.chalmers.avoidance.core.systems;
 
 
 import se.chalmers.avoidance.core.EntityFactory;
+import se.chalmers.avoidance.core.components.Buff.BuffType;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Time;
 import se.chalmers.avoidance.core.components.Transform;
-import se.chalmers.avoidance.core.components.Buff.BuffType;
 import se.chalmers.avoidance.util.ScreenResolution;
 
 import com.artemis.Aspect;
@@ -37,9 +37,8 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.ImmutableBag;
 
 /**
- * A system that creates the initial entities
- * and then continues to create one more enemy
- * every 5 seconds
+ * A system that creates the initial entities and then continues
+ * to create one more enemy every 5 seconds.
  * 
  * @author Filip Brynfors
  *
@@ -49,19 +48,19 @@ public class SpawnSystem extends EntityProcessingSystem{
 	private ComponentMapper<Size> sizeMapper;
 	private GroupManager groupManager;
 	private TagManager tagManager;
-	private final int SPAWNINTERVAL = 5;
+	private static final int SPAWNINTERVAL = 5;
 	private int lastSpawn = 0;
 	
 	
 	/**
-	 * Constructs a new SpawnSystem
+	 * Constructs a new SpawnSystem.
 	 */
 	public SpawnSystem() {
 		super(Aspect.getAspectForAll(Time.class));
 	}
 	
 	/**
-	 * This method is called when the system is initialized
+	 * This method is called when the system is initialized.
 	 * Creates all the initial entities
 	 */
 	@Override
@@ -92,7 +91,7 @@ public class SpawnSystem extends EntityProcessingSystem{
 	/**
 	 * This method is called when the spawning is to be updated.
 	 * Spawns a new enemy every 5 seconds
-	 * @param entities the bag of entities with the wanted components
+	 * @param entity an entity with the wanted components
 	 */
 	@Override
 	protected void process(Entity entity) {
