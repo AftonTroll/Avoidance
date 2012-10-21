@@ -10,24 +10,19 @@ import org.junit.Test;
 
 public class FileUtilsTest {
 	
-	private static final String w1 = "Hej";
-	private static final String w2 = "då";
-	private static final String w3 = "Afton";
-	private static final String w4 = "du";
-	private static final String w5 = "är";
-	private static final String w6 = "allt ";
-	private static final String w7 = "enriktig baddare";
+	private static final String W1 = "Hej";
+	private static final String W2 = "då";
+	private static final String W3 = "Afton";
+	private static final String W4 = "du";
+	private static final String W5 = "är";
+	private static final String W6 = "allt ";
+	private static final String W7 = "enriktig baddare";
 	
-	private static final int m1 = 1;
-	private static final int m2 = 4;
-	private static final int m3 = 7;
+	private static final int M1 = 1;
+	private static final int M2 = 4;
+	private static final int M3 = 7;
 	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-	
-	private static void assertListEquals(List<?> list, List<?> list2) 
-			throws AssertionError {
+	private static void assertListEquals(List<?> list, List<?> list2) {
 		assertTrue(list.size() == list2.size());
 		
 		for (int i = 0; i < list.size(); i++) {
@@ -78,22 +73,22 @@ public class FileUtilsTest {
 		
 		//add strings
 		
-		FileUtils.addToFile(w1, path);
-		FileUtils.addToFile(w2, path);
+		FileUtils.addToFile(W1, path);
+		FileUtils.addToFile(W2, path);
 		readList = FileUtils.readFromFile(path);
-		assertTrue(readList.get(0).equals(w1));
-		assertTrue(readList.get(1).equals(w2));
+		assertTrue(readList.get(0).equals(W1));
+		assertTrue(readList.get(1).equals(W2));
 		
 		
-		FileUtils.addToFile(w5, path);
-		FileUtils.addToFile(w3, path);
-		FileUtils.addToFile(w4, path);
+		FileUtils.addToFile(W5, path);
+		FileUtils.addToFile(W3, path);
+		FileUtils.addToFile(W4, path);
 		readList = FileUtils.readFromFile(path);
-		assertTrue(readList.get(0).equals(w1));
-		assertTrue(readList.get(1).equals(w2));
-		assertTrue(readList.get(2).equals(w5));
-		assertTrue(readList.get(3).equals(w3));
-		assertTrue(readList.get(4).equals(w4));
+		assertTrue(readList.get(0).equals(W1));
+		assertTrue(readList.get(1).equals(W2));
+		assertTrue(readList.get(2).equals(W5));
+		assertTrue(readList.get(3).equals(W3));
+		assertTrue(readList.get(4).equals(W4));
 		
 	}
 
@@ -127,7 +122,7 @@ public class FileUtilsTest {
 	 * @param list the list to check
 	 * @throws AssertionError if it is not sorted from highest to lowest
 	 */
-	private static void assertListIsSorted(List<Integer> list) throws AssertionError {
+	private static void assertListIsSorted(List<Integer> list) {
 		for (int i = 0; i < list.size() - 1; i++) {
 			assertTrue(list.get(i) >= list.get(i+1));
 		}
@@ -136,37 +131,37 @@ public class FileUtilsTest {
 	@Test
 	public void testCreateMultiLineStringListOfStringInt() {
 		//null reference
-		assertTrue("".equalsIgnoreCase(FileUtils.createMultiLineString(null, m1)));
+		assertTrue("".equalsIgnoreCase(FileUtils.createMultiLineString(null, M1)));
 
 		//no line
 		List<String> list = new ArrayList<String>();
-		assertTrue("".equalsIgnoreCase(FileUtils.createMultiLineString(list, m1)));
+		assertTrue("".equalsIgnoreCase(FileUtils.createMultiLineString(list, M1)));
 
 		//1 line
-		list.add(w1);
-		assertTrue(w1.equalsIgnoreCase(FileUtils.createMultiLineString(list, m1)));
+		list.add(W1);
+		assertTrue(W1.equalsIgnoreCase(FileUtils.createMultiLineString(list, M1)));
 
 		//3 lines
-		list.add(w2);
-		list.add(w3);
-		String temp = w1 + "\n" + w2 + "\n" + w3;
-		assertTrue(temp.equalsIgnoreCase(FileUtils.createMultiLineString(list, m2)));
-		assertTrue(w1.equalsIgnoreCase(FileUtils.createMultiLineString(list, m1)));
-		assertTrue(!temp.equalsIgnoreCase(FileUtils.createMultiLineString(list, m1))); 
-		assertTrue(!temp.equalsIgnoreCase(FileUtils.createMultiLineString(list, m2))); //stops working
+		list.add(W2);
+		list.add(W3);
+		String temp = W1 + "\n" + W2 + "\n" + W3;
+		assertTrue(temp.equalsIgnoreCase(FileUtils.createMultiLineString(list, M2)));
+		assertTrue(W1.equalsIgnoreCase(FileUtils.createMultiLineString(list, M1)));
+		assertTrue(!temp.equalsIgnoreCase(FileUtils.createMultiLineString(list, M1))); 
+		assertTrue(!temp.equalsIgnoreCase(FileUtils.createMultiLineString(list, M2))); //stops working
 
 		// 7 lines
-		list.add(w2);
-		list.add(w3); //add those 2 again, since they got removed
-		list.add(w4);
-		list.add(w5);
-		list.add(w6);
-		list.add(w7);
-		temp += "\n" + w4 + "\n" + w5 + "\n" + w6 + "\n" + w7;
-		assertTrue(temp.equalsIgnoreCase(FileUtils.createMultiLineString(list, m3)));
-		assertTrue(!temp.equalsIgnoreCase(FileUtils.createMultiLineString(list, m2)));
-		assertTrue(!temp.equalsIgnoreCase(FileUtils.createMultiLineString(list, m3))); //stops working
-		assertTrue(!temp.equalsIgnoreCase(FileUtils.createMultiLineString(list, m1)));
+		list.add(W2);
+		list.add(W3); //add those 2 again, since they got removed
+		list.add(W4);
+		list.add(W5);
+		list.add(W6);
+		list.add(W7);
+		temp += "\n" + W4 + "\n" + W5 + "\n" + W6 + "\n" + W7;
+		assertTrue(temp.equalsIgnoreCase(FileUtils.createMultiLineString(list, M3)));
+		assertTrue(!temp.equalsIgnoreCase(FileUtils.createMultiLineString(list, M2)));
+		assertTrue(!temp.equalsIgnoreCase(FileUtils.createMultiLineString(list, M3))); //stops working
+		assertTrue(!temp.equalsIgnoreCase(FileUtils.createMultiLineString(list, M1)));
 	}
 
 	@Test
@@ -179,21 +174,21 @@ public class FileUtilsTest {
 		assertTrue("".equalsIgnoreCase(FileUtils.createMultiLineString(list)));
 
 		//1 line
-		list.add(w1);
-		assertTrue(w1.equalsIgnoreCase(FileUtils.createMultiLineString(list)));
+		list.add(W1);
+		assertTrue(W1.equalsIgnoreCase(FileUtils.createMultiLineString(list)));
 			
 		//3 lines
-		list.add(w2);
-		list.add(w3);
-		String temp = w1 + "\n" + w2 + "\n" + w3;
+		list.add(W2);
+		list.add(W3);
+		String temp = W1 + "\n" + W2 + "\n" + W3;
 		assertTrue(temp.equalsIgnoreCase(FileUtils.createMultiLineString(list)));
 		
 		// 7 lines
-		list.add(w4);
-		list.add(w5);
-		list.add(w6);
-		list.add(w7);
-		temp += "\n" + w4 + "\n" + w5 + "\n" + w6 + "\n" + w7;
+		list.add(W4);
+		list.add(W5);
+		list.add(W6);
+		list.add(W7);
+		temp += "\n" + W4 + "\n" + W5 + "\n" + W6 + "\n" + W7;
 		assertTrue(temp.equalsIgnoreCase(FileUtils.createMultiLineString(list)));
 	}
 

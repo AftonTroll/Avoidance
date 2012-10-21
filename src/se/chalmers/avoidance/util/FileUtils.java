@@ -89,13 +89,11 @@ public final class FileUtils {
 	 * ie it saves what the objects <code>toString()</code>-method
 	 * returns.
 	 * 
-	 * @param output the object to save
+	 * @param object the object to save
 	 * @param path the file path to store the string in
 	 */
-	public static void saveToFile(Object output, String path) {
-		if (output == null) {
-			output = "";
-		}
+	public static void saveToFile(Object object, String path) {
+		Object output = object != null ? object : "";
 		try {
 			// Save the file
 			FileOutputStream fos = context != null ? 
