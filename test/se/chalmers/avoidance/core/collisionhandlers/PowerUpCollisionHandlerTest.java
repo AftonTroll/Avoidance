@@ -25,8 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import se.chalmers.avoidance.core.EntityFactory;
-import se.chalmers.avoidance.core.components.Buff;
-import se.chalmers.avoidance.core.components.Buff.BuffType;
+import se.chalmers.avoidance.core.components.Immortal;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
@@ -41,7 +40,8 @@ import com.artemis.utils.ImmutableBag;
 
 public class PowerUpCollisionHandlerTest {
 	private Entity player;
-	private Entity powerup;
+	private Entity speed;
+	private Entity immortality;
 	private final CollisionSystem cs = new CollisionSystem();
 	private final World world = new World();
 	private final GroupManager groupManager = new GroupManager();
@@ -57,7 +57,8 @@ public class PowerUpCollisionHandlerTest {
 		world.setManager(tagManager);
 		world.setSystem(cs);
 		player = EntityFactory.createPlayer(world, 0, 0);
-		powerup = EntityFactory.createSpeedPowerUp(world, 40, 40, 100);
+		speed = EntityFactory.createSpeedPowerUp(world, 40, 40, 100);
+		immortality = EntityFactory.createImmortalityPowerUp(world, 200, 200, 2);
 		world.initialize();
 		world.addEntity(EntityFactory.createScore(world));
 		world.addEntity(EntityFactory.createWall(world, 1, 1, 600, 600));
@@ -72,26 +73,30 @@ public class PowerUpCollisionHandlerTest {
 	@Test
 	public void testHandleCollision() {
 		Transform playerTransform = player.getComponent(Transform.class);
-		Transform powerupTransform = powerup.getComponent(Transform.class);
+		Transform speedTransform = speed.getComponent(Transform.class);
 		world.setDelta(1);
 		
 		playerTransform.setPosition(40, 40);
-		powerupTransform.setPosition(30, 30);
+		speedTransform.setPosition(30, 30);
 		
 		assertTrue(player.getComponent(Velocity.class).getSpeed() == 0);
 		
-		powerupTransform.setPosition(40, 40);
+		speedTransform.setPosition(40, 40);
 		assertTrue(player != null);
-		assertTrue(powerup != null);
+		assertTrue(speed != null);
 		assertTrue(cs != null);
 		assertTrue(player.getComponent(Size.class) != null);
-		assertTrue(powerup.getComponent(Size.class) != null);
-		assertTrue(cs.collisionExists(player, powerup));
+		assertTrue(speed.getComponent(Size.class) != null);
+		assertTrue(cs.collisionExists(player, speed));
 		
 		world.process();
 		
 		assertTrue(player.getComponent(Velocity.class).getSpeed() == 100);
 		assertTrue(world.getEntity(player.getId()) == null);
 		
+		assertTrue(!player.getComponent(Immortal.class).isImmortal());
+		playerTransform.setPosition(200, 200);
+		world.process();
+		assertTrue(player.getComponent(Immortal.class).isImmortal());
 	}
 }
