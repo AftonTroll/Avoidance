@@ -32,7 +32,7 @@ import org.andengine.entity.scene.Scene;
 interface IState {
 	
 	/**
-	 * Updates the state
+	 * Updates the state.
 	 * @param tpf Time since last frame.
 	 */
 	void update(float tpf);

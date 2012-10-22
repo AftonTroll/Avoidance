@@ -84,7 +84,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
     private BitmapTextureAtlas splashTextureAtlas;
    
     /**
-     * Sets the engine options (camera, screen rotation, ...) 
+     * Sets the engine options (camera, screen rotation, ...). 
      */
 	public EngineOptions onCreateEngineOptions() {
 		camera = new Camera(0, 0, ScreenResolution.getWidthResolution(), 
@@ -158,7 +158,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	}
 	
 	/**
-	 * Initializes the states
+	 * Initializes the states.
 	 */
 	private void initializeGame() {
 		stateManager = new StateManager(mEngine);
@@ -188,7 +188,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
     }    
     
     /**
-     * Loads all game resources
+     * Loads all game resources.
      * @throws IOException 
      * @throws IllegalStateException 
      */

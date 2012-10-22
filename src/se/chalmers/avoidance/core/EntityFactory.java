@@ -81,7 +81,7 @@ public final class EntityFactory {
 	}
 	
 	/**
-	 * Creates a wall in the WALLS group
+	 * Creates a wall in the WALLS group.
 	 * 
 	 * @param world The world
 	 * @param width the width of the wall
@@ -107,7 +107,7 @@ public final class EntityFactory {
 	}
 	
 	/**
-	 * Creates an enemy in the ENEMY group
+	 * Creates an enemy in the ENEMY group.
 	 * 
 	 * @param world The World
 	 * @param xPos the horizontal position of the enemy
@@ -130,7 +130,7 @@ public final class EntityFactory {
 	}
 	
 	/**
-	 * Creates a quick enemy in the ENEMY group
+	 * Creates a quick enemy in the ENEMY group.
 	 * 
 	 * @param world The World
 	 * @param xPos the horizontal position of the enemy
@@ -153,7 +153,7 @@ public final class EntityFactory {
 	}
 
 	/**
-	 * Creates a new Obstacle in the WALLS group
+	 * Creates a new Obstacle in the WALLS group.
 	 * 
 	 * @param world The world
 	 * @param width the width of the obstacle
@@ -175,7 +175,7 @@ public final class EntityFactory {
 	}
 	
 	/**
-	 * Creates a new score entity
+	 * Creates a new score entity.
 	 * @param world The world
 	 * @return the new score entity
 	 */
