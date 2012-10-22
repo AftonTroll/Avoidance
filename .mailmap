@@ -1,0 +1,4 @@
+# This mailmap just maps some author names together, so that they are 
+# counted properly in git shortlog output.
+#
+Florian Minges <florianminges@hotmail.com> FlorianMinges <florianminges@hotmail.com>
