@@ -21,7 +21,6 @@ package se.chalmers.avoidance.core.components;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -31,17 +30,10 @@ public class BuffTest {
 	private static BuffType type;
 	private static int strength;
 	
-	private Buff mBuff;
-	
 	@BeforeClass
 	public static void beforeClass(){
 		type = Buff.BuffType.Speed;
 		strength = 2;
-	}
-	
-	@Before
-	public void setUp(){
-		this.mBuff = new Buff(type, strength);
 	}
 	
 	@Test
