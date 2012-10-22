@@ -21,6 +21,7 @@ package se.chalmers.avoidance.util;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,6 +110,8 @@ public class FileUtilsTest {
 		assertTrue(readList.get(3).equals(W3));
 		assertTrue(readList.get(4).equals(W4));
 		
+		File file = new File(path);
+		file.delete();
 	}
 
 	@Test
