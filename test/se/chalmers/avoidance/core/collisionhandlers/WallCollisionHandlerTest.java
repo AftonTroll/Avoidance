@@ -25,17 +25,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import se.chalmers.avoidance.constants.GameConstants;
-import se.chalmers.avoidance.core.EntityFactory;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.core.systems.CollisionSystem;
 
-import com.artemis.ComponentManager;
-import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.World;
-import com.artemis.annotations.Mapper;
 import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
 
