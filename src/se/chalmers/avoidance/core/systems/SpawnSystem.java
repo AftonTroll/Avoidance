@@ -105,7 +105,7 @@ public class SpawnSystem extends EntityProcessingSystem{
 		world.addEntity(EntityFactory.createObstacleSpikes(world, centerX+168,
 				ScreenResolution.getHeightResolution()-WALL_THICKNESS-114));
 		world.addEntity(EntityFactory.createScore(world));
-		world.addEntity(EntityFactory.createPowerUpImmortality(world, centerX - 32, centerY - 100, 10));
+		world.addEntity(EntityFactory.createPowerUpImmortality(world, centerX - 32, centerY - 100, 5));
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class SpawnSystem extends EntityProcessingSystem{
 	    if(powerupSpawnCount % 2 == 0) {
 	        powerup = EntityFactory.createPowerupSpeed(world, 0, 0, 300);
 	    } else {
-	        powerup = EntityFactory.createPowerUpImmortality(world, 0, 0, 10);
+	        powerup = EntityFactory.createPowerUpImmortality(world, 0, 0, 5);
 	    }
 		moveEntityToFreePosition(powerup);
 		world.addEntity(powerup);
