@@ -51,7 +51,7 @@ import com.artemis.utils.ImmutableBag;
  */
 public class SpatialRenderSystem extends EntitySystem{
     @Mapper
-    ComponentMapper<Transform> tm;
+    private ComponentMapper<Transform> tm;
     @Mapper
     private ComponentMapper<Spatial> sm;
     
