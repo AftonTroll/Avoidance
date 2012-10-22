@@ -62,7 +62,6 @@ public class GameState implements IState, PropertyChangeListener {
 	private Scene scene;
 	private World world;
 	private PropertyChangeSupport pcs;
-	private TouchListener touchListener;
 	private GameOverScene gameOverScene;
 	private boolean process;
 	
@@ -116,7 +115,7 @@ public class GameState implements IState, PropertyChangeListener {
 		aL.addPropertyChangeListener(world.getSystem(PlayerControlSystem.class));
 		aL.startListening();
 		
-		touchListener = new TouchListener();
+		TouchListener touchListener = new TouchListener();
 		scene.setOnSceneTouchListener(touchListener);
 		touchListener.addListener(world.getSystem(PlayerControlSystem.class));
 		
