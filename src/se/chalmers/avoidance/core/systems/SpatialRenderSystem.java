@@ -113,17 +113,21 @@ public class SpatialRenderSystem extends EntitySystem{
 	}
 	
 	/**
-	 * Handles scaling of the sprite when the player has jumped.
-	 * @param player The player entity.
+	 * Handles scaling of the sprite when entity has jumped.
+	 * @param e The jumping entity.
 	 */
-	private void handleJumpScaling(Entity player) {
-		if(player.getComponent(Jump.class).isInTheAir()) {
-			player.getComponent(Spatial.class).getSprite().setScale(2);
+	private void handleJumpScaling(Entity e) {
+		if(e.getComponent(Jump.class).isInTheAir()) {
+			e.getComponent(Spatial.class).getSprite().setScale(2);
 		} else {
-			player.getComponent(Spatial.class).getSprite().setScale(1);
+			e.getComponent(Spatial.class).getSprite().setScale(1);
 		}
 	}
 	
+	/**
+	 * Handles the changing of sprites for when the player becomes immortal.
+	 * @param player The player entity.
+	 */
 	private void handleImmortalSprite(Entity player) {
 	    if (player.getComponent(Immortal.class).isImmortal() && !playerImmortal) {
 	        Transform tf = tm.get(player);
