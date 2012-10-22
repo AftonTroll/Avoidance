@@ -111,5 +111,21 @@ public class PlayerControlSystemTest {
 		assertTrue(jump.isInTheAir());
 		world.process();
 	}
+	
+	@Test
+	public void testHandleImmortal() {
+	    Immortal immortal = player.getComponent(Immortal.class);
+	    immortal.setDuration(2);
+	    immortal.setImmortal(true);
+	    assertTrue(immortal.isImmortal());
+        world.setDelta(1f);
+        world.process();
+        assertTrue(immortal.isImmortal());
+        assertTrue(immortal.getDurationLeft() == 1.0f);
+        world.process();
+        world.process();
+        world.process();
+        assertTrue(!immortal.isImmortal());
+	}
 }
 
