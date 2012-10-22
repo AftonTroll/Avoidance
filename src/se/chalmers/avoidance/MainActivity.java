@@ -23,6 +23,7 @@ package se.chalmers.avoidance;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
@@ -71,8 +72,8 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
     private Scene splashScene;
     private StateManager stateManager;
 
-    private HashMap<String, TextureRegion> regions;
-    private HashMap<String, Font> fonts;
+    private Map<String, TextureRegion> regions;
+    private Map<String, Font> fonts;
    
     /**
      * Sets the engine options (camera, screen rotation, ...) 
