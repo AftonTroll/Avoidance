@@ -84,7 +84,6 @@ public class PowerUpCollisionHandlerTest {
 		long totalDeleted = world.getEntityManager().getTotalDeleted();
 		world.process();
 		world.process();
-		System.out.println(world.getEntityManager().getTotalDeleted());
 		assertTrue(player.getComponent(Velocity.class).getSpeed() == 100);
 		assertTrue(world.getEntityManager().getTotalDeleted() == totalDeleted + 1);
 		
