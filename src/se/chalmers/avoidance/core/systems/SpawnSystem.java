@@ -171,25 +171,28 @@ public class SpawnSystem extends EntityProcessingSystem{
 			transform.setX((float) (Math.random()*ScreenResolution.getWidthResolution()));
 			transform.setY((float) (Math.random()*ScreenResolution.getHeightResolution()));
 			
+			
 			//Check if the enemy is too close to the player
 			Entity player = tagManager.getEntity("PLAYER");
-			Transform pTrans = transformMapper.get(player);
-			Size pSize = sizeMapper.get(player);
-			float playerCenterX = pTrans.getX() + pSize.getWidth()/2;
-			float playerCenterY = pTrans.getY() + pSize.getHeight()/2;
-
-			Transform eTrans = transformMapper.get(entity);
-			Size eSize = sizeMapper.get(entity);
-			float entityCenterX = eTrans.getX() + eSize.getWidth()/2;
-			float entityCenterY = eTrans.getY() + eSize.getHeight()/2;
-			
-			float dx = entityCenterX - playerCenterX;
-			float dy = entityCenterY - playerCenterY;
-			
-			//check distance from player and entity
-			if(Math.sqrt(dx*dx+dy*dy) <= SPAWN_RANGE) {
-				validPosition = false;
-				continue;
+			if(entity != player){
+				Transform pTrans = transformMapper.get(player);
+				Size pSize = sizeMapper.get(player);
+				float playerCenterX = pTrans.getX() + pSize.getWidth()/2;
+				float playerCenterY = pTrans.getY() + pSize.getHeight()/2;
+	
+				Transform eTrans = transformMapper.get(entity);
+				Size eSize = sizeMapper.get(entity);
+				float entityCenterX = eTrans.getX() + eSize.getWidth()/2;
+				float entityCenterY = eTrans.getY() + eSize.getHeight()/2;
+				
+				float dx = entityCenterX - playerCenterX;
+				float dy = entityCenterY - playerCenterY;
+				
+				//check distance from player and entity
+				if(Math.sqrt(dx*dx+dy*dy) <= SPAWN_RANGE) {
+					validPosition = false;
+					continue;
+				}
 			}
 			
 			//check if entity is spawned is spawned on another entity
