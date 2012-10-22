@@ -144,15 +144,14 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	}
 	
 	/**
-	 * Handles player mortality.
-	 * @param entity The player entity.
+	 * Handles entity mortality.
+	 * @param entity The entity entity.
 	 */
-	private void handleImmortal(Entity player) {
-	    Immortal immortal = immortalMapper.get(player);
+	private void handleImmortal(Entity e) {
+	    Immortal immortal = immortalMapper.getSafe(e);
         immortal.subtractImmortalDurationLeft(world.delta);
         if(immortal.isImmortal()) {
             immortal.subtractImmortalDurationLeft(world.delta);
-            System.out.println(immortal.getDurationLeft());
             if(immortal.getDurationLeft() == 0) {
                 immortal.setImmortal(false);
             }
@@ -161,15 +160,14 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
     }
 
     /**
-	 * Handles player jumping.
-	 * @param player The player entity.
+	 * Handles entity jumping.
+	 * @param e The entity.
 	 */
-	private void handleJump(Entity player) {
-		Jump jump = jumpMapper.get(player);
+	private void handleJump(Entity e) {
+		Jump jump = jumpMapper.getSafe(e);
 		jump.subtractJumpCooldownLeft(world.delta);
 		if(jump.isInTheAir()) {
 			jump.subtractInTheAirDurationLeft(world.delta);
-			
 			if(jump.getInTheAirDurationLeft() == 0) {
 				jump.setInTheAir(false);
 			}
