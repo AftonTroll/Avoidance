@@ -185,7 +185,6 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	    Sprite splash = new Sprite(0, 0, 1280, 800, splashTextureRegion,
 	    		this.getVertexBufferObjectManager());
 	    splash.setPosition(0, 0);
-	    System.out.println( splash.getTextureRegion().getWidth());
 	    splashScene.attachChild(splash);
     }    
     
@@ -299,7 +298,6 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
         for (Font font : fonts.values()) {
         	font.load();
         }
-        System.out.println("loaded");
     }
 
     /**
