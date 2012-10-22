@@ -210,15 +210,14 @@ public class GameState implements IState, PropertyChangeListener {
 	 * @param event an event
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
-		if (event != null && event.getNewValue() != null) {
-			if (EventMessageConstants.GAME_OVER.equals(event.getPropertyName())) {
-				int score = 0;
-				try {
-					score = (Integer) event.getNewValue();
-				} catch (ClassCastException cce) {
-				}
-				gameOver(score, event);
+		if (event != null && event.getNewValue() != null &&
+	        EventMessageConstants.GAME_OVER.equals(event.getPropertyName())) {
+			int score = 0;
+			try {
+				score = (Integer) event.getNewValue();
+			} catch (ClassCastException cce) {
 			}
+			gameOver(score, event);
 		}
 	}
 	
