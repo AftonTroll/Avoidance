@@ -20,6 +20,7 @@
 
 package se.chalmers.avoidance.core;
 
+import se.chalmers.avoidance.constants.GameConstants;
 import se.chalmers.avoidance.core.components.Acceleration;
 import se.chalmers.avoidance.core.components.Buff;
 import se.chalmers.avoidance.core.components.Buff.BuffType;
@@ -58,10 +59,10 @@ public class EntityFactory {
 	 */
 	public static Entity createPlayer(World world, float xPos, float yPos){
 		Entity player = world.createEntity();
-		world.getManager(TagManager.class).register("PLAYER", player);
-		world.getManager(GroupManager.class).add(player, "PLAYER");
-		world.getManager(GroupManager.class).add(player, "MOVINGENTITIES");
-		world.getManager(GroupManager.class).add(player, "CIRCLESHAPES");
+		world.getManager(TagManager.class).register(GameConstants.PLAYER_TAG, player);
+		world.getManager(GroupManager.class).add(player, GameConstants.PLAYER_GROUP);
+		world.getManager(GroupManager.class).add(player, GameConstants.MOVINGENTITIES_GROUP);
+		world.getManager(GroupManager.class).add(player, GameConstants.CIRCLESHAPES_GROUP);
 		
 		player.addComponent(new Transform(xPos,yPos));
 		player.addComponent(new Velocity());
@@ -86,7 +87,7 @@ public class EntityFactory {
 	 */
 	public static Entity createWall(World world, float width, float height, float xPos, float yPos){
 		Entity wall = world.createEntity();
-		world.getManager(GroupManager.class).add(wall, "WALLS");
+		world.getManager(GroupManager.class).add(wall, GameConstants.WALLS_GROUP);
 		
 		wall.addComponent(new Transform(xPos, yPos));
 		wall.addComponent(new Size(width,height));
@@ -110,9 +111,9 @@ public class EntityFactory {
 	 */
 	public static Entity createEnemy(World world, float xPos, float yPos) {
 		Entity enemy = world.createEntity();
-		world.getManager(GroupManager.class).add(enemy, "ENEMIES");
-		world.getManager(GroupManager.class).add(enemy, "MOVINGENTITIES");
-		world.getManager(GroupManager.class).add(enemy, "CIRCLESHAPES");
+		world.getManager(GroupManager.class).add(enemy, GameConstants.ENEMIES_GROUP);
+		world.getManager(GroupManager.class).add(enemy, GameConstants.MOVINGENTITIES_GROUP);
+		world.getManager(GroupManager.class).add(enemy, GameConstants.CIRCLESHAPES_GROUP);
 		
 		enemy.addComponent(new Transform(xPos, yPos));
 		enemy.addComponent(new Velocity());
@@ -133,9 +134,9 @@ public class EntityFactory {
 	 */
 	public static Entity createQuickEnemy(World world, float xPos, float yPos) {
 		Entity enemy = world.createEntity();
-		world.getManager(GroupManager.class).add(enemy, "ENEMIES");
-		world.getManager(GroupManager.class).add(enemy, "MOVINGENTITIES");
-		world.getManager(GroupManager.class).add(enemy, "CIRCLESHAPES");
+		world.getManager(GroupManager.class).add(enemy, GameConstants.ENEMIES_GROUP);
+		world.getManager(GroupManager.class).add(enemy, GameConstants.MOVINGENTITIES_GROUP);
+		world.getManager(GroupManager.class).add(enemy, GameConstants.CIRCLESHAPES_GROUP);
 		
 		enemy.addComponent(new Transform(xPos, yPos));
 		enemy.addComponent(new Velocity());
@@ -158,7 +159,7 @@ public class EntityFactory {
 	 */
 	public static Entity createObstacle(World world, float width, float height, float xPos, float yPos){
 		Entity obstacle = world.createEntity();
-		world.getManager(GroupManager.class).add(obstacle, "WALLS");
+		world.getManager(GroupManager.class).add(obstacle, GameConstants.WALLS_GROUP);
 		
 		obstacle.addComponent(new Transform(xPos, yPos));
 		obstacle.addComponent(new Size(width,height));
@@ -175,7 +176,7 @@ public class EntityFactory {
 	 */
 	public static Entity createScore(World world){
 		Entity score = world.createEntity();
-		world.getManager(TagManager.class).register("SCORE", score);
+		world.getManager(TagManager.class).register(GameConstants.SCORE_TAG, score);
 		score.addComponent(new Score());
 		score.addComponent(new Time());
 		
@@ -192,8 +193,8 @@ public class EntityFactory {
 	 */
 	public static Entity createSpeedPowerUp(World world, float xPos, float yPos, int buffStrength) {
 		Entity powerUp = world.createEntity();
-		world.getManager(GroupManager.class).add(powerUp, "POWERUPS");
-		world.getManager(GroupManager.class).add(powerUp, "CIRCLESHAPES");
+		world.getManager(GroupManager.class).add(powerUp, GameConstants.POWERUPS_GROUP);
+		world.getManager(GroupManager.class).add(powerUp, GameConstants.CIRCLESHAPES_GROUP);
 		
 		powerUp.addComponent(new Transform(xPos, yPos));
 		powerUp.addComponent(new Size(64, 64));
@@ -214,7 +215,8 @@ public class EntityFactory {
 	 */
 	public static Entity createImmortalityPowerUp(World world, float xPos, float yPos, int buffStrength) {
 		Entity powerUp = world.createEntity();
-		world.getManager(GroupManager.class).add(powerUp, "POWERUPS");
+		world.getManager(GroupManager.class).add(powerUp, GameConstants.POWERUPS_GROUP);
+		world.getManager(GroupManager.class).add(powerUp, GameConstants.CIRCLESHAPES_GROUP);
 		
 		powerUp.addComponent(new Transform(xPos, yPos));
 		powerUp.addComponent(new Size(64, 64));
@@ -234,8 +236,8 @@ public class EntityFactory {
 	 */
 	public static Entity createPitobstacle(World world, float xPos, float yPos){
 		Entity pitobstacle = world.createEntity();
-		world.getManager(GroupManager.class).add(pitobstacle, "PITOBSTACLES");
-		world.getManager(GroupManager.class).add(pitobstacle, "CIRCLESHAPES");
+		world.getManager(GroupManager.class).add(pitobstacle, GameConstants.PITOBSTACLES_GROUP);
+		world.getManager(GroupManager.class).add(pitobstacle, GameConstants.CIRCLESHAPES_GROUP);
 		
 		pitobstacle.addComponent(new Transform(xPos, yPos));
 		pitobstacle.addComponent(new Size(64,64));
@@ -253,7 +255,7 @@ public class EntityFactory {
 	 */
 	public static Entity createKillplayerbstacle(World world, float xPos, float yPos){
 		Entity killplayerobstacle = world.createEntity();
-		world.getManager(GroupManager.class).add(killplayerobstacle, "KILLPLAYEROBSTACLES");
+		world.getManager(GroupManager.class).add(killplayerobstacle, GameConstants.KILLPLAYEROBSTACLES_GROUP);
 		
 		killplayerobstacle.addComponent(new Transform(xPos, yPos));
 		killplayerobstacle.addComponent(new Size(64,64));

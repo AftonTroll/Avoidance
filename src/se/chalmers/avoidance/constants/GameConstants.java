@@ -4,6 +4,8 @@ public final class GameConstants {
 	
 	public static final String PLAYER_TAG = "PLAYER";
 	
+	public static final String SCORE_TAG = "SCORE";
+	
 	public static final String PLAYER_GROUP = "PLAYER";
 	
 	public static final String WALLS_GROUP = "WALLS";
