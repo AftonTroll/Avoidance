@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2012 Jakob Svensson
+ * Copyright (c) 2012 Jakob Svensson, Markus Ekström
  * 
  * This file is part of Avoidance.
  * 
@@ -22,10 +22,15 @@ package se.chalmers.avoidance.constants;
 /**
  * Container of constants for mapping groups and tags.
  * 
- * @author Jakob Svensson
+ * @author Jakob Svensson, Markus Ekström
  *
  */
 public final class GameConstants {
+    
+    /**
+     * Hidden constructor
+     */
+    private GameConstants() {}
 	
 	/**
 	 * Identifier for the player tag.
