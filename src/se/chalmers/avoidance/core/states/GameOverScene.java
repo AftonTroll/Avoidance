@@ -20,7 +20,8 @@
 
 package se.chalmers.avoidance.core.states;
 
-import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
 
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
@@ -30,8 +31,10 @@ import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.util.color.Color;
 
 import se.chalmers.avoidance.constants.FontConstants;
+import se.chalmers.avoidance.util.FileUtils;
 import se.chalmers.avoidance.util.ScreenResolution;
 
 /**
@@ -43,7 +46,7 @@ import se.chalmers.avoidance.util.ScreenResolution;
  * @author Florian Minges
  */
 public class GameOverScene extends Scene {
-	
+
 	private VertexBufferObjectManager vbom;
 
 	private Rectangle transparentBackground;
@@ -51,16 +54,19 @@ public class GameOverScene extends Scene {
 	private ButtonSprite button;
 	private Sprite gameOverSprite;
 	private Sprite newHighscoreSprite;
+	
+	private static final Color TRANSPARENT_BACKGROUND_COLOR = new Color(0.1f, 0.1f, 0.1f, 0.95f);
+	private static final Color SCORE_TEXT_COLOR = new Color(1.0f, 0.9f, 0.1f, 1.0f);
 
 	/**
 	 * Constructs a new game over scene.
 	 * 
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
-	 * @param regions a <code>HashMap</code> containing loaded textures/regions
-	 * @param fonts a <code>HashMap</code> containing loaded fonts
+	 * @param regions a <code>Map</code> containing loaded textures/regions
+	 * @param fonts a <code>Map</code> containing loaded fonts
 	 */
-	public GameOverScene(VertexBufferObjectManager vbom, HashMap<String, TextureRegion> regions, 
-			HashMap<String, Font> fonts) {
+	public GameOverScene(VertexBufferObjectManager vbom, Map<String, TextureRegion> regions, 
+			Map<String, Font> fonts) {
 		this.vbom = vbom;
 		initialize(regions, fonts);
 	}
@@ -78,73 +84,84 @@ public class GameOverScene extends Scene {
 	/**
 	 * Initializes this <code>GameOverScene</code>.
 	 * 
-	 * @param regions a <code>HashMap</code> containing loaded textures/regions
-	 * @param fonts a <code>HashMap</code> containing loaded fonts
+	 * @param regions a <code>Map</code> containing loaded textures/regions
+	 * @param fonts a <code>Map</code> containing loaded fonts
 	 */
-	public void initialize(HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts) {
+	public void initialize(Map<String, TextureRegion> regions, Map<String, Font> fonts) {
 		createTransparentBackground();
 		createGameOverSprite(regions);
 		createText(fonts);
 		createButton(regions);
+		createNewHighscoreSprite(regions);
 		
 		attachChild(transparentBackground);
 		attachChild(gameOverSprite);
 		attachChild(scoreText);
 		attachChild(button);
+		attachChild(newHighscoreSprite);
+		
+		this.setBackgroundEnabled(false);
 	}
 
 	/**
 	 * Creates and initializes the transparent background.
 	 */
 	private void createTransparentBackground() {
-		Rectangle rect = new Rectangle(0, 0, ScreenResolution.getWidthResolution(), 
+		transparentBackground = new Rectangle(0, 0, ScreenResolution.getWidthResolution(), 
 				ScreenResolution.getHeightResolution(), this.vbom);
-		rect.setColor(0.1f, 0.1f, 0.1f, 0.8f);
-		this.transparentBackground = rect;
+		transparentBackground.setColor(TRANSPARENT_BACKGROUND_COLOR);
 	}
 	
 	/**
 	 * Creates and initializes the text component that holds
 	 * information about the users score.
 	 * 
-	 * @param fonts a <code>HashMap</code> containing loaded fonts
+	 * @param fonts a <code>Map</code> containing loaded fonts
 	 */
-	private void createText(HashMap<String, Font> fonts) {		
-		Text scoreText = new Text(0, 0, fonts.get(FontConstants.GAME_OVER_SCORE), 
+	private void createText(Map<String, Font> fonts) {		
+		scoreText = new Text(0, 0, fonts.get(FontConstants.GAME_OVER_SCORE), 
 				"Score:", "Score: XXXXXXX".length(), vbom);
-		scoreText.setColor(1.0f, 0.9f, 0.1f, 1.0f);
+		scoreText.setColor(SCORE_TEXT_COLOR);
 		//position gets set in the setScore()-method
-		this.scoreText = scoreText;
 	}
 	
 	/**
 	 * Creates and initializes the game over sprite.
 	 * 
-	 * @param regions a <code>HashMap</code> containing loaded textures/regions
+	 * @param regions a <code>Map</code> containing loaded textures/regions
 	 */
-	private void createGameOverSprite(HashMap<String, TextureRegion> regions) {
-		Sprite sprite = new Sprite(0, 0, regions.get("gameOver.png"), vbom);
+	private void createGameOverSprite(Map<String, TextureRegion> regions) {
+		gameOverSprite = new Sprite(0, 0, regions.get("gameOver.png"), vbom);
 		
-		float xPos = ScreenResolution.getXPosHorizontalCentering(sprite);
-		float yPos = ScreenResolution.getYPosVerticalCentering(sprite) - 150;
-		sprite.setPosition(xPos, yPos);
-		
-		this.gameOverSprite = sprite;
+		float xPos = ScreenResolution.getXPosHorizontalCentering(gameOverSprite);
+		float yPos = ScreenResolution.getYPosVerticalCentering(gameOverSprite) - 150;
+		gameOverSprite.setPosition(xPos, yPos);
 	}
 	
 	/**
 	 * Creates and initializes the button.
 	 * 
+	 * @param regions a <code>Map</code> containing loaded textures/regions
+	 */
+	private void createButton(Map<String, TextureRegion> regions) {
+		button = new ButtonSprite(0, 0, regions.get("okButton.png"), vbom);
+		
+		float xPos = ScreenResolution.getXPosHorizontalCentering(button);
+		float yPos = ScreenResolution.getYPosVerticalCentering(button) + 200;
+		button.setPosition(xPos, yPos);
+	}
+	
+	/**
+	 * Creates and initializes a 'new high score'-sprite. <p>
+	 * 
 	 * @param regions a <code>HashMap</code> containing loaded textures/regions
 	 */
-	private void createButton(HashMap<String, TextureRegion> regions) {
-		ButtonSprite okButton = new ButtonSprite(0, 0, regions.get("okButton.png"), vbom);
+	private void createNewHighscoreSprite(Map<String, TextureRegion> regions) {
+		newHighscoreSprite = new Sprite(0, 0, regions.get("newHighscore.png"), vbom);
 		
-		float xPos = ScreenResolution.getXPosHorizontalCentering(okButton);
-		float yPos = ScreenResolution.getYPosVerticalCentering(okButton) + 200;
-		okButton.setPosition(xPos, yPos);
-		
-		this.button = okButton;
+		float xPos = ScreenResolution.getXPosHorizontalCentering(newHighscoreSprite) + 400;
+		float yPos = ScreenResolution.getYPosVerticalCentering(newHighscoreSprite);
+		newHighscoreSprite.setPosition(xPos, yPos);
 	}
 	
 	/**
@@ -153,12 +170,33 @@ public class GameOverScene extends Scene {
 	 * @param score the users score
 	 */
 	public void setScore(int score) {
-		//do this on the ui update thread or not?
 		scoreText.setText("Score: " + score);
 		
 		float xPos = ScreenResolution.getXPosHorizontalCentering(scoreText);
 		float yPos = ScreenResolution.getYPosVerticalCentering(scoreText) + 50;
 		scoreText.setPosition(xPos, yPos);
+		
+		newHighscoreSprite.setVisible(isNewHighscore(score));
+	}
+	
+	/**
+	 * Checks if the supplied score is a new high score.<p>
+	 * A new high score is currently a top 5 place.
+	 * 
+	 * @param score the score
+	 * @return true if the <code>score</code> is a new high score
+	 */
+	private boolean isNewHighscore(int score) {
+		List<String> list = FileUtils.readFromFile(FileUtils.PATH);
+		List<Integer> highscoreList = FileUtils.getSortedIntegers(list);
+		int greaterScores = 0;
+		for (int i = 0; i < highscoreList.size(); i++) {
+			if (score < highscoreList.get(i)) {
+				greaterScores++;
+			}
+		}
+		
+		return greaterScores < HighScoreState.MAX_HIGH_SCORE_ENTRIES;
 	}
 	
 	/**

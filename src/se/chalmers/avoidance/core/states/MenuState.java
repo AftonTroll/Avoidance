@@ -27,8 +27,9 @@ package se.chalmers.avoidance.core.states;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Map;
 
-import org.andengine.engine.Engine;
+import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.background.SpriteBackground;
@@ -37,12 +38,8 @@ import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.ui.activity.BaseGameActivity;
 
 import se.chalmers.avoidance.constants.EventMessageConstants;
 import se.chalmers.avoidance.util.ScreenResolution;
@@ -50,113 +47,82 @@ import android.opengl.GLES20;
 
 /**
  * Class containing information and data about the menu state.
- * @author Florian
- *
+ * 
+ * @author Florian Minges
  */
 public class MenuState implements IState, IOnMenuItemClickListener {
 
-    protected static final int MENU_START = 0;
-    protected static final int MENU_HIGHSCORES = MENU_START + 1;
-    protected static final int MENU_HELP = MENU_START + 2;
-    protected static final int MENU_QUIT = MENU_START + 3;
+    private static final int MENU_START = 0;
+    private static final int MENU_HIGHSCORES = 1;
+    private static final int MENU_CREDITS = 2;
+    private static final int MENU_QUIT = 3;
 
-    private BaseGameActivity baseGameActivity;
     private PropertyChangeSupport pcs;
 	private MenuScene menuScene;
 	
-	private BitmapTextureAtlas bitmapTextureAtlas;
-    private BitmapTextureAtlas menuTexture;
-    protected TextureRegion menuStartTextureRegion;
-    protected TextureRegion menuHighscoreTextureRegion;
-    protected TextureRegion menuHelpTextureRegion;
-    protected TextureRegion menuQuitTextureRegion;
-    protected TextureRegion backgroundRegion;
-	
-    
-	public MenuState(BaseGameActivity activity) {
-		this.baseGameActivity = activity;
+    /**
+     * Constructs a new <code>MenuState</code>. <p>
+     * 
+     * @param camera the game engines <code>Camera</code>
+     * @param regions a <code>Map</code> containing loaded textures/regions
+	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
+     */
+	public MenuState(Camera camera, Map<String, TextureRegion> regions, 
+			VertexBufferObjectManager vbom) {
+		initialize(camera, regions, vbom);
 		pcs = new PropertyChangeSupport(this);
-		onLoadResources();
-		initialize();
 	}
-	
-	/**
-	 * Loads the required resources.
-	 */
-    public void onLoadResources() {
-    	Engine engine = this.baseGameActivity.getEngine();
-    	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-           
-    	this.bitmapTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 1024, 1024, 
-    			TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-    	this.backgroundRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-    			this.bitmapTextureAtlas, this.baseGameActivity, "background.jpg", 0, 0);
-    	engine.getTextureManager().loadTexture(this.bitmapTextureAtlas);
-
-    	// create textures
-    	this.menuTexture = new BitmapTextureAtlas(engine.getTextureManager(), 256, 256, 
-    			TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-    	this.menuStartTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-    			this.menuTexture, this.baseGameActivity, "menu_start.png", 0, 0);
-    	this.menuHighscoreTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-    			this.menuTexture, this.baseGameActivity, "menu_highscore.png", 0, 64);
-    	this.menuHelpTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-    			this.menuTexture, this.baseGameActivity, "menu_help.png", 0, 128);
-    	this.menuQuitTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-    			this.menuTexture, this.baseGameActivity, "menu_quit.png", 0, 192);
-    	engine.getTextureManager().loadTexture(this.menuTexture);
-    }
 	
     /**
      * Initializes the menu scene.
+     * 
+     * @param camera the game engines <code>Camera</code>
+     * @param regions a <code>Map</code> containing loaded textures/regions
+	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
      */
-	private void initialize() {
+	private void initialize(Camera camera, Map<String, TextureRegion> regions, 
+			VertexBufferObjectManager vbom) {
 		menuScene = new MenuScene();
+		menuScene.setCamera(camera);
 		menuScene.setBackground(new Background(0f, 0f, 0f));
 		
 		//center the scene
-		float xPos = ScreenResolution.getWidthResolution() / 2 - 100;
-		float yPos = ScreenResolution.getHeightResolution() / 2 - 150;
-
-		VertexBufferObjectManager vbom = this.baseGameActivity.getVertexBufferObjectManager();
+		float xPos = ScreenResolution.getWidthResolution() / 2 - 250;
+		float yPos = ScreenResolution.getHeightResolution() / 2 - 300;
 		
 		//create menu items
 		final SpriteMenuItem startMenuItem = new SpriteMenuItem(MENU_START,
-				this.menuStartTextureRegion, vbom);
-		startMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
-				GLES20.GL_ONE_MINUS_SRC_ALPHA);
+				regions.get("menu_start.png"), vbom);
+		startMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(startMenuItem);
 		startMenuItem.setPosition(xPos, yPos);
 
 		final SpriteMenuItem highscoreMenuItem = new SpriteMenuItem(MENU_HIGHSCORES,
-				this.menuHighscoreTextureRegion, vbom);
-		highscoreMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
-				GLES20.GL_ONE_MINUS_SRC_ALPHA);
+				regions.get("menu_highscore.png"), vbom);
+		highscoreMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(highscoreMenuItem);
-		highscoreMenuItem.setPosition(xPos, yPos + 75);
+		highscoreMenuItem.setPosition(xPos, yPos + 150);
 
 		
-		final SpriteMenuItem helpMenuItem = new SpriteMenuItem(MENU_HELP,
-				this.menuHelpTextureRegion, vbom);
-		helpMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
-				GLES20.GL_ONE_MINUS_SRC_ALPHA);
-		this.menuScene.addMenuItem(helpMenuItem);
-		helpMenuItem.setPosition(xPos, yPos + 150);
+		final SpriteMenuItem creditsMenuItem = new SpriteMenuItem(MENU_CREDITS,
+				regions.get("menu_credits.png"), vbom);
+		creditsMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+		this.menuScene.addMenuItem(creditsMenuItem);
+		creditsMenuItem.setPosition(xPos, yPos + 300);
 
 		final SpriteMenuItem quitMenuItem = new SpriteMenuItem(MENU_QUIT,
-				this.menuQuitTextureRegion, vbom);
-		quitMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
-				GLES20.GL_ONE_MINUS_SRC_ALPHA);
+				regions.get("menu_quit.png"), vbom);
+		quitMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(quitMenuItem);
-		quitMenuItem.setPosition(xPos, yPos + 225);
+		quitMenuItem.setPosition(xPos, yPos + 450);
 		
-		final Sprite backgroundSprite = new Sprite(0, 0, 1024, 768, this.backgroundRegion, vbom);
+		final Sprite backgroundSprite = new Sprite(0, 0, 1024, 768, regions.get("background.jpg"), 
+				vbom);
 		this.menuScene.setBackground(new SpriteBackground(backgroundSprite));
 
 //		 this.menuScene.buildAnimations(); <- does not work
 		this.menuScene.setBackgroundEnabled(true);
 		this.menuScene.setOnMenuItemClickListener(this);
-		this.menuScene.setCamera(this.baseGameActivity.getEngine().getCamera());
 
 	}
 	
@@ -179,7 +145,6 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 	public boolean onMenuItemClicked(final MenuScene pMenuScene,
 			final IMenuItem pMenuItem, final float pMenuItemLocalX,
 			final float pMenuItemLocalY) {
-		//TODO Use constants instead of hard-coded strings
 		switch (pMenuItem.getID()) {
 		case MENU_START:
 			pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Menu, StateID.Game);
@@ -188,8 +153,9 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 			pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Menu, 
 					StateID.Highscore);
 			return true;
-		case MENU_HELP:
-			pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Menu, StateID.Help);
+		case MENU_CREDITS:
+			pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Menu, 
+					StateID.Credits);
 			return true;
 		case MENU_QUIT:
 			/* End Activity. */
@@ -215,6 +181,4 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.removePropertyChangeListener(pcl);
 	}
-
-
 }

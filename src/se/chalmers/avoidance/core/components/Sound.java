@@ -1,4 +1,4 @@
-/* 
+ /* 
  * Copyright (c) 2012 Filip Brynfors
  * 
  * This file is part of Avoidance.
@@ -23,28 +23,54 @@ package se.chalmers.avoidance.core.components;
 import com.artemis.Component;
 
 /**
- * Component containing the information about friction.
+ * Component containing information about the sound.
  * 
  * @author Filip Brynfors
  *
  */
-public class Friction extends Component {
-	private final float friction;
+public class Sound extends Component {
+	private String name;
+	private boolean playing = false;
 	
 	/**
-	 * Creates a new friction component with the specified friction value.
-	 * @param friction the friction
+	 * Constructs a sound with the specified name.
+	 * @param name the name
 	 */
-	public Friction(float friction) {
-		this.friction = friction;
+	public Sound(String name){
+		this.name = name;
 	}
 	
 	/**
-	 * Returns the friction.
-	 * @return the friction
+	 * Sets the name.
+	 * @param name The name.
 	 */
-	public float getFriction() {
-		return friction;
+	public void setName(String name) {
+		this.name = name;
 	}
+	
+	/**
+	 * Returns the name.
+	 * @return The name.
+	 */
+	public String getName() {
+		return name;
+	}
+	
+	/**
+	 * Sets if the sound should be playing or not.
+	 * @param playing true if the sound should be playing
+	 */
+	public void setPlaying(boolean playing) {
+		this.playing = playing;
+	}
+	
+	/**
+	 * Returns whether the sound should be playing or not.
+	 * @return true if the sound should be playing, false otherwise
+	 */
+	public boolean isPlaying() {
+		return playing;
+	}
+	
 
 }

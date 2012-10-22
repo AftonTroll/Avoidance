@@ -53,8 +53,9 @@ public class SpatialRenderSystem extends EntitySystem{
     @Mapper
     ComponentMapper<Transform> tm;
     @Mapper
-    ComponentMapper<Spatial> sm;
-
+    private ComponentMapper<Spatial> sm;
+    
+    private TagManager tagManager;
 	private List<Entity> entities;
 	private Map<String, TextureRegion> regions;
 	private VertexBufferObjectManager vbom;
@@ -78,7 +79,7 @@ public class SpatialRenderSystem extends EntitySystem{
 
 	@Override
 	protected void initialize() {
-		
+		tagManager = world.getManager(TagManager.class);
 	}
 	
 	@Override
@@ -126,6 +127,9 @@ public class SpatialRenderSystem extends EntitySystem{
 		Transform tf = tm.get(e);
 		spatial.setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(spatial.getName()), vbom));
 		scene.attachChild(spatial.getSprite());
+		if(tagManager.getEntity("PLAYER").equals(e)){
+			spatial.getSprite().setZIndex(50);
+		}
 		scene.sortChildren();
         entities.add(e);
     }

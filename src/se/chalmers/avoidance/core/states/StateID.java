@@ -28,6 +28,6 @@ package se.chalmers.avoidance.core.states;
 public enum StateID {
 	Menu,
 	Game,
-	Help,
+	Credits,
 	Highscore
 }

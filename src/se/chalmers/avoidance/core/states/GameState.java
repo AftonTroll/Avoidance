@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2012 Markus Ekström
+ * Copyright (c) 2012 Markus Ekström, Florian Minges
  * 
  * This file is part of Avoidance.
  * 
@@ -21,30 +21,32 @@
 package se.chalmers.avoidance.core.states;
 
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.HashMap;
+import java.util.Map;
 
-import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.Background;
-import org.andengine.input.touch.TouchEvent;
+import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.sprite.ButtonSprite;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+
 import se.chalmers.avoidance.constants.EventMessageConstants;
 import se.chalmers.avoidance.constants.FontConstants;
+import se.chalmers.avoidance.core.collisionhandlers.GameOverNotifier;
 import se.chalmers.avoidance.core.systems.CollisionSystem;
 import se.chalmers.avoidance.core.systems.EnemyControlSystem;
 import se.chalmers.avoidance.core.systems.HudRenderSystem;
 import se.chalmers.avoidance.core.systems.PlayerControlSystem;
+import se.chalmers.avoidance.core.systems.SoundSystem;
 import se.chalmers.avoidance.core.systems.SpatialRenderSystem;
 import se.chalmers.avoidance.core.systems.SpawnSystem;
 import se.chalmers.avoidance.input.AccelerometerListener;
 import se.chalmers.avoidance.input.TouchListener;
 import android.hardware.SensorManager;
-import android.view.MotionEvent;
 
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
@@ -53,15 +55,16 @@ import com.artemis.managers.TagManager;
 /**
  * The game state.
  * 
- * @author Markus Ekström
+ * @author Markus Ekström, Florian Minges
  */
-public class GameState implements IState{
+public class GameState implements IState, PropertyChangeListener {
 
 	private Scene scene;
 	private World world;
 	private PropertyChangeSupport pcs;
 	private TouchListener touchListener;
 	private GameOverScene gameOverScene;
+	private boolean process;
 	
 	/**
 	 * Constructs a new <code>GameState</code>.
@@ -71,8 +74,8 @@ public class GameState implements IState{
 	 * @param fonts a <code>HashMap</code> containing loaded fonts
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
 	 */
-	public GameState(SensorManager sensorManager, HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts, VertexBufferObjectManager vbom) {
-		initialize(sensorManager, regions, fonts, vbom);
+	public GameState(SensorManager sensorManager, Map<String, TextureRegion> regions, Map<String, Font> fonts, VertexBufferObjectManager vbom) {
+		this.initialize(sensorManager, regions, fonts, vbom);
 		this.pcs = new PropertyChangeSupport(this);
 		this.gameOverScene = new GameOverScene(vbom, regions, fonts);
 		this.gameOverScene.setButtonSpriteOnClickListener(getButtonSpriteOnClickListener());
@@ -86,15 +89,14 @@ public class GameState implements IState{
 	 * @param fonts a <code>HashMap</code> containing loaded fonts
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
 	 */
-	private void initialize(SensorManager sensorManager, HashMap<String, TextureRegion> regions, HashMap<String, Font> fonts, VertexBufferObjectManager vbom) {
+	private void initialize(SensorManager sensorManager, Map<String, TextureRegion> regions, Map<String, Font> fonts, VertexBufferObjectManager vbom) {
 		scene = new Scene();
 		
-		scene.setBackground(new Background(1f, 0f, 0f));
-		world = new World();		
+		Sprite backgroundSprite = new Sprite(0, 0, 1280, 800, regions.get("background.png"), vbom);
+		scene.setBackground(new SpriteBackground(backgroundSprite));
+		world = new World();
 		world.setManager(new GroupManager());
 		world.setManager(new TagManager());
-		
-		
 		
 		//Create and set systems here
 		world.setSystem(new SpatialRenderSystem(regions, vbom, scene));
@@ -102,10 +104,12 @@ public class GameState implements IState{
 		world.setSystem(new PlayerControlSystem());
 		world.setSystem(new EnemyControlSystem());
 		world.setSystem(new SpawnSystem());
+		world.setSystem(new SoundSystem());
 		world.setSystem(new HudRenderSystem(scene, vbom, fonts.get(FontConstants.HUD_SCORE)));
 		
 		//Initialize world.
 		world.initialize();
+		enableProcess(true);
 		
 		//Add listeners
 		AccelerometerListener aL = new AccelerometerListener(sensorManager);
@@ -115,6 +119,10 @@ public class GameState implements IState{
 		touchListener = new TouchListener();
 		scene.setOnSceneTouchListener(touchListener);
 		touchListener.addListener(world.getSystem(PlayerControlSystem.class));
+		
+		// listen to 'Game Over'-events
+		GameOverNotifier.getInstance().addPropertyChangeListener(this);
+		GameOverNotifier.getInstance().setWorld(world);
 	}
 	
 	/**
@@ -123,8 +131,22 @@ public class GameState implements IState{
 	 * @param tpf Time since last frame.
 	 */
 	public void update(float tpf) {
-		world.setDelta(tpf);
-		world.process();
+		if (process) {
+			if (tpf > 1.0f) {
+				tpf = 0; //ie, if tpf is too large, don't update
+			}
+			world.setDelta(tpf);
+			world.process();
+		}
+	}
+	
+	/**
+	 * Enables/Disables the ability to update the world/the game. <p>
+	 * @param enable true if you want the game to update;
+	 * false if you want to stop the updating.
+	 */
+	public void enableProcess(boolean enable) {
+		process = enable;
 	}
 
 	/**
@@ -155,12 +177,16 @@ public class GameState implements IState{
 	 * Shows the game over scene.
 	 * 
 	 * @param score the players score
+	 * @param event the <code>PropertyChangeEvent</code> that triggered this method
 	 */
-	public void gameOver(int score) {
-		this.gameOverScene.setScore(score);
-		this.gameOverScene.addTo(scene);
+	public synchronized void gameOver(int score, PropertyChangeEvent event) {
+		if (process) {
+			enableProcess(false);
+			this.gameOverScene.setScore(score);
+			this.gameOverScene.addTo(scene);
+			pcs.firePropertyChange(event);
+		} 
 	}
-	
 	
 	/**
 	 * Returns a <code>ButtonSprite.OnClickListener</code>, that removes this scenes
@@ -172,11 +198,30 @@ public class GameState implements IState{
 	private ButtonSprite.OnClickListener getButtonSpriteOnClickListener() {
 		return new ButtonSprite.OnClickListener() {
 			public void onClick( ButtonSprite pButtonSprite, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				//do this on the ui update thread or not?
 				scene.clearChildScene();
 				pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Game, StateID.Highscore);
 		    } 
 		};
+	}
+
+	/**
+	 * Listens to <code>PropertyChangeEvents</code>.<p>
+	 * Do NOT call manually.
+	 * 
+	 * @param event an event
+	 */
+	public void propertyChange(PropertyChangeEvent event) {
+		if (event != null && event.getNewValue() != null) {
+			if (EventMessageConstants.GAME_OVER.equals(event.getPropertyName())) {
+				int score = 0;
+				try {
+					score = (Integer) event.getNewValue();
+				} catch (ClassCastException cce) {
+					cce.printStackTrace(); //score is 0 if error occurs
+				}
+				gameOver(score, event);
+			}
+		}
 	}
 	
 }

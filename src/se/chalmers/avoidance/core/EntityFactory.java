@@ -23,10 +23,11 @@ package se.chalmers.avoidance.core;
 import se.chalmers.avoidance.core.components.Acceleration;
 import se.chalmers.avoidance.core.components.Buff;
 import se.chalmers.avoidance.core.components.Buff.BuffType;
-import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Friction;
+import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Score;
 import se.chalmers.avoidance.core.components.Size;
+import se.chalmers.avoidance.core.components.Sound;
 import se.chalmers.avoidance.core.components.Spatial;
 import se.chalmers.avoidance.core.components.Time;
 import se.chalmers.avoidance.core.components.Transform;
@@ -49,15 +50,18 @@ public class EntityFactory {
 	 * Creates a player entity with a PLAYER tag.
 	 * 
 	 * @param world The world.
+	 * @param xPos the horizontal position of the player.
+	 * @param yPos the vertical position of the player.
 	 * @return An Entity (the player entity).
 	 */
-	public static Entity createPlayer(World world){
+	public static Entity createPlayer(World world, float xPos, float yPos){
 		Entity player = world.createEntity();
 		world.getManager(TagManager.class).register("PLAYER", player);
 		world.getManager(GroupManager.class).add(player, "PLAYER");
 		world.getManager(GroupManager.class).add(player, "MOVINGENTITIES");
+		world.getManager(GroupManager.class).add(player, "CIRCLESHAPES");
 		
-		player.addComponent(new Transform(200,100));
+		player.addComponent(new Transform(xPos,yPos));
 		player.addComponent(new Velocity());
 		player.addComponent(new Size(64,64));
 		player.addComponent(new Friction(0.7f));
@@ -88,6 +92,7 @@ public class EntityFactory {
 		}else{
 			wall.addComponent(new Spatial("wall_vertical.png"));
 		}
+		wall.addComponent(new Sound("bounce.ogg"));
 		
 		return wall;
 	}
@@ -104,6 +109,7 @@ public class EntityFactory {
 		Entity enemy = world.createEntity();
 		world.getManager(GroupManager.class).add(enemy, "ENEMIES");
 		world.getManager(GroupManager.class).add(enemy, "MOVINGENTITIES");
+		world.getManager(GroupManager.class).add(enemy, "CIRCLESHAPES");
 		
 		enemy.addComponent(new Transform(xPos, yPos));
 		enemy.addComponent(new Velocity());
@@ -126,6 +132,7 @@ public class EntityFactory {
 		Entity enemy = world.createEntity();
 		world.getManager(GroupManager.class).add(enemy, "ENEMIES");
 		world.getManager(GroupManager.class).add(enemy, "MOVINGENTITIES");
+		world.getManager(GroupManager.class).add(enemy, "CIRCLESHAPES");
 		
 		enemy.addComponent(new Transform(xPos, yPos));
 		enemy.addComponent(new Velocity());
@@ -153,6 +160,7 @@ public class EntityFactory {
 		obstacle.addComponent(new Transform(xPos, yPos));
 		obstacle.addComponent(new Size(width,height));
 		obstacle.addComponent(new Spatial("obstacle.png"));
+		obstacle.addComponent(new Sound("bounce.ogg"));
 		
 		return obstacle;
 	}
@@ -182,6 +190,7 @@ public class EntityFactory {
 	public static Entity createSpeedPowerUp(World world, float xPos, float yPos, int buffStrength) {
 		Entity powerUp = world.createEntity();
 		world.getManager(GroupManager.class).add(powerUp, "POWERUPS");
+		world.getManager(GroupManager.class).add(powerUp, "CIRCLESHAPES");
 		
 		powerUp.addComponent(new Transform(xPos, yPos));
 		powerUp.addComponent(new Size(64, 64));
@@ -213,9 +222,17 @@ public class EntityFactory {
 		
 	}
 	
+	/**
+	 * Creates a new pit obstacle and adds it to the PITOBSTACLES group.
+	 * @param world the world.
+	 * @param xPos the desired x-position of the pitobstacle.
+	 * @param yPos the desired y-position of the pitobstacle.
+	 * @return A pit obstacle entity
+	 */
 	public static Entity createPitobstacle(World world, float xPos, float yPos){
 		Entity pitobstacle = world.createEntity();
 		world.getManager(GroupManager.class).add(pitobstacle, "PITOBSTACLES");
+		world.getManager(GroupManager.class).add(pitobstacle, "CIRCLESHAPES");
 		
 		pitobstacle.addComponent(new Transform(xPos, yPos));
 		pitobstacle.addComponent(new Size(64,64));
@@ -224,6 +241,13 @@ public class EntityFactory {
 		return pitobstacle;
 	}
 	
+	/**
+	 * Creates a new kill player obstacle and adds it to the KILLPLAYERPITOBSTACLES group.
+	 * @param world the world.
+	 * @param xPos the desired x-position of the kill player obstacle.
+	 * @param yPos the desired y-position of the kill player obstacle.
+	 * @return A kill player obstacle entity
+	 */
 	public static Entity createKillplayerbstacle(World world, float xPos, float yPos){
 		Entity killplayerobstacle = world.createEntity();
 		world.getManager(GroupManager.class).add(killplayerobstacle, "KILLPLAYEROBSTACLES");

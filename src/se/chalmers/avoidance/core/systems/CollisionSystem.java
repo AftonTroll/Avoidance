@@ -28,12 +28,15 @@ import org.andengine.entity.shape.RectangularShape;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 
 import se.chalmers.avoidance.core.collisionhandlers.CollisionHandler;
+import se.chalmers.avoidance.core.collisionhandlers.EnemyCollisionHandler;
+import se.chalmers.avoidance.core.collisionhandlers.KillplayerobstacleCollisionHandler;
 import se.chalmers.avoidance.core.collisionhandlers.PitobstacleCollisionHandler;
 import se.chalmers.avoidance.core.collisionhandlers.PowerUpCollisionHandler;
 import se.chalmers.avoidance.core.collisionhandlers.WallCollisionHandler;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
+import se.chalmers.avoidance.util.ScreenResolution;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -41,16 +44,18 @@ import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.annotations.Mapper;
 import com.artemis.managers.GroupManager;
+import com.artemis.managers.TagManager;
 import com.artemis.utils.Bag;
 import com.artemis.utils.ImmutableBag;
 /**
- * System for handling collision between entities
+ * System for handling collision between entities.
  * 
  * @author Jakob Svensson
  * @author Markus Ekström
  *
  */
 public class CollisionSystem extends EntitySystem{
+
 	@Mapper
 	ComponentMapper<Velocity> velocityMapper;
 	@Mapper
@@ -60,19 +65,16 @@ public class CollisionSystem extends EntitySystem{
     private Bag<CollisionPair> collisionPairs;
     private CollisionObject collisionObject1 = new CollisionObject(0, 0, 0, 0);
     private CollisionObject collisionObject2 = new CollisionObject(0, 0, 0, 0);
-
 	
     /**
-     * Constructs a new CollisionSystem 
-     * 
-     * @param world the world object of the game
+     * Constructs a new CollisionSystem.
      */
 	public CollisionSystem() {
 		super(Aspect.getAspectForAll(Transform.class, Size.class));
 	}
 	
 	/**
-	 * This method is called when the system is initialized
+	 * This method is called when the system is initialized.
 	 */
 	@Override
 	protected void initialize(){
@@ -80,12 +82,14 @@ public class CollisionSystem extends EntitySystem{
         collisionPairs.add(new CollisionPair("MOVINGENTITIES", "WALLS", new WallCollisionHandler(world))); 
         collisionPairs.add(new CollisionPair("PLAYER", "POWERUPS", new PowerUpCollisionHandler(world)));
         collisionPairs.add(new CollisionPair("MOVINGENTITIES", "PITOBSTACLES", new PitobstacleCollisionHandler(world)));
+        collisionPairs.add(new CollisionPair("PLAYER", "KILLPLAYEROBSTACLES", new KillplayerobstacleCollisionHandler(world)));
+        collisionPairs.add(new CollisionPair("PLAYER", "ENEMIES", new EnemyCollisionHandler(world)));
 	}
 	
 	
 	
 	/**
-	 * Determines if the system should be processed or not
+	 * Determines if the system should be processed or not.
 	 * 
 	 * @return true if system should be processed, false if not	
 	 */
@@ -95,7 +99,7 @@ public class CollisionSystem extends EntitySystem{
 	}
 	
 	/**
-	 * Processes entities and checks for collisions between them
+	 * Processes entities and checks for collisions between them.
 	 * 
 	 * @param ImmutableBag<Entity> the entities this system contains.
 	 */
@@ -105,29 +109,36 @@ public class CollisionSystem extends EntitySystem{
         for(int i = 0; collisionPairs.size() > i; i++) {
             collisionPairs.get(i).checkForCollisions();
         }
-//		ImmutableBag<Entity> walls = world.getManager(GroupManager.class).getEntities("WALLS");
-//		ImmutableBag<Entity> enemies = world.getManager(GroupManager.class).getEntities("ENEMIES");
-//		Entity player = world.getManager(TagManager.class).getEntity("PLAYER");
-//		for (int i=0;i<walls.size();i++){
-//			if(collisionExists(player, walls.get(i))){
-//				handleWallCollision(player, walls.get(i));
-//			}
-//			for (int j=0;j<enemies.size();j++){
-//				if(collisionExists(enemies.get(j), walls.get(i))){
-//					handleWallCollision(enemies.get(j), walls.get(i));
-//				}
-//			}
-//		}
-//		
-//		for (int j=0;j<enemies.size();j++){
-//			if(collisionExists(player, enemies.get(j))){
-//				//handeEnemyCollision();
-//			}
-//		}	
+       
+        Entity player = world.getManager(TagManager.class).getEntity("PLAYER");  
+        Transform playerTransform = transformMapper.get(player);
+        ImmutableBag<Entity> walls = world.getManager(GroupManager.class).getEntities("WALLS");
+        Size wallSize = sizeMapper.get(walls.get(0));
+        Size playerSize = sizeMapper.get(player);
+        
+        float wallthickness;
+        if(wallSize.getWidth()<wallSize.getHeight()){
+        	wallthickness=wallSize.getWidth();
+        }else{
+        	wallthickness=wallSize.getHeight();
+        }
+        //Check if player is outside of the map
+        if(playerTransform.getX()<0){
+        	playerTransform.setX(wallthickness);
+        }
+        if(playerTransform.getX()>ScreenResolution.getWidthResolution()){
+        	playerTransform.setX(ScreenResolution.getWidthResolution()-wallthickness-playerSize.getWidth());
+        }
+        if(playerTransform.getY()<0){
+        	playerTransform.setY(wallthickness);
+        }
+        if(playerTransform.getY()>ScreenResolution.getHeightResolution()){
+        	playerTransform.setY(ScreenResolution.getHeightResolution()-wallthickness-playerSize.getHeight());
+        }	
 	}
 		
 	/**
-	 * Checks if two entities is colliding with each other 
+	 * Checks if two entities is colliding with each other.
 	 * 
 	 * @param e1 The first entity
 	 * @param e2 The second entity
@@ -145,16 +156,28 @@ public class CollisionSystem extends EntitySystem{
 		float e1Width = e1Size.getWidth();
 		float e1Height = e1Size.getHeight();
 		
-		collisionObject1.setX(e1X);
-		collisionObject1.setY(e1Y);
-		collisionObject1.setWidth(e1Width);
-		collisionObject1.setHeight(e1Height);
-		
 		float e2X = e2Transform.getX();
 		float e2Y = e2Transform.getY();
 		float e2Width = e2Size.getWidth();
 		float e2Height = e2Size.getHeight();
 		
+		GroupManager groupManager = world.getManager(GroupManager.class);
+		
+		if(groupManager.getEntities("CIRCLESHAPES").contains(e1)&&
+				groupManager.getEntities("CIRCLESHAPES").contains(e2)){
+			
+			float xDelta = e1X+e1Width/2-(e2X+e2Width/2);
+			float yDelta = e1Y+e1Height/2-(e2Y+e2Height/2);
+			float colDist = e1Width/2+e2Width/2;
+			return xDelta*xDelta+yDelta*yDelta<=colDist*colDist;		
+			
+		}
+
+		collisionObject1.setX(e1X);
+		collisionObject1.setY(e1Y);
+		collisionObject1.setWidth(e1Width);
+		collisionObject1.setHeight(e1Height);
+				
 		collisionObject2.setX(e2X);
 		collisionObject2.setY(e2Y);
 		collisionObject2.setWidth(e2Width);
@@ -167,7 +190,7 @@ public class CollisionSystem extends EntitySystem{
 
 	
 	/**
-	 * An object used to check for collision with Andengine's collision detection
+	 * An object used to check for collision with Andengine's collision detection.
 	 * 
 	 * @author Jakob Svensson
 	 *
@@ -175,7 +198,7 @@ public class CollisionSystem extends EntitySystem{
 	private class CollisionObject extends RectangularShape{
 		
 		/**
-		 * Constructs a new collisionObject object
+		 * Constructs a new collisionObject object.
 		 * 
 		 * @param pX the x position of the object
 		 * @param pY the y position of the object

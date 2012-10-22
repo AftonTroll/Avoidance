@@ -23,26 +23,16 @@ package se.chalmers.avoidance.core.components;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class SizeTest extends FloatTest {
 
-	private static float w1;
-	private static float h1;
-	private static float w2;
-	private static float h2;
+	private static float w1 = 2f;
+	private static float h1 = 3f;
+	private static float w2 = 4f;
+	private static float h2 = 5f;
 	
 	private Size mSize;
-	
-	
-	@BeforeClass
-	public static void beforeClass() throws Exception {
-		w1 = 2f;
-		h1 = 3f;
-		w2 = 4f;
-		h2 = 5f;
-	}
 	
 	@Before
 	public void setUp() throws Exception {
@@ -78,8 +68,9 @@ public class SizeTest extends FloatTest {
 		// positive value
 		mSize.setWidth(w2);
 		assertFloatEquals(mSize.getWidth() - w2);
-		if (h1 - w2 >= TOLERANCE)
+		if (h1 - w2 >= TOLERANCE) {
 			assertFloatEquals(mSize.getHeight() - h1);
+		}
 		
 		// negative value
 		mSize.setWidth(-1);
@@ -98,8 +89,9 @@ public class SizeTest extends FloatTest {
 		// positive value
 		mSize.setHeight(h2);
 		assertFloatEquals(mSize.getHeight() - h2);
-		if (w1 - h2 >= TOLERANCE)
+		if (w1 - h2 >= TOLERANCE) {
 			assertFloatEquals(mSize.getWidth() - w1);
+		}
 		
 		// negative value
 		mSize.setHeight(-1);
