@@ -99,8 +99,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	/**
 	 * Loads resource files.
 	 */
-	public void onCreateResources(OnCreateResourcesCallback onCreateResourcesCallback)
-			throws Exception {
+	public void onCreateResources(OnCreateResourcesCallback onCreateResourcesCallback) {
 		
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		splashTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 2048, 1024, TextureOptions.DEFAULT);
@@ -114,7 +113,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	/**
 	 * Creates and shows the splash screen.
 	 */
-	public void onCreateScene(OnCreateSceneCallback onCreateSceneCallback) throws Exception {
+	public void onCreateScene(OnCreateSceneCallback onCreateSceneCallback) {
 		initSplashScene();
 		onCreateSceneCallback.onCreateSceneFinished(this.splashScene);
 		
@@ -123,8 +122,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	/**
 	 * Starts the game.
 	 */
-	public void onPopulateScene(Scene scene, OnPopulateSceneCallback onPopulateSceneCallback)
-			throws Exception {
+	public void onPopulateScene(Scene scene, OnPopulateSceneCallback onPopulateSceneCallback) {
 		FileUtils.setContext(this);
 		
 		 mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
