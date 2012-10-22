@@ -212,7 +212,7 @@ public class EntityFactory {
 	 * @param buffStrength The duration of immortality the powerup gives..
 	 * @return A powerup entity.
 	 */
-	public static Entity createImmortalPowerUp(World world, float xPos, float yPos, int buffStrength) {
+	public static Entity createImmortalityPowerUp(World world, float xPos, float yPos, int buffStrength) {
 		Entity powerUp = world.createEntity();
 		world.getManager(GroupManager.class).add(powerUp, "POWERUPS");
 		

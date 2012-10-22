@@ -57,6 +57,7 @@ public class SpawnSystem extends EntityProcessingSystem{
 	private static final int POWERUP_SPAWN_CD = 10;
 	private int lastSpawn = 0;
 	private float lastPowerupTaken = 0;
+	private int powerupSpawnCount = 0;
 	
 	
 	/**
@@ -103,7 +104,7 @@ public class SpawnSystem extends EntityProcessingSystem{
 		world.addEntity(EntityFactory.createKillplayerbstacle(world, centerX+168,
 				ScreenResolution.getHeightResolution()-WALL_THICKNESS-114));
 		world.addEntity(EntityFactory.createScore(world));
-		world.addEntity(EntityFactory.createImmortalPowerUp(world, centerX - 32, centerY - 100, 10));
+		world.addEntity(EntityFactory.createImmortalityPowerUp(world, centerX - 32, centerY - 100, 10));
 	}
 
 	/**
@@ -152,7 +153,12 @@ public class SpawnSystem extends EntityProcessingSystem{
 	 * Spawns a new powerup
 	 */
 	private void spawnPowerup(){
-		Entity powerup = EntityFactory.createPowerUp(world, 0, 0, BuffType.Speed, 300);
+	    Entity powerup;
+	    if(powerupSpawnCount % 2 == 0) {
+	        powerup = EntityFactory.createSpeedPowerUp(world, 0, 0, 300);
+	    } else {
+	        powerup = EntityFactory.createImmortalityPowerUp(world, 0, 0, 10);
+	    }
 		moveEntityToFreePosition(powerup);
 		world.addEntity(powerup);
 	}
