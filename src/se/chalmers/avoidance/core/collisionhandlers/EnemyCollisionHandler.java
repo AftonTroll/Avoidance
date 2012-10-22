@@ -20,6 +20,7 @@
 
 package se.chalmers.avoidance.core.collisionhandlers;
 
+import se.chalmers.avoidance.constants.GameConstants;
 import se.chalmers.avoidance.core.components.Immortal;
 import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Score;
@@ -27,6 +28,7 @@ import se.chalmers.avoidance.core.components.Score;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.managers.TagManager;
 /**
  * Handles collision between player and enemies.
  * 
@@ -63,7 +65,8 @@ public class EnemyCollisionHandler implements CollisionHandler{
     		} else if (immortal.isImmortal() || 
     		        (jump.isInTheAir() && jump.getInTheAirDurationLeft() <= world.delta)) {
     		    world.deleteEntity(enemy);
-    		    Score score = player.getComponent(Score.class);
+    		    Score score = world.getManager(TagManager.class).
+    		            getEntity(GameConstants.SCORE_TAG).getComponent(Score.class);
     		    if(score != null) {
     		        score.addKillScore(Score.KILL_SCORE);
     		    }
