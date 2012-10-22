@@ -21,6 +21,7 @@
 package se.chalmers.avoidance.core.systems;
 
 
+import se.chalmers.avoidance.constants.GameConstants;
 import se.chalmers.avoidance.core.EntityFactory;
 import se.chalmers.avoidance.core.components.Buff.BuffType;
 import se.chalmers.avoidance.core.components.Size;
@@ -180,7 +181,7 @@ public class SpawnSystem extends EntityProcessingSystem{
 			
 			
 			//Check if the enemy is too close to the player
-			Entity player = tagManager.getEntity("PLAYER");
+			Entity player = tagManager.getEntity(GameConstants.PLAYER_TAG);
 			if(!entity.equals(player)){
 				Transform pTrans = transformMapper.get(player);
 				Size pSize = sizeMapper.get(player);
@@ -203,7 +204,8 @@ public class SpawnSystem extends EntityProcessingSystem{
 			}
 			
 			//check if entity is spawned is spawned on another entity
-			String[] entityGroups = {"WALLS", "ENEMIES", "PITOBSTACLES", "KILLPLAYEROBSTACLES"};
+			String[] entityGroups = {GameConstants.WALLS_GROUP, GameConstants.ENEMIES_GROUP, 
+			        GameConstants.PITOBSTACLES_GROUP, GameConstants.KILLPLAYEROBSTACLES_GROUP};
 			for(int j = 0; j<entityGroups.length; j++){
 				ImmutableBag<Entity> enemyBag = groupManager.getEntities(entityGroups[j]);
 				for (int i = 0; i<enemyBag.size(); i++){

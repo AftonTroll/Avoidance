@@ -19,6 +19,7 @@
  */
 package se.chalmers.avoidance.core.collisionhandlers;
 
+import se.chalmers.avoidance.constants.GameConstants;
 import se.chalmers.avoidance.core.components.Buff;
 import se.chalmers.avoidance.core.components.Buff.BuffType;
 import se.chalmers.avoidance.core.components.Immortal;
@@ -71,7 +72,7 @@ public class PowerUpCollisionHandler implements CollisionHandler{
 			    immortal.setImmortal(true);
 			}
 			powerup.deleteFromWorld();
-		    Score score = sm.get(world.getManager(TagManager.class).getEntity("SCORE"));
+		    Score score = sm.get(world.getManager(TagManager.class).getEntity(GameConstants.SCORE_TAG));
 		    score.addPowerupScore(Score.POWERUP_PICKUP_SCORE);
 			powerup.deleteFromWorld();
 		}

@@ -28,6 +28,7 @@ package se.chalmers.avoidance.core.systems;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import se.chalmers.avoidance.constants.GameConstants;
 import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Immortal;
 import se.chalmers.avoidance.core.components.Jump;
@@ -101,7 +102,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
 		
-		Entity entity = tagManager.getEntity("PLAYER");
+		Entity entity = tagManager.getEntity(GameConstants.PLAYER_TAG);
 		if (entity != null) {
 			handleJump(entity); //Check if the player should be in the air.
 			handleImmortal(entity);
@@ -192,8 +193,8 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 		//if there is no new value
 		} else {
 			if("touch".equals(event.getPropertyName()) && 
-					tagManager.getEntity("PLAYER").getComponent(Jump.class).getJumpCooldownLeft() == 0) {
-				jumpMapper.get(tagManager.getEntity("PLAYER")).setInTheAir(true);
+					tagManager.getEntity(GameConstants.PLAYER_TAG).getComponent(Jump.class).getJumpCooldownLeft() == 0) {
+				jumpMapper.get(tagManager.getEntity(GameConstants.PLAYER_TAG)).setInTheAir(true);
 			}
 		}
 	}

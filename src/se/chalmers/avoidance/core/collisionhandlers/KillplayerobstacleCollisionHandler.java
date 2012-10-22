@@ -20,6 +20,7 @@
 
 package se.chalmers.avoidance.core.collisionhandlers;
 
+import se.chalmers.avoidance.constants.GameConstants;
 import se.chalmers.avoidance.core.components.Jump;
 
 import com.artemis.ComponentMapper;
@@ -53,8 +54,8 @@ public class KillplayerobstacleCollisionHandler implements CollisionHandler {
 	 */
 	public void handleCollision(Entity player, Entity obstacle) {
 		GroupManager groupManager = world.getManager(GroupManager.class);
-		if (groupManager.getEntities("PLAYER").contains(player) &&
-				groupManager.getEntities("KILLPLAYEROBSTACLES").contains(obstacle)) {
+		if (groupManager.getEntities(GameConstants.PLAYER_GROUP).contains(player) &&
+				groupManager.getEntities(GameConstants.KILLPLAYEROBSTACLES_GROUP).contains(obstacle)) {
 			ComponentMapper<Jump> jumpMapper = world.getMapper(Jump.class);
 			Jump jump = jumpMapper.get(player);
 			if (jump == null || !jump.isInTheAir()) {

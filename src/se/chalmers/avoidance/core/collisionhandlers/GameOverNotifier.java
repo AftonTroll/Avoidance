@@ -24,6 +24,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import se.chalmers.avoidance.constants.EventMessageConstants;
+import se.chalmers.avoidance.constants.GameConstants;
 import se.chalmers.avoidance.core.components.Score;
 import se.chalmers.avoidance.core.components.Time;
 
@@ -75,7 +76,7 @@ public final class GameOverNotifier {
 		TagManager tagManager = world.getManager(TagManager.class);
 		ComponentMapper<Score> scoreMapper = world.getMapper(Score.class);
 		ComponentMapper<Time> timeMapper = world.getMapper(Time.class);
-		Entity scoreEntity = tagManager.getEntity("SCORE");
+		Entity scoreEntity = tagManager.getEntity(GameConstants.SCORE_TAG);
 		
 		if (scoreEntity != null) {
 			Time timeComponent = timeMapper.get(scoreEntity);

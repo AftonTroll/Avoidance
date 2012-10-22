@@ -25,6 +25,7 @@
 
 package se.chalmers.avoidance.core.systems;
 
+import se.chalmers.avoidance.constants.GameConstants;
 import se.chalmers.avoidance.core.components.Acceleration;
 import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Size;
@@ -95,14 +96,14 @@ public class EnemyControlSystem extends EntitySystem{
 	@Override
 	protected void processEntities(ImmutableBag<Entity> bag) {
 		
-		Entity player = tagManager.getEntity("PLAYER");
+		Entity player = tagManager.getEntity(GameConstants.PLAYER_TAG);
 		if (player != null) {
 			Transform playerTransform = transformMapper.get(player);
 			Size playerSize = sizeMapper.get(player);
 			float playerCenterX = playerTransform.getX() + playerSize.getWidth()/2;
 			float playerCenterY = playerTransform.getY() + playerSize.getHeight()/2;
 			
-			ImmutableBag<Entity> enemyBag = groupManager.getEntities("ENEMIES");
+			ImmutableBag<Entity> enemyBag = groupManager.getEntities(GameConstants.ENEMIES_GROUP);
 			for (int i = 0; i<enemyBag.size(); i++) {
 				Entity enemy = enemyBag.get(i);
 				Transform enemyTransform = transformMapper.get(enemy);
