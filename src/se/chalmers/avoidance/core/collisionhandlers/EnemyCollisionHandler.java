@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2012 Jakob Svensson
+ * Copyright (c) 2012 Jakob Svensson, Markus Ekström
  * 
  * This file is part of Avoidance.
  * 
@@ -30,7 +30,7 @@ import com.artemis.World;
 /**
  * Handles collision between player and enemies.
  * 
- * @author Jakob Svensson
+ * @author Jakob Svensson, Markus Ekström
  *
  */
 public class EnemyCollisionHandler implements CollisionHandler{
