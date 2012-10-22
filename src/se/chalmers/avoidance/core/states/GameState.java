@@ -143,7 +143,7 @@ public class GameState implements IState, PropertyChangeListener {
 	 * @param enable true if you want the game to update;
 	 * false if you want to stop the updating.
 	 */
-	public void enableProcess(boolean enable) {
+	private void enableProcess(boolean enable) {
 		process = enable;
 	}
 
@@ -177,7 +177,7 @@ public class GameState implements IState, PropertyChangeListener {
 	 * @param score the players score
 	 * @param event the <code>PropertyChangeEvent</code> that triggered this method
 	 */
-	public synchronized void gameOver(int score, PropertyChangeEvent event) {
+	private synchronized void gameOver(int score, PropertyChangeEvent event) {
 		if (process) {
 			enableProcess(false);
 			this.gameOverScene.setScore(score);
