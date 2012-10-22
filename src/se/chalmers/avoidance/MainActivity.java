@@ -51,6 +51,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import se.chalmers.avoidance.constants.EventMessageConstants;
+import se.chalmers.avoidance.constants.FileConstants;
 import se.chalmers.avoidance.constants.FontConstants;
 import se.chalmers.avoidance.core.states.GameState;
 import se.chalmers.avoidance.core.states.HighScoreState;
@@ -101,10 +102,10 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	 */
 	public void onCreateResources(OnCreateResourcesCallback onCreateResourcesCallback) {
 		
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath(FileConstants.ASSET_BASE_PATH_IMG);
 		splashTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 2048, 1024, TextureOptions.DEFAULT);
 		splashTextureRegion =BitmapTextureAtlasTextureRegionFactory.createFromAsset(splashTextureAtlas,
-		 this,"loadingscreen.png", 0, 0);
+		 this, FileConstants.IMG_SPLASH_SCREEN, 0, 0);
 		splashTextureAtlas.load();
 		 
 		onCreateResourcesCallback.onCreateResourcesFinished();
@@ -193,19 +194,19 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
      */
     private void loadResources() throws IllegalStateException, IOException{
     	//Load sound
-        MusicFactory.setAssetBasePath("audio/");
-        SoundFactory.setAssetBasePath("audio/");
+        MusicFactory.setAssetBasePath(FileConstants.ASSET_BASE_PATH_AUDIO);
+        SoundFactory.setAssetBasePath(FileConstants.ASSET_BASE_PATH_AUDIO);
         Music music;
         Sound sound;
         
-        music = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "heroism.ogg");
+        music = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, FileConstants.AUDIO_MUSIC_HEROISM);
         music.setLooping(true);
-        AudioManager.getInstance().addMusic("heroism.ogg", music);
+        AudioManager.getInstance().addMusic(FileConstants.AUDIO_MUSIC_HEROISM, music);
         
-        sound = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "bounce.ogg");
-        AudioManager.getInstance().addSound("bounce.ogg", sound);
+        sound = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, FileConstants.AUDIO_SOUND_BOUNCE);
+        AudioManager.getInstance().addSound(FileConstants.AUDIO_SOUND_BOUNCE, sound);
         
-        AudioManager.getInstance().playMusic("heroism.ogg");
+        AudioManager.getInstance().playMusic(FileConstants.AUDIO_MUSIC_HEROISM);
         
         //Load textures
 		regions = new HashMap<String, TextureRegion>();
@@ -223,7 +224,7 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 				Typeface.create(Typeface.MONOSPACE, Typeface.BOLD_ITALIC), 48, true, Color.WHITE));
 
         // Set the asset path of the images
-        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath(FileConstants.ASSET_BASE_PATH_IMG);
         BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(getTextureManager(), 
         		2048, 2048, TextureOptions.BILINEAR);
         BitmapTextureAtlas menuTextureAtlas = new BitmapTextureAtlas(getTextureManager(), 
@@ -231,64 +232,64 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
         BitmapTextureAtlas backgroundTextureAtlas = new BitmapTextureAtlas(getTextureManager(), 
         		1024, 1024, TextureOptions.BILINEAR);
  
-        regions.put("newHighscore.png", BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "newHighscore.png", 200, 
+        regions.put(FileConstants.IMG_NEW_HIGH_SCORE_TAG, BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, FileConstants.IMG_NEW_HIGH_SCORE_TAG, 200, 
         				824-237-77-200));
         
-        regions.put("highscore.png", BitmapTextureAtlasTextureRegionFactory
-		.createFromAsset( bitmapTextureAtlas, this, "highscore.png", 200, 824-237-77));
+        regions.put(FileConstants.IMG_HIGH_SCORE_TITLE, BitmapTextureAtlasTextureRegionFactory
+		.createFromAsset( bitmapTextureAtlas, this, FileConstants.IMG_HIGH_SCORE_TITLE, 200, 824-237-77));
         
-        regions.put("gameOver.png", BitmapTextureAtlasTextureRegionFactory
-		.createFromAsset( bitmapTextureAtlas, this, "gameOver.png", 200, 824-237));
+        regions.put(FileConstants.IMG_GAME_OVER, BitmapTextureAtlasTextureRegionFactory
+		.createFromAsset( bitmapTextureAtlas, this, FileConstants.IMG_GAME_OVER, 200, 824-237));
         
-        regions.put("okButton.png", BitmapTextureAtlasTextureRegionFactory
-		.createFromAsset( bitmapTextureAtlas, this, "okButton.png", 200, 824));
+        regions.put(FileConstants.IMG_BUTTON_OK, BitmapTextureAtlasTextureRegionFactory
+		.createFromAsset( bitmapTextureAtlas, this, FileConstants.IMG_BUTTON_OK, 200, 824));
         
-        regions.put("ball.png", BitmapTextureAtlasTextureRegionFactory
-		.createFromAsset( bitmapTextureAtlas, this, "ball.png", 0, 0));
-        regions.put("immortal_ball.png", BitmapTextureAtlasTextureRegionFactory
-                .createFromAsset( bitmapTextureAtlas, this, "immortal_ball.png", 200, 0));
+        regions.put(FileConstants.IMG_PLAYER_NORMAL, BitmapTextureAtlasTextureRegionFactory
+		.createFromAsset( bitmapTextureAtlas, this, FileConstants.IMG_PLAYER_NORMAL, 0, 0));
+        regions.put(FileConstants.IMG_PLAYER_IMMORTAL, BitmapTextureAtlasTextureRegionFactory
+                .createFromAsset( bitmapTextureAtlas, this, FileConstants.IMG_PLAYER_IMMORTAL, 200, 0));
         
-        regions.put("wall_horisontal.png",  BitmapTextureAtlasTextureRegionFactory
-		.createFromAsset( bitmapTextureAtlas, this, "wall_horisontal.png", 0, 68));
+        regions.put(FileConstants.IMG_OBSTACLE_WALL_HORIZONTAL,  BitmapTextureAtlasTextureRegionFactory
+		.createFromAsset( bitmapTextureAtlas, this, FileConstants.IMG_OBSTACLE_WALL_HORIZONTAL, 0, 68));
         
-        regions.put("wall_vertical.png",  BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "wall_vertical.png", 34,98));
+        regions.put(FileConstants.IMG_OBSTACLE_WALL_VERTICAL,  BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, FileConstants.IMG_OBSTACLE_WALL_VERTICAL, 34,98));
         
-        regions.put("obstacle.png",  BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "obstacle.png", 64,98));
+        regions.put(FileConstants.IMG_OBSTACLE_PILLAR,  BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, FileConstants.IMG_OBSTACLE_PILLAR, 64,98));
 
-        regions.put("enemy.png",  BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "enemy.png", 61,150));
-        regions.put("powerup.png",  BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "powerup.png", 120,200));
-        regions.put("immortalPU.png",  BitmapTextureAtlasTextureRegionFactory
-                .createFromAsset( bitmapTextureAtlas, this, "immortalPU.png", 120,400));
-        regions.put("pitobstacle.png",  BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "pitobstacle.png", 120,270));
+        regions.put(FileConstants.IMG_ENEMY_NORMAL,  BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, FileConstants.IMG_ENEMY_NORMAL, 61,150));
+        regions.put(FileConstants.IMG_POWERUP_SPEED,  BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, FileConstants.IMG_POWERUP_SPEED, 120,200));
+        regions.put(FileConstants.IMG_POWERUP_IMMORTAL,  BitmapTextureAtlasTextureRegionFactory
+                .createFromAsset( bitmapTextureAtlas, this, FileConstants.IMG_POWERUP_IMMORTAL, 120,400));
+        regions.put(FileConstants.IMG_OBSTACLE_PIT,  BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, FileConstants.IMG_OBSTACLE_PIT, 120,270));
         
-        regions.put("killplayerobstacle.png",  BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "killplayerobstacle.png", 120,470));
-        regions.put("quickenemy.png", BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "quickenemy.png", 130,150));
+        regions.put(FileConstants.IMG_OBSTACLE_SPIKES,  BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, FileConstants.IMG_OBSTACLE_SPIKES, 120,470));
+        regions.put(FileConstants.IMG_ENEMY_QUICK, BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, FileConstants.IMG_ENEMY_QUICK, 130,150));
         
 
-        regions.put("background.png", BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "background.png", 2048-1280,190));
+        regions.put(FileConstants.IMG_GAME_BACKGROUND, BitmapTextureAtlasTextureRegionFactory
+        		.createFromAsset( bitmapTextureAtlas, this, FileConstants.IMG_GAME_BACKGROUND, 2048-1280,190));
         
         //add menu textures
-    	regions.put("menu_start.png", BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-    			menuTextureAtlas, this, "menu_start.png", 0, 0));
-    	regions.put("menu_highscore.png", BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-    			menuTextureAtlas, this, "menu_highscore.png", 0, 100));
-    	regions.put("menu_credits.png", BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-    			menuTextureAtlas, this, "menu_credits.png", 0, 200));
-    	regions.put("menu_quit.png", BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-    			menuTextureAtlas, this, "menu_quit.png", 0, 300));
+    	regions.put(FileConstants.IMG_MENU_START, BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			menuTextureAtlas, this, FileConstants.IMG_MENU_START, 0, 0));
+    	regions.put(FileConstants.IMG_MENU_HIGH_SCORE, BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			menuTextureAtlas, this, FileConstants.IMG_MENU_HIGH_SCORE, 0, 100));
+    	regions.put(FileConstants.IMG_MENU_CREDITS, BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			menuTextureAtlas, this, FileConstants.IMG_MENU_CREDITS, 0, 200));
+    	regions.put(FileConstants.IMG_MENU_QUIT, BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			menuTextureAtlas, this, FileConstants.IMG_MENU_QUIT, 0, 300));
     	
     	//add menu background
-    	regions.put("background.jpg", BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-    			backgroundTextureAtlas, this, "background.jpg", 0, 0));
+    	regions.put(FileConstants.IMG_MENU_BACKGROUND, BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+    			backgroundTextureAtlas, this, FileConstants.IMG_MENU_BACKGROUND, 0, 0));
  
         bitmapTextureAtlas.load();
         menuTextureAtlas.load();

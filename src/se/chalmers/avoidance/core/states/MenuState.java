@@ -42,6 +42,7 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import se.chalmers.avoidance.constants.EventMessageConstants;
+import se.chalmers.avoidance.constants.FileConstants;
 import se.chalmers.avoidance.util.ScreenResolution;
 import android.opengl.GLES20;
 
@@ -92,31 +93,31 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 		
 		//create menu items
 		final SpriteMenuItem startMenuItem = new SpriteMenuItem(MENU_START,
-				regions.get("menu_start.png"), vbom);
+				regions.get(FileConstants.IMG_MENU_START), vbom);
 		startMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(startMenuItem);
 		startMenuItem.setPosition(xPos, yPos);
 
 		final SpriteMenuItem highscoreMenuItem = new SpriteMenuItem(MENU_HIGHSCORES,
-				regions.get("menu_highscore.png"), vbom);
+				regions.get(FileConstants.IMG_MENU_HIGH_SCORE), vbom);
 		highscoreMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(highscoreMenuItem);
 		highscoreMenuItem.setPosition(xPos, yPos + 150);
 
 		
 		final SpriteMenuItem creditsMenuItem = new SpriteMenuItem(MENU_CREDITS,
-				regions.get("menu_credits.png"), vbom);
+				regions.get(FileConstants.IMG_MENU_CREDITS), vbom);
 		creditsMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(creditsMenuItem);
 		creditsMenuItem.setPosition(xPos, yPos + 300);
 
 		final SpriteMenuItem quitMenuItem = new SpriteMenuItem(MENU_QUIT,
-				regions.get("menu_quit.png"), vbom);
+				regions.get(FileConstants.IMG_MENU_QUIT), vbom);
 		quitMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(quitMenuItem);
 		quitMenuItem.setPosition(xPos, yPos + 450);
 		
-		final Sprite backgroundSprite = new Sprite(0, 0, 1024, 768, regions.get("background.jpg"), 
+		final Sprite backgroundSprite = new Sprite(0, 0, 1024, 768, regions.get(FileConstants.IMG_MENU_BACKGROUND), 
 				vbom);
 		this.menuScene.setBackground(new SpriteBackground(backgroundSprite));
 

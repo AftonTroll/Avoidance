@@ -35,6 +35,7 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import se.chalmers.avoidance.constants.EventMessageConstants;
+import se.chalmers.avoidance.constants.FileConstants;
 import se.chalmers.avoidance.constants.FontConstants;
 import se.chalmers.avoidance.core.collisionhandlers.GameOverNotifier;
 import se.chalmers.avoidance.core.systems.CollisionSystem;
@@ -91,7 +92,7 @@ public class GameState implements IState, PropertyChangeListener {
 	private void initialize(SensorManager sensorManager, Map<String, TextureRegion> regions, Map<String, Font> fonts, VertexBufferObjectManager vbom) {
 		scene = new Scene();
 		
-		Sprite backgroundSprite = new Sprite(0, 0, 1280, 800, regions.get("background.png"), vbom);
+		Sprite backgroundSprite = new Sprite(0, 0, 1280, 800, regions.get(FileConstants.IMG_GAME_BACKGROUND), vbom);
 		scene.setBackground(new SpriteBackground(backgroundSprite));
 		world = new World();
 		world.setManager(new GroupManager());

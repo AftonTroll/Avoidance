@@ -20,6 +20,7 @@
 
 package se.chalmers.avoidance.core;
 
+import se.chalmers.avoidance.constants.FileConstants;
 import se.chalmers.avoidance.constants.GameConstants;
 import se.chalmers.avoidance.core.components.Acceleration;
 import se.chalmers.avoidance.core.components.Buff;
@@ -72,7 +73,7 @@ public final class EntityFactory {
 		player.addComponent(new Velocity());
 		player.addComponent(new Size(64,64));
 		player.addComponent(new Friction(0.7f));
-		player.addComponent(new Spatial("ball.png"));
+		player.addComponent(new Spatial(FileConstants.IMG_PLAYER_NORMAL));
 		player.addComponent(new Jump());
 		player.addComponent(new Immortal());
 		
@@ -96,11 +97,11 @@ public final class EntityFactory {
 		wall.addComponent(new Transform(xPos, yPos));
 		wall.addComponent(new Size(width,height));
 		if(width>height){
-			wall.addComponent(new Spatial("wall_horisontal.png"));
+			wall.addComponent(new Spatial(FileConstants.IMG_OBSTACLE_WALL_HORIZONTAL));
 		}else{
-			wall.addComponent(new Spatial("wall_vertical.png"));
+			wall.addComponent(new Spatial(FileConstants.IMG_OBSTACLE_WALL_VERTICAL));
 		}
-		wall.addComponent(new Sound("bounce.ogg"));
+		wall.addComponent(new Sound(FileConstants.AUDIO_SOUND_BOUNCE));
 		
 		return wall;
 	}
@@ -124,7 +125,7 @@ public final class EntityFactory {
 		enemy.addComponent(new Size(64,64));
 		enemy.addComponent(new Friction(0.7f));
 		enemy.addComponent(new Acceleration(10));
-		enemy.addComponent(new Spatial("enemy.png"));
+		enemy.addComponent(new Spatial(FileConstants.IMG_ENEMY_NORMAL));
 		return enemy;
 	}
 	
@@ -147,7 +148,7 @@ public final class EntityFactory {
 		enemy.addComponent(new Size(32,32));
 		enemy.addComponent(new Friction(0.9f));
 		enemy.addComponent(new Acceleration(10));
-		enemy.addComponent(new Spatial("quickenemy.png"));
+		enemy.addComponent(new Spatial(FileConstants.IMG_ENEMY_QUICK));
 		return enemy;
 	}
 
@@ -167,8 +168,8 @@ public final class EntityFactory {
 		
 		obstacle.addComponent(new Transform(xPos, yPos));
 		obstacle.addComponent(new Size(width,height));
-		obstacle.addComponent(new Spatial("obstacle.png"));
-		obstacle.addComponent(new Sound("bounce.ogg"));
+		obstacle.addComponent(new Spatial(FileConstants.IMG_OBSTACLE_PILLAR));
+		obstacle.addComponent(new Sound(FileConstants.AUDIO_SOUND_BOUNCE));
 		
 		return obstacle;
 	}
@@ -202,7 +203,7 @@ public final class EntityFactory {
 		
 		powerUp.addComponent(new Transform(xPos, yPos));
 		powerUp.addComponent(new Size(64, 64));
-		powerUp.addComponent(new Spatial("powerup.png"));
+		powerUp.addComponent(new Spatial(FileConstants.IMG_POWERUP_SPEED));
 		powerUp.addComponent(new Buff(BuffType.Speed, buffStrength));
 		
 		return powerUp;
@@ -224,7 +225,7 @@ public final class EntityFactory {
 		
 		powerUp.addComponent(new Transform(xPos, yPos));
 		powerUp.addComponent(new Size(64, 64));
-		powerUp.addComponent(new Spatial("immortalPU.png"));
+		powerUp.addComponent(new Spatial(FileConstants.IMG_POWERUP_IMMORTAL));
 		powerUp.addComponent(new Buff(BuffType.Immortal, buffStrength));
 		
 		return powerUp;
@@ -245,7 +246,7 @@ public final class EntityFactory {
 		
 		pitobstacle.addComponent(new Transform(xPos, yPos));
 		pitobstacle.addComponent(new Size(64,64));
-		pitobstacle.addComponent(new Spatial("pitobstacle.png"));
+		pitobstacle.addComponent(new Spatial(FileConstants.IMG_OBSTACLE_PIT));
 		
 		return pitobstacle;
 	}
@@ -263,7 +264,7 @@ public final class EntityFactory {
 		
 		killplayerobstacle.addComponent(new Transform(xPos, yPos));
 		killplayerobstacle.addComponent(new Size(64,64));
-		killplayerobstacle.addComponent(new Spatial("killplayerobstacle.png"));
+		killplayerobstacle.addComponent(new Spatial(FileConstants.IMG_OBSTACLE_SPIKES));
 		
 		return killplayerobstacle;
 	}

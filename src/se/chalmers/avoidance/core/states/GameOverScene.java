@@ -33,6 +33,7 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.color.Color;
 
+import se.chalmers.avoidance.constants.FileConstants;
 import se.chalmers.avoidance.constants.FontConstants;
 import se.chalmers.avoidance.util.FileUtils;
 import se.chalmers.avoidance.util.ScreenResolution;
@@ -131,7 +132,7 @@ public class GameOverScene extends Scene {
 	 * @param regions a <code>Map</code> containing loaded textures/regions
 	 */
 	private void createGameOverSprite(Map<String, TextureRegion> regions) {
-		gameOverSprite = new Sprite(0, 0, regions.get("gameOver.png"), vbom);
+		gameOverSprite = new Sprite(0, 0, regions.get(FileConstants.IMG_GAME_OVER), vbom);
 		
 		float xPos = ScreenResolution.getXPosHorizontalCentering(gameOverSprite);
 		float yPos = ScreenResolution.getYPosVerticalCentering(gameOverSprite) - 150;
@@ -144,7 +145,7 @@ public class GameOverScene extends Scene {
 	 * @param regions a <code>Map</code> containing loaded textures/regions
 	 */
 	private void createButton(Map<String, TextureRegion> regions) {
-		button = new ButtonSprite(0, 0, regions.get("okButton.png"), vbom);
+		button = new ButtonSprite(0, 0, regions.get(FileConstants.IMG_BUTTON_OK), vbom);
 		
 		float xPos = ScreenResolution.getXPosHorizontalCentering(button);
 		float yPos = ScreenResolution.getYPosVerticalCentering(button) + 200;
@@ -157,7 +158,7 @@ public class GameOverScene extends Scene {
 	 * @param regions a <code>HashMap</code> containing loaded textures/regions
 	 */
 	private void createNewHighscoreSprite(Map<String, TextureRegion> regions) {
-		newHighscoreSprite = new Sprite(0, 0, regions.get("newHighscore.png"), vbom);
+		newHighscoreSprite = new Sprite(0, 0, regions.get(FileConstants.IMG_NEW_HIGH_SCORE_TAG), vbom);
 		
 		float xPos = ScreenResolution.getXPosHorizontalCentering(newHighscoreSprite) + 400;
 		float yPos = ScreenResolution.getYPosVerticalCentering(newHighscoreSprite);

@@ -33,6 +33,8 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import se.chalmers.avoidance.constants.FileConstants;
+import se.chalmers.avoidance.constants.GameConstants;
 import se.chalmers.avoidance.core.components.Immortal;
 import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Spatial;
@@ -106,7 +108,7 @@ public class SpatialRenderSystem extends EntitySystem{
         spatial.getSprite().setPosition(tf.getX(), tf.getY());
         spatial.getSprite().setRotation((float) (Math.toDegrees(tf.getDirection())));
         
-        if(e.getId() == world.getManager(TagManager.class).getEntity("PLAYER").getId()) {
+        if(e.getId() == world.getManager(TagManager.class).getEntity(GameConstants.PLAYER_TAG).getId()) {
         	handleJumpScaling(e);
         	handleImmortalSprite(e);
         }
@@ -132,7 +134,7 @@ public class SpatialRenderSystem extends EntitySystem{
 	    if (player.getComponent(Immortal.class).isImmortal() && !playerImmortal) {
 	        Transform tf = tm.get(player);
 	        sm.get(player).getSprite().detachSelf();
-	        sm.get(player).setSprite(new Sprite(tf.getX(), tf.getY(), regions.get("immortal_ball.png"), vbom));
+	        sm.get(player).setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(FileConstants.IMG_PLAYER_IMMORTAL), vbom));
 	        scene.attachChild(sm.get(player).getSprite());
 	        playerImmortal = true;
 	    } else if (!player.getComponent(Immortal.class).isImmortal() && playerImmortal) {
@@ -151,7 +153,7 @@ public class SpatialRenderSystem extends EntitySystem{
 		Transform tf = tm.get(e);
 		spatial.setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(spatial.getName()), vbom));
 		scene.attachChild(spatial.getSprite());
-		if(tagManager.getEntity("PLAYER").equals(e)){
+		if(tagManager.getEntity(GameConstants.PLAYER_TAG).equals(e)){
 			spatial.getSprite().setZIndex(50);
 		}
 		scene.sortChildren();
