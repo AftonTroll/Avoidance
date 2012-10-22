@@ -35,24 +35,24 @@ interface IState {
 	 * Updates the state
 	 * @param tpf Time since last frame.
 	 */
-	public void update(float tpf);
+	void update(float tpf);
 	
 	/**
 	 * Returns the scene connected to the state.
 	 * @return The state's scene.
 	 */
-	public Scene getScene();
+	Scene getScene();
 	
 	/**
 	 * Adds a <code>PropertyChangeListener</code> to the state.
 	 * @param pcl the <code>PropertyChangeListener</code> to add
 	 */
-	public void addPropertyChangeListener(PropertyChangeListener pcl);
+	void addPropertyChangeListener(PropertyChangeListener pcl);
 	
 	/**
 	 * Removes a <code>PropertyChangeListener</code> from the state.
 	 * @param pcl the <code>PropertyChangeListener</code> to remove
 	 */
-	public void removePropertyChangeListener(PropertyChangeListener pcl);
+	void removePropertyChangeListener(PropertyChangeListener pcl);
 	
 }
