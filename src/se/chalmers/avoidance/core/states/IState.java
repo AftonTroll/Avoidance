@@ -29,7 +29,7 @@ import org.andengine.entity.scene.Scene;
  * 
  * @author Markus Ekström
  */
-public interface IState {
+interface IState {
 	
 	/**
 	 * Updates the state
