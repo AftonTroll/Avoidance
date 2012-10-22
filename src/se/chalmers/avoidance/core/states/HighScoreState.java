@@ -48,29 +48,29 @@ import se.chalmers.avoidance.util.Utils;
  * 
  * @author Florian Minges
  */
-public class HighScoreState implements IState , PropertyChangeListener {
-	
+public class HighScoreState implements IState, PropertyChangeListener {
+
 	private Scene scene;
 	private PropertyChangeSupport pcs;
-	
+
 	private Sprite highscoreTitle;
 	private Text highscoreList;
 	private Text rankingNumber;
 	private ButtonSprite backButton;
-	
+
 	/**
 	 * The maximum number of entries shown in the high score list.
 	 */
 	public static final int MAX_HIGH_SCORE_ENTRIES = 5;
-	
-	private static final Color HIGH_SCORE_LIST_COLOR = new Color(1.0f, 0.9f, 0.1f, 1.0f);
-	
-	
+
+	private static final Color HIGH_SCORE_LIST_COLOR = new Color(1.0f, 0.9f,
+			0.1f, 1.0f);
+
 	/**
 	 * Constructs a new <code>HighscoreState</code>.
 	 */
-	public HighScoreState(Map<String, TextureRegion> regions, Map<String, Font> fonts, 
-			VertexBufferObjectManager vbom) {
+	public HighScoreState(Map<String, TextureRegion> regions,
+			Map<String, Font> fonts, VertexBufferObjectManager vbom) {
 		this.scene = new Scene();
 		initialize(regions, fonts, vbom);
 		this.pcs = new PropertyChangeSupport(this);
@@ -79,92 +79,107 @@ public class HighScoreState implements IState , PropertyChangeListener {
 	/**
 	 * Initializes the high score state.
 	 * 
-	 * @param regions a <code>Map</code> containing loaded textures/regions
-	 * @param fonts a <code>Map</code> containing loaded fonts
-	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
+	 * @param regions
+	 *            a <code>Map</code> containing loaded textures/regions
+	 * @param fonts
+	 *            a <code>Map</code> containing loaded fonts
+	 * @param vbom
+	 *            the game engines <code>VertexBufferObjectManager</code>
 	 */
-	private void initialize(Map<String, TextureRegion> regions, Map<String, Font> fonts, 
-			VertexBufferObjectManager vbom) {
+	private void initialize(Map<String, TextureRegion> regions,
+			Map<String, Font> fonts, VertexBufferObjectManager vbom) {
 		createHighScoreTitle(regions, vbom);
 		createHighScoreList(fonts, vbom);
 		createBackButton(regions, vbom);
-		
+
 		scene.attachChild(highscoreTitle);
 		scene.attachChild(rankingNumber);
 		scene.attachChild(highscoreList);
 		scene.attachChild(backButton);
-		
+
 		this.updateHighScoreList();
 	}
-	
+
 	/**
-	 * Creates and initializes a high score title, 
-	 * using a <code>Sprite</code>.
+	 * Creates and initializes a high score title, using a <code>Sprite</code>.
 	 * 
-	 * @param regions a <code>Map</code> containing loaded textures/regions
-	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
+	 * @param regions
+	 *            a <code>Map</code> containing loaded textures/regions
+	 * @param vbom
+	 *            the game engines <code>VertexBufferObjectManager</code>
 	 */
-	private void createHighScoreTitle(Map<String, TextureRegion> regions, 
+	private void createHighScoreTitle(Map<String, TextureRegion> regions,
 			VertexBufferObjectManager vbom) {
-		highscoreTitle = new Sprite(0, 0, regions.get(FileConstants.IMG_HIGH_SCORE_TITLE), vbom);
-		
-		float xPos = ScreenResolution.getXPosHorizontalCentering(highscoreTitle);
+		highscoreTitle = new Sprite(0, 0,
+				regions.get(FileConstants.IMG_HIGH_SCORE_TITLE), vbom);
+
+		float xPos = ScreenResolution
+				.getXPosHorizontalCentering(highscoreTitle);
 		float yPos = ScreenResolution.getYPosVerticalCentering(highscoreTitle) - 300;
 		highscoreTitle.setPosition(xPos, yPos);
 	}
-	
+
 	/**
 	 * Creates and initializes the high score list.
 	 * 
-	 * @param fonts a <code>Map</code> containing loaded fonts
-	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
+	 * @param fonts
+	 *            a <code>Map</code> containing loaded fonts
+	 * @param vbom
+	 *            the game engines <code>VertexBufferObjectManager</code>
 	 */
-	private void createHighScoreList(Map<String, Font> fonts, VertexBufferObjectManager vbom) {
-		highscoreList = new Text(0, 0, fonts.get(FontConstants.HIGH_SCORE), 
-				"", "XXXXXXXXX".length() * MAX_HIGH_SCORE_ENTRIES, vbom);
-		rankingNumber = new Text(0, 0, fonts.get(FontConstants.HIGH_SCORE), 
-				"", "1) ".length() * MAX_HIGH_SCORE_ENTRIES, vbom);
+	private void createHighScoreList(Map<String, Font> fonts,
+			VertexBufferObjectManager vbom) {
+		highscoreList = new Text(0, 0, fonts.get(FontConstants.HIGH_SCORE), "",
+				"XXXXXXXXX".length() * MAX_HIGH_SCORE_ENTRIES, vbom);
+		rankingNumber = new Text(0, 0, fonts.get(FontConstants.HIGH_SCORE), "",
+				"1) ".length() * MAX_HIGH_SCORE_ENTRIES, vbom);
 		highscoreList.setColor(HIGH_SCORE_LIST_COLOR);
 		rankingNumber.setColor(HIGH_SCORE_LIST_COLOR);
 		highscoreList.setHorizontalAlign(HorizontalAlign.RIGHT);
 		rankingNumber.setHorizontalAlign(HorizontalAlign.RIGHT);
-		
+
 		float xPos = ScreenResolution.getXPosHorizontalCentering(highscoreList);
 		float yPos = ScreenResolution.getYPosVerticalCentering(highscoreList);
 		rankingNumber.setPosition(xPos, yPos);
 		highscoreList.setPosition(xPos + rankingNumber.getWidth(), yPos);
 	}
-	
+
 	/**
 	 * Creates and initializes the back button.
 	 * 
-	 * @param regions a <code>Map</code> containing loaded textures/regions
-	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
+	 * @param regions
+	 *            a <code>Map</code> containing loaded textures/regions
+	 * @param vbom
+	 *            the game engines <code>VertexBufferObjectManager</code>
 	 */
-	private void createBackButton(Map<String, TextureRegion> regions, VertexBufferObjectManager vbom) {
-		backButton = new ButtonSprite(0, 0, regions.get(FileConstants.IMG_BUTTON_OK), vbom);
-		
+	private void createBackButton(Map<String, TextureRegion> regions,
+			VertexBufferObjectManager vbom) {
+		backButton = new ButtonSprite(0, 0,
+				regions.get(FileConstants.IMG_BUTTON_OK), vbom);
+
 		float xPos = ScreenResolution.getXPosHorizontalCentering(backButton);
 		float yPos = ScreenResolution.getYPosVerticalCentering(backButton) + 300;
 		backButton.setPosition(xPos, yPos);
-		
+
 		backButton.setOnClickListener(new ButtonSprite.OnClickListener() {
-			public void onClick( ButtonSprite pButtonSprite, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Highscore, StateID.Menu);
-		    } 
+			public void onClick(ButtonSprite pButtonSprite,
+					float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE,
+						StateID.Highscore, StateID.Menu);
+			}
 		});
 		this.scene.registerTouchArea(backButton);
 		this.scene.setTouchAreaBindingOnActionDownEnabled(true);
 	}
-	
+
 	/**
-	 * Sets the text of the high score list, or displays an
-	 * error message if no satisfying list was provided.
+	 * Sets the text of the high score list, or displays an error message if no
+	 * satisfying list was provided.
 	 */
 	private void updateHighScoreList() {
 		String highscore;
 		String rank;
-		
+
 		try {
 			highscore = retrieveHighScoreString(MAX_HIGH_SCORE_ENTRIES);
 			StringBuilder builder = new StringBuilder();
@@ -173,26 +188,30 @@ public class HighScoreState implements IState , PropertyChangeListener {
 				builder.append(")   \n");
 			}
 			rank = builder.toString();
-			FileUtils.saveToFile(highscore, FileUtils.PATH); //save only the high scores
+			FileUtils.saveToFile(highscore, FileUtils.PATH); // save only the
+																// high scores
 		} catch (NoHighScoreException nhe) {
 			highscore = "No highscores found";
 			rank = "";
 		}
 		this.highscoreList.setText(highscore);
 		this.rankingNumber.setText(rank);
-		
-		float xPos = ScreenResolution.getXPosHorizontalCentering(rankingNumber) - (highscoreList.getWidth() / 2);
+
+		float xPos = ScreenResolution.getXPosHorizontalCentering(rankingNumber)
+				- (highscoreList.getWidth() / 2);
 		float yPos = ScreenResolution.getYPosVerticalCentering(rankingNumber);
 		rankingNumber.setPosition(xPos, yPos);
 		highscoreList.setPosition(xPos + rankingNumber.getWidth(), yPos);
 	}
-	
+
 	/**
-	 * Returns the high scores, formatted as one multi line string. <p>
-	 *
+	 * Returns the high scores, formatted as one multi line string.
+	 * <p>
+	 * 
 	 * @return a sorted multi line string representing the high scores
 	 */
-	private String retrieveHighScoreString(int maxEntries) throws NoHighScoreException {
+	private String retrieveHighScoreString(int maxEntries)
+			throws NoHighScoreException {
 		List<String> list = FileUtils.readFromFile(FileUtils.PATH);
 		List<Integer> numbers = FileUtils.getSortedIntegers(list);
 		if (numbers == null || numbers.isEmpty()) {
@@ -201,11 +220,12 @@ public class HighScoreState implements IState , PropertyChangeListener {
 		Utils.trimList(numbers, maxEntries);
 		return FileUtils.createMultiLineString(numbers);
 	}
-	
+
 	/**
-	 * Updates the state.
-	 * Invoked by the StateManager, do not call manually.
-	 * @param tpf Time since last frame.
+	 * Updates the state. Invoked by the StateManager, do not call manually.
+	 * 
+	 * @param tpf
+	 *            Time since last frame.
 	 */
 	public void update(float tpf) {
 		//
@@ -213,6 +233,7 @@ public class HighScoreState implements IState , PropertyChangeListener {
 
 	/**
 	 * Returns the high score scene, or null if it is not instantiated yet.
+	 * 
 	 * @return the high score scene
 	 */
 	public Scene getScene() {
@@ -221,7 +242,9 @@ public class HighScoreState implements IState , PropertyChangeListener {
 
 	/**
 	 * Adds a listener to this state.
-	 * @param pcl the listener to add
+	 * 
+	 * @param pcl
+	 *            the listener to add
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.addPropertyChangeListener(pcl);
@@ -229,14 +252,17 @@ public class HighScoreState implements IState , PropertyChangeListener {
 
 	/**
 	 * Removes a listener from this state.
-	 * @param pcl the listener to remove
+	 * 
+	 * @param pcl
+	 *            the listener to remove
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.removePropertyChangeListener(pcl);
 	}
-	
+
 	/**
 	 * An exception thrown when no high score was found.
+	 * 
 	 * @author Florian Minges
 	 */
 	private class NoHighScoreException extends Exception {
@@ -244,14 +270,18 @@ public class HighScoreState implements IState , PropertyChangeListener {
 	}
 
 	/**
-	 * Listens to <code>PropertyChangeEvents</code>.<p>
+	 * Listens to <code>PropertyChangeEvents</code>.
+	 * <p>
 	 * Do NOT call manually.
 	 * 
-	 * @param event an event
+	 * @param event
+	 *            an event
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
-		if (event != null && event.getNewValue() != null && 
-				EventMessageConstants.GAME_OVER.equals(event.getPropertyName())) {
+		if (event != null
+				&& event.getNewValue() != null
+				&& EventMessageConstants.GAME_OVER.equals(event
+						.getPropertyName())) {
 			int score = 0;
 			try {
 				score = (Integer) event.getNewValue();

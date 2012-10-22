@@ -37,61 +37,62 @@ import com.artemis.managers.TagManager;
 
 public class WallCollisionHandlerTest {
 	private Entity e1;
-	private Entity e2; 
+	private Entity e2;
 	private Entity e3;
-	private Entity e4; 
-	private Entity e5; 
+	private Entity e4;
+	private Entity e5;
 	private World world;
 	private CollisionSystem cs;
-	
+
 	@Before
-	public void setUp(){
+	public void setUp() {
 		world = new World();
 		TagManager tm = new TagManager();
 		GroupManager gm = new GroupManager();
 		world.setManager(tm);
 		world.setManager(gm);
-						
+
 		e1 = world.createEntity();
 		tm.register(GameConstants.TAG_PLAYER, e1);
-		e1.addComponent(new Transform(0,3));
-		e1.addComponent(new Velocity(1,(float)(Math.PI/4)));
+		e1.addComponent(new Transform(0, 3));
+		e1.addComponent(new Velocity(1, (float) (Math.PI / 4)));
 		e1.addComponent(new Size(1, 1));
-		
+
 		e2 = world.createEntity();
 		gm.add(e2, GameConstants.GROUP_OBSTACLE_WALLS);
-		e2.addComponent(new Transform(0,4));	
+		e2.addComponent(new Transform(0, 4));
 		e2.addComponent(new Size(10, 9));
-		
+
 		e3 = world.createEntity();
-		e3.addComponent(new Transform(3,3));	
+		e3.addComponent(new Transform(3, 3));
 		e3.addComponent(new Size(10, 10));
-		
+
 		e4 = world.createEntity();
-		e4.addComponent(new Transform(40,30));	
+		e4.addComponent(new Transform(40, 30));
 		e4.addComponent(new Size(10, 10));
-		
+
 		e5 = world.createEntity();
 		gm.add(e5, GameConstants.GROUP_OBSTACLE_WALLS);
-		e5.addComponent(new Transform(20,4));	
+		e5.addComponent(new Transform(20, 4));
 		e5.addComponent(new Size(9, 10));
-		
+
 		cs = new CollisionSystem();
 		world.setSystem(cs);
 		world.initialize();
 		world.setDelta(1);
-		
+
 	}
-	
+
 	@Test
-	public void testHandleCollision(){
+	public void testHandleCollision() {
 		world.process();
-		assertTrue((e1.getComponent(Velocity.class).getAngle()-(float)(2*Math.PI-Math.PI/4)<0.01));
+		assertTrue((e1.getComponent(Velocity.class).getAngle()
+				- (float) (2 * Math.PI - Math.PI / 4) < 0.01));
 		e1.removeComponent(Transform.class);
-		e1.addComponent(new Transform(20,3));
+		e1.addComponent(new Transform(20, 3));
 		world.process();
-		assertTrue((e1.getComponent(Velocity.class).getAngle()-(float)(Math.PI+Math.PI/4)<0.01));
+		assertTrue((e1.getComponent(Velocity.class).getAngle()
+				- (float) (Math.PI + Math.PI / 4) < 0.01));
 	}
 
 }
-

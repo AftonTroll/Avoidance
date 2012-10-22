@@ -20,57 +20,69 @@
 package se.chalmers.avoidance.core.components;
 
 import com.artemis.Component;
+
 /**
  * Contains information about the status of mortality of an entity.
  * 
  * I.e. whether or not an entity is immortal.
+ * 
  * @author Markus Ekström
  */
 public class Immortal extends Component {
 	private boolean immortal = false;
 	private float immortalDurationLeft;
 	private float duration = 0;
-	
+
 	/**
 	 * Sets if the entity is immortal.
-	 * @param immortal Decides if the entity is immortal.
+	 * 
+	 * @param immortal
+	 *            Decides if the entity is immortal.
 	 */
 	public void setImmortal(boolean immortal) {
 		this.immortal = immortal;
-		if(immortal) {
+		if (immortal) {
 			immortalDurationLeft = duration;
 		}
 	}
-	
+
 	/**
 	 * Sets the duration of the immortality period.
-	 * @param duration The desired immortality period duration.
+	 * 
+	 * @param duration
+	 *            The desired immortality period duration.
 	 */
 	public void setDuration(float duration) {
-	    this.duration = duration;
+		this.duration = duration;
 	}
-	
+
 	/**
 	 * Queries if the entity is immortal.
+	 * 
 	 * @return True if it is, false if it isn't.
 	 */
 	public boolean isImmortal() {
 		return immortal;
 	}
-	
+
 	/**
-	 * Subtracts from the duration left before the entity becomes mortal. If the passed
-	 * variable will set the duration left to less than zero, the duration left will be set to zero.
-	 * @param subtractionAmount The amount to subtract from the duration left.
+	 * Subtracts from the duration left before the entity becomes mortal. If the
+	 * passed variable will set the duration left to less than zero, the
+	 * duration left will be set to zero.
+	 * 
+	 * @param subtractionAmount
+	 *            The amount to subtract from the duration left.
 	 */
 	public void subtractImmortalDurationLeft(float subtractionAmount) {
-		if(immortal) {
-			immortalDurationLeft = Math.max(0, (immortalDurationLeft - subtractionAmount));
+		if (immortal) {
+			immortalDurationLeft = Math.max(0,
+					(immortalDurationLeft - subtractionAmount));
 		}
 	}
-	
+
 	/**
 	 * Returns how much immortal time the entity has left.
+	 * 
 	 * @return The amount of immortal time the entity has left.
 	 */
 	public float getDurationLeft() {

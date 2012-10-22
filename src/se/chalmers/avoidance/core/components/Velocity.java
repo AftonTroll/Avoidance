@@ -30,64 +30,70 @@ import com.artemis.Component;
  * @author Florian Minges
  */
 public class Velocity extends Component {
-	
-	/** The speed. */ 
+
+	/** The speed. */
 	private float speed;
-	
+
 	/** The angle of the speed. */
 	private float angle;
-	
-	/** 
-	 * Constructs a <code>Velocity</code> component with zero speed
-	 * and an angle of 0 radians.
+
+	/**
+	 * Constructs a <code>Velocity</code> component with zero speed and an angle
+	 * of 0 radians.
 	 */
 	public Velocity() {
 		this(0f, 0f);
 	}
-	
-	/** 
-	 * Constructs a <code>Velocity</code> component with a speed given
-	 * by the argument with the same name and an angle of 0 radians.
+
+	/**
+	 * Constructs a <code>Velocity</code> component with a speed given by the
+	 * argument with the same name and an angle of 0 radians.
 	 * 
-	 * @param speed the speed
+	 * @param speed
+	 *            the speed
 	 */
 	public Velocity(float speed) {
 		this(speed, 0f);
 	}
-	
+
 	/**
-	 * Constructs a <code>Velocity</code> component with the speed and
-	 * angle, given by the arguments with the same name.
+	 * Constructs a <code>Velocity</code> component with the speed and angle,
+	 * given by the arguments with the same name.
 	 * 
-	 * @param speed the speed
-	 * @param angle the angle
+	 * @param speed
+	 *            the speed
+	 * @param angle
+	 *            the angle
 	 */
 	public Velocity(float speed, float angle) {
 		super();
 		setAngle(angle);
 		setSpeed(speed);
 	}
-	
+
 	/**
 	 * Returns the components speed.
+	 * 
 	 * @return the speed.
 	 */
 	public float getSpeed() {
 		return speed;
 	}
-	
+
 	/**
 	 * Returns the components angle.
+	 * 
 	 * @return the angle.
 	 */
 	public float getAngle() {
 		return angle;
 	}
-	
+
 	/**
 	 * Sets the speed of this component.
 	 * 
-	 * @param speed the speed
+	 * @param speed
+	 *            the speed
 	 */
 	public final void setSpeed(float speed) {
 		this.speed = speed;
@@ -96,31 +102,34 @@ public class Velocity extends Component {
 			setAngle(Utils.reverseAngle(this.angle));
 		}
 	}
-	
+
 	/**
 	 * Sets the angle of this component.
 	 * 
-	 * @param angle the angle
+	 * @param angle
+	 *            the angle
 	 */
 	public final void setAngle(float angle) {
 		this.angle = Utils.simplifyAngle(angle);
 	}
-	
+
 	/**
-	 * Adds the <code>speed</code> given in the argument of the same name, 
-	 * to the speed of this component. 
+	 * Adds the <code>speed</code> given in the argument of the same name, to
+	 * the speed of this component.
 	 * 
-	 * @param speed the speed to add
+	 * @param speed
+	 *            the speed to add
 	 */
 	public void addSpeed(float speed) {
 		setSpeed(this.speed + speed);
 	}
-	
+
 	/**
-	 * Adds the <code>angle</code> given in the argument of the same name, 
-	 * to the angle of this component. 
+	 * Adds the <code>angle</code> given in the argument of the same name, to
+	 * the angle of this component.
 	 * 
-	 * @param angle the angle to add
+	 * @param angle
+	 *            the angle to add
 	 */
 	public void addAngle(float angle) {
 		setAngle(this.angle + angle);
@@ -131,7 +140,7 @@ public class Velocity extends Component {
 	 */
 	@Override
 	public int hashCode() {
-		//Eclipse auto-generated
+		// Eclipse auto-generated
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + Float.floatToIntBits(angle);
@@ -144,7 +153,7 @@ public class Velocity extends Component {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		//Eclipse auto-generated
+		// Eclipse auto-generated
 		if (this == obj) {
 			return true;
 		}
@@ -163,6 +172,5 @@ public class Velocity extends Component {
 		}
 		return true;
 	}
-	
-	
+
 }

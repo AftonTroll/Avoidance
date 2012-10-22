@@ -23,58 +23,60 @@ package se.chalmers.avoidance.util;
 import org.andengine.entity.shape.RectangularShape;
 
 /**
- * Abstract class that acts as a content provider for 
- * the screen resolution. <p>
+ * Abstract class that acts as a content provider for the screen resolution.
+ * <p>
  * 
- * The resolution can only be initialized once, unless
- * one extends this abstract class and overrides some
- * of the methods.
+ * The resolution can only be initialized once, unless one extends this abstract
+ * class and overrides some of the methods.
  * 
  * 
  * @author Florian Minges
- *
+ * 
  */
 public abstract class ScreenResolution {
-    
+
 	private static final int CAMERA_WIDTH = 1280;
 	private static final int CAMERA_HEIGHT = 800;
-	
-    /**
-     * Returns the screens width.<p>
-     * 
-     * @return the screens width
-     */
-    public static int getWidthResolution() {
-    	return CAMERA_WIDTH; 
-    }
-    
-    /**
-     * Returns the screens height.<p>
-     * 
-     * @return the screens height 
-     */
-    public static int getHeightResolution() {
-    	return CAMERA_HEIGHT; 
-    }
-	
+
 	/**
-	 * Returns the x-position of the <code>RectangularShape</code> provided
-	 * in the argument, in case it would be centered horizontally (along the
+	 * Returns the screens width.
+	 * <p>
+	 * 
+	 * @return the screens width
+	 */
+	public static int getWidthResolution() {
+		return CAMERA_WIDTH;
+	}
+
+	/**
+	 * Returns the screens height.
+	 * <p>
+	 * 
+	 * @return the screens height
+	 */
+	public static int getHeightResolution() {
+		return CAMERA_HEIGHT;
+	}
+
+	/**
+	 * Returns the x-position of the <code>RectangularShape</code> provided in
+	 * the argument, in case it would be centered horizontally (along the
 	 * x-axis).
 	 * 
-	 * @param shape a shape
+	 * @param shape
+	 *            a shape
 	 * @return the x-position of the shape if centered on the x-axis
 	 */
 	public static float getXPosHorizontalCentering(RectangularShape shape) {
 		return (ScreenResolution.getWidthResolution() - shape.getWidth()) / 2;
 	}
-	
+
 	/**
-	 * Returns the y-position of the <code>RectangularShape</code> provided
-	 * in the argument, in case it would be centered vertically (along the
-	 * y-axis).
+	 * Returns the y-position of the <code>RectangularShape</code> provided in
+	 * the argument, in case it would be centered vertically (along the y-axis).
 	 * 
-	 * @param shape a shape
+	 * @param shape
+	 *            a shape
 	 * @return the y-position of the shape if centered on the y-axis
 	 */
 	public static float getYPosVerticalCentering(RectangularShape shape) {

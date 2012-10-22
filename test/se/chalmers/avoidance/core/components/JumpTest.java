@@ -26,12 +26,12 @@ import org.junit.Test;
 
 public class JumpTest {
 	private Jump jump;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		jump = new Jump();
 	}
-	
+
 	@Test
 	public void testStatus() {
 		assertTrue(jump != null);
@@ -40,7 +40,7 @@ public class JumpTest {
 	@Test
 	public void testInTheAir() {
 		assertTrue(!jump.isInTheAir());
-		
+
 		jump.setInTheAir(true);
 		assertTrue(jump.isInTheAir());
 		assertTrue(jump.getInTheAirDurationLeft() == 2);
@@ -51,15 +51,16 @@ public class JumpTest {
 		jump.setInTheAir(false);
 		assertTrue(!jump.isInTheAir());
 	}
-	
+
 	@Test
 	public void testJump() {
 		jump.setJumpCooldownLeft(Jump.JUMP_COOLDOWN);
 		assertTrue(jump.getJumpCooldownLeft() == Jump.JUMP_COOLDOWN);
 		jump.subtractJumpCooldownLeft(1);
-		assertTrue(jump.getJumpCooldownLeft() == Math.max(0, (Jump.JUMP_COOLDOWN - 1)));
+		assertTrue(jump.getJumpCooldownLeft() == Math.max(0,
+				(Jump.JUMP_COOLDOWN - 1)));
 		jump.subtractJumpCooldownLeft(1000);
 		assertTrue(jump.getJumpCooldownLeft() == 0);
-		
+
 	}
 }

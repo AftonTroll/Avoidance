@@ -29,13 +29,13 @@ import se.chalmers.avoidance.core.components.Buff.BuffType;
 public class BuffTest {
 	private static BuffType type;
 	private static int strength;
-	
+
 	@BeforeClass
-	public static void beforeClass(){
+	public static void beforeClass() {
 		type = Buff.BuffType.Speed;
 		strength = 2;
 	}
-	
+
 	@Test
 	public void testBuff() {
 		Buff buff = new Buff(type, strength);

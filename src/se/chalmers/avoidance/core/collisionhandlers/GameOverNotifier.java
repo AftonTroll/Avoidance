@@ -34,7 +34,8 @@ import com.artemis.World;
 import com.artemis.managers.TagManager;
 
 /**
- * Class for forwarding 'Game Over'-events to the appropriate place. <p>
+ * Class for forwarding 'Game Over'-events to the appropriate place.
+ * <p>
  * 
  * Handlers should call the following statement on 'Game Over':
  * <code>GameOverNotifier.getInstance().gameOver();</code>
@@ -46,10 +47,12 @@ public final class GameOverNotifier {
 	private static GameOverNotifier instance;
 	private PropertyChangeSupport pcs;
 	private World world;
-	
+
 	/**
-	 * Returns the instance of this <code>GameOverNotifier</code>-class. <p>
+	 * Returns the instance of this <code>GameOverNotifier</code>-class.
+	 * <p>
 	 * Creates a new instance if there is none yet.
+	 * 
 	 * @return the instance of this <code>GameOverNotifier</code>-class
 	 */
 	public static synchronized GameOverNotifier getInstance() {
@@ -58,50 +61,57 @@ public final class GameOverNotifier {
 		}
 		return instance;
 	}
-	
+
 	/**
-	 * Constructs a GameOverNotifier. <p>
+	 * Constructs a GameOverNotifier.
+	 * <p>
 	 */
 	private GameOverNotifier() {
 		this.pcs = new PropertyChangeSupport(this);
 	}
-	
+
 	/**
-	 * Signals 'Game Over' to the appropriate class.<p>
+	 * Signals 'Game Over' to the appropriate class.
+	 * <p>
 	 * Also adds the players score to the call.
 	 */
 	void gameOver() {
 		int score = 0;
-		
+
 		TagManager tagManager = world.getManager(TagManager.class);
 		ComponentMapper<Score> scoreMapper = world.getMapper(Score.class);
 		ComponentMapper<Time> timeMapper = world.getMapper(Time.class);
 		Entity scoreEntity = tagManager.getEntity(GameConstants.TAG_SCORE);
-		
+
 		if (scoreEntity != null) {
 			Time timeComponent = timeMapper.get(scoreEntity);
 			Score scoreComponent = scoreMapper.get(scoreEntity);
 			if (timeComponent != null && scoreComponent != null) {
-				score = Math.round(timeComponent.getTime()) * 10 + scoreComponent.getScore();
+				score = Math.round(timeComponent.getTime()) * 10
+						+ scoreComponent.getScore();
 			}
-			
+
 		}
 		pcs.firePropertyChange(EventMessageConstants.GAME_OVER, null, score);
 	}
-	
+
 	/**
-	 * Sets the world of this class. <p>
+	 * Sets the world of this class.
+	 * <p>
 	 * This should be done BEFORE any 'Game Over'-calls are made.
 	 * 
-	 * @param world the <code>World</code>
+	 * @param world
+	 *            the <code>World</code>
 	 */
 	public void setWorld(World world) {
 		this.world = world;
 	}
-	
+
 	/**
 	 * Adds a listener to this class.
-	 * @param pcl the listener to add
+	 * 
+	 * @param pcl
+	 *            the listener to add
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.addPropertyChangeListener(pcl);
@@ -109,7 +119,9 @@ public final class GameOverNotifier {
 
 	/**
 	 * Removes a listener from this class.
-	 * @param pcl the listener to remove
+	 * 
+	 * @param pcl
+	 *            the listener to remove
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.removePropertyChangeListener(pcl);

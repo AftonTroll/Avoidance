@@ -30,29 +30,36 @@ import org.andengine.entity.scene.Scene;
  * @author Markus Ekström
  */
 interface IState {
-	
+
 	/**
 	 * Updates the state.
-	 * @param tpf Time since last frame.
+	 * 
+	 * @param tpf
+	 *            Time since last frame.
 	 */
 	void update(float tpf);
-	
+
 	/**
 	 * Returns the scene connected to the state.
+	 * 
 	 * @return The state's scene.
 	 */
 	Scene getScene();
-	
+
 	/**
 	 * Adds a <code>PropertyChangeListener</code> to the state.
-	 * @param pcl the <code>PropertyChangeListener</code> to add
+	 * 
+	 * @param pcl
+	 *            the <code>PropertyChangeListener</code> to add
 	 */
 	void addPropertyChangeListener(PropertyChangeListener pcl);
-	
+
 	/**
 	 * Removes a <code>PropertyChangeListener</code> from the state.
-	 * @param pcl the <code>PropertyChangeListener</code> to remove
+	 * 
+	 * @param pcl
+	 *            the <code>PropertyChangeListener</code> to remove
 	 */
 	void removePropertyChangeListener(PropertyChangeListener pcl);
-	
+
 }

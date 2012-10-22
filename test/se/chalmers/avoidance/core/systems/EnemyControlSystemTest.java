@@ -1,22 +1,22 @@
 /*
-* Copyright (c) 2012 Filip Brynfors
-*
-* This file is part of Avoidance.
-*
-* Avoidance is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* Avoidance is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with Avoidance. If not, see <http://www.gnu.org/licenses/>.
-*
-*/
+ * Copyright (c) 2012 Filip Brynfors
+ *
+ * This file is part of Avoidance.
+ *
+ * Avoidance is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Avoidance is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Avoidance. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 package se.chalmers.avoidance.core.systems;
 
 import static org.junit.Assert.assertTrue;
@@ -53,61 +53,64 @@ public class EnemyControlSystemTest {
 		world.setManager(tagManager);
 		world.setManager(groupManager);
 		world.setSystem(ecs);
-		
+
 		player = world.createEntity();
 		player.addComponent(new Transform());
-		player.addComponent(new Size(32,32));
+		player.addComponent(new Size(32, 32));
 		tagManager.register(GameConstants.TAG_PLAYER, player);
-		
+
 		e1 = world.createEntity();
 		e1.addComponent(new Transform());
 		e1.addComponent(new Velocity());
-		e1.addComponent(new Size(32,32));
+		e1.addComponent(new Size(32, 32));
 		e1.addComponent(new Friction(0.7f));
 		e1.addComponent(new Acceleration(10));
-		
+
 		e2 = world.createEntity();
 		e2.addComponent(new Transform());
 		e2.addComponent(new Velocity());
-		e2.addComponent(new Size(32,32));
+		e2.addComponent(new Size(32, 32));
 		e2.addComponent(new Friction(0.9f));
 		e2.addComponent(new Acceleration(10));
-		
+
 		groupManager.add(e1, GameConstants.GROUP_ENEMIES);
 		groupManager.add(e2, GameConstants.GROUP_ENEMIES);
-		
+
 		ecs.initialize();
-		
+
 	}
-	
+
 	@Before
 	public void setUp() {
 		e1.getComponent(Transform.class).setPosition(10, 0);
 		e1.getComponent(Velocity.class).setAngle(0);
 		e1.getComponent(Velocity.class).setSpeed(0);
-		
-		e2.getComponent(Transform.class).setPosition(25,25);
+
+		e2.getComponent(Transform.class).setPosition(25, 25);
 		e2.getComponent(Velocity.class).setAngle(0);
 		e2.getComponent(Velocity.class).setSpeed(0);
-		
-		player.getComponent(Transform.class).setPosition(0 ,0);
+
+		player.getComponent(Transform.class).setPosition(0, 0);
 	}
 
 	@Test
 	public void testProcessEntitiesWithoutWall() {
 		world.setDelta(1);
 		ecs.processEntities(null);
-		
+
 		assertTrue(Math.abs(e1.getComponent(Velocity.class).getSpeed() - 7) <= TOLERANCE);
-		assertTrue(Math.abs(e1.getComponent(Velocity.class).getAngle() - Math.PI) <= TOLERANCE);
-		assertTrue(Math.abs(e1.getComponent(Transform.class).getX() - (10-7/2f)) <= TOLERANCE);
+		assertTrue(Math.abs(e1.getComponent(Velocity.class).getAngle()
+				- Math.PI) <= TOLERANCE);
+		assertTrue(Math.abs(e1.getComponent(Transform.class).getX()
+				- (10 - 7 / 2f)) <= TOLERANCE);
 		assertTrue(Math.abs(e1.getComponent(Transform.class).getY()) <= TOLERANCE);
-		
+
 		assertTrue(Math.abs(e2.getComponent(Velocity.class).getSpeed() - 9) <= TOLERANCE);
-		assertTrue(Math.abs(e2.getComponent(Velocity.class).getAngle() - 5*Math.PI/4) <= TOLERANCE);
-		assertTrue(Math.abs(e2.getComponent(Transform.class).getX() -(25-4.5/Math.sqrt(2))) 
-				<= TOLERANCE);
-		assertTrue(Math.abs(e2.getComponent(Transform.class).getY() -(25-4.5/Math.sqrt(2))) 
-				<= TOLERANCE);
+		assertTrue(Math.abs(e2.getComponent(Velocity.class).getAngle() - 5
+				* Math.PI / 4) <= TOLERANCE);
+		assertTrue(Math.abs(e2.getComponent(Transform.class).getX()
+				- (25 - 4.5 / Math.sqrt(2))) <= TOLERANCE);
+		assertTrue(Math.abs(e2.getComponent(Transform.class).getY()
+				- (25 - 4.5 / Math.sqrt(2))) <= TOLERANCE);
 	}
 }

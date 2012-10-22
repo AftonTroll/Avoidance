@@ -1,4 +1,4 @@
- /* 
+/* 
  * Copyright (c) 2012 Filip Brynfors
  * 
  * This file is part of Avoidance.
@@ -26,51 +26,58 @@ import com.artemis.Component;
  * Component containing information about the sound.
  * 
  * @author Filip Brynfors
- *
+ * 
  */
 public class Sound extends Component {
 	private String name;
 	private boolean playing = false;
-	
+
 	/**
 	 * Constructs a sound with the specified name.
-	 * @param name the name
+	 * 
+	 * @param name
+	 *            the name
 	 */
-	public Sound(String name){
+	public Sound(String name) {
 		this.name = name;
 	}
-	
+
 	/**
 	 * Sets the name.
-	 * @param name The name.
+	 * 
+	 * @param name
+	 *            The name.
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	/**
 	 * Returns the name.
+	 * 
 	 * @return The name.
 	 */
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * Sets if the sound should be playing or not.
-	 * @param playing true if the sound should be playing
+	 * 
+	 * @param playing
+	 *            true if the sound should be playing
 	 */
 	public void setPlaying(boolean playing) {
 		this.playing = playing;
 	}
-	
+
 	/**
 	 * Returns whether the sound should be playing or not.
+	 * 
 	 * @return true if the sound should be playing, false otherwise
 	 */
 	public boolean isPlaying() {
 		return playing;
 	}
-	
 
 }

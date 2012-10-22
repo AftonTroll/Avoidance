@@ -20,7 +20,6 @@
 
 package se.chalmers.avoidance.core.states;
 
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -65,82 +64,102 @@ public class GameState implements IState, PropertyChangeListener {
 	private PropertyChangeSupport pcs;
 	private GameOverScene gameOverScene;
 	private boolean process;
-	
+
 	/**
 	 * Constructs a new <code>GameState</code>.
 	 * 
-	 * @param sensorManager a <code>SensorManager</code>
-	 * @param regions a <code>HashMap</code> containing loaded textures/regions
-	 * @param fonts a <code>HashMap</code> containing loaded fonts
-	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
+	 * @param sensorManager
+	 *            a <code>SensorManager</code>
+	 * @param regions
+	 *            a <code>HashMap</code> containing loaded textures/regions
+	 * @param fonts
+	 *            a <code>HashMap</code> containing loaded fonts
+	 * @param vbom
+	 *            the game engines <code>VertexBufferObjectManager</code>
 	 */
-	public GameState(SensorManager sensorManager, Map<String, TextureRegion> regions, Map<String, Font> fonts, VertexBufferObjectManager vbom) {
+	public GameState(SensorManager sensorManager,
+			Map<String, TextureRegion> regions, Map<String, Font> fonts,
+			VertexBufferObjectManager vbom) {
 		this.initialize(sensorManager, regions, fonts, vbom);
 		this.pcs = new PropertyChangeSupport(this);
 		this.gameOverScene = new GameOverScene(vbom, regions, fonts);
-		this.gameOverScene.setButtonSpriteOnClickListener(getButtonSpriteOnClickListener());
+		this.gameOverScene
+				.setButtonSpriteOnClickListener(getButtonSpriteOnClickListener());
 	}
-	
+
 	/**
 	 * Initializes the <code>GameState</code>.
 	 * 
-	 * @param sensorManager a <code>SensorManager</code>
-	 * @param regions a <code>HashMap</code> containing loaded textures/regions
-	 * @param fonts a <code>HashMap</code> containing loaded fonts
-	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
+	 * @param sensorManager
+	 *            a <code>SensorManager</code>
+	 * @param regions
+	 *            a <code>HashMap</code> containing loaded textures/regions
+	 * @param fonts
+	 *            a <code>HashMap</code> containing loaded fonts
+	 * @param vbom
+	 *            the game engines <code>VertexBufferObjectManager</code>
 	 */
-	private void initialize(SensorManager sensorManager, Map<String, TextureRegion> regions, Map<String, Font> fonts, VertexBufferObjectManager vbom) {
+	private void initialize(SensorManager sensorManager,
+			Map<String, TextureRegion> regions, Map<String, Font> fonts,
+			VertexBufferObjectManager vbom) {
 		scene = new Scene();
-		
-		Sprite backgroundSprite = new Sprite(0, 0, 1280, 800, regions.get(FileConstants.IMG_GAME_BACKGROUND), vbom);
+
+		Sprite backgroundSprite = new Sprite(0, 0, 1280, 800,
+				regions.get(FileConstants.IMG_GAME_BACKGROUND), vbom);
 		scene.setBackground(new SpriteBackground(backgroundSprite));
 		world = new World();
 		world.setManager(new GroupManager());
 		world.setManager(new TagManager());
-		
-		//Create and set systems here
+
+		// Create and set systems here
 		world.setSystem(new SpatialRenderSystem(regions, vbom, scene));
 		world.setSystem(new CollisionSystem());
 		world.setSystem(new PlayerControlSystem());
 		world.setSystem(new EnemyControlSystem());
 		world.setSystem(new SpawnSystem());
 		world.setSystem(new SoundSystem());
-		world.setSystem(new HudRenderSystem(scene, vbom, fonts.get(FontConstants.HUD_SCORE)));
-		
-		//Initialize world.
+		world.setSystem(new HudRenderSystem(scene, vbom, fonts
+				.get(FontConstants.HUD_SCORE)));
+
+		// Initialize world.
 		world.initialize();
 		enableProcess(true);
-		
-		//Add listeners
+
+		// Add listeners
 		AccelerometerListener aL = new AccelerometerListener(sensorManager);
 		aL.addPropertyChangeListener(world.getSystem(PlayerControlSystem.class));
 		aL.startListening();
-		
+
 		TouchListener touchListener = new TouchListener();
 		scene.setOnSceneTouchListener(touchListener);
 		touchListener.addListener(world.getSystem(PlayerControlSystem.class));
-		
+
 		// listen to 'Game Over'-events
 		GameOverNotifier.getInstance().addPropertyChangeListener(this);
 		GameOverNotifier.getInstance().setWorld(world);
 	}
-	
+
 	/**
-	 * Updates the state.
-	 * Invoked by the StateManager, do not call manually.
-	 * @param tpf Time since last frame.
+	 * Updates the state. Invoked by the StateManager, do not call manually.
+	 * 
+	 * @param tpf
+	 *            Time since last frame.
 	 */
 	public void update(float tpf) {
-		if (process && tpf < 1.0f) { //doesn't update if tpf is too big (ie lags)
+		if (process && tpf < 1.0f) { // doesn't update if tpf is too big (ie
+										// lags)
 			world.setDelta(tpf);
 			world.process();
 		}
 	}
-	
+
 	/**
-	 * Enables/Disables the ability to update the world/the game. <p>
-	 * @param enable true if you want the game to update;
-	 * false if you want to stop the updating.
+	 * Enables/Disables the ability to update the world/the game.
+	 * <p>
+	 * 
+	 * @param enable
+	 *            true if you want the game to update; false if you want to stop
+	 *            the updating.
 	 */
 	private void enableProcess(boolean enable) {
 		process = enable;
@@ -148,15 +167,18 @@ public class GameState implements IState, PropertyChangeListener {
 
 	/**
 	 * Returns the scene connected to the state.
+	 * 
 	 * @return The state's scene.
 	 */
 	public Scene getScene() {
 		return scene;
 	}
-	
+
 	/**
 	 * Adds a listener to this state.
-	 * @param pcl the listener to add
+	 * 
+	 * @param pcl
+	 *            the listener to add
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.addPropertyChangeListener(pcl);
@@ -164,17 +186,22 @@ public class GameState implements IState, PropertyChangeListener {
 
 	/**
 	 * Removes a listener from this state.
-	 * @param pcl the listener to remove
+	 * 
+	 * @param pcl
+	 *            the listener to remove
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.removePropertyChangeListener(pcl);
 	}
-	
+
 	/**
 	 * Shows the game over scene.
 	 * 
-	 * @param score the players score
-	 * @param event the <code>PropertyChangeEvent</code> that triggered this method
+	 * @param score
+	 *            the players score
+	 * @param event
+	 *            the <code>PropertyChangeEvent</code> that triggered this
+	 *            method
 	 */
 	private synchronized void gameOver(int score, PropertyChangeEvent event) {
 		if (process) {
@@ -182,40 +209,48 @@ public class GameState implements IState, PropertyChangeListener {
 			this.gameOverScene.setScore(score);
 			this.gameOverScene.addTo(scene);
 			pcs.firePropertyChange(event);
-		} 
+		}
 	}
-	
+
 	/**
-	 * Returns a <code>ButtonSprite.OnClickListener</code>, that removes this scenes
-	 * child scene, and that changes the applications state to the high score state.
-	 * Should be used for the game over scene.
+	 * Returns a <code>ButtonSprite.OnClickListener</code>, that removes this
+	 * scenes child scene, and that changes the applications state to the high
+	 * score state. Should be used for the game over scene.
 	 * 
-	 * @return a <code>ButtonSprite.OnClickListener</code> for the game over scene
+	 * @return a <code>ButtonSprite.OnClickListener</code> for the game over
+	 *         scene
 	 */
 	private ButtonSprite.OnClickListener getButtonSpriteOnClickListener() {
 		return new ButtonSprite.OnClickListener() {
-			public void onClick( ButtonSprite pButtonSprite, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+			public void onClick(ButtonSprite pButtonSprite,
+					float pTouchAreaLocalX, float pTouchAreaLocalY) {
 				scene.clearChildScene();
-				pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Game, StateID.Highscore);
-		    } 
+				pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE,
+						StateID.Game, StateID.Highscore);
+			}
 		};
 	}
 
 	/**
-	 * Listens to <code>PropertyChangeEvents</code>.<p>
+	 * Listens to <code>PropertyChangeEvents</code>.
+	 * <p>
 	 * Do NOT call manually.
 	 * 
-	 * @param event an event
+	 * @param event
+	 *            an event
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
-		if (event != null && event.getNewValue() != null &&
-	        EventMessageConstants.GAME_OVER.equals(event.getPropertyName())) {
+		if (event != null
+				&& event.getNewValue() != null
+				&& EventMessageConstants.GAME_OVER.equals(event
+						.getPropertyName())) {
 			int score = 0;
 			try {
 				score = (Integer) event.getNewValue();
-			} catch (ClassCastException cce) {}
+			} catch (ClassCastException cce) {
+			}
 			gameOver(score, event);
 		}
 	}
-	
+
 }

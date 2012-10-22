@@ -26,8 +26,5 @@ package se.chalmers.avoidance.core.states;
  * @author Markus Ekström
  */
 public enum StateID {
-	Menu,
-	Game,
-	Credits,
-	Highscore
+	Menu, Game, Credits, Highscore
 }

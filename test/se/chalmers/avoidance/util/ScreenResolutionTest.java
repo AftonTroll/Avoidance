@@ -27,10 +27,11 @@ import org.junit.Test;
 import se.chalmers.avoidance.core.components.FloatTest;
 
 public class ScreenResolutionTest extends FloatTest {
-	
-	private static final float [] WIDTHS = {0f, 20f, 200f, 300f, 500f, 1000f, 2000f};
-	private static final float [] HEIGHTS = {0f, 20f, 200f, 300f, 500f, 1000f};
-	
+
+	private static final float[] WIDTHS = { 0f, 20f, 200f, 300f, 500f, 1000f,
+			2000f };
+	private static final float[] HEIGHTS = { 0f, 20f, 200f, 300f, 500f, 1000f };
+
 	@Test
 	public void testScreenResolution() {
 		assertTrue(ScreenResolution.getWidthResolution() == 1280);
@@ -38,28 +39,33 @@ public class ScreenResolutionTest extends FloatTest {
 	}
 
 	/**
-	 * Mock-method for getXPosHorizontalCentering(RectangularShape shape)
-	 * Why? Because one needs shaders, vertexbufferobjectmanagers, texturemanagers,
+	 * Mock-method for getXPosHorizontalCentering(RectangularShape shape) Why?
+	 * Because one needs shaders, vertexbufferobjectmanagers, texturemanagers,
 	 * fonts etc to instantiate such objects.
-	 * @param width the shapes width
+	 * 
+	 * @param width
+	 *            the shapes width
 	 */
 	private float mockMethodGetXPosHorizontalCentering(float width) {
 		return (ScreenResolution.getWidthResolution() - width) / 2;
 	}
-	
+
 	/**
-	 * Mock-method for getYPosVerticalCentering(RectangularShape shape)
-	 * Why? Because one needs shaders, vertexbufferobjectmanagers, texturemanagers,
+	 * Mock-method for getYPosVerticalCentering(RectangularShape shape) Why?
+	 * Because one needs shaders, vertexbufferobjectmanagers, texturemanagers,
 	 * fonts etc to instantiate such objects.
-	 * @param height the shapes height
+	 * 
+	 * @param height
+	 *            the shapes height
 	 */
 	private float mockMethodGetYPosVerticalCentering(float height) {
 		return (ScreenResolution.getHeightResolution() - height) / 2;
 	}
-	
+
 	@Test
 	public void testGetXPosHorizontalCentering() {
-//		return (ScreenResolution.getWidthResolution() - shape.getWidth()) / 2; <- the method
+		// return (ScreenResolution.getWidthResolution() - shape.getWidth()) /
+		// 2; <- the method
 		assertFloatEquals(mockMethodGetXPosHorizontalCentering(WIDTHS[0]), 640);
 		assertFloatEquals(mockMethodGetXPosHorizontalCentering(WIDTHS[1]), 630);
 		assertFloatEquals(mockMethodGetXPosHorizontalCentering(WIDTHS[2]), 540);
@@ -68,10 +74,11 @@ public class ScreenResolutionTest extends FloatTest {
 		assertFloatEquals(mockMethodGetXPosHorizontalCentering(WIDTHS[5]), 140);
 		assertFloatEquals(mockMethodGetXPosHorizontalCentering(WIDTHS[6]), -360);
 	}
-	
+
 	@Test
 	public void testGetYPosVerticalCentering() {
-//		return (ScreenResolution.getHeightResolution() - shape.getHeight()) / 2; <- the method
+		// return (ScreenResolution.getHeightResolution() - shape.getHeight()) /
+		// 2; <- the method
 		assertFloatEquals(mockMethodGetYPosVerticalCentering(HEIGHTS[0]), 400);
 		assertFloatEquals(mockMethodGetYPosVerticalCentering(HEIGHTS[1]), 390);
 		assertFloatEquals(mockMethodGetYPosVerticalCentering(HEIGHTS[2]), 300);
@@ -79,5 +86,5 @@ public class ScreenResolutionTest extends FloatTest {
 		assertFloatEquals(mockMethodGetYPosVerticalCentering(HEIGHTS[4]), 150);
 		assertFloatEquals(mockMethodGetYPosVerticalCentering(HEIGHTS[5]), -100);
 	}
-	
+
 }

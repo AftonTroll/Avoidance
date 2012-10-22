@@ -44,18 +44,23 @@ public class StateManager implements PropertyChangeListener {
 	/**
 	 * Constructs a <code>StateManager</code> using the <code>Engine</code>
 	 * provided.
-	 * @param engine The engine from AndEngine.
+	 * 
+	 * @param engine
+	 *            The engine from AndEngine.
 	 */
 	public StateManager(Engine engine) {
 		this.engine = engine;
 		pcs = new PropertyChangeSupport(this);
 	}
-	
+
 	/**
-	* Adds a state.
-	* @param stateID The desired ID of the new state.
-	* @param state The new state.
-	*/
+	 * Adds a state.
+	 * 
+	 * @param stateID
+	 *            The desired ID of the new state.
+	 * @param state
+	 *            The new state.
+	 */
 	public void addState(StateID stateID, IState state) {
 		if (stateMap.put(stateID, state) == null) {
 			state.addPropertyChangeListener(this);
@@ -63,9 +68,11 @@ public class StateManager implements PropertyChangeListener {
 	}
 
 	/**
-	* Removes a state specified by the ID.
-	* @param stateID The ID of the state to be removed.
-	*/
+	 * Removes a state specified by the ID.
+	 * 
+	 * @param stateID
+	 *            The ID of the state to be removed.
+	 */
 	public void removeState(StateID stateID) {
 		IState state = stateMap.remove(stateID);
 		if (state != null) {
@@ -74,28 +81,33 @@ public class StateManager implements PropertyChangeListener {
 	}
 
 	/**
-	* Sets the current state to the passed state.
-	* @param stateID The ID of the state to be set to current.
-	*/
+	 * Sets the current state to the passed state.
+	 * 
+	 * @param stateID
+	 *            The ID of the state to be set to current.
+	 */
 	public void setState(StateID stateID) {
 		if (stateMap.get(stateID) != null) {
 			currentState = stateMap.get(stateID);
 			engine.setScene(currentState.getScene());
 		}
 	}
-	
+
 	/**
-	 * Returns the state associated with the <code>StateID</code> in the parameter.
+	 * Returns the state associated with the <code>StateID</code> in the
+	 * parameter.
 	 * 
-	 * @param stateID the states ID
+	 * @param stateID
+	 *            the states ID
 	 * @return the state associated with the given <code>StateID</code>
 	 */
 	public IState getState(StateID stateID) {
 		return stateMap.get(stateID);
 	}
-	
+
 	/**
 	 * Returns the <code>StateID</code> of the current active state.
+	 * 
 	 * @return the <code>StateID</code> of the current active state
 	 */
 	public StateID getActiveStateID() {
@@ -106,15 +118,17 @@ public class StateManager implements PropertyChangeListener {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Updates the current state.
-	 * @param tpf Time since last frame.
+	 * 
+	 * @param tpf
+	 *            Time since last frame.
 	 */
 	public void update(float tpf) {
 		currentState.update(tpf);
 	}
-	
+
 	/**
 	 * Reacts if there is to be a state change.
 	 */
@@ -122,18 +136,23 @@ public class StateManager implements PropertyChangeListener {
 		if (event != null && event.getNewValue() != null) {
 			if (EventMessageConstants.QUIT_GAME.equals(event.getPropertyName())) {
 				pcs.firePropertyChange(event);
-			} else if (EventMessageConstants.CHANGE_STATE.equals(event.getPropertyName())) {
+			} else if (EventMessageConstants.CHANGE_STATE.equals(event
+					.getPropertyName())) {
 				setState((StateID) event.getNewValue());
-				if(event.getOldValue() == StateID.Game && event.getNewValue() == StateID.Highscore) {
-					pcs.firePropertyChange(EventMessageConstants.RESTART_GAME, null, null);
+				if (event.getOldValue() == StateID.Game
+						&& event.getNewValue() == StateID.Highscore) {
+					pcs.firePropertyChange(EventMessageConstants.RESTART_GAME,
+							null, null);
 				}
 			}
 		}
 	}
-	
+
 	/**
 	 * Adds a listener to this state manager.
-	 * @param pcl the listener to add
+	 * 
+	 * @param pcl
+	 *            the listener to add
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.addPropertyChangeListener(pcl);
@@ -141,10 +160,12 @@ public class StateManager implements PropertyChangeListener {
 
 	/**
 	 * Removes a listener from this state manager.
-	 * @param pcl the listener to remove
+	 * 
+	 * @param pcl
+	 *            the listener to remove
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.removePropertyChangeListener(pcl);
 	}
-	
+
 }

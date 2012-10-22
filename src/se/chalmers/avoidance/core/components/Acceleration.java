@@ -26,30 +26,36 @@ import com.artemis.Component;
  * Component containing the information about the speed of the acceleration.
  * 
  * @author Filip Brynfors
- *
+ * 
  */
 public class Acceleration extends Component {
 	private float acceleration;
-	
+
 	/**
-	 * Creates a new acceleration component with the specified acceleration value.
-	 * @param acceleration the acceleration
+	 * Creates a new acceleration component with the specified acceleration
+	 * value.
+	 * 
+	 * @param acceleration
+	 *            the acceleration
 	 */
 	public Acceleration(float acceleration) {
 		this.acceleration = acceleration;
 	}
-	
+
 	/**
 	 * Returns the acceleration.
+	 * 
 	 * @return the acceleration
 	 */
 	public float getAcceleration() {
 		return acceleration;
 	}
-	
+
 	/**
 	 * Sets a new value of acceleration.
-	 * @param newAcceleration the new acceleration speed
+	 * 
+	 * @param newAcceleration
+	 *            the new acceleration speed
 	 */
 	public void setAcceleration(float newAcceleration) {
 		acceleration = newAcceleration;

@@ -26,13 +26,17 @@ import com.artemis.Component;
  * 
  * @author Markus Ekström
  */
-public class Buff extends Component{
-	public static enum BuffType{Speed, Immortal}
+public class Buff extends Component {
+	public static enum BuffType {
+		Speed, Immortal
+	}
+
 	private int strength;
 	private BuffType type;
-	
+
 	/**
 	 * Constructs the Buff, giving it the type and strength specified.
+	 * 
 	 * @param type
 	 * @param amount
 	 */
@@ -40,17 +44,19 @@ public class Buff extends Component{
 		this.type = type;
 		this.strength = strength;
 	}
-	
+
 	/**
 	 * Returns the buff's type.
+	 * 
 	 * @return The type of the buff.
 	 */
 	public BuffType getType() {
 		return type;
 	}
-	
+
 	/**
 	 * Returns the buff's strength.
+	 * 
 	 * @return The strength of the buff.
 	 */
 	public int getStrength() {

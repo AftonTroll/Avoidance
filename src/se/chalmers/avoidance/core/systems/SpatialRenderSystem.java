@@ -47,18 +47,19 @@ import com.artemis.EntitySystem;
 import com.artemis.annotations.Mapper;
 import com.artemis.managers.TagManager;
 import com.artemis.utils.ImmutableBag;
+
 /**
  * A system controlling the rendering of sprites.
  * 
  * @author Markus Ekström
  */
-public class SpatialRenderSystem extends EntitySystem{
-    @Mapper
-    private ComponentMapper<Transform> tm;
-    @Mapper
-    private ComponentMapper<Spatial> sm;
-    
-    private TagManager tagManager;
+public class SpatialRenderSystem extends EntitySystem {
+	@Mapper
+	private ComponentMapper<Transform> tm;
+	@Mapper
+	private ComponentMapper<Spatial> sm;
+
+	private TagManager tagManager;
 	private List<Entity> entities;
 	private Map<String, TextureRegion> regions;
 	private VertexBufferObjectManager vbom;
@@ -66,14 +67,18 @@ public class SpatialRenderSystem extends EntitySystem{
 	private boolean playerImmortal = false;
 
 	/**
-	 * Constructs a <code>SpatialRenderSystem</code>. 
-	 * Uses an aspect containing <code>Transform</code> and <code>Spatial</code> to match against entities.
+	 * Constructs a <code>SpatialRenderSystem</code>. Uses an aspect containing
+	 * <code>Transform</code> and <code>Spatial</code> to match against
+	 * entities.
 	 * 
-	 * @param regions A map containing <code>TextureRegion</code>s.
-	 * @param vbom A <code>VertexBufferObjectManager</code>.
+	 * @param regions
+	 *            A map containing <code>TextureRegion</code>s.
+	 * @param vbom
+	 *            A <code>VertexBufferObjectManager</code>.
 	 */
 	@SuppressWarnings("unchecked")
-	public SpatialRenderSystem(Map<String, TextureRegion> regions, VertexBufferObjectManager vbom, Scene scene) {
+	public SpatialRenderSystem(Map<String, TextureRegion> regions,
+			VertexBufferObjectManager vbom, Scene scene) {
 		super(Aspect.getAspectForAll(Transform.class, Spatial.class));
 		this.regions = regions;
 		this.vbom = vbom;
@@ -85,7 +90,7 @@ public class SpatialRenderSystem extends EntitySystem{
 	protected void initialize() {
 		tagManager = world.getManager(TagManager.class);
 	}
-	
+
 	@Override
 	protected boolean checkProcessing() {
 		return true;
@@ -93,78 +98,92 @@ public class SpatialRenderSystem extends EntitySystem{
 
 	@Override
 	protected void processEntities(ImmutableBag<Entity> arg0) {
-        for(int i = 0; entities.size() > i; i++) {
-            process(entities.get(i));
-        }
+		for (int i = 0; entities.size() > i; i++) {
+			process(entities.get(i));
+		}
 	}
-	
+
 	/**
 	 * Process an entity.
-	 * @param e The entity to be processed.
+	 * 
+	 * @param e
+	 *            The entity to be processed.
 	 */
 	protected void process(Entity e) {
 		Spatial spatial = sm.get(e);
-        Transform tf = tm.get(e);
-        spatial.getSprite().setPosition(tf.getX(), tf.getY());
-        spatial.getSprite().setRotation((float) (Math.toDegrees(tf.getDirection())));
-        
-        if(e.getId() == world.getManager(TagManager.class).getEntity(GameConstants.TAG_PLAYER).getId()) {
-        	handleJumpScaling(e);
-        	handleImmortalSprite(e);
-        }
+		Transform tf = tm.get(e);
+		spatial.getSprite().setPosition(tf.getX(), tf.getY());
+		spatial.getSprite().setRotation(
+				(float) (Math.toDegrees(tf.getDirection())));
+
+		if (e.getId() == world.getManager(TagManager.class)
+				.getEntity(GameConstants.TAG_PLAYER).getId()) {
+			handleJumpScaling(e);
+			handleImmortalSprite(e);
+		}
 	}
-	
+
 	/**
 	 * Handles scaling of the sprite when entity has jumped.
-	 * @param e The jumping entity.
+	 * 
+	 * @param e
+	 *            The jumping entity.
 	 */
 	private void handleJumpScaling(Entity e) {
-		if(e.getComponent(Jump.class).isInTheAir()) {
+		if (e.getComponent(Jump.class).isInTheAir()) {
 			e.getComponent(Spatial.class).getSprite().setScale(2);
 		} else {
 			e.getComponent(Spatial.class).getSprite().setScale(1);
 		}
 	}
-	
+
 	/**
 	 * Handles the changing of sprites for when the player becomes immortal.
-	 * @param player The player entity.
+	 * 
+	 * @param player
+	 *            The player entity.
 	 */
 	private void handleImmortalSprite(Entity player) {
-	    if (player.getComponent(Immortal.class).isImmortal() && !playerImmortal) {
-	        Transform tf = tm.get(player);
-	        sm.get(player).getSprite().detachSelf();
-	        sm.get(player).setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(FileConstants.IMG_PLAYER_IMMORTAL), vbom));
-	        sm.get(player).getSprite().setZIndex(50);
-	        scene.attachChild(sm.get(player).getSprite());
-	        playerImmortal = true;
-	    } else if (!player.getComponent(Immortal.class).isImmortal() && playerImmortal) {
-	        Transform tf = tm.get(player);
-            Spatial spatial = sm.get(player);
-            spatial.getSprite().detachSelf();
-            sm.get(player).setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(spatial.getName()), vbom));
-            sm.get(player).getSprite().setZIndex(50);
-            scene.attachChild(spatial.getSprite());
-            playerImmortal = false;
-	    }
+		if (player.getComponent(Immortal.class).isImmortal() && !playerImmortal) {
+			Transform tf = tm.get(player);
+			sm.get(player).getSprite().detachSelf();
+			sm.get(player).setSprite(
+					new Sprite(tf.getX(), tf.getY(), regions
+							.get(FileConstants.IMG_PLAYER_IMMORTAL), vbom));
+			sm.get(player).getSprite().setZIndex(50);
+			scene.attachChild(sm.get(player).getSprite());
+			playerImmortal = true;
+		} else if (!player.getComponent(Immortal.class).isImmortal()
+				&& playerImmortal) {
+			Transform tf = tm.get(player);
+			Spatial spatial = sm.get(player);
+			spatial.getSprite().detachSelf();
+			sm.get(player).setSprite(
+					new Sprite(tf.getX(), tf.getY(), regions.get(spatial
+							.getName()), vbom));
+			sm.get(player).getSprite().setZIndex(50);
+			scene.attachChild(spatial.getSprite());
+			playerImmortal = false;
+		}
 	}
-	
-    @Override
-    protected void inserted(Entity e) {
-    	Spatial spatial = sm.get(e);
+
+	@Override
+	protected void inserted(Entity e) {
+		Spatial spatial = sm.get(e);
 		Transform tf = tm.get(e);
-		spatial.setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(spatial.getName()), vbom));
+		spatial.setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(spatial
+				.getName()), vbom));
 		scene.attachChild(spatial.getSprite());
-		if(tagManager.getEntity(GameConstants.TAG_PLAYER).equals(e)){
+		if (tagManager.getEntity(GameConstants.TAG_PLAYER).equals(e)) {
 			spatial.getSprite().setZIndex(50);
 		}
 		scene.sortChildren();
-        entities.add(e);
-    }
+		entities.add(e);
+	}
 
-    @Override
-    protected void removed(Entity e) {
-    	e.getComponent(Spatial.class).getSprite().detachSelf();
-        entities.remove(e);
-    }
+	@Override
+	protected void removed(Entity e) {
+		e.getComponent(Spatial.class).getSprite().detachSelf();
+		entities.remove(e);
+	}
 }

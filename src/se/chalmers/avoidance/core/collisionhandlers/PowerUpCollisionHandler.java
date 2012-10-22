@@ -34,46 +34,54 @@ import com.artemis.managers.TagManager;
 
 /**
  * Handles collisions between the player and a power-up.
+ * 
  * @author Markus Ekström
- *
+ * 
  */
-public class PowerUpCollisionHandler implements CollisionHandler{
-    private ComponentMapper<Velocity> vm;
-    private ComponentMapper<Buff> bm;
-    private ComponentMapper<Score> sm;
-    private ComponentMapper<Immortal> im;
-    
-    /**
-     * Constructs a PowerUpCollisionHandler.
-     * @param world The world.
-     */
-    public PowerUpCollisionHandler(World world) {
-    	vm = world.getMapper(Velocity.class);
-    	bm = world.getMapper(Buff.class);
-    	sm = world.getMapper(Score.class);
-    	im = world.getMapper(Immortal.class);
-    }
-    
+public class PowerUpCollisionHandler implements CollisionHandler {
+	private ComponentMapper<Velocity> vm;
+	private ComponentMapper<Buff> bm;
+	private ComponentMapper<Score> sm;
+	private ComponentMapper<Immortal> im;
+
 	/**
-	 * Takes the player and a power-up and applies the power-up's buff to the player.
-	 * @param player The player
-	 * @param powerup The power-up whose buff shall be applied to the player.
+	 * Constructs a PowerUpCollisionHandler.
+	 * 
+	 * @param world
+	 *            The world.
+	 */
+	public PowerUpCollisionHandler(World world) {
+		vm = world.getMapper(Velocity.class);
+		bm = world.getMapper(Buff.class);
+		sm = world.getMapper(Score.class);
+		im = world.getMapper(Immortal.class);
+	}
+
+	/**
+	 * Takes the player and a power-up and applies the power-up's buff to the
+	 * player.
+	 * 
+	 * @param player
+	 *            The player
+	 * @param powerup
+	 *            The power-up whose buff shall be applied to the player.
 	 */
 	public void handleCollision(Entity player, Entity powerup) {
-		if(!player.getComponent(Jump.class).isInTheAir()) {
+		if (!player.getComponent(Jump.class).isInTheAir()) {
 			World world = player.getWorld();
 			Velocity velocity = vm.get(player);
 			Buff buff = bm.get(powerup);
 			Immortal immortal = im.get(player);
-			if(buff.getType() == BuffType.Speed) {
+			if (buff.getType() == BuffType.Speed) {
 				velocity.addSpeed(buff.getStrength());
-			} else if(buff.getType() == BuffType.Immortal) {
-			    immortal.setDuration(buff.getStrength());
-			    immortal.setImmortal(true);
+			} else if (buff.getType() == BuffType.Immortal) {
+				immortal.setDuration(buff.getStrength());
+				immortal.setImmortal(true);
 			}
 			powerup.deleteFromWorld();
-		    Score score = sm.get(world.getManager(TagManager.class).getEntity(GameConstants.TAG_SCORE));
-		    score.addPowerupScore(Score.POWERUP_PICKUP_SCORE);
+			Score score = sm.get(world.getManager(TagManager.class).getEntity(
+					GameConstants.TAG_SCORE));
+			score.addPowerupScore(Score.POWERUP_PICKUP_SCORE);
 			powerup.deleteFromWorld();
 		}
 	}

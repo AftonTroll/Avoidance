@@ -29,48 +29,55 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.TagManager;
+
 /**
  * Handles collision between player and enemies.
  * 
  * @author Jakob Svensson, Markus Ekström
- *
+ * 
  */
-public class EnemyCollisionHandler implements CollisionHandler{
+public class EnemyCollisionHandler implements CollisionHandler {
 
 	private World world;
 
 	/**
 	 * Constructs a EnemyCollisionHandler.
 	 * 
-	 * @param world The world.
+	 * @param world
+	 *            The world.
 	 */
-	public EnemyCollisionHandler (World world){
-		this.world=world;
+	public EnemyCollisionHandler(World world) {
+		this.world = world;
 	}
+
 	/**
 	 * Takes the player and enemy and handles the collision between them.
 	 * 
-	 * @param player The player.
-	 * @param enemy The enemy.
+	 * @param player
+	 *            The player.
+	 * @param enemy
+	 *            The enemy.
 	 */
 	public void handleCollision(Entity player, Entity enemy) {
-		//Handles collison between enemy and player
+		// Handles collison between enemy and player
 		ComponentMapper<Jump> jumpMapper = world.getMapper(Jump.class);
-		ComponentMapper<Immortal> immortalMapper = world.getMapper(Immortal.class);
+		ComponentMapper<Immortal> immortalMapper = world
+				.getMapper(Immortal.class);
 		Jump jump = jumpMapper.get(player);
 		Immortal immortal = immortalMapper.get(player);
-		if(jump != null && immortal != null) {
-    		if (!jump.isInTheAir() && !immortal.isImmortal()) {
-    			GameOverNotifier.getInstance().gameOver();
-    		} else if (immortal.isImmortal() || 
-    		        (jump.isInTheAir() && jump.getInTheAirDurationLeft() <= world.delta)) {
-    		    world.deleteEntity(enemy);
-    		    Score score = world.getManager(TagManager.class).
-    		            getEntity(GameConstants.TAG_SCORE).getComponent(Score.class);
-    		    if(score != null) {
-    		        score.addKillScore(Score.KILL_SCORE);
-    		    }
-    		}
+		if (jump != null && immortal != null) {
+			if (!jump.isInTheAir() && !immortal.isImmortal()) {
+				GameOverNotifier.getInstance().gameOver();
+			} else if (immortal.isImmortal()
+					|| (jump.isInTheAir() && jump.getInTheAirDurationLeft() <= world.delta)) {
+				world.deleteEntity(enemy);
+				Score score = world.getManager(TagManager.class)
+						.getEntity(GameConstants.TAG_SCORE)
+						.getComponent(Score.class);
+				if (score != null) {
+					score.addKillScore(Score.KILL_SCORE);
+				}
+			}
 		}
 	}
 }

@@ -27,11 +27,12 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
+
 /**
  * Handles collision between player and killplayerobstacles.
  * 
  * @author Jakob Svensson
- *
+ * 
  */
 public class KillplayerobstacleCollisionHandler implements CollisionHandler {
 
@@ -40,28 +41,34 @@ public class KillplayerobstacleCollisionHandler implements CollisionHandler {
 	/**
 	 * Construct a new KillplayerobstacleCollisionHandler.
 	 * 
-	 * @param world the world object
+	 * @param world
+	 *            the world object
 	 */
-	public KillplayerobstacleCollisionHandler(World world){
-		this.world=world;
+	public KillplayerobstacleCollisionHandler(World world) {
+		this.world = world;
 	}
 
 	/**
 	 * Handles collision between player and killplayerobstacles.
 	 * 
-	 * @param player the player
-	 * @param obstacle the killplayerobstacle
+	 * @param player
+	 *            the player
+	 * @param obstacle
+	 *            the killplayerobstacle
 	 */
 	public void handleCollision(Entity player, Entity obstacle) {
 		GroupManager groupManager = world.getManager(GroupManager.class);
-		if (groupManager.getEntities(GameConstants.GROUP_PLAYER).contains(player) &&
-				groupManager.getEntities(GameConstants.GROUP_OBSTACLE_SPIKES).contains(obstacle)) {
+		if (groupManager.getEntities(GameConstants.GROUP_PLAYER).contains(
+				player)
+				&& groupManager
+						.getEntities(GameConstants.GROUP_OBSTACLE_SPIKES)
+						.contains(obstacle)) {
 			ComponentMapper<Jump> jumpMapper = world.getMapper(Jump.class);
 			Jump jump = jumpMapper.get(player);
 			if (jump == null || !jump.isInTheAir()) {
 				GameOverNotifier.getInstance().gameOver();
 			}
-		
+
 		}
 	}
 

@@ -53,92 +53,103 @@ import android.opengl.GLES20;
  */
 public class MenuState implements IState, IOnMenuItemClickListener {
 
-    private static final int MENU_START = 0;
-    private static final int MENU_HIGHSCORES = 1;
-    private static final int MENU_CREDITS = 2;
-    private static final int MENU_QUIT = 3;
+	private static final int MENU_START = 0;
+	private static final int MENU_HIGHSCORES = 1;
+	private static final int MENU_CREDITS = 2;
+	private static final int MENU_QUIT = 3;
 
-    private PropertyChangeSupport pcs;
+	private PropertyChangeSupport pcs;
 	private MenuScene menuScene;
-	
-    /**
-     * Constructs a new <code>MenuState</code>. <p>
-     * 
-     * @param camera the game engines <code>Camera</code>
-     * @param regions a <code>Map</code> containing loaded textures/regions
-	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
-     */
-	public MenuState(Camera camera, Map<String, TextureRegion> regions, 
+
+	/**
+	 * Constructs a new <code>MenuState</code>.
+	 * <p>
+	 * 
+	 * @param camera
+	 *            the game engines <code>Camera</code>
+	 * @param regions
+	 *            a <code>Map</code> containing loaded textures/regions
+	 * @param vbom
+	 *            the game engines <code>VertexBufferObjectManager</code>
+	 */
+	public MenuState(Camera camera, Map<String, TextureRegion> regions,
 			VertexBufferObjectManager vbom) {
 		initialize(camera, regions, vbom);
 		pcs = new PropertyChangeSupport(this);
 	}
-	
-    /**
-     * Initializes the menu scene.
-     * 
-     * @param camera the game engines <code>Camera</code>
-     * @param regions a <code>Map</code> containing loaded textures/regions
-	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
-     */
-	private void initialize(Camera camera, Map<String, TextureRegion> regions, 
+
+	/**
+	 * Initializes the menu scene.
+	 * 
+	 * @param camera
+	 *            the game engines <code>Camera</code>
+	 * @param regions
+	 *            a <code>Map</code> containing loaded textures/regions
+	 * @param vbom
+	 *            the game engines <code>VertexBufferObjectManager</code>
+	 */
+	private void initialize(Camera camera, Map<String, TextureRegion> regions,
 			VertexBufferObjectManager vbom) {
 		menuScene = new MenuScene();
 		menuScene.setCamera(camera);
 		menuScene.setBackground(new Background(0f, 0f, 0f));
-		
-		//center the scene
+
+		// center the scene
 		float xPos = ScreenResolution.getWidthResolution() / 2 - 250;
 		float yPos = ScreenResolution.getHeightResolution() / 2 - 300;
-		
-		//create menu items
+
+		// create menu items
 		final SpriteMenuItem startMenuItem = new SpriteMenuItem(MENU_START,
 				regions.get(FileConstants.IMG_MENU_START), vbom);
-		startMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+		startMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
+				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(startMenuItem);
 		startMenuItem.setPosition(xPos, yPos);
 
-		final SpriteMenuItem highscoreMenuItem = new SpriteMenuItem(MENU_HIGHSCORES,
+		final SpriteMenuItem highscoreMenuItem = new SpriteMenuItem(
+				MENU_HIGHSCORES,
 				regions.get(FileConstants.IMG_MENU_HIGH_SCORE), vbom);
-		highscoreMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+		highscoreMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
+				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(highscoreMenuItem);
 		highscoreMenuItem.setPosition(xPos, yPos + 150);
 
-		
 		final SpriteMenuItem creditsMenuItem = new SpriteMenuItem(MENU_CREDITS,
 				regions.get(FileConstants.IMG_MENU_CREDITS), vbom);
-		creditsMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+		creditsMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
+				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(creditsMenuItem);
 		creditsMenuItem.setPosition(xPos, yPos + 300);
 
 		final SpriteMenuItem quitMenuItem = new SpriteMenuItem(MENU_QUIT,
 				regions.get(FileConstants.IMG_MENU_QUIT), vbom);
-		quitMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+		quitMenuItem.setBlendFunction(GLES20.GL_SRC_ALPHA,
+				GLES20.GL_ONE_MINUS_SRC_ALPHA);
 		this.menuScene.addMenuItem(quitMenuItem);
 		quitMenuItem.setPosition(xPos, yPos + 450);
-		
-		final Sprite backgroundSprite = new Sprite(0, 0, 1024, 768, regions.get(FileConstants.IMG_MENU_BACKGROUND), 
-				vbom);
+
+		final Sprite backgroundSprite = new Sprite(0, 0, 1024, 768,
+				regions.get(FileConstants.IMG_MENU_BACKGROUND), vbom);
 		this.menuScene.setBackground(new SpriteBackground(backgroundSprite));
 
-//		 this.menuScene.buildAnimations(); <- does not work
+		// this.menuScene.buildAnimations(); <- does not work
 		this.menuScene.setBackgroundEnabled(true);
 		this.menuScene.setOnMenuItemClickListener(this);
 
 	}
-	
+
 	public void update(float tpf) {
-		
+
 	}
 
 	/**
 	 * Returns the menu scene, or null if it is not instantiated yet.
+	 * 
 	 * @return the menu scene
 	 */
 	public Scene getScene() {
 		return menuScene;
 	}
-	
 
 	/**
 	 * {@inheritDoc}
@@ -148,15 +159,16 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 			final float pMenuItemLocalY) {
 		switch (pMenuItem.getID()) {
 		case MENU_START:
-			pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Menu, StateID.Game);
+			pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE,
+					StateID.Menu, StateID.Game);
 			return true;
 		case MENU_HIGHSCORES:
-			pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Menu, 
-					StateID.Highscore);
+			pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE,
+					StateID.Menu, StateID.Highscore);
 			return true;
 		case MENU_CREDITS:
-			pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE, StateID.Menu, 
-					StateID.Credits);
+			pcs.firePropertyChange(EventMessageConstants.CHANGE_STATE,
+					StateID.Menu, StateID.Credits);
 			return true;
 		case MENU_QUIT:
 			/* End Activity. */
@@ -169,7 +181,9 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 
 	/**
 	 * Adds a listener to this state.
-	 * @param pcl the listener to add
+	 * 
+	 * @param pcl
+	 *            the listener to add
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.addPropertyChangeListener(pcl);
@@ -177,7 +191,9 @@ public class MenuState implements IState, IOnMenuItemClickListener {
 
 	/**
 	 * Removes a listener from this state.
-	 * @param pcl the listener to remove
+	 * 
+	 * @param pcl
+	 *            the listener to remove
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.removePropertyChangeListener(pcl);

@@ -30,33 +30,36 @@ import org.junit.Test;
 import se.chalmers.avoidance.core.components.FloatTest;
 
 public class UtilsTest extends FloatTest {
-	
+
 	private static final float F1 = 0f;
 	private static final float F2 = 2f;
 	private static final float F3 = 8f;
 	private static final float F4 = -2f;
-	private static final float F5 = -(float)Math.PI;
+	private static final float F5 = -(float) Math.PI;
 	private static final float F6 = -7f;
-	
+
 	private static final float S1 = 5f;
 	private static final float A1 = 0f;
 	private static final float S2 = 0f;
 	private static final float A2 = 0f;
 	private static final float S3 = 10f;
-	private static final float A3 = (float) Math.PI/2;
+	private static final float A3 = (float) Math.PI / 2;
 	private static final float S4 = 15f;
 	private static final float A4 = (float) -Math.PI;
 	private static final float S5 = (float) Math.sqrt(8);
-	private static final float A5 = (float) (Math.PI/4);
+	private static final float A5 = (float) (Math.PI / 4);
 
 	@Test
 	public void testSimplifyAngle() {
-		assertFloatEquals(Utils.simplifyAngle(F1) - F1 );
-		assertFloatEquals(Utils.simplifyAngle(F2) - F2 );
-		assertFloatEquals(Utils.simplifyAngle(F3) - (F3 - (float)(2 * Math.PI)));
-		assertFloatEquals(Utils.simplifyAngle(F4) - ((float)(2 * Math.PI) + F4));
+		assertFloatEquals(Utils.simplifyAngle(F1) - F1);
+		assertFloatEquals(Utils.simplifyAngle(F2) - F2);
+		assertFloatEquals(Utils.simplifyAngle(F3)
+				- (F3 - (float) (2 * Math.PI)));
+		assertFloatEquals(Utils.simplifyAngle(F4)
+				- ((float) (2 * Math.PI) + F4));
 		assertFloatEquals(Utils.simplifyAngle(F5) - ((float) Math.PI));
-		assertFloatEquals(Utils.simplifyAngle(F6) - (((float)(4 * Math.PI)) + F6));
+		assertFloatEquals(Utils.simplifyAngle(F6)
+				- (((float) (4 * Math.PI)) + F6));
 	}
 
 	@Test
@@ -68,55 +71,55 @@ public class UtilsTest extends FloatTest {
 		assertFloatEquals(Utils.reverseAngle(F5) - (F5 + (float) Math.PI));
 		assertFloatEquals(Utils.reverseAngle(F6) - ((float) Math.PI + F6));
 	}
-	
+
 	@Test
-	public void testGetHorizontalSpeed(){
+	public void testGetHorizontalSpeed() {
 		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(S1, A1) - 5));
 		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(S2, A2)));
 		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(S3, A3)));
 		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(S4, A4) + 15));
 		assertFloatEquals(Math.abs(Utils.getHorizontalSpeed(S5, A5) - 2));
 	}
-	
+
 	@Test
-	public void testGetVerticalSpeed(){
+	public void testGetVerticalSpeed() {
 		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(S1, A1)));
 		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(S2, A2)));
 		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(S3, A3) - 10));
 		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(S4, A4)));
-		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(S5, A5) -2 ));
+		assertFloatEquals(Math.abs(Utils.getVerticalSpeed(S5, A5) - 2));
 	}
-	
+
 	@Test
 	public void testTrimList() {
 		List<Integer> list = new ArrayList<Integer>();
 		for (int i = 0; i < 30; i++) {
 			list.add(i);
 		}
-		
-		//decrease the lists size continously
+
+		// decrease the lists size continously
 		Utils.trimList(list, 45);
 		assertTrue(list.size() == 30);
-		
+
 		Utils.trimList(list, 28);
 		assertTrue(list.size() == 28);
 		assertTrue(!list.contains(28));
-		
+
 		Utils.trimList(list, 17);
 		assertTrue(list.size() == 17);
 		assertTrue(list.contains(0));
 		assertTrue(!list.contains(17));
-		
+
 		Utils.trimList(list, 4);
 		assertTrue(list.size() == 4);
 		assertTrue(!list.contains(4));
 		assertTrue(list.contains(3));
-		
-		//can't increase the size, only decrease
+
+		// can't increase the size, only decrease
 		Utils.trimList(list, 6);
 		assertTrue(list.size() == 4);
 		assertTrue(!list.contains(4));
 		assertTrue(list.contains(3));
 	}
-	
+
 }

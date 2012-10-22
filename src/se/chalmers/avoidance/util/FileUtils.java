@@ -32,82 +32,94 @@ import java.util.List;
 import android.content.Context;
 
 /**
- * Util class for saving and reading from a file.<p>
+ * Util class for saving and reading from a file.
+ * <p>
  * 
- * May contain some additional methods that are used
- * for simplifying what we write/read from files in
- * this application.
+ * May contain some additional methods that are used for simplifying what we
+ * write/read from files in this application.
  * 
  * @author Florian Minges
  */
 public final class FileUtils {
 
 	private static Context context;
-	
+
 	/**
 	 * A default file path for storing the high score.
 	 */
 	public static final String PATH = "highscore.txt";
-	
-	private FileUtils() {}
-	
+
+	private FileUtils() {
+	}
+
 	/**
-	 * Sets the context of this class.<p>
-	 * This means that reading from and writing to files are made to private files
-	 * associated with this Context's application package.
+	 * Sets the context of this class.
+	 * <p>
+	 * This means that reading from and writing to files are made to private
+	 * files associated with this Context's application package.
 	 * 
-	 * @param context the context
+	 * @param context
+	 *            the context
 	 */
 	public static void setContext(Context context) {
 		FileUtils.context = context;
 	}
 
 	/**
-	 * Reads a file, line by line, and returns the result as a <code>List</code>.
+	 * Reads a file, line by line, and returns the result as a <code>List</code>
+	 * .
 	 * 
-	 * @param path the path to the file
+	 * @param path
+	 *            the path to the file
 	 * @return a <code>List</code> of all lines that are saved in the file
 	 */
 	public static List<String> readFromFile(String path) {
 		List<String> returnList = new ArrayList<String>();
 		try {
-			FileInputStream fis = context != null ? context.openFileInput(path) : 
-				new FileInputStream(path);
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fis));
+			FileInputStream fis = context != null ? context.openFileInput(path)
+					: new FileInputStream(path);
+			BufferedReader bufferedReader = new BufferedReader(
+					new InputStreamReader(fis));
 			String row;
 			while ((row = bufferedReader.readLine()) != null) {
 				returnList.add(row);
 			}
 			fis.close();
-		} catch (IOException e) {}
+		} catch (IOException e) {
+		}
 
 		return returnList;
 	}
-	
+
 	/**
-	 * Saves a object to a file.<p>
-	 * ie it saves what the objects <code>toString()</code>-method
-	 * returns.
+	 * Saves a object to a file.
+	 * <p>
+	 * ie it saves what the objects <code>toString()</code>-method returns.
 	 * 
-	 * @param object the object to save
-	 * @param path the file path to store the string in
+	 * @param object
+	 *            the object to save
+	 * @param path
+	 *            the file path to store the string in
 	 */
 	public static void saveToFile(Object object, String path) {
 		Object output = object != null ? object : "";
 		try {
 			// Save the file
-			FileOutputStream fos = context != null ? 
-					context.openFileOutput(path, Context.MODE_PRIVATE) : 
-						new FileOutputStream(path);
+			FileOutputStream fos = context != null ? context.openFileOutput(
+					path, Context.MODE_PRIVATE) : new FileOutputStream(path);
 			fos.write(output.toString().getBytes());
 			fos.close();
-		} catch (IOException e) {}
+		} catch (IOException e) {
+		}
 	}
-	
+
 	/**
 	 * Adds a string to the end of a file, and saves it.
-	 * @param output the string to add
-	 * @param path the file path to add the string to
+	 * 
+	 * @param output
+	 *            the string to add
+	 * @param path
+	 *            the file path to add the string to
 	 */
 	public static void addToFile(String output, String path) {
 		List<String> file = readFromFile(path);
@@ -119,28 +131,30 @@ public final class FileUtils {
 		builder.append(output);
 		saveToFile(builder.toString(), path);
 	}
-	
-	//////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////
-//	Below comes some code that initially may seem unrelated to a FileUtils-
-//	class in general. But as it is used together in this software, I have 
-//	chosen to place these methods here as well.
-	//////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////
-	
+
+	// ////////////////////////////////////////////////////////////////////
+	// ////////////////////////////////////////////////////////////////////
+	// Below comes some code that initially may seem unrelated to a FileUtils-
+	// class in general. But as it is used together in this software, I have
+	// chosen to place these methods here as well.
+	// ////////////////////////////////////////////////////////////////////
+	// ////////////////////////////////////////////////////////////////////
+
 	/**
-	 * Returns a list of sorted integers, going from highest to lowest.<p>
+	 * Returns a list of sorted integers, going from highest to lowest.
+	 * <p>
 	 * Treats the supplied <code>List</code> as integers on string-format.
 	 * Returns null if list contains other data than plain numbers on
 	 * string-format.
 	 * 
-	 * @param list a list of strings representing numbers
+	 * @param list
+	 *            a list of strings representing numbers
 	 * @return a list of sorted integers, going from highest to lowest
 	 */
 	public static List<Integer> getSortedIntegers(List<String> list) {
 		List<Integer> returnList = new ArrayList<Integer>();
 
-		//convert to integers
+		// convert to integers
 		for (int i = 0; i < list.size(); i++) {
 			try {
 				returnList.add(Integer.valueOf(list.get(i)));
@@ -148,57 +162,61 @@ public final class FileUtils {
 				return null;
 			}
 		}
-		
-		//sort list highest to lowest
+
+		// sort list highest to lowest
 		Collections.sort(returnList);
 		Collections.reverse(returnList);
-		
+
 		return returnList;
 	}
-	
-	
+
 	/**
-	 * Creates a multi line string of the given list,
-	 * with a given maximum number of lines. <p>
+	 * Creates a multi line string of the given list, with a given maximum
+	 * number of lines.
+	 * <p>
 	 * Accepts any type of object.
 	 * 
-	 * WARNING! The supplied list will be trimmed to the size
-	 * of the number of maxLines given in the argument. That is,
-	 * if you keep the reference to the list, beware that its size
-	 * might have changed.
+	 * WARNING! The supplied list will be trimmed to the size of the number of
+	 * maxLines given in the argument. That is, if you keep the reference to the
+	 * list, beware that its size might have changed.
 	 * 
-	 * @param listOfObjects the objects to put in a string
-	 * @param maxLines the maximum number of lines/strings to use
+	 * @param listOfObjects
+	 *            the objects to put in a string
+	 * @param maxLines
+	 *            the maximum number of lines/strings to use
 	 * @return a multi line string of the given list
 	 */
-	public static String createMultiLineString(List<?> listOfObjects, int maxLines) {
-		
+	public static String createMultiLineString(List<?> listOfObjects,
+			int maxLines) {
+
 		if (listOfObjects == null || listOfObjects.isEmpty()) {
 			return "";
 		}
-		
+
 		StringBuilder output = new StringBuilder();
-		
+
 		// limit the list size to maxLines
-		Utils.trimList(listOfObjects, maxLines); //<- modifies the list-origin
-		
+		Utils.trimList(listOfObjects, maxLines); // <- modifies the list-origin
+
 		// create the multi line string
 		int lines = listOfObjects.size();
-		for (int i = 0; i < lines ; i++) {
+		for (int i = 0; i < lines; i++) {
 			output.append(listOfObjects.get(i).toString());
 			if (i != lines - 1) {
 				output.append("\n");
 			}
 		}
-		
+
 		return output.toString();
 	}
 
 	/**
-	 * Creates a multi line string of the given list. <p>
+	 * Creates a multi line string of the given list.
+	 * <p>
 	 * Accepts a <code>List</code> of any type.
 	 * 
-	 * @param list the objects to put in a string
+	 * @param list
+	 *            the objects to put in a string
 	 * @return a multi line string of the given list
 	 */
 	public static String createMultiLineString(List<?> list) {
@@ -207,5 +225,5 @@ public final class FileUtils {
 		}
 		return createMultiLineString(list, list.size());
 	}
-	
+
 }

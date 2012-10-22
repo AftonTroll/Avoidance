@@ -29,33 +29,38 @@ import org.andengine.input.touch.TouchEvent;
 import android.view.MotionEvent;
 
 /**
- * A listener that listens on touch events and fires
- * an event for it's followers to act on.
+ * A listener that listens on touch events and fires an event for it's followers
+ * to act on.
  * 
  * @author Markus Ekström
  */
 public class TouchListener implements IOnSceneTouchListener {
 	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-    
+
 	/**
 	 * Adds a listener to the TouchListener.
-	 * @param pcl A class implementing PropertyChangeListener that
-	 * 				wants to recieve an event on screen touch.
+	 * 
+	 * @param pcl
+	 *            A class implementing PropertyChangeListener that wants to
+	 *            recieve an event on screen touch.
 	 */
-    public void addListener(PropertyChangeListener pcl) {
-    	pcs.addPropertyChangeListener(pcl);
-    }
+	public void addListener(PropertyChangeListener pcl) {
+		pcs.addPropertyChangeListener(pcl);
+	}
 
-    /**
-     * Called when the screen is touched and fires an event.
-     * @param scene The scene.
-     * @param event The touch event.
-     */
+	/**
+	 * Called when the screen is touched and fires an event.
+	 * 
+	 * @param scene
+	 *            The scene.
+	 * @param event
+	 *            The touch event.
+	 */
 	public boolean onSceneTouchEvent(Scene scene, TouchEvent event) {
-        int eventAction = event.getAction(); 
-        if(eventAction == MotionEvent.ACTION_DOWN) {
-        	pcs.firePropertyChange("touch", null, null);
-        }
-        return true;
+		int eventAction = event.getAction();
+		if (eventAction == MotionEvent.ACTION_DOWN) {
+			pcs.firePropertyChange("touch", null, null);
+		}
+		return true;
 	}
 }

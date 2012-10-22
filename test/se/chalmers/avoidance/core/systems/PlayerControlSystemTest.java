@@ -1,22 +1,22 @@
 /*
-* Copyright (c) 2012 Filip Brynfors
-*
-* This file is part of Avoidance.
-*
-* Avoidance is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* Avoidance is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with Avoidance. If not, see <http://www.gnu.org/licenses/>.
-*
-*/
+ * Copyright (c) 2012 Filip Brynfors
+ *
+ * This file is part of Avoidance.
+ *
+ * Avoidance is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Avoidance is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Avoidance. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
 package se.chalmers.avoidance.core.systems;
 
@@ -29,9 +29,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import se.chalmers.avoidance.constants.GameConstants;
+import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Immortal;
 import se.chalmers.avoidance.core.components.Jump;
-import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.util.Utils;
@@ -48,20 +48,20 @@ public class PlayerControlSystemTest {
 	private final PlayerControlSystem pcs = new PlayerControlSystem();
 	private final World world = new World();
 	private final TagManager tagManager = new TagManager();
-	private final float[] accelerationX = {-5f/20, 5*FRICTION/20};
-	private final float[] accelerationY = {0, 20f/20};
-	private final float[] expectedSpeed = {5*FRICTION, 20*FRICTION};
-	private final float[] expectedAngle = {(float) Math.PI, (float) Math.PI/2};
+	private final float[] accelerationX = { -5f / 20, 5 * FRICTION / 20 };
+	private final float[] accelerationY = { 0, 20f / 20 };
+	private final float[] expectedSpeed = { 5 * FRICTION, 20 * FRICTION };
+	private final float[] expectedAngle = { (float) Math.PI,
+			(float) Math.PI / 2 };
 	private PropertyChangeSupport pcsup = new PropertyChangeSupport(this);
-	private final float[] expectedX = {-5*FRICTION/2, -5*FRICTION};
-	private final float[] expectedY = {0, 10*FRICTION};
-	
-	
+	private final float[] expectedX = { -5 * FRICTION / 2, -5 * FRICTION };
+	private final float[] expectedY = { 0, 10 * FRICTION };
+
 	@Before
 	public void setUp() {
 		world.setManager(tagManager);
 		world.setSystem(pcs);
-		
+
 		player = world.createEntity();
 		world.addEntity(player);
 		player.addComponent(new Transform());
@@ -70,7 +70,7 @@ public class PlayerControlSystemTest {
 		player.addComponent(new Friction(FRICTION));
 		player.addComponent(new Immortal());
 		tagManager.register(GameConstants.TAG_PLAYER, player);
-		
+
 		world.initialize();
 		pcsup.addPropertyChangeListener(pcs);
 	}
@@ -79,27 +79,30 @@ public class PlayerControlSystemTest {
 	public void testProcessEntity() {
 		Velocity velocity = player.getComponent(Velocity.class);
 		Transform transform = player.getComponent(Transform.class);
-		
+
 		world.setDelta(1);
-		for(int i = 0; i<accelerationX.length; i++){
-			
-			pcs.propertyChange(new PropertyChangeEvent(this, "AccelerometerX",null,accelerationX[i]));
-			pcs.propertyChange(new PropertyChangeEvent(this, "AccelerometerY",null,accelerationY[i]));
+		for (int i = 0; i < accelerationX.length; i++) {
+
+			pcs.propertyChange(new PropertyChangeEvent(this, "AccelerometerX",
+					null, accelerationX[i]));
+			pcs.propertyChange(new PropertyChangeEvent(this, "AccelerometerY",
+					null, accelerationY[i]));
 			pcs.processEntities(null);
-			assertTrue(Math.abs(velocity.getSpeed()-expectedSpeed[i]) <= TOLERANCE);
-			assertTrue(Math.abs(Utils.simplifyAngle(velocity.getAngle())-expectedAngle[i]) <= TOLERANCE);
-			assertTrue(Math.abs(transform.getX()-expectedX[i]) <= TOLERANCE);
-			assertTrue(Math.abs(transform.getY()-expectedY[i]) <= TOLERANCE);
+			assertTrue(Math.abs(velocity.getSpeed() - expectedSpeed[i]) <= TOLERANCE);
+			assertTrue(Math.abs(Utils.simplifyAngle(velocity.getAngle())
+					- expectedAngle[i]) <= TOLERANCE);
+			assertTrue(Math.abs(transform.getX() - expectedX[i]) <= TOLERANCE);
+			assertTrue(Math.abs(transform.getY() - expectedY[i]) <= TOLERANCE);
 		}
-		
-		//reset values
+
+		// reset values
 		velocity.setAngle(0);
 		velocity.setSpeed(0);
 		transform.setX(0);
 		transform.setY(0);
-		
+
 	}
-	
+
 	@Test
 	public void testHandleJump() {
 		Jump jump = player.getComponent(Jump.class);
@@ -111,21 +114,20 @@ public class PlayerControlSystemTest {
 		assertTrue(jump.isInTheAir());
 		world.process();
 	}
-	
+
 	@Test
 	public void testHandleImmortal() {
-	    Immortal immortal = player.getComponent(Immortal.class);
-	    immortal.setDuration(2);
-	    immortal.setImmortal(true);
-	    assertTrue(immortal.isImmortal());
-        world.setDelta(1f);
-        world.process();
-        assertTrue(immortal.isImmortal());
-        assertTrue(immortal.getDurationLeft() == 1.0f);
-        world.process();
-        world.process();
-        world.process();
-        assertTrue(!immortal.isImmortal());
+		Immortal immortal = player.getComponent(Immortal.class);
+		immortal.setDuration(2);
+		immortal.setImmortal(true);
+		assertTrue(immortal.isImmortal());
+		world.setDelta(1f);
+		world.process();
+		assertTrue(immortal.isImmortal());
+		assertTrue(immortal.getDurationLeft() == 1.0f);
+		world.process();
+		world.process();
+		world.process();
+		assertTrue(!immortal.isImmortal());
 	}
 }
-

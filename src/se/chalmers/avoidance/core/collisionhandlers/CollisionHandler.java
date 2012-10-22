@@ -23,8 +23,9 @@ import com.artemis.Entity;
 
 /**
  * An interface for Collision Handlers.
+ * 
  * @author Markus Ekström
- *
+ * 
  */
 public interface CollisionHandler {
 	void handleCollision(Entity a, Entity b);

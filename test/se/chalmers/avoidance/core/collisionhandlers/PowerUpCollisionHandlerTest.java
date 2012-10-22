@@ -46,8 +46,7 @@ public class PowerUpCollisionHandlerTest {
 	private final World world = new World();
 	private final GroupManager groupManager = new GroupManager();
 	private final TagManager tagManager = new TagManager();
-	
-	
+
 	@Before
 	public void setUp() {
 		world.setManager(groupManager);
@@ -55,7 +54,8 @@ public class PowerUpCollisionHandlerTest {
 		world.setSystem(cs);
 		player = EntityFactory.createPlayer(world, 0, 0);
 		speed = EntityFactory.createPowerupSpeed(world, 40, 40, 100);
-		immortality = EntityFactory.createPowerUpImmortality(world, 200, 200, 2);
+		immortality = EntityFactory
+				.createPowerUpImmortality(world, 200, 200, 2);
 		world.initialize();
 		world.addEntity(EntityFactory.createScore(world));
 		world.addEntity(EntityFactory.createObstacleWall(world, 1, 1, 600, 600));
@@ -69,12 +69,12 @@ public class PowerUpCollisionHandlerTest {
 		Transform playerTransform = player.getComponent(Transform.class);
 		Transform speedTransform = speed.getComponent(Transform.class);
 		world.setDelta(1);
-		
+
 		playerTransform.setPosition(40, 40);
 		speedTransform.setPosition(30, 30);
-		
+
 		assertTrue(player.getComponent(Velocity.class).getSpeed() == 0);
-		
+
 		speedTransform.setPosition(40, 40);
 		assertTrue(player != null);
 		assertTrue(speed != null);
@@ -87,11 +87,12 @@ public class PowerUpCollisionHandlerTest {
 		world.process();
 		assertTrue(player.getComponent(Velocity.class).getSpeed() == 100);
 		assertTrue(world.getEntityManager().getTotalDeleted() == totalDeleted + 1);
-		
+
 		assertTrue(!player.getComponent(Immortal.class).isImmortal());
 		playerTransform.setPosition(200, 200);
 		world.process();
 		assertTrue(player.getComponent(Immortal.class).isImmortal());
-		assertTrue(tagManager.getEntity(GameConstants.TAG_SCORE).getComponent(Score.class).getScore() == 2 * Score.POWERUP_PICKUP_SCORE);
+		assertTrue(tagManager.getEntity(GameConstants.TAG_SCORE)
+				.getComponent(Score.class).getScore() == 2 * Score.POWERUP_PICKUP_SCORE);
 	}
 }

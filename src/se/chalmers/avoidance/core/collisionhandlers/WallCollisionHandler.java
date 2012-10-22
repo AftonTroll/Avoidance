@@ -35,129 +35,138 @@ import com.artemis.World;
  * @author Jakob Svensson
  * @author Markus Ekström
  */
-public class WallCollisionHandler implements CollisionHandler{
+public class WallCollisionHandler implements CollisionHandler {
 	private ComponentMapper<Velocity> velocityMapper;
 	private ComponentMapper<Transform> transformMapper;
 	private ComponentMapper<Size> sizeMapper;
 	private ComponentMapper<Sound> soundMapper;
-	
+
 	private Transform playerTransform;
 	private Size playerSize;
-	
+
 	private float wallWidth;
 	private float wallHeight;
-	private float wallX; 
-	private float wallY;		
+	private float wallX;
+	private float wallY;
 	private float angle;
 	private float newAngle;
-	
+
 	/**
 	 * Constructs a WallCollisionHandler
-	 * @param world The world.
+	 * 
+	 * @param world
+	 *            The world.
 	 */
 	public WallCollisionHandler(World world) {
 		velocityMapper = ComponentMapper.getFor(Velocity.class, world);
 		transformMapper = ComponentMapper.getFor(Transform.class, world);
 		sizeMapper = ComponentMapper.getFor(Size.class, world);
 		soundMapper = ComponentMapper.getFor(Sound.class, world);
-		
+
 	}
+
 	/**
 	 * Handles collision between moving entities and walls
 	 * 
-	 * @param movingEntity the moving entity
-	 * @param wall the wall
+	 * @param movingEntity
+	 *            the moving entity
+	 * @param wall
+	 *            the wall
 	 */
-	public void handleCollision(Entity movingEntity, Entity wall){
+	public void handleCollision(Entity movingEntity, Entity wall) {
 		Size wallSize = sizeMapper.get(wall);
 		Transform wallTransform = transformMapper.get(wall);
 		Velocity playerVelocity = velocityMapper.get(movingEntity);
-		
+
 		playerSize = sizeMapper.get(movingEntity);
 		playerTransform = transformMapper.get(movingEntity);
-		
+
 		Sound sound = soundMapper.get(wall);
-		if(sound != null){
+		if (sound != null) {
 			sound.setPlaying(true);
 		}
-		
+
 		wallWidth = wallSize.getWidth();
 		wallHeight = wallSize.getHeight();
-		wallX = wallTransform.getX(); 
-		wallY = wallTransform.getY();		
+		wallX = wallTransform.getX();
+		wallY = wallTransform.getY();
 		angle = playerVelocity.getAngle();
 		newAngle = angle;
-		
-		//Check if player collides with horizontal side or vertical side
-		if(playerTransform.getX()+playerSize.getWidth()/2>wallX&&playerTransform.getX()+playerSize.getWidth()/2<wallX+wallWidth){
-			handleHorisontalSideCollision();			
-		}else if(playerTransform.getY()+playerSize.getHeight()/2>wallY&&playerTransform.getY()+playerSize.getHeight()/2<wallY+wallHeight){
+
+		// Check if player collides with horizontal side or vertical side
+		if (playerTransform.getX() + playerSize.getWidth() / 2 > wallX
+				&& playerTransform.getX() + playerSize.getWidth() / 2 < wallX
+						+ wallWidth) {
+			handleHorisontalSideCollision();
+		} else if (playerTransform.getY() + playerSize.getHeight() / 2 > wallY
+				&& playerTransform.getY() + playerSize.getHeight() / 2 < wallY
+						+ wallHeight) {
 			handleVerticalSideCollision();
-		}else{
-			//Corner or almost corner collision	
+		} else {
+			// Corner or almost corner collision
 			handleCornerCollison();
 		}
 		playerVelocity.setAngle(newAngle);
-	
+
 	}
-	
-	private void handleHorisontalSideCollision(){
+
+	private void handleHorisontalSideCollision() {
 		newAngle = flipVertical(angle);
-		if(angle>Math.PI){
-			//Collision on lower side of the wall
-			playerTransform.setY(wallY+wallHeight);
-		}else{
-			//Collision on upper side of the wall
-			playerTransform.setY(wallY-playerSize.getHeight());
+		if (angle > Math.PI) {
+			// Collision on lower side of the wall
+			playerTransform.setY(wallY + wallHeight);
+		} else {
+			// Collision on upper side of the wall
+			playerTransform.setY(wallY - playerSize.getHeight());
 		}
 	}
-	
-	private void handleVerticalSideCollision(){
+
+	private void handleVerticalSideCollision() {
 		newAngle = flipHorizontal(angle);
-		if(angle>Math.PI/2&&angle<(Math.PI*3)/2){
-			//Collision on right side of wall
-			playerTransform.setX(wallX+wallWidth);
-		}else{
-			//Collision on left side of wall
-			playerTransform.setX(wallX-playerSize.getWidth());
+		if (angle > Math.PI / 2 && angle < (Math.PI * 3) / 2) {
+			// Collision on right side of wall
+			playerTransform.setX(wallX + wallWidth);
+		} else {
+			// Collision on left side of wall
+			playerTransform.setX(wallX - playerSize.getWidth());
 		}
-		
+
 	}
-	
-	private void handleCornerCollison(){
-		if(playerTransform.getX()>wallX){
-			if(playerTransform.getY()>wallY){
-				//Collision near lower right corner		
-				playerTransform.setX(wallX+wallWidth);
-				playerTransform.setY(wallY+wallHeight);
-			}else{
-				//Collision near upper right corner
-				playerTransform.setX(wallX+wallWidth);
-				playerTransform.setY(wallY-playerSize.getHeight());
+
+	private void handleCornerCollison() {
+		if (playerTransform.getX() > wallX) {
+			if (playerTransform.getY() > wallY) {
+				// Collision near lower right corner
+				playerTransform.setX(wallX + wallWidth);
+				playerTransform.setY(wallY + wallHeight);
+			} else {
+				// Collision near upper right corner
+				playerTransform.setX(wallX + wallWidth);
+				playerTransform.setY(wallY - playerSize.getHeight());
 			}
-		}else{
-			if(playerTransform.getY()>wallY){
-				//Collision near lower left corner
-				playerTransform.setX(wallX-playerSize.getWidth());
-				playerTransform.setY(wallY+wallHeight);
-			}else{
-				//Collision near upper left corner
-				playerTransform.setX(wallX-playerSize.getWidth());
-				playerTransform.setY(wallY-playerSize.getHeight());
+		} else {
+			if (playerTransform.getY() > wallY) {
+				// Collision near lower left corner
+				playerTransform.setX(wallX - playerSize.getWidth());
+				playerTransform.setY(wallY + wallHeight);
+			} else {
+				// Collision near upper left corner
+				playerTransform.setX(wallX - playerSize.getWidth());
+				playerTransform.setY(wallY - playerSize.getHeight());
 			}
 		}
 		newAngle = Utils.reverseAngle(angle);
 	}
-	
-	private float flipVertical(float angle){ 
-		  return angle*-1; 
+
+	private float flipVertical(float angle) {
+		return angle * -1;
 	}
-	
-	private float flipHorizontal(float angle){
-		  //Translate and then flip vertical
-			newAngle = angle + (float) Math.PI/2;
-			newAngle = flipVertical(newAngle);
-			newAngle -= Math.PI/2;
-			return newAngle;
+
+	private float flipHorizontal(float angle) {
+		// Translate and then flip vertical
+		newAngle = angle + (float) Math.PI / 2;
+		newAngle = flipVertical(newAngle);
+		newAngle -= Math.PI / 2;
+		return newAngle;
 	}
 }

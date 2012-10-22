@@ -26,21 +26,24 @@ import com.artemis.Component;
  * Component containing the information about friction.
  * 
  * @author Filip Brynfors
- *
+ * 
  */
 public class Friction extends Component {
 	private final float friction;
-	
+
 	/**
 	 * Creates a new friction component with the specified friction value.
-	 * @param friction the friction
+	 * 
+	 * @param friction
+	 *            the friction
 	 */
 	public Friction(float friction) {
 		this.friction = friction;
 	}
-	
+
 	/**
 	 * Returns the friction.
+	 * 
 	 * @return the friction
 	 */
 	public float getFriction() {
