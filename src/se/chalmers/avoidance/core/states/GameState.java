@@ -131,11 +131,10 @@ public class GameState implements IState, PropertyChangeListener {
 	 */
 	public void update(float tpf) {
 		if (process) {
-			if (tpf > 1.0f) {
-				tpf = 0; //ie, if tpf is too large, don't update
+			if (tpf < 1.0f) {
+			    world.setDelta(tpf);
+	            world.process();
 			}
-			world.setDelta(tpf);
-			world.process();
 		}
 	}
 	
