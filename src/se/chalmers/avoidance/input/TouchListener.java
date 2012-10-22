@@ -53,8 +53,9 @@ public class TouchListener implements IOnSceneTouchListener {
      */
 	public boolean onSceneTouchEvent(Scene scene, TouchEvent event) {
         int eventAction = event.getAction(); 
-        if(eventAction == MotionEvent.ACTION_DOWN) {}
+        if(eventAction == MotionEvent.ACTION_DOWN) {
         	pcs.firePropertyChange("touch", null, null);
+        }
         return true;
 	}
 }
