@@ -35,7 +35,6 @@ import se.chalmers.avoidance.core.collisionhandlers.PowerUpCollisionHandler;
 import se.chalmers.avoidance.core.collisionhandlers.WallCollisionHandler;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
-import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.util.ScreenResolution;
 
 import com.artemis.Aspect;
@@ -57,15 +56,13 @@ import com.artemis.utils.ImmutableBag;
 public class CollisionSystem extends EntitySystem{
 
 	@Mapper
-	ComponentMapper<Velocity> velocityMapper;
+	private ComponentMapper<Transform> transformMapper;
 	@Mapper
-	ComponentMapper<Transform> transformMapper;
-	@Mapper
-	ComponentMapper<Size> sizeMapper;
+	private ComponentMapper<Size> sizeMapper;
     private Bag<CollisionPair> collisionPairs;
     private CollisionObject collisionObject1 = new CollisionObject(0, 0, 0, 0);
     private CollisionObject collisionObject2 = new CollisionObject(0, 0, 0, 0);
-	
+    	
     /**
      * Constructs a new CollisionSystem.
      */
