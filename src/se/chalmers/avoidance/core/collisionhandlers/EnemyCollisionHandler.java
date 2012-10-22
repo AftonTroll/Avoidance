@@ -57,9 +57,11 @@ public class EnemyCollisionHandler implements CollisionHandler{
 		Jump jump = jumpMapper.get(player);
 		Immortal immortal = immortalMapper.get(player);
 		if (!jump.isInTheAir() && !immortal.isImmortal()) {
-		    System.out.println("GAMEOVER");
 			GameOverNotifier.getInstance().gameOver();
 		} else if (immortal.isImmortal()) {
+		    world.deleteEntity(enemy);
+		} else if (jump.isInTheAir() && jump.getInTheAirDurationLeft() <= world.delta) {
+		    System.out.println("KILLJUMP");
 		    world.deleteEntity(enemy);
 		}
 	}
