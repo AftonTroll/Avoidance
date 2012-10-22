@@ -68,6 +68,7 @@ public class PowerUpCollisionHandler implements CollisionHandler{
 			if(buff.getType() == BuffType.Speed) {
 				velocity.addSpeed(buff.getStrength());
 			} else if(buff.getType() == BuffType.Immortal) {
+			    immortal.setDuration(buff.getStrength());
 			    immortal.setImmortal(true);
 			}
 			powerup.deleteFromWorld();

@@ -69,7 +69,7 @@ public class EntityFactory {
 		player.addComponent(new Friction(0.7f));
 		player.addComponent(new Spatial("ball.png"));
 		player.addComponent(new Jump());
-		player.addComponent(new Immortal(5));
+		player.addComponent(new Immortal());
 		
 		return player;
 	}
@@ -218,7 +218,7 @@ public class EntityFactory {
 		
 		powerUp.addComponent(new Transform(xPos, yPos));
 		powerUp.addComponent(new Size(64, 64));
-		powerUp.addComponent(new Spatial("ball.png"));
+		powerUp.addComponent(new Spatial("immortalPU.png"));
 		powerUp.addComponent(new Buff(BuffType.Immortal, buffStrength));
 		
 		return powerUp;

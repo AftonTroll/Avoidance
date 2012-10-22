@@ -28,12 +28,8 @@ import com.artemis.Component;
  */
 public class Immortal extends Component {
 	private boolean immortal = false;
-	public final float IMMORTAL_DURATION;
 	private float immortalDurationLeft;
-	
-	public Immortal(float duration) {
-		this.IMMORTAL_DURATION = duration;
-	}
+	private float duration = 0;
 	
 	/**
 	 * Sets if the entity is immortal.
@@ -42,8 +38,16 @@ public class Immortal extends Component {
 	public void setImmortal(boolean immortal) {
 		this.immortal = immortal;
 		if(immortal) {
-			immortalDurationLeft = IMMORTAL_DURATION;
+			immortalDurationLeft = duration;
 		}
+	}
+	
+	/**
+	 * Sets the duration of the immortality period.
+	 * @param duration The desired immortality period duration.
+	 */
+	public void setDuration(float duration) {
+	    this.duration = duration;
 	}
 	
 	/**

@@ -31,6 +31,7 @@ import java.beans.PropertyChangeListener;
 import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Immortal;
 import se.chalmers.avoidance.core.components.Jump;
+import se.chalmers.avoidance.core.components.Spatial;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.util.Utils;
@@ -151,7 +152,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
         immortal.subtractImmortalDurationLeft(world.delta);
         if(immortal.isImmortal()) {
             immortal.subtractImmortalDurationLeft(world.delta);
-            
+            System.out.println(immortal.getDurationLeft());
             if(immortal.getDurationLeft() == 0) {
                 immortal.setImmortal(false);
             }

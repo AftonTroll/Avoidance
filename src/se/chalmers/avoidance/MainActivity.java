@@ -154,6 +154,8 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
         
         regions.put("ball.png", BitmapTextureAtlasTextureRegionFactory
 		.createFromAsset( bitmapTextureAtlas, this, "ball.png", 0, 0));
+        regions.put("immortal_ball.png", BitmapTextureAtlasTextureRegionFactory
+                .createFromAsset( bitmapTextureAtlas, this, "immortal_ball.png", 200, 0));
         
         regions.put("wall_horisontal.png",  BitmapTextureAtlasTextureRegionFactory
 		.createFromAsset( bitmapTextureAtlas, this, "wall_horisontal.png", 0, 68));
@@ -168,11 +170,13 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
         		.createFromAsset( bitmapTextureAtlas, this, "enemy.png", 61,150));
         regions.put("powerup.png",  BitmapTextureAtlasTextureRegionFactory
         		.createFromAsset( bitmapTextureAtlas, this, "powerup.png", 120,200));
+        regions.put("immortalPU.png",  BitmapTextureAtlasTextureRegionFactory
+                .createFromAsset( bitmapTextureAtlas, this, "immortalPU.png", 120,400));
         regions.put("pitobstacle.png",  BitmapTextureAtlasTextureRegionFactory
         		.createFromAsset( bitmapTextureAtlas, this, "pitobstacle.png", 120,270));
         
         regions.put("killplayerobstacle.png",  BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "killplayerobstacle.png", 120,340));
+        		.createFromAsset( bitmapTextureAtlas, this, "killplayerobstacle.png", 120,470));
         regions.put("quickenemy.png", BitmapTextureAtlasTextureRegionFactory
         		.createFromAsset( bitmapTextureAtlas, this, "quickenemy.png", 130,150));
         
