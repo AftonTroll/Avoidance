@@ -97,5 +97,31 @@ public class CollisionSystemTest {
 		cs.processEntities(null);
 		assertTrue((e1.getComponent(Velocity.class).getAngle()-(float)(Math.PI+Math.PI/4)<0.01));
 	}
+	
+	@Test
+	public void testOutsideMap(){
+		e1.getComponent(Transform.class).setX(-20);
+		cs.processEntities(null);
+		assertTrue(playerInsideMap());
+		
+		e1.getComponent(Transform.class).setX(2000);
+		cs.processEntities(null);
+		assertTrue(playerInsideMap());
+		
+		e1.getComponent(Transform.class).setY(-20);
+		cs.processEntities(null);
+		assertTrue(playerInsideMap());
+		
+		e1.getComponent(Transform.class).setY(900);
+		cs.processEntities(null);
+		assertTrue(playerInsideMap());
+		
+	}
+	
+	private boolean playerInsideMap(){
+		Transform playerTransform = e1.getComponent(Transform.class);
+		
+		return playerTransform.getX()>0&&playerTransform.getX()<1280&&playerTransform.getY()>0&&playerTransform.getY()<800;
+	}
 
 }
