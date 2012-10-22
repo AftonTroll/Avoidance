@@ -24,6 +24,7 @@ import se.chalmers.avoidance.core.components.Acceleration;
 import se.chalmers.avoidance.core.components.Buff;
 import se.chalmers.avoidance.core.components.Buff.BuffType;
 import se.chalmers.avoidance.core.components.Friction;
+import se.chalmers.avoidance.core.components.Immortal;
 import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Score;
 import se.chalmers.avoidance.core.components.Size;
@@ -67,6 +68,7 @@ public class EntityFactory {
 		player.addComponent(new Friction(0.7f));
 		player.addComponent(new Spatial("ball.png"));
 		player.addComponent(new Jump());
+		player.addComponent(new Immortal(5));
 		
 		return player;
 	}
@@ -215,7 +217,7 @@ public class EntityFactory {
 		
 		powerUp.addComponent(new Transform(xPos, yPos));
 		powerUp.addComponent(new Size(64, 64));
-		powerUp.addComponent(new Spatial("powerup.png"));
+		powerUp.addComponent(new Spatial("ball.png"));
 		powerUp.addComponent(new Buff(BuffType.Immortal, buffStrength));
 		
 		return powerUp;
