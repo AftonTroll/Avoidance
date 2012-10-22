@@ -53,7 +53,7 @@ public class SpatialRenderSystem extends EntitySystem{
     @Mapper
     ComponentMapper<Transform> tm;
     @Mapper
-    ComponentMapper<Spatial> sm;
+    private ComponentMapper<Spatial> sm;
     
     private TagManager tagManager;
 	private List<Entity> entities;
