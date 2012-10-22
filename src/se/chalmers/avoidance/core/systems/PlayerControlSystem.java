@@ -102,7 +102,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
 		
-		Entity entity = tagManager.getEntity(GameConstants.PLAYER_TAG);
+		Entity entity = tagManager.getEntity(GameConstants.TAG_PLAYER);
 		if (entity != null) {
 			handleJump(entity); //Check if the player should be in the air.
 			handleImmortal(entity);
@@ -193,8 +193,8 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 		//if there is no new value
 		} else {
 			if("touch".equals(event.getPropertyName()) && 
-					tagManager.getEntity(GameConstants.PLAYER_TAG).getComponent(Jump.class).getJumpCooldownLeft() == 0) {
-				jumpMapper.get(tagManager.getEntity(GameConstants.PLAYER_TAG)).setInTheAir(true);
+					tagManager.getEntity(GameConstants.TAG_PLAYER).getComponent(Jump.class).getJumpCooldownLeft() == 0) {
+				jumpMapper.get(tagManager.getEntity(GameConstants.TAG_PLAYER)).setInTheAir(true);
 			}
 		}
 	}

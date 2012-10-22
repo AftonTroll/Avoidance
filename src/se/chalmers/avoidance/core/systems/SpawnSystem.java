@@ -83,29 +83,29 @@ public class SpawnSystem extends EntityProcessingSystem{
 
 		//Create all the entities that should be on the map when the game starts
 		world.addEntity(EntityFactory.createPlayer(world, centerX -32, centerY -32));
-		world.addEntity(EntityFactory.createWall(world, ScreenResolution.getWidthResolution(), 
+		world.addEntity(EntityFactory.createObstacleWall(world, ScreenResolution.getWidthResolution(), 
 				WALL_THICKNESS, 0, 0));
-		world.addEntity(EntityFactory.createWall(world, ScreenResolution.getWidthResolution(), 
+		world.addEntity(EntityFactory.createObstacleWall(world, ScreenResolution.getWidthResolution(), 
 				WALL_THICKNESS, 0, ScreenResolution.getHeightResolution() - WALL_THICKNESS));
-		world.addEntity(EntityFactory.createWall(world, WALL_THICKNESS, 
+		world.addEntity(EntityFactory.createObstacleWall(world, WALL_THICKNESS, 
 				ScreenResolution.getHeightResolution(), 0, 0));
-		world.addEntity(EntityFactory.createWall(world, WALL_THICKNESS, 
+		world.addEntity(EntityFactory.createObstacleWall(world, WALL_THICKNESS, 
 				ScreenResolution.getHeightResolution(), 
 				ScreenResolution.getWidthResolution() - WALL_THICKNESS, 0));
-		world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX-225, centerY -125));
-		world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX+175, centerY -125));
-		world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX-225, centerY +75));
-		world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX+175, centerY +75));
-		world.addEntity(EntityFactory.createPitobstacle(world, centerX-32, 
+		world.addEntity(EntityFactory.createObstaclePillar(world, 50, 50, centerX-225, centerY -125));
+		world.addEntity(EntityFactory.createObstaclePillar(world, 50, 50, centerX+175, centerY -125));
+		world.addEntity(EntityFactory.createObstaclePillar(world, 50, 50, centerX-225, centerY +75));
+		world.addEntity(EntityFactory.createObstaclePillar(world, 50, 50, centerX+175, centerY +75));
+		world.addEntity(EntityFactory.createObstaclePit(world, centerX-32, 
 				ScreenResolution.getHeightResolution() - WALL_THICKNESS-164));
-		world.addEntity(EntityFactory.createSpeedPowerUp(world, centerX-32, 
+		world.addEntity(EntityFactory.createPowerupSpeed(world, centerX-32, 
 		        WALL_THICKNESS + 50, 300));
-		world.addEntity(EntityFactory.createKillplayerbstacle(world, centerX-232,
+		world.addEntity(EntityFactory.createObstacleSpikes(world, centerX-232,
 				ScreenResolution.getHeightResolution()-WALL_THICKNESS-114));
-		world.addEntity(EntityFactory.createKillplayerbstacle(world, centerX+168,
+		world.addEntity(EntityFactory.createObstacleSpikes(world, centerX+168,
 				ScreenResolution.getHeightResolution()-WALL_THICKNESS-114));
 		world.addEntity(EntityFactory.createScore(world));
-		world.addEntity(EntityFactory.createImmortalityPowerUp(world, centerX - 32, centerY - 100, 10));
+		world.addEntity(EntityFactory.createPowerUpImmortality(world, centerX - 32, centerY - 100, 10));
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class SpawnSystem extends EntityProcessingSystem{
 		if((lastSpawn/SPAWNINTERVAL)%ENEMY_QUICKENEMY_RATIO == 1){
 			enemy = EntityFactory.createQuickEnemy(world, 0, 0);
 		} else {
-			enemy = EntityFactory.createEnemy(world, 0, 0);
+			enemy = EntityFactory.createNormalEnemy(world, 0, 0);
 		}
 		moveEntityToFreePosition(enemy);
 		world.addEntity(enemy);
@@ -156,9 +156,9 @@ public class SpawnSystem extends EntityProcessingSystem{
 	private void spawnPowerup(){
 	    Entity powerup;
 	    if(powerupSpawnCount % 2 == 0) {
-	        powerup = EntityFactory.createSpeedPowerUp(world, 0, 0, 300);
+	        powerup = EntityFactory.createPowerupSpeed(world, 0, 0, 300);
 	    } else {
-	        powerup = EntityFactory.createImmortalityPowerUp(world, 0, 0, 10);
+	        powerup = EntityFactory.createPowerUpImmortality(world, 0, 0, 10);
 	    }
 		moveEntityToFreePosition(powerup);
 		world.addEntity(powerup);
@@ -181,7 +181,7 @@ public class SpawnSystem extends EntityProcessingSystem{
 			
 			
 			//Check if the enemy is too close to the player
-			Entity player = tagManager.getEntity(GameConstants.PLAYER_TAG);
+			Entity player = tagManager.getEntity(GameConstants.TAG_PLAYER);
 			if(!entity.equals(player)){
 				Transform pTrans = transformMapper.get(player);
 				Size pSize = sizeMapper.get(player);
@@ -204,8 +204,8 @@ public class SpawnSystem extends EntityProcessingSystem{
 			}
 			
 			//check if entity is spawned is spawned on another entity
-			String[] entityGroups = {GameConstants.WALLS_GROUP, GameConstants.ENEMIES_GROUP, 
-			        GameConstants.PITOBSTACLES_GROUP, GameConstants.KILLPLAYEROBSTACLES_GROUP};
+			String[] entityGroups = {GameConstants.GROUP_OBSTACLE_WALLS, GameConstants.GROUP_ENEMIES, 
+			        GameConstants.GROUP_OBSTACLE_PITS, GameConstants.GROUP_OBSTACLE_SPIKES};
 			for(int j = 0; j<entityGroups.length; j++){
 				ImmutableBag<Entity> enemyBag = groupManager.getEntities(entityGroups[j]);
 				for (int i = 0; i<enemyBag.size(); i++){

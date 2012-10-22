@@ -53,11 +53,11 @@ public class EnemyCollisionHandlerTest {
         world.setManager(tagManager);
         world.setSystem(cs);
         player = EntityFactory.createPlayer(world, 0, 0);
-        enemy1 = EntityFactory.createEnemy(world, 100, 100);
-        enemy2 = EntityFactory.createEnemy(world, 300, 300);
+        enemy1 = EntityFactory.createNormalEnemy(world, 100, 100);
+        enemy2 = EntityFactory.createNormalEnemy(world, 300, 300);
         world.initialize();
         world.addEntity(EntityFactory.createScore(world));
-        world.addEntity(EntityFactory.createWall(world, 1, 1, 600, 600));
+        world.addEntity(EntityFactory.createObstacleWall(world, 1, 1, 600, 600));
         world.addEntity(player);
         world.addEntity(enemy1);
         world.addEntity(enemy2);
@@ -95,7 +95,7 @@ public class EnemyCollisionHandlerTest {
         world.process();
         world.process();
         assertTrue(world.getEntityManager().getTotalDeleted() == totalDeleted + 1);
-        assertTrue(tagManager.getEntity(GameConstants.SCORE_TAG).getComponent(Score.class).getScore() == 2 * Score.KILL_SCORE);
+        assertTrue(tagManager.getEntity(GameConstants.TAG_SCORE).getComponent(Score.class).getScore() == 2 * Score.KILL_SCORE);
     }
 
 }

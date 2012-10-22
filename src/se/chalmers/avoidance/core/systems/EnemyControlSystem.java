@@ -96,14 +96,14 @@ public class EnemyControlSystem extends EntitySystem{
 	@Override
 	protected void processEntities(ImmutableBag<Entity> bag) {
 		
-		Entity player = tagManager.getEntity(GameConstants.PLAYER_TAG);
+		Entity player = tagManager.getEntity(GameConstants.TAG_PLAYER);
 		if (player != null) {
 			Transform playerTransform = transformMapper.get(player);
 			Size playerSize = sizeMapper.get(player);
 			float playerCenterX = playerTransform.getX() + playerSize.getWidth()/2;
 			float playerCenterY = playerTransform.getY() + playerSize.getHeight()/2;
 			
-			ImmutableBag<Entity> enemyBag = groupManager.getEntities(GameConstants.ENEMIES_GROUP);
+			ImmutableBag<Entity> enemyBag = groupManager.getEntities(GameConstants.GROUP_ENEMIES);
 			for (int i = 0; i<enemyBag.size(); i++) {
 				Entity enemy = enemyBag.get(i);
 				Transform enemyTransform = transformMapper.get(enemy);

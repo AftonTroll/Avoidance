@@ -77,11 +77,11 @@ public class CollisionSystem extends EntitySystem{
 	@Override
 	protected void initialize(){
         collisionPairs = new Bag<CollisionPair>();
-        collisionPairs.add(new CollisionPair(GameConstants.MOVINGENTITIES_GROUP, GameConstants.WALLS_GROUP, new WallCollisionHandler(world))); 
-        collisionPairs.add(new CollisionPair(GameConstants.PLAYER_GROUP, GameConstants.POWERUPS_GROUP, new PowerUpCollisionHandler(world)));
-        collisionPairs.add(new CollisionPair(GameConstants.MOVINGENTITIES_GROUP, GameConstants.PITOBSTACLES_GROUP, new PitobstacleCollisionHandler(world)));
-        collisionPairs.add(new CollisionPair(GameConstants.PLAYER_GROUP, GameConstants.KILLPLAYEROBSTACLES_GROUP, new KillplayerobstacleCollisionHandler(world)));
-        collisionPairs.add(new CollisionPair(GameConstants.PLAYER_GROUP, GameConstants.ENEMIES_GROUP, new EnemyCollisionHandler(world)));
+        collisionPairs.add(new CollisionPair(GameConstants.GROUP_MOVING_ENTITIES, GameConstants.GROUP_OBSTACLE_WALLS, new WallCollisionHandler(world))); 
+        collisionPairs.add(new CollisionPair(GameConstants.GROUP_PLAYER, GameConstants.GROUP_POWERUPS, new PowerUpCollisionHandler(world)));
+        collisionPairs.add(new CollisionPair(GameConstants.GROUP_MOVING_ENTITIES, GameConstants.GROUP_OBSTACLE_PITS, new PitobstacleCollisionHandler(world)));
+        collisionPairs.add(new CollisionPair(GameConstants.GROUP_PLAYER, GameConstants.GROUP_OBSTACLE_SPIKES, new KillplayerobstacleCollisionHandler(world)));
+        collisionPairs.add(new CollisionPair(GameConstants.GROUP_PLAYER, GameConstants.GROUP_ENEMIES, new EnemyCollisionHandler(world)));
 	}
 	
 	
@@ -108,9 +108,9 @@ public class CollisionSystem extends EntitySystem{
             collisionPairs.get(i).checkForCollisions();
         }
        
-        Entity player = world.getManager(TagManager.class).getEntity(GameConstants.PLAYER_TAG);  
+        Entity player = world.getManager(TagManager.class).getEntity(GameConstants.TAG_PLAYER);  
         Transform playerTransform = transformMapper.get(player);
-        ImmutableBag<Entity> walls = world.getManager(GroupManager.class).getEntities(GameConstants.WALLS_GROUP);
+        ImmutableBag<Entity> walls = world.getManager(GroupManager.class).getEntities(GameConstants.GROUP_OBSTACLE_WALLS);
         Size wallSize = sizeMapper.get(walls.get(0));
         Size playerSize = sizeMapper.get(player);
         
@@ -161,8 +161,8 @@ public class CollisionSystem extends EntitySystem{
 		
 		GroupManager groupManager = world.getManager(GroupManager.class);
 		
-		if(groupManager.getEntities(GameConstants.CIRCLESHAPES_GROUP).contains(e1)&&
-				groupManager.getEntities(GameConstants.CIRCLESHAPES_GROUP).contains(e2)){
+		if(groupManager.getEntities(GameConstants.GROUP_CIRCLE_SHAPES).contains(e1)&&
+				groupManager.getEntities(GameConstants.GROUP_CIRCLE_SHAPES).contains(e2)){
 			
 			float xDelta = e1X+e1Width/2-(e2X+e2Width/2);
 			float yDelta = e1Y+e1Height/2-(e2Y+e2Height/2);

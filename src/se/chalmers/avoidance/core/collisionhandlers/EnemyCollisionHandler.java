@@ -66,7 +66,7 @@ public class EnemyCollisionHandler implements CollisionHandler{
     		        (jump.isInTheAir() && jump.getInTheAirDurationLeft() <= world.delta)) {
     		    world.deleteEntity(enemy);
     		    Score score = world.getManager(TagManager.class).
-    		            getEntity(GameConstants.SCORE_TAG).getComponent(Score.class);
+    		            getEntity(GameConstants.TAG_SCORE).getComponent(Score.class);
     		    if(score != null) {
     		        score.addKillScore(Score.KILL_SCORE);
     		    }

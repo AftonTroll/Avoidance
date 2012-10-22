@@ -108,7 +108,7 @@ public class SpatialRenderSystem extends EntitySystem{
         spatial.getSprite().setPosition(tf.getX(), tf.getY());
         spatial.getSprite().setRotation((float) (Math.toDegrees(tf.getDirection())));
         
-        if(e.getId() == world.getManager(TagManager.class).getEntity(GameConstants.PLAYER_TAG).getId()) {
+        if(e.getId() == world.getManager(TagManager.class).getEntity(GameConstants.TAG_PLAYER).getId()) {
         	handleJumpScaling(e);
         	handleImmortalSprite(e);
         }
@@ -153,7 +153,7 @@ public class SpatialRenderSystem extends EntitySystem{
 		Transform tf = tm.get(e);
 		spatial.setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(spatial.getName()), vbom));
 		scene.attachChild(spatial.getSprite());
-		if(tagManager.getEntity(GameConstants.PLAYER_TAG).equals(e)){
+		if(tagManager.getEntity(GameConstants.TAG_PLAYER).equals(e)){
 			spatial.getSprite().setZIndex(50);
 		}
 		scene.sortChildren();

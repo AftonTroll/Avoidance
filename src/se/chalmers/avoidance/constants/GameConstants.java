@@ -35,51 +35,53 @@ public final class GameConstants {
 	/**
 	 * Identifier for the player tag.
 	 */
-	public static final String PLAYER_TAG = "PLAYER";
+	public static final String TAG_PLAYER = "tag_player";
 	
 	/**
 	 * Identifier for the score tag.
 	 */
-	public static final String SCORE_TAG = "SCORE";
+	public static final String TAG_SCORE = "tag_score";
 	
 	/**
 	 * Identifier for the player group.
 	 */
-	public static final String PLAYER_GROUP = "PLAYER";
+	public static final String GROUP_PLAYER = "group_player";
 	
 	/**
 	 * Identifier for the wall group.
 	 */
-	public static final String WALLS_GROUP = "WALLS";
+	public static final String GROUP_OBSTACLE_WALLS = "group_obstacle_walls";
 	
 	/**
 	 * Identifier for the movingentities group.
 	 */
-	public static final String MOVINGENTITIES_GROUP = "MOVINGENTITIES";
+	public static final String GROUP_MOVING_ENTITIES = "group_moving_entities";
 	
 	/**
 	 * Identifier for the powerups group.
 	 */
-	public static final String POWERUPS_GROUP = "POWERUPS";
+	public static final String GROUP_POWERUPS = "group_powerups";
 	
 	/**
 	 * Identifier for the pitobstacle group.
 	 */
-	public static final String PITOBSTACLES_GROUP = "PITOBSTACLES";
+	public static final String GROUP_OBSTACLE_PITS = "group_obstacle_pits";
 	
 	/**
 	 * Identifier for the killplayerobstacle group.
 	 */
-	public static final String KILLPLAYEROBSTACLES_GROUP = "KILLPLAYEROBSTACLES";
+	public static final String GROUP_OBSTACLE_SPIKES = "group_obstacle_spikes";
 	
 	/**
 	 * Identifier for the enemies group.
 	 */
-	public static final String ENEMIES_GROUP = "ENEMIES"; 
+	public static final String GROUP_ENEMIES = "group_enemies"; 
 	
 	/**
 	 * Identifier for the circleshapes group.
 	 */
-	public static final String CIRCLESHAPES_GROUP = "CIRCLESHAPES";
+	public static final String GROUP_CIRCLE_SHAPES = "group_circle_shapes";
+	
+	
 	
 }

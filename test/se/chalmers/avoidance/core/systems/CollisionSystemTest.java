@@ -55,13 +55,13 @@ public class CollisionSystemTest {
 		world.setManager(gm);
 		
 		e1 = world.createEntity();
-		tm.register(GameConstants.PLAYER_TAG, e1);
+		tm.register(GameConstants.TAG_PLAYER, e1);
 		e1.addComponent(new Transform(0,3));
 		e1.addComponent(new Velocity(1,(float)(Math.PI/4)));
 		e1.addComponent(new Size(1, 1));
 		
 		e2 = world.createEntity();
-		gm.add(e2, GameConstants.WALLS_GROUP);
+		gm.add(e2, GameConstants.GROUP_OBSTACLE_WALLS);
 		e2.addComponent(new Transform(0,4));	
 		e2.addComponent(new Size(10, 9));
 		
@@ -74,17 +74,17 @@ public class CollisionSystemTest {
 		e4.addComponent(new Size(10, 10));
 		
 		e5 = world.createEntity();
-		gm.add(e5, GameConstants.WALLS_GROUP);
+		gm.add(e5, GameConstants.GROUP_OBSTACLE_WALLS);
 		e5.addComponent(new Transform(20,4));	
 		e5.addComponent(new Size(9, 10));
 		
 		e6 = world.createEntity();
-		gm.add(e6, GameConstants.CIRCLESHAPES_GROUP);
+		gm.add(e6, GameConstants.GROUP_CIRCLE_SHAPES);
 		e6.addComponent(new Transform(95,80));	
 		e6.addComponent(new Size(10, 10));
 		
 		e7 = world.createEntity();
-		gm.add(e7, GameConstants.CIRCLESHAPES_GROUP);
+		gm.add(e7, GameConstants.GROUP_CIRCLE_SHAPES);
 		e7.addComponent(new Transform(90,80));	
 		e7.addComponent(new Size(10, 10));
 		

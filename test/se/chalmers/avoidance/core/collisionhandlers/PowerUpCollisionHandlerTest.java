@@ -53,11 +53,11 @@ public class PowerUpCollisionHandlerTest {
 		world.setManager(tagManager);
 		world.setSystem(cs);
 		player = EntityFactory.createPlayer(world, 0, 0);
-		speed = EntityFactory.createSpeedPowerUp(world, 40, 40, 100);
-		immortality = EntityFactory.createImmortalityPowerUp(world, 200, 200, 2);
+		speed = EntityFactory.createPowerupSpeed(world, 40, 40, 100);
+		immortality = EntityFactory.createPowerUpImmortality(world, 200, 200, 2);
 		world.initialize();
 		world.addEntity(EntityFactory.createScore(world));
-		world.addEntity(EntityFactory.createWall(world, 1, 1, 600, 600));
+		world.addEntity(EntityFactory.createObstacleWall(world, 1, 1, 600, 600));
 		world.addEntity(player);
 		world.addEntity(speed);
 		world.addEntity(immortality);

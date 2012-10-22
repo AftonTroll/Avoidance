@@ -53,7 +53,7 @@ public class WallCollisionHandlerTest {
 		world.setManager(gm);
 						
 		e1 = world.createEntity();
-		tm.register(GameConstants.PLAYER_TAG, e1);
+		tm.register(GameConstants.TAG_PLAYER, e1);
 		e1.addComponent(new Transform(0,3));
 		e1.addComponent(new Velocity(1,(float)(Math.PI/4)));
 		e1.addComponent(new Size(1, 1));

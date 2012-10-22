@@ -76,7 +76,7 @@ public final class GameOverNotifier {
 		TagManager tagManager = world.getManager(TagManager.class);
 		ComponentMapper<Score> scoreMapper = world.getMapper(Score.class);
 		ComponentMapper<Time> timeMapper = world.getMapper(Time.class);
-		Entity scoreEntity = tagManager.getEntity(GameConstants.SCORE_TAG);
+		Entity scoreEntity = tagManager.getEntity(GameConstants.TAG_SCORE);
 		
 		if (scoreEntity != null) {
 			Time timeComponent = timeMapper.get(scoreEntity);

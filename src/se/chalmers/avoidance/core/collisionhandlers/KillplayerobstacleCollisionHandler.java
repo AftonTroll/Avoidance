@@ -54,8 +54,8 @@ public class KillplayerobstacleCollisionHandler implements CollisionHandler {
 	 */
 	public void handleCollision(Entity player, Entity obstacle) {
 		GroupManager groupManager = world.getManager(GroupManager.class);
-		if (groupManager.getEntities(GameConstants.PLAYER_GROUP).contains(player) &&
-				groupManager.getEntities(GameConstants.KILLPLAYEROBSTACLES_GROUP).contains(obstacle)) {
+		if (groupManager.getEntities(GameConstants.GROUP_PLAYER).contains(player) &&
+				groupManager.getEntities(GameConstants.GROUP_OBSTACLE_SPIKES).contains(obstacle)) {
 			ComponentMapper<Jump> jumpMapper = world.getMapper(Jump.class);
 			Jump jump = jumpMapper.get(player);
 			if (jump == null || !jump.isInTheAir()) {
