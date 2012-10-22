@@ -249,15 +249,15 @@ public class HighScoreState implements IState , PropertyChangeListener {
 	 * @param event an event
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
-		if (event != null && event.getNewValue() != null) {
-			if (EventMessageConstants.GAME_OVER.equals(event.getPropertyName())) {
-				int score = 0;
-				try {
-					score = (Integer) event.getNewValue();
-				} catch (ClassCastException cce) {} //score is 0 if error occurs
-				FileUtils.addToFile(String.valueOf(score), FileUtils.PATH);
-				updateHighScoreList();
-			}
+		if (event != null && event.getNewValue() != null && 
+				EventMessageConstants.GAME_OVER.equals(event.getPropertyName())) {
+			int score = 0;
+			try {
+				score = (Integer) event.getNewValue();
+			} catch (ClassCastException cce) {
+			} // score is 0 if error occurs
+			FileUtils.addToFile(String.valueOf(score), FileUtils.PATH);
+			updateHighScoreList();
 		}
 	}
 

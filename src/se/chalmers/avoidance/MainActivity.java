@@ -302,15 +302,13 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
      * Handles events and takes the according action.
      */
 	public void propertyChange(PropertyChangeEvent event) {
-		if (event != null && event.getNewValue() != null) {
-			if (EventMessageConstants.QUIT_GAME.equals(event.getPropertyName())) {
-				this.finish();
-			}
+		if (event == null) {
+			return;
 		}
-		if (event != null) {
-			if(EventMessageConstants.RESTART_GAME.equals(event.getPropertyName())) {
-				this.restartGame();
-			}
+		if (EventMessageConstants.QUIT_GAME.equals(event.getPropertyName())) {
+			this.finish();
+		} else if(EventMessageConstants.RESTART_GAME.equals(event.getPropertyName())) {
+			this.restartGame();
 		}
 	} 
 	
