@@ -43,7 +43,7 @@ public class SpawnSystemTest {
 	public void testInitialize() {
 		assertTrue(world.getManager(TagManager.class).getEntity("PLAYER") != null);
 		assertTrue(world.getManager(GroupManager.class).getEntities("WALLS").size() == 8);
-		assertTrue(world.getManager(GroupManager.class).getEntities("POWERUPS").size() == 1);
+		assertTrue(world.getManager(GroupManager.class).getEntities("POWERUPS").size() == 2);
 		assertTrue(world.getManager(GroupManager.class).getEntities("KILLPLAYEROBSTACLES").size() == 2);
 		assertTrue(world.getManager(GroupManager.class).getEntities("PITOBSTACLES").size() == 1);
 		assertTrue(world.getManager(TagManager.class).getEntity("SCORE") != null);
@@ -82,6 +82,7 @@ public class SpawnSystemTest {
 	@Test
 	public void testSpawnPowerup() {
 		Time t = e.getComponent(Time.class);
+		world.deleteEntity(world.getManager(GroupManager.class).getEntities("POWERUPS").get(1));
 		for (int i =  0; i <100; i++){
 			world.deleteEntity(world.getManager(GroupManager.class).getEntities("POWERUPS").get(0));
 			t.updateTime(0.5f);
