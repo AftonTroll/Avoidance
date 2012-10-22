@@ -71,7 +71,7 @@ public class SpawnSystemTest {
 				//check if any enemy is colliding with something
 				String[] objectList = {GameConstants.WALLS_GROUP, GameConstants.PITOBSTACLES_GROUP, GameConstants.KILLPLAYEROBSTACLES_GROUP};
 				for (int k = 0; k<objectList.length; k++){
-					ImmutableBag<Entity> objects = world.getManager(GroupManager.class).getEntities(GameConstants.WALLS_GROUP);
+					ImmutableBag<Entity> objects = world.getManager(GroupManager.class).getEntities(objectList[k]);
 					for (int l = 0; l<objects.size(); l++){
 						assertFalse(world.getSystem(CollisionSystem.class).collisionExists(enemies.get(j), objects.get(l)));
 					}
