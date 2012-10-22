@@ -105,7 +105,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 		Entity entity = tagManager.getEntity(GameConstants.TAG_PLAYER);
 		if (entity != null) {
 			handleJump(entity); //Check if the player should be in the air.
-			handleImmortal(entity);
+			handleMortality(entity);
 			//Update the Velocity
 			//Based on https://bitbucket.org/piemaster/artemoids/src/5c3a11ff2bdd/src/net/piemaster/artemoids/
 			//  systems/PlayerShipControlSystem.java
@@ -148,9 +148,8 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	 * Handles entity mortality.
 	 * @param entity The entity entity.
 	 */
-	private void handleImmortal(Entity e) {
+	private void handleMortality(Entity e) {
 	    Immortal immortal = immortalMapper.getSafe(e);
-        immortal.subtractImmortalDurationLeft(world.delta);
         if(immortal.isImmortal()) {
             immortal.subtractImmortalDurationLeft(world.delta);
             if(immortal.getDurationLeft() == 0) {
