@@ -122,7 +122,7 @@ public class SpawnSystem extends EntityProcessingSystem{
 			lastSpawn += SPAWNINTERVAL;
 		}
 		
-		if (groupManager.getEntities("POWERUPS").isEmpty()) {
+		if (groupManager.getEntities(GameConstants.GROUP_POWERUPS).isEmpty()) {
 			//if the powerup was just taken, the time needs to be set
 			if (lastPowerupTaken == 0) {
 				lastPowerupTaken = currentTime;
@@ -162,6 +162,7 @@ public class SpawnSystem extends EntityProcessingSystem{
 	    }
 		moveEntityToFreePosition(powerup);
 		world.addEntity(powerup);
+		powerupSpawnCount++;
 	}
 	
 	/*
