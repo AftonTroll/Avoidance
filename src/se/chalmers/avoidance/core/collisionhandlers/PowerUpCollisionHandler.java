@@ -70,8 +70,8 @@ public class PowerUpCollisionHandler implements CollisionHandler{
 			    immortal.setImmortal(true);
 			}
 			powerup.deleteFromWorld();
-			Score score = sm.get(world.getManager(TagManager.class).getEntity("SCORE"));
-			score.addPowerupScore(50);
+		    Score score = sm.get(world.getManager(TagManager.class).getEntity("SCORE"));
+		    score.addPowerupScore(50);
 			powerup.deleteFromWorld();
 		}
 	}
