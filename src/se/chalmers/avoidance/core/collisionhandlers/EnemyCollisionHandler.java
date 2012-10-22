@@ -22,6 +22,7 @@ package se.chalmers.avoidance.core.collisionhandlers;
 
 import se.chalmers.avoidance.core.components.Immortal;
 import se.chalmers.avoidance.core.components.Jump;
+import se.chalmers.avoidance.core.components.Score;
 
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
@@ -56,12 +57,17 @@ public class EnemyCollisionHandler implements CollisionHandler{
 		ComponentMapper<Immortal> immortalMapper = world.getMapper(Immortal.class);
 		Jump jump = jumpMapper.get(player);
 		Immortal immortal = immortalMapper.get(player);
-		if (!jump.isInTheAir() && !immortal.isImmortal()) {
-			GameOverNotifier.getInstance().gameOver();
-		} else if (immortal.isImmortal()) {
-		    world.deleteEntity(enemy);
-		} else if (jump.isInTheAir() && jump.getInTheAirDurationLeft() <= world.delta) {
-		    world.deleteEntity(enemy);
+		if(jump != null && immortal != null) {
+    		if (!jump.isInTheAir() && !immortal.isImmortal()) {
+    			GameOverNotifier.getInstance().gameOver();
+    		} else if (immortal.isImmortal() || 
+    		        (jump.isInTheAir() && jump.getInTheAirDurationLeft() <= world.delta)) {
+    		    world.deleteEntity(enemy);
+    		    Score score = player.getComponent(Score.class);
+    		    if(score != null) {
+    		        score.addKillScore(Score.KILL_SCORE);
+    		    }
+    		}
 		}
 	}
 }

@@ -41,7 +41,6 @@ public class PowerUpCollisionHandler implements CollisionHandler{
     private ComponentMapper<Buff> bm;
     private ComponentMapper<Score> sm;
     private ComponentMapper<Immortal> im;
-    private final static int ENEMY_KILL_SCORE = 50;
     
     /**
      * Constructs a PowerUpCollisionHandler.
@@ -73,7 +72,7 @@ public class PowerUpCollisionHandler implements CollisionHandler{
 			}
 			powerup.deleteFromWorld();
 		    Score score = sm.get(world.getManager(TagManager.class).getEntity("SCORE"));
-		    score.addPowerupScore(ENEMY_KILL_SCORE);
+		    score.addPowerupScore(Score.POWERUP_PICKUP_SCORE);
 			powerup.deleteFromWorld();
 		}
 	}
