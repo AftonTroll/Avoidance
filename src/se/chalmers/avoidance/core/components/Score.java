@@ -31,6 +31,8 @@ public class Score extends Component {
 
 	private int killScore = 0;
 	private int powerupScore = 0;
+	public static final int POWERUP_PICKUP_SCORE = 50;
+	public static final int KILL_SCORE = 100;
 
 	/**
 	 * Returns the current score from killing enemies and picking up power-ups.

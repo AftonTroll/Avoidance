@@ -33,6 +33,9 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import se.chalmers.avoidance.constants.FileConstants;
+import se.chalmers.avoidance.constants.GameConstants;
+import se.chalmers.avoidance.core.components.Immortal;
 import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Spatial;
 import se.chalmers.avoidance.core.components.Transform;
@@ -51,15 +54,16 @@ import com.artemis.utils.ImmutableBag;
  */
 public class SpatialRenderSystem extends EntitySystem{
     @Mapper
-    ComponentMapper<Transform> tm;
+    private ComponentMapper<Transform> tm;
     @Mapper
-    ComponentMapper<Spatial> sm;
+    private ComponentMapper<Spatial> sm;
     
     private TagManager tagManager;
 	private List<Entity> entities;
 	private Map<String, TextureRegion> regions;
 	private VertexBufferObjectManager vbom;
 	private Scene scene;
+	private boolean playerImmortal = false;
 
 	/**
 	 * Constructs a <code>SpatialRenderSystem</code>. 
@@ -104,21 +108,43 @@ public class SpatialRenderSystem extends EntitySystem{
         spatial.getSprite().setPosition(tf.getX(), tf.getY());
         spatial.getSprite().setRotation((float) (Math.toDegrees(tf.getDirection())));
         
-        if(e.getId() == world.getManager(TagManager.class).getEntity("PLAYER").getId()) {
+        if(e.getId() == world.getManager(TagManager.class).getEntity(GameConstants.PLAYER_TAG).getId()) {
         	handleJumpScaling(e);
+        	handleImmortalSprite(e);
         }
 	}
 	
 	/**
-	 * Handles scaling of the sprite when the player has jumped.
+	 * Handles scaling of the sprite when entity has jumped.
+	 * @param e The jumping entity.
+	 */
+	private void handleJumpScaling(Entity e) {
+		if(e.getComponent(Jump.class).isInTheAir()) {
+			e.getComponent(Spatial.class).getSprite().setScale(2);
+		} else {
+			e.getComponent(Spatial.class).getSprite().setScale(1);
+		}
+	}
+	
+	/**
+	 * Handles the changing of sprites for when the player becomes immortal.
 	 * @param player The player entity.
 	 */
-	private void handleJumpScaling(Entity player) {
-		if(player.getComponent(Jump.class).isInTheAir()) {
-			player.getComponent(Spatial.class).getSprite().setScale(2);
-		} else {
-			player.getComponent(Spatial.class).getSprite().setScale(1);
-		}
+	private void handleImmortalSprite(Entity player) {
+	    if (player.getComponent(Immortal.class).isImmortal() && !playerImmortal) {
+	        Transform tf = tm.get(player);
+	        sm.get(player).getSprite().detachSelf();
+	        sm.get(player).setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(FileConstants.IMG_PLAYER_IMMORTAL), vbom));
+	        scene.attachChild(sm.get(player).getSprite());
+	        playerImmortal = true;
+	    } else if (!player.getComponent(Immortal.class).isImmortal() && playerImmortal) {
+	        Transform tf = tm.get(player);
+            Spatial spatial = sm.get(player);
+            spatial.getSprite().detachSelf();
+            sm.get(player).setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(spatial.getName()), vbom));
+            scene.attachChild(spatial.getSprite());
+            playerImmortal = false;
+	    }
 	}
 	
     @Override
@@ -127,7 +153,7 @@ public class SpatialRenderSystem extends EntitySystem{
 		Transform tf = tm.get(e);
 		spatial.setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(spatial.getName()), vbom));
 		scene.attachChild(spatial.getSprite());
-		if(tagManager.getEntity("PLAYER").equals(e)){
+		if(tagManager.getEntity(GameConstants.PLAYER_TAG).equals(e)){
 			spatial.getSprite().setZIndex(50);
 		}
 		scene.sortChildren();

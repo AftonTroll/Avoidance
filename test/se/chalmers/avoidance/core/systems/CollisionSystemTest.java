@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import se.chalmers.avoidance.constants.GameConstants;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
@@ -41,6 +42,8 @@ public class CollisionSystemTest {
 	private Entity e3;
 	private Entity e4; 
 	private Entity e5; 
+	private Entity e6; 
+	private Entity e7; 
 	private CollisionSystem cs;
 	
 	@Before
@@ -52,13 +55,13 @@ public class CollisionSystemTest {
 		world.setManager(gm);
 		
 		e1 = world.createEntity();
-		tm.register("PLAYER", e1);
+		tm.register(GameConstants.PLAYER_TAG, e1);
 		e1.addComponent(new Transform(0,3));
 		e1.addComponent(new Velocity(1,(float)(Math.PI/4)));
 		e1.addComponent(new Size(1, 1));
 		
 		e2 = world.createEntity();
-		gm.add(e2, "WALLS");
+		gm.add(e2, GameConstants.WALLS_GROUP);
 		e2.addComponent(new Transform(0,4));	
 		e2.addComponent(new Size(10, 9));
 		
@@ -71,9 +74,19 @@ public class CollisionSystemTest {
 		e4.addComponent(new Size(10, 10));
 		
 		e5 = world.createEntity();
-		gm.add(e5, "WALLS");
+		gm.add(e5, GameConstants.WALLS_GROUP);
 		e5.addComponent(new Transform(20,4));	
 		e5.addComponent(new Size(9, 10));
+		
+		e6 = world.createEntity();
+		gm.add(e6, GameConstants.CIRCLESHAPES_GROUP);
+		e6.addComponent(new Transform(95,80));	
+		e6.addComponent(new Size(10, 10));
+		
+		e7 = world.createEntity();
+		gm.add(e7, GameConstants.CIRCLESHAPES_GROUP);
+		e7.addComponent(new Transform(90,80));	
+		e7.addComponent(new Size(10, 10));
 		
 		cs = new CollisionSystem();
 		world.setSystem(cs);
@@ -86,16 +99,33 @@ public class CollisionSystemTest {
 		assertTrue(cs.collisionExists(e1, e2));	
 		assertTrue(!cs.collisionExists(e3, e4));
 		assertTrue(!cs.collisionExists(e1, e5));
+		assertTrue(cs.collisionExists(e6, e7));	
 	}
 	
 	@Test
-	public void testProcessEntities(){
+	public void testOutsideMap(){
+		e1.getComponent(Transform.class).setX(-20);
 		cs.processEntities(null);
-		assertTrue((e1.getComponent(Velocity.class).getAngle()-(float)(2*Math.PI-Math.PI/4)<0.01));
-		e1.removeComponent(Transform.class);
-		e1.addComponent(new Transform(20,3));
+		assertTrue(playerInsideMap());
+		
+		e1.getComponent(Transform.class).setX(2000);
 		cs.processEntities(null);
-		assertTrue((e1.getComponent(Velocity.class).getAngle()-(float)(Math.PI+Math.PI/4)<0.01));
+		assertTrue(playerInsideMap());
+		
+		e1.getComponent(Transform.class).setY(-20);
+		cs.processEntities(null);
+		assertTrue(playerInsideMap());
+		
+		e1.getComponent(Transform.class).setY(900);
+		cs.processEntities(null);
+		assertTrue(playerInsideMap());
+		
+	}
+	
+	private boolean playerInsideMap(){
+		Transform playerTransform = e1.getComponent(Transform.class);
+		
+		return playerTransform.getX()>0&&playerTransform.getX()<1280&&playerTransform.getY()>0&&playerTransform.getY()<800;
 	}
 
 }

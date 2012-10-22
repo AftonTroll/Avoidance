@@ -22,7 +22,7 @@ package se.chalmers.avoidance.core.collisionhandlers;
 import com.artemis.Entity;
 
 /**
- * An interface for Collision Handlers
+ * An interface for Collision Handlers.
  * @author Markus Ekström
  *
  */

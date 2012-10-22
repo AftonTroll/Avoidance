@@ -37,6 +37,7 @@ import org.andengine.util.HorizontalAlign;
 import org.andengine.util.color.Color;
 
 import se.chalmers.avoidance.constants.EventMessageConstants;
+import se.chalmers.avoidance.constants.FileConstants;
 import se.chalmers.avoidance.constants.FontConstants;
 import se.chalmers.avoidance.util.FileUtils;
 import se.chalmers.avoidance.util.ScreenResolution;
@@ -105,7 +106,7 @@ public class HighScoreState implements IState , PropertyChangeListener {
 	 */
 	private void createHighScoreTitle(Map<String, TextureRegion> regions, 
 			VertexBufferObjectManager vbom) {
-		highscoreTitle = new Sprite(0, 0, regions.get("highscore.png"), vbom);
+		highscoreTitle = new Sprite(0, 0, regions.get(FileConstants.IMG_HIGH_SCORE_TITLE), vbom);
 		
 		float xPos = ScreenResolution.getXPosHorizontalCentering(highscoreTitle);
 		float yPos = ScreenResolution.getYPosVerticalCentering(highscoreTitle) - 300;
@@ -141,7 +142,7 @@ public class HighScoreState implements IState , PropertyChangeListener {
 	 * @param vbom the game engines <code>VertexBufferObjectManager</code>
 	 */
 	private void createBackButton(Map<String, TextureRegion> regions, VertexBufferObjectManager vbom) {
-		backButton = new ButtonSprite(0, 0, regions.get("okButton.png"), vbom);
+		backButton = new ButtonSprite(0, 0, regions.get(FileConstants.IMG_BUTTON_OK), vbom);
 		
 		float xPos = ScreenResolution.getXPosHorizontalCentering(backButton);
 		float yPos = ScreenResolution.getYPosVerticalCentering(backButton) + 300;
@@ -160,7 +161,7 @@ public class HighScoreState implements IState , PropertyChangeListener {
 	 * Sets the text of the high score list, or displays an
 	 * error message if no satisfying list was provided.
 	 */
-	public void updateHighScoreList() {
+	private void updateHighScoreList() {
 		String highscore;
 		String rank;
 		
@@ -191,7 +192,7 @@ public class HighScoreState implements IState , PropertyChangeListener {
 	 *
 	 * @return a sorted multi line string representing the high scores
 	 */
-	public String retrieveHighScoreString(int maxEntries) throws NoHighScoreException {
+	private String retrieveHighScoreString(int maxEntries) throws NoHighScoreException {
 		List<String> list = FileUtils.readFromFile(FileUtils.PATH);
 		List<Integer> numbers = FileUtils.getSortedIntegers(list);
 		if (numbers == null || numbers.isEmpty()) {
@@ -249,15 +250,15 @@ public class HighScoreState implements IState , PropertyChangeListener {
 	 * @param event an event
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
-		if (event != null && event.getNewValue() != null) {
-			if (EventMessageConstants.GAME_OVER.equals(event.getPropertyName())) {
-				int score = 0;
-				try {
-					score = (Integer) event.getNewValue();
-				} catch (ClassCastException cce) {} //score is 0 if error occurs
-				FileUtils.addToFile(String.valueOf(score), FileUtils.PATH);
-				updateHighScoreList();
-			}
+		if (event != null && event.getNewValue() != null && 
+				EventMessageConstants.GAME_OVER.equals(event.getPropertyName())) {
+			int score = 0;
+			try {
+				score = (Integer) event.getNewValue();
+			} catch (ClassCastException cce) {
+			} // score is 0 if error occurs
+			FileUtils.addToFile(String.valueOf(score), FileUtils.PATH);
+			updateHighScoreList();
 		}
 	}
 

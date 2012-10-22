@@ -27,7 +27,7 @@ import com.artemis.Component;
  * @author Markus Ekström
  */
 public class Buff extends Component{
-	public static enum BuffType{Speed}
+	public static enum BuffType{Speed, Immortal}
 	private int strength;
 	private BuffType type;
 	

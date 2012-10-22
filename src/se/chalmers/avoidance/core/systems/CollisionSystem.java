@@ -27,6 +27,7 @@ package se.chalmers.avoidance.core.systems;
 import org.andengine.entity.shape.RectangularShape;
 import org.andengine.opengl.vbo.IVertexBufferObject;
 
+import se.chalmers.avoidance.constants.GameConstants;
 import se.chalmers.avoidance.core.collisionhandlers.CollisionHandler;
 import se.chalmers.avoidance.core.collisionhandlers.EnemyCollisionHandler;
 import se.chalmers.avoidance.core.collisionhandlers.KillplayerobstacleCollisionHandler;
@@ -35,7 +36,6 @@ import se.chalmers.avoidance.core.collisionhandlers.PowerUpCollisionHandler;
 import se.chalmers.avoidance.core.collisionhandlers.WallCollisionHandler;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
-import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.util.ScreenResolution;
 
 import com.artemis.Aspect;
@@ -57,15 +57,13 @@ import com.artemis.utils.ImmutableBag;
 public class CollisionSystem extends EntitySystem{
 
 	@Mapper
-	ComponentMapper<Velocity> velocityMapper;
+	private ComponentMapper<Transform> transformMapper;
 	@Mapper
-	ComponentMapper<Transform> transformMapper;
-	@Mapper
-	ComponentMapper<Size> sizeMapper;
+	private ComponentMapper<Size> sizeMapper;
     private Bag<CollisionPair> collisionPairs;
     private CollisionObject collisionObject1 = new CollisionObject(0, 0, 0, 0);
     private CollisionObject collisionObject2 = new CollisionObject(0, 0, 0, 0);
-	
+    	
     /**
      * Constructs a new CollisionSystem.
      */
@@ -79,11 +77,11 @@ public class CollisionSystem extends EntitySystem{
 	@Override
 	protected void initialize(){
         collisionPairs = new Bag<CollisionPair>();
-        collisionPairs.add(new CollisionPair("MOVINGENTITIES", "WALLS", new WallCollisionHandler(world))); 
-        collisionPairs.add(new CollisionPair("PLAYER", "POWERUPS", new PowerUpCollisionHandler(world)));
-        collisionPairs.add(new CollisionPair("MOVINGENTITIES", "PITOBSTACLES", new PitobstacleCollisionHandler(world)));
-        collisionPairs.add(new CollisionPair("PLAYER", "KILLPLAYEROBSTACLES", new KillplayerobstacleCollisionHandler(world)));
-        collisionPairs.add(new CollisionPair("PLAYER", "ENEMIES", new EnemyCollisionHandler(world)));
+        collisionPairs.add(new CollisionPair(GameConstants.MOVINGENTITIES_GROUP, GameConstants.WALLS_GROUP, new WallCollisionHandler(world))); 
+        collisionPairs.add(new CollisionPair(GameConstants.PLAYER_GROUP, GameConstants.POWERUPS_GROUP, new PowerUpCollisionHandler(world)));
+        collisionPairs.add(new CollisionPair(GameConstants.MOVINGENTITIES_GROUP, GameConstants.PITOBSTACLES_GROUP, new PitobstacleCollisionHandler(world)));
+        collisionPairs.add(new CollisionPair(GameConstants.PLAYER_GROUP, GameConstants.KILLPLAYEROBSTACLES_GROUP, new KillplayerobstacleCollisionHandler(world)));
+        collisionPairs.add(new CollisionPair(GameConstants.PLAYER_GROUP, GameConstants.ENEMIES_GROUP, new EnemyCollisionHandler(world)));
 	}
 	
 	
@@ -101,7 +99,7 @@ public class CollisionSystem extends EntitySystem{
 	/**
 	 * Processes entities and checks for collisions between them.
 	 * 
-	 * @param ImmutableBag<Entity> the entities this system contains.
+	 * @param entities the entities this system contains.
 	 */
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
@@ -110,9 +108,9 @@ public class CollisionSystem extends EntitySystem{
             collisionPairs.get(i).checkForCollisions();
         }
        
-        Entity player = world.getManager(TagManager.class).getEntity("PLAYER");  
+        Entity player = world.getManager(TagManager.class).getEntity(GameConstants.PLAYER_TAG);  
         Transform playerTransform = transformMapper.get(player);
-        ImmutableBag<Entity> walls = world.getManager(GroupManager.class).getEntities("WALLS");
+        ImmutableBag<Entity> walls = world.getManager(GroupManager.class).getEntities(GameConstants.WALLS_GROUP);
         Size wallSize = sizeMapper.get(walls.get(0));
         Size playerSize = sizeMapper.get(player);
         
@@ -163,8 +161,8 @@ public class CollisionSystem extends EntitySystem{
 		
 		GroupManager groupManager = world.getManager(GroupManager.class);
 		
-		if(groupManager.getEntities("CIRCLESHAPES").contains(e1)&&
-				groupManager.getEntities("CIRCLESHAPES").contains(e2)){
+		if(groupManager.getEntities(GameConstants.CIRCLESHAPES_GROUP).contains(e1)&&
+				groupManager.getEntities(GameConstants.CIRCLESHAPES_GROUP).contains(e2)){
 			
 			float xDelta = e1X+e1Width/2-(e2X+e2Width/2);
 			float yDelta = e1Y+e1Height/2-(e2Y+e2Height/2);

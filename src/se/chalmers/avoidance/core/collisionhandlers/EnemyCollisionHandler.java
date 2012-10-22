@@ -1,5 +1,5 @@
 /* 
- * Copyright (c) 2012 Jakob Svensson
+ * Copyright (c) 2012 Jakob Svensson, Markus Ekström
  * 
  * This file is part of Avoidance.
  * 
@@ -20,15 +20,19 @@
 
 package se.chalmers.avoidance.core.collisionhandlers;
 
+import se.chalmers.avoidance.constants.GameConstants;
+import se.chalmers.avoidance.core.components.Immortal;
 import se.chalmers.avoidance.core.components.Jump;
+import se.chalmers.avoidance.core.components.Score;
 
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.managers.TagManager;
 /**
  * Handles collision between player and enemies.
  * 
- * @author Jakob Svensson
+ * @author Jakob Svensson, Markus Ekström
  *
  */
 public class EnemyCollisionHandler implements CollisionHandler{
@@ -50,13 +54,23 @@ public class EnemyCollisionHandler implements CollisionHandler{
 	 * @param enemy The enemy.
 	 */
 	public void handleCollision(Entity player, Entity enemy) {
-		//Handle collison between enemy and player
+		//Handles collison between enemy and player
 		ComponentMapper<Jump> jumpMapper = world.getMapper(Jump.class);
+		ComponentMapper<Immortal> immortalMapper = world.getMapper(Immortal.class);
 		Jump jump = jumpMapper.get(player);
-		if (jump == null || !jump.isInTheAir()) {
-			GameOverNotifier.getInstance().gameOver();
+		Immortal immortal = immortalMapper.get(player);
+		if(jump != null && immortal != null) {
+    		if (!jump.isInTheAir() && !immortal.isImmortal()) {
+    			GameOverNotifier.getInstance().gameOver();
+    		} else if (immortal.isImmortal() || 
+    		        (jump.isInTheAir() && jump.getInTheAirDurationLeft() <= world.delta)) {
+    		    world.deleteEntity(enemy);
+    		    Score score = world.getManager(TagManager.class).
+    		            getEntity(GameConstants.SCORE_TAG).getComponent(Score.class);
+    		    if(score != null) {
+    		        score.addKillScore(Score.KILL_SCORE);
+    		    }
+    		}
 		}
-
 	}
-
 }

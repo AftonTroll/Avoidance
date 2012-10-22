@@ -24,23 +24,24 @@ import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import se.chalmers.avoidance.core.components.Buff.BuffType;
-
-public class BuffTest {
-	private static BuffType type;
-	private static int strength;
-	
-	@BeforeClass
-	public static void beforeClass(){
-		type = Buff.BuffType.Speed;
-		strength = 2;
-	}
-	
-	@Test
-	public void testBuff() {
-		Buff buff = new Buff(type, strength);
-		assertTrue(buff != null);
-		assertTrue(buff.getStrength() == strength);
-		assertTrue(buff.getType() == type);
-	}
+public class ImmortalTest {
+    private static int duration;
+    
+    @BeforeClass
+    public static void beforeClass() {
+        duration = 2;
+    }
+    
+    @Test
+    public void testImmortal() {
+        Immortal immortal = new Immortal();
+        assertTrue(immortal != null);
+        
+        assertTrue(immortal.getDurationLeft() == 0);
+        immortal.setDuration(duration);
+        immortal.setImmortal(true);
+        assertTrue(immortal.getDurationLeft() == duration);
+        immortal.subtractImmortalDurationLeft(1);
+        assertTrue(immortal.getDurationLeft() == duration - 1);
+    }
 }

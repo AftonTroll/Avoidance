@@ -46,7 +46,7 @@ public class Spatial extends Component {
 	 * Sets the name.
 	 * @param name The name.
 	 */
-	public void setName(String name) {
+	public final void setName(String name) {
 		this.name = name;
 	}
 	
@@ -62,7 +62,7 @@ public class Spatial extends Component {
 	 * Sets the sprite.
 	 * @param sprite The sprite.
 	 */
-	public void setSprite(Sprite sprite) {
+	public final void setSprite(Sprite sprite) {
 		this.sprite = sprite;
 	}
 	

@@ -29,7 +29,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import se.chalmers.avoidance.core.components.Friction;
+import se.chalmers.avoidance.core.components.Immortal;
 import se.chalmers.avoidance.core.components.Jump;
+import se.chalmers.avoidance.core.components.Spatial;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.util.Utils;
@@ -56,13 +58,15 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	private float lastAccelerationY = 0;
 	private TagManager tagManager;
 	@Mapper
-	ComponentMapper<Friction> frictionMapper;
+	private ComponentMapper<Friction> frictionMapper;
 	@Mapper
-	ComponentMapper<Velocity> velocityMapper;
+	private ComponentMapper<Velocity> velocityMapper;
 	@Mapper
-	ComponentMapper<Transform> transformMapper;
+	private ComponentMapper<Transform> transformMapper;
 	@Mapper
-	ComponentMapper<Jump> statusMapper;
+	private ComponentMapper<Jump> jumpMapper;
+	@Mapper
+    private ComponentMapper<Immortal> immortalMapper;
 	
 	/**
 	 * Constructs a new PlayerControlSystem.
@@ -100,6 +104,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 		Entity entity = tagManager.getEntity("PLAYER");
 		if (entity != null) {
 			handleJump(entity); //Check if the player should be in the air.
+			handleImmortal(entity);
 			//Update the Velocity
 			//Based on https://bitbucket.org/piemaster/artemoids/src/5c3a11ff2bdd/src/net/piemaster/artemoids/
 			//  systems/PlayerShipControlSystem.java
@@ -139,21 +144,34 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	}
 	
 	/**
-	 * Handles player jumping.
-	 * @param player The player entity.
+	 * Handles entity mortality.
+	 * @param entity The entity entity.
 	 */
-	private void handleJump(Entity player) {
-		Jump jump = statusMapper.get(player);
+	private void handleImmortal(Entity e) {
+	    Immortal immortal = immortalMapper.getSafe(e);
+        immortal.subtractImmortalDurationLeft(world.delta);
+        if(immortal.isImmortal()) {
+            immortal.subtractImmortalDurationLeft(world.delta);
+            if(immortal.getDurationLeft() == 0) {
+                immortal.setImmortal(false);
+            }
+        }
+        
+    }
+
+    /**
+	 * Handles entity jumping.
+	 * @param e The entity.
+	 */
+	private void handleJump(Entity e) {
+		Jump jump = jumpMapper.getSafe(e);
 		jump.subtractJumpCooldownLeft(world.delta);
 		if(jump.isInTheAir()) {
 			jump.subtractInTheAirDurationLeft(world.delta);
-			
 			if(jump.getInTheAirDurationLeft() == 0) {
 				jump.setInTheAir(false);
 			}
 		}
-		
-		
 	}
 
 	/**
@@ -161,18 +179,21 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	 * @param event the propertyChangeEvent containing the values of the accelerometer
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
-		if(event!=null && event.getNewValue() != null){
+		if(event==null){
+			return;
+		}
+		if(event.getNewValue() != null){
 			if("AccelerometerX".equals(event.getPropertyName())){
 				lastAccelerationX = (Float) event.getNewValue();
 			}
 			if("AccelerometerY".equals(event.getPropertyName())){
 				lastAccelerationY = (Float) event.getNewValue();
 			}
-		} else if (event != null) {
-			if("touch".equals(event.getPropertyName())){
-				if(tagManager.getEntity("PLAYER").getComponent(Jump.class).getJumpCooldownLeft() == 0) {
-					statusMapper.get(tagManager.getEntity("PLAYER")).setInTheAir(true);
-				}
+		//if there is no new value
+		} else {
+			if("touch".equals(event.getPropertyName()) && 
+					tagManager.getEntity("PLAYER").getComponent(Jump.class).getJumpCooldownLeft() == 0) {
+				jumpMapper.get(tagManager.getEntity("PLAYER")).setInTheAir(true);
 			}
 		}
 	}

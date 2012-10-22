@@ -54,7 +54,10 @@ public class SpawnSystem extends EntityProcessingSystem{
 	/* The range of closest range enemies can spawn to a player */
 	private static final int SPAWN_RANGE = 100;
 	private static final int ENEMY_QUICKENEMY_RATIO = 5;
+	private static final int POWERUP_SPAWN_CD = 10;
 	private int lastSpawn = 0;
+	private float lastPowerupTaken = 0;
+	private int powerupSpawnCount = 0;
 	
 	
 	/**
@@ -74,8 +77,11 @@ public class SpawnSystem extends EntityProcessingSystem{
 		sizeMapper = world.getMapper(Size.class);
 		tagManager = world.getManager(TagManager.class);
 		groupManager = world.getManager(GroupManager.class);
+		float centerX = ScreenResolution.getWidthResolution()/2f;
+		float centerY = ScreenResolution.getHeightResolution()/2f;
+
 		//Create all the entities that should be on the map when the game starts
-		world.addEntity(EntityFactory.createPlayer(world));
+		world.addEntity(EntityFactory.createPlayer(world, centerX -32, centerY -32));
 		world.addEntity(EntityFactory.createWall(world, ScreenResolution.getWidthResolution(), 
 				WALL_THICKNESS, 0, 0));
 		world.addEntity(EntityFactory.createWall(world, ScreenResolution.getWidthResolution(), 
@@ -85,11 +91,20 @@ public class SpawnSystem extends EntityProcessingSystem{
 		world.addEntity(EntityFactory.createWall(world, WALL_THICKNESS, 
 				ScreenResolution.getHeightResolution(), 
 				ScreenResolution.getWidthResolution() - WALL_THICKNESS, 0));
-		world.addEntity(EntityFactory.createObstacle(world, 50, 50, 200, 200));
+		world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX-225, centerY -125));
+		world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX+175, centerY -125));
+		world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX-225, centerY +75));
+		world.addEntity(EntityFactory.createObstacle(world, 50, 50, centerX+175, centerY +75));
+		world.addEntity(EntityFactory.createPitobstacle(world, centerX-32, 
+				ScreenResolution.getHeightResolution() - WALL_THICKNESS-164));
+		world.addEntity(EntityFactory.createSpeedPowerUp(world, centerX-32, 
+		        WALL_THICKNESS + 50, 300));
+		world.addEntity(EntityFactory.createKillplayerbstacle(world, centerX-232,
+				ScreenResolution.getHeightResolution()-WALL_THICKNESS-114));
+		world.addEntity(EntityFactory.createKillplayerbstacle(world, centerX+168,
+				ScreenResolution.getHeightResolution()-WALL_THICKNESS-114));
 		world.addEntity(EntityFactory.createScore(world));
-		world.addEntity(EntityFactory.createPowerUp(world, 300, 300, BuffType.Speed, 300));
-		world.addEntity(EntityFactory.createPitobstacle(world, 400, 600));
-		world.addEntity(EntityFactory.createKillplayerbstacle(world, 800, 600));
+		world.addEntity(EntityFactory.createImmortalityPowerUp(world, centerX - 32, centerY - 100, 10));
 	}
 
 	/**
@@ -102,13 +117,27 @@ public class SpawnSystem extends EntityProcessingSystem{
 		float currentTime = entity.getComponent(Time.class).getTime();
 		//loop to not miss any spawn even in case the tpf is longer than the spawninterval
 		while ((currentTime - lastSpawn) >= SPAWNINTERVAL) {
-			spawnEnemyAtFreePosition();
+			spawnEnemy();
 			lastSpawn += SPAWNINTERVAL;
+		}
+		
+		if (groupManager.getEntities("POWERUPS").isEmpty()) {
+			//if the powerup was just taken, the time needs to be set
+			if (lastPowerupTaken == 0) {
+				lastPowerupTaken = currentTime;
+			//Check if the cd is out
+			} else if (currentTime >= (lastPowerupTaken + POWERUP_SPAWN_CD)) {
+				spawnPowerup();
+				lastPowerupTaken = 0;
+			}
+
 		}
 	}
 	
-	//Spawns an enemy at a free position
-	private void spawnEnemyAtFreePosition(){
+	/*
+	 * Spawns a new enemy
+	 */
+	private void spawnEnemy(){
 		Entity enemy;
 		//Check if the next enemy should be a normal enemy or a quick enemy
 		if((lastSpawn/SPAWNINTERVAL)%ENEMY_QUICKENEMY_RATIO == 1){
@@ -116,54 +145,74 @@ public class SpawnSystem extends EntityProcessingSystem{
 		} else {
 			enemy = EntityFactory.createEnemy(world, 0, 0);
 		}
-		Transform enemyTransform = transformMapper.get(enemy);
-		
+		moveEntityToFreePosition(enemy);
+		world.addEntity(enemy);
+	}
+	
+	/*
+	 * Spawns a new powerup
+	 */
+	private void spawnPowerup(){
+	    Entity powerup;
+	    if(powerupSpawnCount % 2 == 0) {
+	        powerup = EntityFactory.createSpeedPowerUp(world, 0, 0, 300);
+	    } else {
+	        powerup = EntityFactory.createImmortalityPowerUp(world, 0, 0, 10);
+	    }
+		moveEntityToFreePosition(powerup);
+		world.addEntity(powerup);
+	}
+	
+	/*
+	 * Moves an entity to a free position
+	 */
+	private void moveEntityToFreePosition(Entity entity){
+		Transform transform = transformMapper.get(entity);
+		if(transform == null){
+			return;
+		}
 		boolean validPosition = false;
 		while(!validPosition){
 			//assume the position is valid until proven otherwise
 			validPosition = true;
-			enemyTransform.setX((float) (Math.random()*ScreenResolution.getWidthResolution()));
-			enemyTransform.setY((float) (Math.random()*ScreenResolution.getHeightResolution()));
+			transform.setX((float) (Math.random()*ScreenResolution.getWidthResolution()));
+			transform.setY((float) (Math.random()*ScreenResolution.getHeightResolution()));
+			
 			
 			//Check if the enemy is too close to the player
 			Entity player = tagManager.getEntity("PLAYER");
-			Transform pTrans = transformMapper.get(player);
-			Size pSize = sizeMapper.get(player);
-			float playerCenterX = pTrans.getX() + pSize.getWidth()/2;
-			float playerCenterY = pTrans.getY() + pSize.getHeight()/2;
-
-			Transform eTrans = transformMapper.get(enemy);
-			Size eSize = sizeMapper.get(enemy);
-			float enemyCenterX = eTrans.getX() + eSize.getWidth()/2;
-			float enemyCenterY = eTrans.getY() + eSize.getHeight()/2;
-			
-			float dx = enemyCenterX - playerCenterX;
-			float dy = enemyCenterY - playerCenterY;
-			
-			//check distance from player and enemy
-			if(Math.sqrt(dx*dx+dy*dy) <= SPAWN_RANGE) {
-				validPosition = false;
-				continue;
-			}
-			
-			//check if the enemy is spawned on a wall
-			ImmutableBag<Entity> wallBag = groupManager.getEntities("WALLS");
-			for (int i = 0; i<wallBag.size(); i++){
-				if(world.getSystem(CollisionSystem.class).collisionExists(enemy, wallBag.get(i))){
+			if(!entity.equals(player)){
+				Transform pTrans = transformMapper.get(player);
+				Size pSize = sizeMapper.get(player);
+				float playerCenterX = pTrans.getX() + pSize.getWidth()/2;
+				float playerCenterY = pTrans.getY() + pSize.getHeight()/2;
+	
+				Transform eTrans = transformMapper.get(entity);
+				Size eSize = sizeMapper.get(entity);
+				float entityCenterX = eTrans.getX() + eSize.getWidth()/2;
+				float entityCenterY = eTrans.getY() + eSize.getHeight()/2;
+				
+				float dx = entityCenterX - playerCenterX;
+				float dy = entityCenterY - playerCenterY;
+				
+				//check distance from player and entity
+				if(Math.sqrt(dx*dx+dy*dy) <= SPAWN_RANGE) {
 					validPosition = false;
 					continue;
 				}
 			}
 			
-			//check if enemy is spawned is spawned on another enemy
-			ImmutableBag<Entity> enemyBag = groupManager.getEntities("ENEMIES");
-			for (int i = 0; i<enemyBag.size(); i++){
-				if(enemy != enemyBag.get(i) && world.getSystem(CollisionSystem.class).collisionExists(enemy, enemyBag.get(i))){
-					validPosition = false;
-					continue;
+			//check if entity is spawned is spawned on another entity
+			String[] entityGroups = {"WALLS", "ENEMIES", "PITOBSTACLES", "KILLPLAYEROBSTACLES"};
+			for(int j = 0; j<entityGroups.length; j++){
+				ImmutableBag<Entity> enemyBag = groupManager.getEntities(entityGroups[j]);
+				for (int i = 0; i<enemyBag.size(); i++){
+					if(entity != enemyBag.get(i) && world.getSystem(CollisionSystem.class).collisionExists(entity, enemyBag.get(i))){
+						validPosition = false;
+						continue;
+					}
 				}
 			}
 		}
-		world.addEntity(enemy);
 	}
 }

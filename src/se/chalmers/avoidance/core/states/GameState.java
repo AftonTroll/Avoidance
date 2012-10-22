@@ -24,7 +24,6 @@ package se.chalmers.avoidance.core.states;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.andengine.entity.scene.Scene;
@@ -36,6 +35,7 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import se.chalmers.avoidance.constants.EventMessageConstants;
+import se.chalmers.avoidance.constants.FileConstants;
 import se.chalmers.avoidance.constants.FontConstants;
 import se.chalmers.avoidance.core.collisionhandlers.GameOverNotifier;
 import se.chalmers.avoidance.core.systems.CollisionSystem;
@@ -63,7 +63,6 @@ public class GameState implements IState, PropertyChangeListener {
 	private Scene scene;
 	private World world;
 	private PropertyChangeSupport pcs;
-	private TouchListener touchListener;
 	private GameOverScene gameOverScene;
 	private boolean process;
 	
@@ -93,7 +92,7 @@ public class GameState implements IState, PropertyChangeListener {
 	private void initialize(SensorManager sensorManager, Map<String, TextureRegion> regions, Map<String, Font> fonts, VertexBufferObjectManager vbom) {
 		scene = new Scene();
 		
-		Sprite backgroundSprite = new Sprite(0, 0, 1280, 800, regions.get("background.png"), vbom);
+		Sprite backgroundSprite = new Sprite(0, 0, 1280, 800, regions.get(FileConstants.IMG_GAME_BACKGROUND), vbom);
 		scene.setBackground(new SpriteBackground(backgroundSprite));
 		world = new World();
 		world.setManager(new GroupManager());
@@ -117,7 +116,7 @@ public class GameState implements IState, PropertyChangeListener {
 		aL.addPropertyChangeListener(world.getSystem(PlayerControlSystem.class));
 		aL.startListening();
 		
-		touchListener = new TouchListener();
+		TouchListener touchListener = new TouchListener();
 		scene.setOnSceneTouchListener(touchListener);
 		touchListener.addListener(world.getSystem(PlayerControlSystem.class));
 		
@@ -132,10 +131,7 @@ public class GameState implements IState, PropertyChangeListener {
 	 * @param tpf Time since last frame.
 	 */
 	public void update(float tpf) {
-		if (process) {
-			if (tpf > 1.0f) {
-				tpf = 0; //ie, if tpf is too large, don't update
-			}
+		if (process && tpf < 1.0f) { //if tpf is too high, don't update
 			world.setDelta(tpf);
 			world.process();
 		}
@@ -146,7 +142,7 @@ public class GameState implements IState, PropertyChangeListener {
 	 * @param enable true if you want the game to update;
 	 * false if you want to stop the updating.
 	 */
-	public void enableProcess(boolean enable) {
+	private void enableProcess(boolean enable) {
 		process = enable;
 	}
 
@@ -180,7 +176,7 @@ public class GameState implements IState, PropertyChangeListener {
 	 * @param score the players score
 	 * @param event the <code>PropertyChangeEvent</code> that triggered this method
 	 */
-	public synchronized void gameOver(int score, PropertyChangeEvent event) {
+	private synchronized void gameOver(int score, PropertyChangeEvent event) {
 		if (process) {
 			enableProcess(false);
 			this.gameOverScene.setScore(score);
@@ -212,16 +208,13 @@ public class GameState implements IState, PropertyChangeListener {
 	 * @param event an event
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
-		if (event != null && event.getNewValue() != null) {
-			if (EventMessageConstants.GAME_OVER.equals(event.getPropertyName())) {
-				int score = 0;
-				try {
-					score = (Integer) event.getNewValue();
-				} catch (ClassCastException cce) {
-					cce.printStackTrace(); //score is 0 if error occurs
-				}
-				gameOver(score, event);
-			}
+		if (event != null && event.getNewValue() != null &&
+	        EventMessageConstants.GAME_OVER.equals(event.getPropertyName())) {
+			int score = 0;
+			try {
+				score = (Integer) event.getNewValue();
+			} catch (ClassCastException cce) {}
+			gameOver(score, event);
 		}
 	}
 	

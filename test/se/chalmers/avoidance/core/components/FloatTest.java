@@ -30,9 +30,8 @@ public abstract class FloatTest {
 	 * manner that the difference between them is less than 0.0001.
 	 * @param f1 a float
 	 * @param f2 another float
-	 * @throws AssertionError if the floats are not "equal"
 	 */
-	protected static void assertFloatEquals(float f1, float f2) throws AssertionError {
+	protected static void assertFloatEquals(float f1, float f2) {
 		assertFloatEquals(f1 - f2);
 	}
 	
@@ -41,7 +40,7 @@ public abstract class FloatTest {
 	 * @param f1 a float
 	 * @throws AssertionError if the float is not that close to 0.
 	 */
-	protected static void assertFloatEquals(float diff) throws AssertionError {
+	protected static void assertFloatEquals(float diff) {
 		assertTrue(Math.abs(diff) <= TOLERANCE);
 	}
 }

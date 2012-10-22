@@ -155,9 +155,9 @@ public class WallCollisionHandler implements CollisionHandler{
 	
 	private float flipHorizontal(float angle){
 		  //Translate and then flip vertical
-		float newAngle = angle + (float) Math.PI/2;
-		  newAngle = flipVertical(newAngle);
-		  newAngle -= Math.PI/2;
-		  return newAngle;
+			newAngle = angle + (float) Math.PI/2;
+			newAngle = flipVertical(newAngle);
+			newAngle -= Math.PI/2;
+			return newAngle;
 	}
 }
