@@ -101,7 +101,7 @@ public class SpawnSystem extends EntityProcessingSystem{
 		world.addEntity(EntityFactory.createKillplayerbstacle(world, centerX+168,
 				ScreenResolution.getHeightResolution()-WALL_THICKNESS-114));
 		world.addEntity(EntityFactory.createScore(world));
-		world.addEntity(EntityFactory.createImmortalPowerUp(world, 500, 500, 5));
+		world.addEntity(EntityFactory.createImmortalPowerUp(world, centerX - 32, centerY - 100, 5));
 	}
 
 	/**
