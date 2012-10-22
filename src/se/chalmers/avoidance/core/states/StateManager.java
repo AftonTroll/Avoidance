@@ -68,8 +68,9 @@ public class StateManager implements PropertyChangeListener {
 	*/
 	public void removeState(StateID stateID) {
 		IState state = stateMap.remove(stateID);
-		if (state != null)
+		if (state != null) {
 			state.removePropertyChangeListener(this);
+		}
 	}
 
 	/**
