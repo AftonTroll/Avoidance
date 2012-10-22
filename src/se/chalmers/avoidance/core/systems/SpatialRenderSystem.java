@@ -135,6 +135,7 @@ public class SpatialRenderSystem extends EntitySystem{
 	        Transform tf = tm.get(player);
 	        sm.get(player).getSprite().detachSelf();
 	        sm.get(player).setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(FileConstants.IMG_PLAYER_IMMORTAL), vbom));
+	        sm.get(player).getSprite().setZIndex(50);
 	        scene.attachChild(sm.get(player).getSprite());
 	        playerImmortal = true;
 	    } else if (!player.getComponent(Immortal.class).isImmortal() && playerImmortal) {
@@ -142,6 +143,7 @@ public class SpatialRenderSystem extends EntitySystem{
             Spatial spatial = sm.get(player);
             spatial.getSprite().detachSelf();
             sm.get(player).setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(spatial.getName()), vbom));
+            sm.get(player).getSprite().setZIndex(50);
             scene.attachChild(spatial.getSprite());
             playerImmortal = false;
 	    }
