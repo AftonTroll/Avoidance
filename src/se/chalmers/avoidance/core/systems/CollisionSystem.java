@@ -99,7 +99,7 @@ public class CollisionSystem extends EntitySystem{
 	/**
 	 * Processes entities and checks for collisions between them.
 	 * 
-	 * @param ImmutableBag<Entity> the entities this system contains.
+	 * @param entities the entities this system contains.
 	 */
 	@Override
 	protected void processEntities(ImmutableBag<Entity> entities) {
