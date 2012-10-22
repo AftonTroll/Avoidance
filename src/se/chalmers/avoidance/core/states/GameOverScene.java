@@ -87,7 +87,7 @@ public class GameOverScene extends Scene {
 	 * @param regions a <code>Map</code> containing loaded textures/regions
 	 * @param fonts a <code>Map</code> containing loaded fonts
 	 */
-	public void initialize(Map<String, TextureRegion> regions, Map<String, Font> fonts) {
+	private void initialize(Map<String, TextureRegion> regions, Map<String, Font> fonts) {
 		createTransparentBackground();
 		createGameOverSprite(regions);
 		createText(fonts);

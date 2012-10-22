@@ -160,7 +160,7 @@ public class HighScoreState implements IState , PropertyChangeListener {
 	 * Sets the text of the high score list, or displays an
 	 * error message if no satisfying list was provided.
 	 */
-	public void updateHighScoreList() {
+	private void updateHighScoreList() {
 		String highscore;
 		String rank;
 		
@@ -191,7 +191,7 @@ public class HighScoreState implements IState , PropertyChangeListener {
 	 *
 	 * @return a sorted multi line string representing the high scores
 	 */
-	public String retrieveHighScoreString(int maxEntries) throws NoHighScoreException {
+	private String retrieveHighScoreString(int maxEntries) throws NoHighScoreException {
 		List<String> list = FileUtils.readFromFile(FileUtils.PATH);
 		List<Integer> numbers = FileUtils.getSortedIntegers(list);
 		if (numbers == null || numbers.isEmpty()) {

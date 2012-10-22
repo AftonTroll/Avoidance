@@ -46,9 +46,13 @@ import com.artemis.managers.TagManager;
  * 
  * @author Markus Ekström
  */
-public class EntityFactory {
+public final class EntityFactory {
 	
+    /**
+     * Hidden constructor.
+     */
     private EntityFactory() {}
+    
 	/**
 	 * Creates a player entity with a PLAYER tag.
 	 * 

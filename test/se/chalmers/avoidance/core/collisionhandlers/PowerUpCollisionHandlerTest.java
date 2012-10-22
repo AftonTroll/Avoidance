@@ -36,8 +36,6 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
-import com.artemis.utils.Bag;
-import com.artemis.utils.ImmutableBag;
 
 public class PowerUpCollisionHandlerTest {
 	private Entity player;
@@ -47,9 +45,6 @@ public class PowerUpCollisionHandlerTest {
 	private final World world = new World();
 	private final GroupManager groupManager = new GroupManager();
 	private final TagManager tagManager = new TagManager();
-    private ImmutableBag<Entity> groupEntitiesA;
-    private ImmutableBag<Entity> groupEntitiesB;
-    private Bag<Entity> entities = new Bag<Entity>();
 	
 	
 	@Before
@@ -63,12 +58,9 @@ public class PowerUpCollisionHandlerTest {
 		world.initialize();
 		world.addEntity(EntityFactory.createScore(world));
 		world.addEntity(EntityFactory.createWall(world, 1, 1, 600, 600));
-		
-		
-		groupEntitiesA = world.getManager(GroupManager.class).getEntities("PLAYER");
-		groupEntitiesB = world.getManager(GroupManager.class).getEntities("POWERUP");
-		entities.addAll(groupEntitiesA);
-		entities.addAll(groupEntitiesB);
+		world.addEntity(player);
+		world.addEntity(speed);
+		world.addEntity(immortality);
 	}
 
 	@Test
@@ -89,11 +81,11 @@ public class PowerUpCollisionHandlerTest {
 		assertTrue(player.getComponent(Size.class) != null);
 		assertTrue(speed.getComponent(Size.class) != null);
 		assertTrue(cs.collisionExists(player, speed));
-		
+		long totalDeleted = world.getEntityManager().getTotalDeleted();
 		world.process();
-		
+		world.process();
 		assertTrue(player.getComponent(Velocity.class).getSpeed() == 100);
-		assertTrue(world.getEntity(player.getId()) == null);
+		assertTrue(world.getEntityManager().getTotalDeleted() == totalDeleted + 1);
 		
 		assertTrue(!player.getComponent(Immortal.class).isImmortal());
 		playerTransform.setPosition(200, 200);
