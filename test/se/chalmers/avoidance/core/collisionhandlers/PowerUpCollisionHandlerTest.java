@@ -26,6 +26,7 @@ import org.junit.Test;
 
 import se.chalmers.avoidance.core.EntityFactory;
 import se.chalmers.avoidance.core.components.Immortal;
+import se.chalmers.avoidance.core.components.Score;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
@@ -98,5 +99,6 @@ public class PowerUpCollisionHandlerTest {
 		playerTransform.setPosition(200, 200);
 		world.process();
 		assertTrue(player.getComponent(Immortal.class).isImmortal());
+		assertTrue(tagManager.getEntity("SCORE").getComponent(Score.class).getScore() == 2 * Score.POWERUP_PICKUP_SCORE);
 	}
 }
