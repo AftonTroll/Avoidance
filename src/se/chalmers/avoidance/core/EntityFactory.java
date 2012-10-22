@@ -47,6 +47,7 @@ import com.artemis.managers.TagManager;
  */
 public class EntityFactory {
 	
+    private EntityFactory() {}
 	/**
 	 * Creates a player entity with a PLAYER tag.
 	 * 
