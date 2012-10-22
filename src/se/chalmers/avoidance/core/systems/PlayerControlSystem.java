@@ -29,6 +29,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import se.chalmers.avoidance.core.components.Friction;
+import se.chalmers.avoidance.core.components.Immortal;
 import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
@@ -62,7 +63,9 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	@Mapper
 	private ComponentMapper<Transform> transformMapper;
 	@Mapper
-	private ComponentMapper<Jump> statusMapper;
+	private ComponentMapper<Jump> jumpMapper;
+	@Mapper
+    private ComponentMapper<Immortal> immortalMapper;
 	
 	/**
 	 * Constructs a new PlayerControlSystem.
@@ -100,6 +103,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 		Entity entity = tagManager.getEntity("PLAYER");
 		if (entity != null) {
 			handleJump(entity); //Check if the player should be in the air.
+			handleImmortal(entity);
 			//Update the Velocity
 			//Based on https://bitbucket.org/piemaster/artemoids/src/5c3a11ff2bdd/src/net/piemaster/artemoids/
 			//  systems/PlayerShipControlSystem.java
@@ -139,11 +143,28 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 	}
 	
 	/**
+	 * Handles player mortality.
+	 * @param entity The player entity.
+	 */
+	private void handleImmortal(Entity player) {
+	    Immortal immortal = immortalMapper.get(player);
+        immortal.subtractImmortalDurationLeft(world.delta);
+        if(immortal.isImmortal()) {
+            immortal.subtractImmortalDurationLeft(world.delta);
+            
+            if(immortal.getDurationLeft() == 0) {
+                immortal.setImmortal(false);
+            }
+        }
+        
+    }
+
+    /**
 	 * Handles player jumping.
 	 * @param player The player entity.
 	 */
 	private void handleJump(Entity player) {
-		Jump jump = statusMapper.get(player);
+		Jump jump = jumpMapper.get(player);
 		jump.subtractJumpCooldownLeft(world.delta);
 		if(jump.isInTheAir()) {
 			jump.subtractInTheAirDurationLeft(world.delta);
@@ -152,8 +173,6 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 				jump.setInTheAir(false);
 			}
 		}
-		
-		
 	}
 
 	/**
@@ -175,7 +194,7 @@ public class PlayerControlSystem extends EntitySystem implements PropertyChangeL
 		} else {
 			if("touch".equals(event.getPropertyName()) && 
 					tagManager.getEntity("PLAYER").getComponent(Jump.class).getJumpCooldownLeft() == 0) {
-				statusMapper.get(tagManager.getEntity("PLAYER")).setInTheAir(true);
+				jumpMapper.get(tagManager.getEntity("PLAYER")).setInTheAir(true);
 			}
 		}
 	}
