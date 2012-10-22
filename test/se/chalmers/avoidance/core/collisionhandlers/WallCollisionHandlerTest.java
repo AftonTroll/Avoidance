@@ -59,7 +59,7 @@ public class WallCollisionHandlerTest {
 		e1.addComponent(new Size(1, 1));
 		
 		e2 = world.createEntity();
-		gm.add(e2, "WALLS");
+		gm.add(e2, GameConstants.GROUP_OBSTACLE_WALLS);
 		e2.addComponent(new Transform(0,4));	
 		e2.addComponent(new Size(10, 9));
 		
@@ -72,7 +72,7 @@ public class WallCollisionHandlerTest {
 		e4.addComponent(new Size(10, 10));
 		
 		e5 = world.createEntity();
-		gm.add(e5, "WALLS");
+		gm.add(e5, GameConstants.GROUP_OBSTACLE_WALLS);
 		e5.addComponent(new Transform(20,4));	
 		e5.addComponent(new Size(9, 10));
 		

@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import se.chalmers.avoidance.constants.GameConstants;
 import se.chalmers.avoidance.core.components.Acceleration;
 import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Size;
@@ -56,7 +57,7 @@ public class EnemyControlSystemTest {
 		player = world.createEntity();
 		player.addComponent(new Transform());
 		player.addComponent(new Size(32,32));
-		tagManager.register("PLAYER", player);
+		tagManager.register(GameConstants.TAG_PLAYER, player);
 		
 		e1 = world.createEntity();
 		e1.addComponent(new Transform());
@@ -72,8 +73,8 @@ public class EnemyControlSystemTest {
 		e2.addComponent(new Friction(0.9f));
 		e2.addComponent(new Acceleration(10));
 		
-		groupManager.add(e1, "ENEMIES");
-		groupManager.add(e2, "ENEMIES");
+		groupManager.add(e1, GameConstants.GROUP_ENEMIES);
+		groupManager.add(e2, GameConstants.GROUP_ENEMIES);
 		
 		ecs.initialize();
 		
