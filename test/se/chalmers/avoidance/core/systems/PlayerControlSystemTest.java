@@ -29,6 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import se.chalmers.avoidance.constants.GameConstants;
+import se.chalmers.avoidance.core.components.Immortal;
 import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Friction;
 import se.chalmers.avoidance.core.components.Transform;
@@ -67,6 +68,7 @@ public class PlayerControlSystemTest {
 		player.addComponent(new Velocity());
 		player.addComponent(new Jump());
 		player.addComponent(new Friction(FRICTION));
+		player.addComponent(new Immortal());
 		tagManager.register(GameConstants.TAG_PLAYER, player);
 		
 		world.initialize();
