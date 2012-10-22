@@ -181,7 +181,7 @@ public class SpawnSystem extends EntityProcessingSystem{
 			
 			//Check if the enemy is too close to the player
 			Entity player = tagManager.getEntity("PLAYER");
-			if(entity != player){
+			if(!entity.equals(player)){
 				Transform pTrans = transformMapper.get(player);
 				Size pSize = sizeMapper.get(player);
 				float playerCenterX = pTrans.getX() + pSize.getWidth()/2;
