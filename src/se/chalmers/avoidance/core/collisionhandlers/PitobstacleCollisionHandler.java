@@ -38,6 +38,7 @@ public class PitobstacleCollisionHandler implements CollisionHandler {
 
 	private World world;
 	private ComponentMapper<Score> scoreMapper;
+	private final static int ENEMY_KILL_SCORE = 100;
 
 	/**
 	 * Construct a new PitobstacleCollisionHandler.
@@ -71,7 +72,7 @@ public class PitobstacleCollisionHandler implements CollisionHandler {
 				groupManager.getEntities("PITOBSTACLES").contains(obstacle)){
 			world.deleteEntity(movingEntity);
 			Score score = scoreMapper.get(world.getManager(TagManager.class).getEntity("SCORE"));
-			score.addKillScore(100);
+			score.addKillScore(ENEMY_KILL_SCORE);
 		}
 	}
 
