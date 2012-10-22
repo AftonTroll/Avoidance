@@ -22,6 +22,7 @@ package se.chalmers.avoidance;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,16 +32,20 @@ import org.andengine.audio.sound.Sound;
 import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
@@ -74,6 +79,8 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 
     private Map<String, TextureRegion> regions;
     private Map<String, Font> fonts;
+    private ITextureRegion splashTextureRegion;
+    private BitmapTextureAtlas splashTextureAtlas;
    
     /**
      * Sets the engine options (camera, screen rotation, ...) 
@@ -94,7 +101,101 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	 */
 	public void onCreateResources(OnCreateResourcesCallback onCreateResourcesCallback)
 			throws Exception {
-		//Load sound
+		
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		splashTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 2048, 1024, TextureOptions.DEFAULT);
+		splashTextureRegion =BitmapTextureAtlasTextureRegionFactory.createFromAsset(splashTextureAtlas,
+		 this,"loadingscreen.png", 0, 0);
+		splashTextureAtlas.load();
+		 
+		onCreateResourcesCallback.onCreateResourcesFinished();
+	}
+	
+	/**
+	 * Creates and shows the splash screen.
+	 */
+	public void onCreateScene(OnCreateSceneCallback onCreateSceneCallback) throws Exception {
+		initSplashScene();
+		onCreateSceneCallback.onCreateSceneFinished(this.splashScene);
+		
+	}
+	
+	/**
+	 * Starts the game.
+	 */
+	public void onPopulateScene(Scene scene, OnPopulateSceneCallback onPopulateSceneCallback)
+			throws Exception {
+		FileUtils.setContext(this);
+		
+		 mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
+		 {
+		            public void onTimePassed(final TimerHandler pTimerHandler)
+		            {
+		                mEngine.unregisterUpdateHandler(pTimerHandler);
+		                try {
+							loadResources();
+						} catch (IllegalStateException e) {
+						} catch (IOException e) {
+						}
+		                initializeGame();         
+		                splashScene.detachSelf();
+		        		stateManager.setState(StateID.Menu);
+		            }
+		 }));
+		
+		mEngine.registerUpdateHandler(new IUpdateHandler(){
+			public void onUpdate(float tpf) {
+				if(stateManager!=null){
+					stateManager.update(tpf);
+				}
+			}
+	
+			public void reset() {
+	
+			}
+		});
+		
+		onPopulateSceneCallback.onPopulateSceneFinished();
+	}
+	
+	/**
+	 * Initializes the states
+	 */
+	private void initializeGame() {
+		stateManager = new StateManager(mEngine);
+		VertexBufferObjectManager vbom = this.getVertexBufferObjectManager();
+		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE),
+				regions, fonts, vbom);
+		MenuState menuState = new MenuState(mEngine.getCamera(), regions, vbom);
+		HighScoreState highscoreState = new HighScoreState(regions, fonts, vbom);
+		stateManager.addState(StateID.Game, gameState);
+		stateManager.addState(StateID.Menu, menuState);
+		stateManager.addState(StateID.Highscore, highscoreState);
+		gameState.addPropertyChangeListener(highscoreState);
+		
+		stateManager.addPropertyChangeListener(this);
+	}
+
+	/**
+	 * Initializes the splash screen.
+	 */
+    private void initSplashScene() {
+	    splashScene = new Scene();
+	    splashScene.setBackground(new Background(0.0f, 1.0f, 1.0f));
+	    Sprite splash = new Sprite(0, 0, 1280, 800, splashTextureRegion,
+	    		this.getVertexBufferObjectManager());
+	    splash.setPosition(0, 0);
+	    System.out.println( splash.getTextureRegion().getWidth());
+	    splashScene.attachChild(splash);
+    }    
+    
+    /**
+     * Loads all game resources
+     * @throws IOException 
+     * @throws IllegalStateException 
+     */
+    private void loadResources() throws IllegalStateException, IOException{
+    	//Load sound
         MusicFactory.setAssetBasePath("audio/");
         SoundFactory.setAssetBasePath("audio/");
         Music music;
@@ -127,18 +228,12 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
         // Set the asset path of the images
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
         BitmapTextureAtlas bitmapTextureAtlas = new BitmapTextureAtlas(getTextureManager(), 
-        		2048, 1024, TextureOptions.BILINEAR);
+        		2048, 2048, TextureOptions.BILINEAR);
         BitmapTextureAtlas menuTextureAtlas = new BitmapTextureAtlas(getTextureManager(), 
         		512, 512, TextureOptions.BILINEAR);
         BitmapTextureAtlas backgroundTextureAtlas = new BitmapTextureAtlas(getTextureManager(), 
         		1024, 1024, TextureOptions.BILINEAR);
-    	
-        
-//        Create TextureRegions like this for every image:
-//        regions.put("file_name.png", BitmapTextureAtlasTextureRegionFactory
-//               .createFromAsset( bitmapTextureAtlas, this, "file_name.png", 
-//       		 x_position, y_position));
-        
+ 
         regions.put("newHighscore.png", BitmapTextureAtlasTextureRegionFactory
         		.createFromAsset( bitmapTextureAtlas, this, "newHighscore.png", 200, 
         				824-237-77-200));
@@ -183,7 +278,6 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 
         regions.put("background.png", BitmapTextureAtlasTextureRegionFactory
         		.createFromAsset( bitmapTextureAtlas, this, "background.png", 2048-1280,190));
- 
         
         //add menu textures
     	regions.put("menu_start.png", BitmapTextureAtlasTextureRegionFactory.createFromAsset(
@@ -205,66 +299,8 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
         for (Font font : fonts.values()) {
         	font.load();
         }
-        
-		onCreateResourcesCallback.onCreateResourcesFinished();
-	}
-	
-	/**
-	 * Creates and shows the splash screen.
-	 */
-	public void onCreateScene(OnCreateSceneCallback onCreateSceneCallback) throws Exception {
-		initSplashScene();
-		onCreateSceneCallback.onCreateSceneFinished(this.splashScene);
-		
-	}
-	
-	/**
-	 * Starts the game.
-	 */
-	public void onPopulateScene(Scene scene, OnPopulateSceneCallback onPopulateSceneCallback)
-			throws Exception {
-		FileUtils.setContext(this);
-        initializeGame();         
-        splashScene.detachSelf();
-		stateManager.setState(StateID.Menu);
-		mEngine.registerUpdateHandler(new IUpdateHandler(){
-			public void onUpdate(float tpf) {
-				stateManager.update(tpf);
-			}
-	
-			public void reset() {
-	
-			}
-		});
-		
-		onPopulateSceneCallback.onPopulateSceneFinished();
-	}
-	
-	/**
-	 * Initializes the states
-	 */
-	private void initializeGame() {
-		stateManager = new StateManager(mEngine);
-		VertexBufferObjectManager vbom = this.getVertexBufferObjectManager();
-		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE),
-				regions, fonts, vbom);
-		MenuState menuState = new MenuState(mEngine.getCamera(), regions, vbom);
-		HighScoreState highscoreState = new HighScoreState(regions, fonts, vbom);
-		stateManager.addState(StateID.Game, gameState);
-		stateManager.addState(StateID.Menu, menuState);
-		stateManager.addState(StateID.Highscore, highscoreState);
-		gameState.addPropertyChangeListener(highscoreState);
-		
-		stateManager.addPropertyChangeListener(this);
-	}
-
-	/**
-	 * Initializes the splash screen.
-	 */
-    private void initSplashScene() {
-	    splashScene = new Scene();
-	    splashScene.setBackground(new Background(0.0f, 0.0f, 1.0f));
-    }      
+        System.out.println("loaded");
+    }
 
     /**
      * Handles events and takes the according action.
