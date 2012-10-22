@@ -24,13 +24,18 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import se.chalmers.avoidance.constants.GameConstants;
+import se.chalmers.avoidance.core.EntityFactory;
 import se.chalmers.avoidance.core.components.Size;
 import se.chalmers.avoidance.core.components.Transform;
 import se.chalmers.avoidance.core.components.Velocity;
 import se.chalmers.avoidance.core.systems.CollisionSystem;
 
+import com.artemis.ComponentManager;
+import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.annotations.Mapper;
 import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
 
@@ -40,18 +45,19 @@ public class WallCollisionHandlerTest {
 	private Entity e3;
 	private Entity e4; 
 	private Entity e5; 
+	private World world;
 	private CollisionSystem cs;
 	
 	@Before
 	public void setUp(){
-		World world = new World();
+		world = new World();
 		TagManager tm = new TagManager();
 		GroupManager gm = new GroupManager();
 		world.setManager(tm);
 		world.setManager(gm);
-		
+						
 		e1 = world.createEntity();
-		gm.add(e1, "PLAYER");
+		tm.register(GameConstants.PLAYER_TAG, e1);
 		e1.addComponent(new Transform(0,3));
 		e1.addComponent(new Velocity(1,(float)(Math.PI/4)));
 		e1.addComponent(new Size(1, 1));
@@ -77,14 +83,18 @@ public class WallCollisionHandlerTest {
 		cs = new CollisionSystem();
 		world.setSystem(cs);
 		world.initialize();
+		world.setDelta(1);
 		
 	}
 	
 	@Test
 	public void testHandleCollision(){
-		assertTrue(cs.collisionExists(e1, e2));	
-		assertTrue(!cs.collisionExists(e3, e4));
-		assertTrue(!cs.collisionExists(e1, e5));
+		world.process();
+		assertTrue((e1.getComponent(Velocity.class).getAngle()-(float)(2*Math.PI-Math.PI/4)<0.01));
+		e1.removeComponent(Transform.class);
+		e1.addComponent(new Transform(20,3));
+		world.process();
+		assertTrue((e1.getComponent(Velocity.class).getAngle()-(float)(Math.PI+Math.PI/4)<0.01));
 	}
 
 }

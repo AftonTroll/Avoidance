@@ -103,16 +103,6 @@ public class CollisionSystemTest {
 	}
 	
 	@Test
-	public void testProcessEntities(){
-		cs.processEntities(null);
-		assertTrue((e1.getComponent(Velocity.class).getAngle()-(float)(2*Math.PI-Math.PI/4)<0.01));
-		e1.removeComponent(Transform.class);
-		e1.addComponent(new Transform(20,3));
-		cs.processEntities(null);
-		assertTrue((e1.getComponent(Velocity.class).getAngle()-(float)(Math.PI+Math.PI/4)<0.01));
-	}
-	
-	@Test
 	public void testOutsideMap(){
 		e1.getComponent(Transform.class).setX(-20);
 		cs.processEntities(null);
