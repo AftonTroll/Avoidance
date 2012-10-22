@@ -46,7 +46,6 @@ public class PowerUpCollisionHandlerTest {
 	private final World world = new World();
 	private final GroupManager groupManager = new GroupManager();
 	private final TagManager tagManager = new TagManager();
-	private final Buff buff = new Buff(BuffType.Speed, 1);
     private ImmutableBag<Entity> groupEntitiesA;
     private ImmutableBag<Entity> groupEntitiesB;
     private Bag<Entity> entities = new Bag<Entity>();
@@ -57,9 +56,11 @@ public class PowerUpCollisionHandlerTest {
 		world.setManager(groupManager);
 		world.setManager(tagManager);
 		world.setSystem(cs);
-		player = EntityFactory.createPlayer(world, 0,0);
-		powerup = EntityFactory.createPowerUp(world, 40, 40, BuffType.Speed, 100);
+		player = EntityFactory.createPlayer(world, 0, 0);
+		powerup = EntityFactory.createSpeedPowerUp(world, 40, 40, 100);
 		world.initialize();
+		world.addEntity(EntityFactory.createScore(world));
+		world.addEntity(EntityFactory.createWall(world, 1, 1, 600, 600));
 		
 		
 		groupEntitiesA = world.getManager(GroupManager.class).getEntities("PLAYER");
@@ -77,8 +78,7 @@ public class PowerUpCollisionHandlerTest {
 		playerTransform.setPosition(40, 40);
 		powerupTransform.setPosition(30, 30);
 		
-		System.out.print(player.getComponent(Velocity.class).getSpeed());
-		//assertTrue(player.getComponent(Velocity.class).getSpeed() == 0);
+		assertTrue(player.getComponent(Velocity.class).getSpeed() == 0);
 		
 		powerupTransform.setPosition(40, 40);
 		assertTrue(player != null);

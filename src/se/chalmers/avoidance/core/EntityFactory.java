@@ -24,6 +24,7 @@ import se.chalmers.avoidance.core.components.Acceleration;
 import se.chalmers.avoidance.core.components.Buff;
 import se.chalmers.avoidance.core.components.Buff.BuffType;
 import se.chalmers.avoidance.core.components.Friction;
+import se.chalmers.avoidance.core.components.Immortal;
 import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Score;
 import se.chalmers.avoidance.core.components.Size;
@@ -46,6 +47,7 @@ import com.artemis.managers.TagManager;
  */
 public class EntityFactory {
 	
+    private EntityFactory() {}
 	/**
 	 * Creates a player entity with a PLAYER tag.
 	 * 
@@ -67,6 +69,7 @@ public class EntityFactory {
 		player.addComponent(new Friction(0.7f));
 		player.addComponent(new Spatial("ball.png"));
 		player.addComponent(new Jump());
+		player.addComponent(new Immortal());
 		
 		return player;
 	}
@@ -180,15 +183,14 @@ public class EntityFactory {
 	}
 	
 	/**
-	 * Creates a new powerup and adds it to the POWERUPS group.
+	 * Creates a new speed-powerup and adds it to the POWERUPS group.
 	 * @param world The world
 	 * @param xPos The desired x-position of the powerup.
 	 * @param yPos The desired y-position of the powerup.
-	 * @param buffType The type of the powerup.
-	 * @param buffStrength The strength of the powerup.
+	 * @param buffStrength The amount of speed the powerup gives.
 	 * @return A powerup entity.
 	 */
-	public static Entity createPowerUp(World world, float xPos, float yPos, BuffType buffType, int buffStrength) {
+	public static Entity createSpeedPowerUp(World world, float xPos, float yPos, int buffStrength) {
 		Entity powerUp = world.createEntity();
 		world.getManager(GroupManager.class).add(powerUp, "POWERUPS");
 		world.getManager(GroupManager.class).add(powerUp, "CIRCLESHAPES");
@@ -196,7 +198,28 @@ public class EntityFactory {
 		powerUp.addComponent(new Transform(xPos, yPos));
 		powerUp.addComponent(new Size(64, 64));
 		powerUp.addComponent(new Spatial("powerup.png"));
-		powerUp.addComponent(new Buff(buffType, buffStrength));
+		powerUp.addComponent(new Buff(BuffType.Speed, buffStrength));
+		
+		return powerUp;
+		
+	}
+	
+	/**
+	 * Creates a new immortal-powerup and adds it to the POWERUPS group.
+	 * @param world The world
+	 * @param xPos The desired x-position of the powerup.
+	 * @param yPos The desired y-position of the powerup.
+	 * @param buffStrength The duration of immortality the powerup gives..
+	 * @return A powerup entity.
+	 */
+	public static Entity createImmortalPowerUp(World world, float xPos, float yPos, int buffStrength) {
+		Entity powerUp = world.createEntity();
+		world.getManager(GroupManager.class).add(powerUp, "POWERUPS");
+		
+		powerUp.addComponent(new Transform(xPos, yPos));
+		powerUp.addComponent(new Size(64, 64));
+		powerUp.addComponent(new Spatial("immortalPU.png"));
+		powerUp.addComponent(new Buff(BuffType.Immortal, buffStrength));
 		
 		return powerUp;
 		

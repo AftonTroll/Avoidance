@@ -21,6 +21,7 @@ package se.chalmers.avoidance.core.collisionhandlers;
 
 import se.chalmers.avoidance.core.components.Buff;
 import se.chalmers.avoidance.core.components.Buff.BuffType;
+import se.chalmers.avoidance.core.components.Immortal;
 import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Score;
 import se.chalmers.avoidance.core.components.Velocity;
@@ -28,7 +29,6 @@ import se.chalmers.avoidance.core.components.Velocity;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.World;
-import com.artemis.managers.GroupManager;
 import com.artemis.managers.TagManager;
 
 /**
@@ -37,18 +37,21 @@ import com.artemis.managers.TagManager;
  *
  */
 public class PowerUpCollisionHandler implements CollisionHandler{
-    ComponentMapper<Velocity> vm;
-    ComponentMapper<Buff> bm;
-    ComponentMapper<Score> sm;
+    private ComponentMapper<Velocity> vm;
+    private ComponentMapper<Buff> bm;
+    private ComponentMapper<Score> sm;
+    private ComponentMapper<Immortal> im;
+    private final static int ENEMY_KILL_SCORE = 50;
     
     /**
      * Constructs a PowerUpCollisionHandler.
      * @param world The world.
      */
     public PowerUpCollisionHandler(World world) {
-    	vm = ComponentMapper.getFor(Velocity.class, world);
-    	bm = ComponentMapper.getFor(Buff.class, world);
+    	vm = world.getMapper(Velocity.class);
+    	bm = world.getMapper(Buff.class);
     	sm = world.getMapper(Score.class);
+    	im = world.getMapper(Immortal.class);
     }
     
 	/**
@@ -61,12 +64,16 @@ public class PowerUpCollisionHandler implements CollisionHandler{
 			World world = player.getWorld();
 			Velocity velocity = vm.get(player);
 			Buff buff = bm.get(powerup);
+			Immortal immortal = im.get(player);
 			if(buff.getType() == BuffType.Speed) {
 				velocity.addSpeed(buff.getStrength());
+			} else if(buff.getType() == BuffType.Immortal) {
+			    immortal.setDuration(buff.getStrength());
+			    immortal.setImmortal(true);
 			}
 			powerup.deleteFromWorld();
-			Score score = sm.get(world.getManager(TagManager.class).getEntity("SCORE"));
-			score.addPowerupScore(50);
+		    Score score = sm.get(world.getManager(TagManager.class).getEntity("SCORE"));
+		    score.addPowerupScore(ENEMY_KILL_SCORE);
 			powerup.deleteFromWorld();
 		}
 	}

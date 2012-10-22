@@ -20,6 +20,7 @@
 
 package se.chalmers.avoidance.core.collisionhandlers;
 
+import se.chalmers.avoidance.core.components.Immortal;
 import se.chalmers.avoidance.core.components.Jump;
 
 import com.artemis.ComponentMapper;
@@ -50,13 +51,17 @@ public class EnemyCollisionHandler implements CollisionHandler{
 	 * @param enemy The enemy.
 	 */
 	public void handleCollision(Entity player, Entity enemy) {
-		//Handle collison between enemy and player
+		//Handles collison between enemy and player
 		ComponentMapper<Jump> jumpMapper = world.getMapper(Jump.class);
+		ComponentMapper<Immortal> immortalMapper = world.getMapper(Immortal.class);
 		Jump jump = jumpMapper.get(player);
-		if (jump == null || !jump.isInTheAir()) {
+		Immortal immortal = immortalMapper.get(player);
+		if (!jump.isInTheAir() && !immortal.isImmortal()) {
 			GameOverNotifier.getInstance().gameOver();
+		} else if (immortal.isImmortal()) {
+		    world.deleteEntity(enemy);
+		} else if (jump.isInTheAir() && jump.getInTheAirDurationLeft() <= world.delta) {
+		    world.deleteEntity(enemy);
 		}
-
 	}
-
 }

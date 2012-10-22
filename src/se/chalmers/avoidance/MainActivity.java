@@ -23,6 +23,7 @@ package se.chalmers.avoidance;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
@@ -57,7 +58,6 @@ import se.chalmers.avoidance.util.ScreenResolution;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.hardware.SensorManager;
-import android.view.KeyEvent;
 
 /**
  * The starting point of the application.
@@ -72,8 +72,8 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
     private Scene splashScene;
     private StateManager stateManager;
 
-    private HashMap<String, TextureRegion> regions;
-    private HashMap<String, Font> fonts;
+    private Map<String, TextureRegion> regions;
+    private Map<String, Font> fonts;
    
     /**
      * Sets the engine options (camera, screen rotation, ...) 
@@ -154,6 +154,8 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
         
         regions.put("ball.png", BitmapTextureAtlasTextureRegionFactory
 		.createFromAsset( bitmapTextureAtlas, this, "ball.png", 0, 0));
+        regions.put("immortal_ball.png", BitmapTextureAtlasTextureRegionFactory
+                .createFromAsset( bitmapTextureAtlas, this, "immortal_ball.png", 200, 0));
         
         regions.put("wall_horisontal.png",  BitmapTextureAtlasTextureRegionFactory
 		.createFromAsset( bitmapTextureAtlas, this, "wall_horisontal.png", 0, 68));
@@ -168,11 +170,13 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
         		.createFromAsset( bitmapTextureAtlas, this, "enemy.png", 61,150));
         regions.put("powerup.png",  BitmapTextureAtlasTextureRegionFactory
         		.createFromAsset( bitmapTextureAtlas, this, "powerup.png", 120,200));
+        regions.put("immortalPU.png",  BitmapTextureAtlasTextureRegionFactory
+                .createFromAsset( bitmapTextureAtlas, this, "immortalPU.png", 120,400));
         regions.put("pitobstacle.png",  BitmapTextureAtlasTextureRegionFactory
         		.createFromAsset( bitmapTextureAtlas, this, "pitobstacle.png", 120,270));
         
         regions.put("killplayerobstacle.png",  BitmapTextureAtlasTextureRegionFactory
-        		.createFromAsset( bitmapTextureAtlas, this, "killplayerobstacle.png", 120,340));
+        		.createFromAsset( bitmapTextureAtlas, this, "killplayerobstacle.png", 120,470));
         regions.put("quickenemy.png", BitmapTextureAtlasTextureRegionFactory
         		.createFromAsset( bitmapTextureAtlas, this, "quickenemy.png", 130,150));
         
@@ -241,7 +245,6 @@ public class MainActivity extends BaseGameActivity implements PropertyChangeList
 	 */
 	private void initializeGame() {
 		stateManager = new StateManager(mEngine);
-
 		VertexBufferObjectManager vbom = this.getVertexBufferObjectManager();
 		GameState gameState = new GameState((SensorManager)this.getSystemService(SENSOR_SERVICE),
 				regions, fonts, vbom);

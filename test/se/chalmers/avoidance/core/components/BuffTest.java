@@ -34,13 +34,13 @@ public class BuffTest {
 	private Buff mBuff;
 	
 	@BeforeClass
-	public static void beforeClass() throws Exception {
+	public static void beforeClass(){
 		type = Buff.BuffType.Speed;
 		strength = 2;
 	}
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp(){
 		this.mBuff = new Buff(type, strength);
 	}
 	

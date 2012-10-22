@@ -57,8 +57,9 @@ public class StateManager implements PropertyChangeListener {
 	* @param state The new state.
 	*/
 	public void addState(StateID stateID, IState state) {
-		if (stateMap.put(stateID, state) == null)
+		if (stateMap.put(stateID, state) == null) {
 			state.addPropertyChangeListener(this);
+		}
 	}
 
 	/**

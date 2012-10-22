@@ -33,6 +33,7 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import se.chalmers.avoidance.core.components.Immortal;
 import se.chalmers.avoidance.core.components.Jump;
 import se.chalmers.avoidance.core.components.Spatial;
 import se.chalmers.avoidance.core.components.Transform;
@@ -51,7 +52,7 @@ import com.artemis.utils.ImmutableBag;
  */
 public class SpatialRenderSystem extends EntitySystem{
     @Mapper
-    ComponentMapper<Transform> tm;
+    private ComponentMapper<Transform> tm;
     @Mapper
     private ComponentMapper<Spatial> sm;
     
@@ -60,6 +61,7 @@ public class SpatialRenderSystem extends EntitySystem{
 	private Map<String, TextureRegion> regions;
 	private VertexBufferObjectManager vbom;
 	private Scene scene;
+	private boolean playerImmortal = false;
 
 	/**
 	 * Constructs a <code>SpatialRenderSystem</code>. 
@@ -106,6 +108,7 @@ public class SpatialRenderSystem extends EntitySystem{
         
         if(e.getId() == world.getManager(TagManager.class).getEntity("PLAYER").getId()) {
         	handleJumpScaling(e);
+        	handleImmortalSprite(e);
         }
 	}
 	
@@ -119,6 +122,23 @@ public class SpatialRenderSystem extends EntitySystem{
 		} else {
 			player.getComponent(Spatial.class).getSprite().setScale(1);
 		}
+	}
+	
+	private void handleImmortalSprite(Entity player) {
+	    if (player.getComponent(Immortal.class).isImmortal() && !playerImmortal) {
+	        Transform tf = tm.get(player);
+	        sm.get(player).getSprite().detachSelf();
+	        sm.get(player).setSprite(new Sprite(tf.getX(), tf.getY(), regions.get("immortal_ball.png"), vbom));
+	        scene.attachChild(sm.get(player).getSprite());
+	        playerImmortal = true;
+	    } else if (!player.getComponent(Immortal.class).isImmortal() && playerImmortal) {
+	        Transform tf = tm.get(player);
+            Spatial spatial = sm.get(player);
+            spatial.getSprite().detachSelf();
+            sm.get(player).setSprite(new Sprite(tf.getX(), tf.getY(), regions.get(spatial.getName()), vbom));
+            scene.attachChild(spatial.getSprite());
+            playerImmortal = false;
+	    }
 	}
 	
     @Override
